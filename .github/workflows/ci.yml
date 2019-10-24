@@ -59,8 +59,10 @@ jobs:
       - uses: actions/checkout@master
       - name: Install Rust
         run: . ci/scripts/install-rust.sh
+        shell: bash
       - name: Install component
         run: . ci/scripts/install-component.sh
+        shell: bash
       - name: cargo clippy
         if: matrix.component == 'clippy'
         run: |
