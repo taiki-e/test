@@ -69,5 +69,4 @@ jobs:
           cargo clippy --all
       - name: cargo fmt
         if: matrix.component == 'rustfmt'
-        run: |
-          cargo fmt --all -- --check
+        run: . ci/scripts/fmt.sh check
