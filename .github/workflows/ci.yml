@@ -58,6 +58,7 @@ jobs:
           - clippy
           - rustfmt
     steps:
+
       - uses: actions/checkout@master
       - name: Install Rust
         run: . ci/scripts/install-rust.sh
