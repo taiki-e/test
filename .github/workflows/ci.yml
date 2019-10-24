@@ -10,6 +10,9 @@ on:
   schedule:
     - cron: 00 01 * * *
 
+env:
+  RUSTFLAGS: -Dwarnings
+
 jobs:
   test:
     name: test
@@ -17,7 +20,6 @@ jobs:
     env:
       AGENT_OS: ${{ matrix.os }}
       RUST_TOOLCHAIN: ${{ matrix.rust }}
-      RUSTFLAGS: -Dwarnings
     strategy:
       fail-fast: false
       matrix:
@@ -32,30 +34,40 @@ jobs:
       - name: Install Rust
         run: . ci/scripts/install-rust.sh
         shell: bash
-      - name: Query rust and cargo versions
+      - name: cargo check
         run: |
-          rustup -V
-          rustc -Vv
-          cargo -Vv
-          rustup toolchain list
+          cargo check --all
 
   style:
     name: style
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     env:
-      AGENT_OS: ubuntu-latest
+      AGENT_OS: ${{ matrix.os }}
       RUST_TOOLCHAIN: nightly
       RUST_COMPONENT: ${{ matrix.component }}
-      RUSTFLAGS: -Dwarnings
     strategy:
       fail-fast: false
       matrix:
         component:
           - clippy
           - rustfmt
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
     steps:
       - uses: actions/checkout@master
       - name: Install Rust
         run: . ci/scripts/install-rust.sh
+        shell: bash
       - name: Install component
         run: . ci/scripts/install-component.sh
+        shell: bash
+      - name: cargo clippy
+        if: matrix.component == 'clippy'
+        run: |
+          cargo clippy --all
+      - name: cargo fmt
+        if: matrix.component == 'rustfmt'
+        run: |
+          cargo fmt --all -- --check
