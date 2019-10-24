@@ -20,7 +20,7 @@ fi
 echo "Query rust and cargo versions:"
 rustup -V
 rustc -Vv
-cargo -Vv
+cargo -V
 
 echo "Query component versions:"
 case $RUST_COMPONENT in

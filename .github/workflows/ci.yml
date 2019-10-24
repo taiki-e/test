@@ -10,6 +10,9 @@ on:
   schedule:
     - cron: 00 01 * * *
 
+env:
+  RUSTFLAGS: -Dwarnings
+
 jobs:
   test:
     name: test
@@ -17,7 +20,6 @@ jobs:
     env:
       AGENT_OS: ${{ matrix.os }}
       RUST_TOOLCHAIN: ${{ matrix.rust }}
-      RUSTFLAGS: -Dwarnings
     strategy:
       fail-fast: false
       matrix:
@@ -32,12 +34,6 @@ jobs:
       - name: Install Rust
         run: . ci/scripts/install-rust.sh
         shell: bash
-      - name: Query rust and cargo versions
-        run: |
-          rustup -V
-          rustc -Vv
-          cargo -Vv
-          rustup toolchain list
 
   style:
     name: style
@@ -46,7 +42,6 @@ jobs:
       AGENT_OS: ubuntu-latest
       RUST_TOOLCHAIN: nightly
       RUST_COMPONENT: ${{ matrix.component }}
-      RUSTFLAGS: -Dwarnings
     strategy:
       fail-fast: false
       matrix:

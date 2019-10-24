@@ -15,4 +15,4 @@ fi
 echo "Query rust and cargo versions:"
 rustup -V
 rustc -Vv
-cargo -Vv
+cargo -V
