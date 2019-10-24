@@ -15,12 +15,12 @@ else
     rustup toolchain install nightly-$target --no-self-update
     rustup default nightly-$target
     rustup component add $RUST_COMPONENT
-fi
 
-echo "Query rust and cargo versions:"
-rustup -V
-rustc -Vv
-cargo -V
+    echo "Query rust and cargo versions:"
+    rustup -V
+    rustc -Vv
+    cargo -V
+fi
 
 echo "Query component versions:"
 case $RUST_COMPONENT in
