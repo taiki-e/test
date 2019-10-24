@@ -22,7 +22,7 @@ jobs:
         os:
           - ubuntu-latest
           - macOS-latest
-          # - windows-latest
+          - windows-latest
         rust:
           - nightly
     steps:
@@ -32,7 +32,8 @@ jobs:
         run: |
           rustup self update # TODO: when default rustup is bumped to 1.20+, remove this.
           rustup set profile minimal
-          rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
+          rustup toolchain install ${{ matrix.rust }} --no-self-update
+          rustup default ${{ matrix.rust }}
       - name: Install Rust (macos)
         if: matrix.os == 'macos-latest'
         run: |
@@ -62,19 +63,19 @@ jobs:
         run: |
           rustup self update # TODO: when default rustup is bumped to 1.20+, remove this.
           rustup set profile minimal
-          rustup update nightly && rustup default nightly
+          rustup toolchain install nightly-2019-10-18
+          rustup default nightly-2019-10-18
       - name: Install component
         run: |
           if ! rustup component add ${{ matrix.component }}; then
             # If the component is unavailable on the latest nightly,
             # use the latest toolchain with the component available.
             # Refs: https://github.com/rust-lang/rustup-components-history#the-web-part
-            component=${{ matrix.component }}
-            target=`curl https://rust-lang.github.io/rustup-components-history/x86_64-unknown-linux-gnu/$component`
-            echo "'$component' is unavailable on the toolchain 'nightly', use the toolchain 'nightly-$target' instead"
+            target=`curl https://rust-lang.github.io/rustup-components-history/x86_64-unknown-linux-gnu/${{ matrix.component }}`
+            echo "'${{ matrix.component }}' is unavailable on the toolchain 'nightly', use the toolchain 'nightly-$target' instead"
             rustup toolchain install nightly-$target
             rustup default nightly-$target
-            rustup component add $component
+            rustup component add ${{ matrix.component }}
           fi
       - name: Query rust and cargo versions
         run: |
