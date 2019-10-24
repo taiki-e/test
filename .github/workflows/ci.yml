@@ -34,13 +34,16 @@ jobs:
       - name: Install Rust
         run: . ci/scripts/install-rust.sh
         shell: bash
+      - name: cargo check
+        run: |
+          cargo check --all
 
   style:
     name: style
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     env:
-      AGENT_OS: ubuntu-latest
-      RUST_TOOLCHAIN: nightly-2019-10-18
+      AGENT_OS: ${{ matrix.os }}
+      RUST_TOOLCHAIN: nightly
       RUST_COMPONENT: ${{ matrix.component }}
     strategy:
       fail-fast: false
@@ -48,9 +51,21 @@ jobs:
         component:
           - clippy
           - rustfmt
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
     steps:
       - uses: actions/checkout@master
       - name: Install Rust
         run: . ci/scripts/install-rust.sh
       - name: Install component
         run: . ci/scripts/install-component.sh
+      - name: cargo clippy
+        if: matrix.component == 'clippy'
+        run: |
+          cargo clippy --all
+      - name: cargo fmt
+        if: matrix.component == 'rustfmt'
+        run: |
+          cargo fmt --all -- --check

@@ -7,6 +7,7 @@ if [[ "${AGENT_OS}" == "macOS-latest" ]]; then
     export PATH=$PATH:$HOME/.cargo/bin
     echo "##[add-path]$HOME/.cargo/bin"
 else
+    # TODO: when default rustup is bumped to 1.20+, enable this.
     # rustup set profile minimal
     rustup toolchain install $RUST_TOOLCHAIN --no-self-update
     rustup default $RUST_TOOLCHAIN
