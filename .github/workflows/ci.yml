@@ -29,9 +29,13 @@ jobs:
           - nightly
     steps:
       - uses: actions/checkout@master
-      - name: Install Rust
+      - name: Install Rust (*nix)
+        if: matrix.os != 'windows-latest'
         run: . ci/scripts/install-rust.sh
-        shell: bash
+      - name: Install Rust (windows)
+        if: matrix.os == 'windows-latest'
+        run: . ci/scripts/install-rust.ps1
+        shell: pwsh
       - name: Query rust and cargo versions
         run: |
           rustup -V
