@@ -67,6 +67,11 @@ jobs:
         if: matrix.component == 'clippy'
         run: |
           cargo clippy --all
-      - name: cargo fmt
+      - name: Install shfmt
+        if: matrix.component == 'rustfmt'
+        run: . ci/scripts/install-shfmt.sh
+        shell: bash
+      - name: Check format
         if: matrix.component == 'rustfmt'
         run: . ci/scripts/fmt.sh check
+        shell: bash
