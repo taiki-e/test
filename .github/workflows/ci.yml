@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AGENT_OS: ubuntu-latest
-      RUST_TOOLCHAIN: nightly
+      RUST_TOOLCHAIN: nightly-2019-10-18
       RUST_COMPONENT: ${{ matrix.component }}
     strategy:
       fail-fast: false

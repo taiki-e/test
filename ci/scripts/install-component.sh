@@ -10,9 +10,9 @@ else
     # If the component is unavailable on the latest nightly,
     # use the latest toolchain with the component available.
     # Refs: https://github.com/rust-lang/rustup-components-history#the-web-part
-    target=`curl https://rust-lang.github.io/rustup-components-history/x86_64-unknown-linux-gnu/$RUST_COMPONENT`
+    target=`curl -sSf https://rust-lang.github.io/rustup-components-history/x86_64-unknown-linux-gnu/$RUST_COMPONENT`
     echo "'$RUST_COMPONENT' is unavailable on the toolchain '$RUST_TOOLCHAIN', use the toolchain 'nightly-$target' instead"
-    rustup toolchain install nightly-$target
+    rustup toolchain install nightly-$target --no-self-update
     rustup default nightly-$target
     rustup component add $RUST_COMPONENT
 fi
