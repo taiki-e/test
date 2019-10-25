@@ -1,0 +1,76 @@
+schedules:
+  - cron: '0 1 * * *'
+    displayName: Cron
+    branches:
+      include:
+        - master
+    always: true
+
+trigger:
+  - master
+  - staging
+  - trying
+
+variables:
+  RUSTFLAGS: -Dwarnings
+
+jobs:
+  - job: test
+    strategy:
+      matrix:
+        linux:
+          vmImage: ubuntu-latest
+        macos:
+          vmImage: macos-latest
+        windows:
+          vmImage: windows-latest
+    pool:
+      vmImage: $(vmImage)
+    variables:
+      RUST_TOOLCHAIN: nightly
+    steps:
+      - template: ci/azure-pipelines/install-rust.yml
+      - script: |
+          cargo test --all
+        displayName: cargo test
+
+  - job: clippy
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+      RUST_TOOLCHAIN: nightly
+    steps:
+      - template: ci/azure-pipelines/install-rust.yml
+      - script: |
+          . ci/scripts/install-component.sh clippy
+        displayName: Install clippy
+      - script: |
+          cargo clippy --all
+        displayName: cargo clippy
+
+  - job: rustfmt
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+      RUST_TOOLCHAIN: nightly
+    steps:
+      - template: ci/azure-pipelines/install-rust.yml
+      - script: |
+          . ci/scripts/install-component.sh rustfmt
+        displayName: Install rustfmt
+      - script: |
+          . ci/scripts/fmt.sh check
+        displayName: cargo fmt
+
+  - job: rustdoc
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+      RUST_TOOLCHAIN: nightly
+    steps:
+      - template: ci/azure-pipelines/install-rust.yml
+      - script: |
+          cargo doc --no-deps --all
+        displayName: cargo doc
+        env:
+          RUSTDOCFLAGS: -Dwarnings

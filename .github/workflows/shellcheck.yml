@@ -18,10 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: shfmt
+        shell: bash
         run: |
           . ci/scripts/install-shfmt.sh
           . ci/scripts/shfmt.sh check
-        shell: bash
 
   shellcheck:
     name: shellcheck
@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: shellcheck
+        shell: bash
         run: |
           sudo apt install shellcheck
           shellcheck ci/scripts/*.sh
-        shell: bash
