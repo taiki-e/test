@@ -90,7 +90,7 @@ jobs:
   # ALL THE PREVIOUS JOBS NEEDS TO BE ADDED TO THE `needs` SECTION OF THIS JOB!
 
   end-success:
-    name: build finished
+    name: ci
     if: github.event_name == 'push' && success()
     runs-on: ubuntu-latest
     needs:
@@ -101,7 +101,7 @@ jobs:
         run: exit 0
 
   end-failure:
-    name: build finished
+    name: ci
     if: github.event_name == 'push' && !success()
     runs-on: ubuntu-latest
     needs:
