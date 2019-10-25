@@ -2,7 +2,7 @@ status = [
     "ci",
     "shfmt",
     "shellcheck",
-    # "taiki-e.test",
+    "taiki-e.test",
 ]
 block_labels = ["S-blocked"]
 delete_merged_branches = true
