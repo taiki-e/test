@@ -6,4 +6,3 @@ update_configs:
     update_schedule: "live"
     commit_message:
       prefix: "dependabot"
-      include_scope: true
