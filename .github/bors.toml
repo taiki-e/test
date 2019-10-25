@@ -1,5 +1,5 @@
 status = [
-    "ci",
+    "build finished",
     "shfmt",
     "shellcheck",
     "taiki-e.test",
