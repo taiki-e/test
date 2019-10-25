@@ -8,6 +8,8 @@ status = [
     "style (rustfmt, ubuntu-latest)",
     "style (rustfmt, macOS-latest)",
     "style (rustfmt, windows-latest)",
+    "shfmt",
+    "shellcheck",
 ]
 block_labels = ["S-blocked"]
 delete_merged_branches = true

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Format all Rust code with `rustfmt`.
+# Format all shell scripts with `shfmt`.
 #
 # Usage:
 #
@@ -14,9 +14,9 @@
 
 set -euo pipefail
 
-# Rust
-if [[ "${1:=fmt}" == "check" ]]; then
-    cargo fmt --all -- --check
+# Shell Script
+if [[ "$1" == "check" ]]; then
+    shfmt -i 4 -ci -d ci/scripts/*.sh
 else
-    cargo fmt --all
+    shfmt -i 4 -ci -l -w ci/scripts/*.sh
 fi

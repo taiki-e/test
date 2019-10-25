@@ -1,0 +1,35 @@
+name: shellcheck
+
+on:
+  pull_request:
+    paths:
+      - '**.sh'
+      - '.github/workflows/**'
+  push:
+    branches:
+      - master
+      - staging
+      - trying
+
+jobs:
+  shfmt:
+    name: shfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: shfmt
+        run: |
+          . ci/scripts/install-shfmt.sh
+          . ci/scripts/shfmt.sh check
+        shell: bash
+
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: shellcheck
+        run: |
+          sudo apt install shellcheck
+          shellcheck ci/scripts/*.sh
+        shell: bash
