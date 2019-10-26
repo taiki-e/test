@@ -16,7 +16,11 @@ set -euo pipefail
 
 # Rust
 if [[ "${1:=fmt}" == "check" ]]; then
-    cargo fmt --all -- --check
+    # shellcheck disable=SC1091
+    . ci/scripts/ci-tools.sh fmt ./**/Cargo.toml --check
+    # cargo fmt --all -- --check
 else
-    cargo fmt --all
+    # shellcheck disable=SC1091
+    . ci/scripts/ci-tools.sh fmt ./**/Cargo.toml
+    # cargo fmt --all
 fi

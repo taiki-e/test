@@ -1,12 +1,11 @@
 [package]
-name = "test"
+name = "ci-tools"
 version = "0.1.0"
 authors = ["Taiki Endo <te316e89@gmail.com>"]
 edition = "2018"
 publish = false
 
-[dev-dependencies]
-quote = "1.0"
+[workspace]
 
-[target.'cfg(unix)'.dev-dependencies]
-proc-macro2 = "1.0"
+[dependencies]
+toml_edit = "0.1.5"
