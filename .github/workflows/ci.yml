@@ -34,7 +34,7 @@ jobs:
       - name: Install Rust
         shell: bash
         run: |
-          . ci/scripts/install-rust.sh
+          bash ./ci/scripts/install-rust.sh
       - name: cargo test
         shell: bash
         run: |
@@ -42,16 +42,7 @@ jobs:
       - name: cargo test
         shell: bash
         run: |
-          echo "cargo lock start ====================="
-          cat ./Cargo.lock
-          echo "cargo lock end ======================="
-
           cargo ci-tools remove-dev-deps ./**/Cargo.toml
-          cargo update
-
-          echo "cargo lock start ====================="
-          cat ./Cargo.lock
-          echo "cargo lock end ======================="
           cargo test --all
 
   style:
@@ -76,12 +67,12 @@ jobs:
       - name: Install Rust
         shell: bash
         run: |
-          . ci/scripts/install-rust.sh
+          bash ./ci/scripts/install-rust.sh
       - name: Install component
         shell: bash
         if: matrix.component != 'rustdoc'
         run: |
-          . ci/scripts/install-component.sh ${{ matrix.component }}
+          bash ./ci/scripts/install-component.sh ${{ matrix.component }}
       - name: cargo clippy
         shell: bash
         if: matrix.component == 'clippy'
@@ -91,7 +82,8 @@ jobs:
         shell: bash
         if: matrix.component == 'rustfmt'
         run: |
-          . ci/scripts/fmt.sh check
+          bash ./ci/scripts/fmt.sh check
+          bash ./ci/scripts/fmt.sh
       - name: cargo doc
         shell: bash
         if: matrix.component == 'rustdoc'
