@@ -1,0 +1,2 @@
+[alias]
+ci-tools = "run --target-dir target --manifest-path ci/ci-tools/Cargo.toml"

@@ -46,7 +46,7 @@ jobs:
           cat ./Cargo.lock
           echo "cargo lock end ======================="
 
-          . ci/scripts/ci-tools.sh remove-dev-deps ./**/Cargo.toml
+          cargo ci-tools remove-dev-deps ./**/Cargo.toml
           cargo update
 
           echo "cargo lock start ====================="
