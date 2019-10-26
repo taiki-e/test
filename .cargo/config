@@ -1,2 +1,2 @@
 [alias]
-ci-tools = "run --target-dir target --manifest-path ci/ci-tools/Cargo.toml"
+remove-dev-deps = "run --manifest-path ci/tools/remove-dev-deps/Cargo.toml"

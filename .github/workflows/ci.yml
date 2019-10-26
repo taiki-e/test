@@ -42,7 +42,8 @@ jobs:
       - name: cargo test
         shell: bash
         run: |
-          cargo ci-tools remove-dev-deps ./**/Cargo.toml
+          cargo remove-dev-deps ./**/Cargo.toml
+          cat Cargo.lock
           cargo test --all
 
   style:
