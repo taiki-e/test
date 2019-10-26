@@ -16,9 +16,7 @@ set -euo pipefail
 
 # Rust
 if [[ "${1:-fmt}" == "check" ]]; then
-    cargo ci-tools fmt ./**/Cargo.toml --check
-    # cargo fmt --all -- --check
+    cargo fmt --all -- --check
 else
-    cargo ci-tools fmt ./**/Cargo.toml
-    # cargo fmt --all
+    cargo fmt --all
 fi
