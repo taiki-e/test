@@ -56,7 +56,7 @@ fn try_main() -> Result<i32> {
     let args = &args[1..];
 
     match subcmd {
-        "remove-dev-deps" => remove_dev_deps(args),
+        "remove-dev-deps" => remove_dev_deps(args).and(Ok(0)),
         "fmt" => {
             if options.contains("--check") {
                 check_fmt(args)
@@ -68,13 +68,13 @@ fn try_main() -> Result<i32> {
     }
 }
 
-fn remove_dev_deps(files: &[String]) -> Result<i32> {
-    for file in files {
-        let content = fs::read_to_string(file)?;
-        let mut doc: toml_edit::Document = content.parse()?;
+fn remove_dev_deps(files: &[String]) -> Result<()> {
+    files.iter().try_for_each(|file| {
+        let mut doc: toml_edit::Document = fs::read_to_string(file)?.parse()?;
         let table = doc.as_table_mut();
         table.remove("dev-dependencies");
         if let Some(table) = table.entry("target").as_table_mut() {
+            // `toml_edit::Table` does not have `.iter_mut()`, so collect keys.
             let keys: Vec<String> = table.iter().map(|(key, _)| key.to_string()).collect();
             for key in keys {
                 if let Some(table) = table.entry(&key).as_table_mut() {
@@ -83,8 +83,8 @@ fn remove_dev_deps(files: &[String]) -> Result<i32> {
             }
         }
         fs::write(file, doc.to_string_in_original_order())?;
-    }
-    Ok(0)
+        Ok(())
+    })
 }
 
 fn check_fmt(files: &[String]) -> Result<i32> {
