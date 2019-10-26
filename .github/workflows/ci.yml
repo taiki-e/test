@@ -36,15 +36,18 @@ jobs:
         run: |
           bash ./ci/scripts/install-rust.sh
       - name: cargo test
-        shell: bash
         run: |
-          cargo test --all
-      - name: cargo test
+          cargo test --all --all-features
+      - name: cargo check
         shell: bash
         run: |
           cargo remove-dev-deps ./**/Cargo.toml
-          cat Cargo.lock
-          cargo test --all
+          cargo check --all --all-features
+      - name: cargo check -Zminimal-versions
+        run: |
+          # Refs: https://github.com/rust-lang/cargo/issues/5657
+          cargo update -Zminimal-versions
+          cargo check --all --all-features --exclude remove-dev-deps
 
   style:
     name: style
@@ -75,10 +78,9 @@ jobs:
         run: |
           bash ./ci/scripts/install-component.sh ${{ matrix.component }}
       - name: cargo clippy
-        shell: bash
         if: matrix.component == 'clippy'
         run: |
-          cargo clippy --all
+          cargo clippy --all --all-features
       - name: cargo fmt
         shell: bash
         if: matrix.component == 'rustfmt'
@@ -86,10 +88,9 @@ jobs:
           bash ./ci/scripts/fmt.sh check
           bash ./ci/scripts/fmt.sh
       - name: cargo doc
-        shell: bash
         if: matrix.component == 'rustdoc'
         run: |
-          cargo doc --no-deps --all
+          cargo doc --no-deps --all --all-features
         env:
           RUSTDOCFLAGS: -Dwarnings
 
