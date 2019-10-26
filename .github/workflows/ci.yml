@@ -82,11 +82,9 @@ jobs:
         run: |
           cargo clippy --all --all-features
       - name: cargo fmt
-        shell: bash
         if: matrix.component == 'rustfmt'
         run: |
-          bash ./ci/scripts/fmt.sh check
-          bash ./ci/scripts/fmt.sh
+          cargo fmt --all -- --check
       - name: cargo doc
         if: matrix.component == 'rustdoc'
         run: |
