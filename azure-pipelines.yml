@@ -20,19 +20,16 @@ jobs:
       matrix:
         linux:
           vmImage: ubuntu-latest
-        # macos:
-        #   vmImage: macos-latest
-        # windows:
-        #   vmImage: windows-latest
+        macos:
+          vmImage: macos-latest
+        windows:
+          vmImage: windows-latest
     pool:
       vmImage: $(vmImage)
     variables:
       RUST_TOOLCHAIN: nightly
     steps:
       - template: ci/azure-pipelines/install-rust.yml
-      - script: |
-          cargo test --all
-        displayName: cargo test
 
   - job: clippy
     pool:
@@ -44,7 +41,7 @@ jobs:
       - bash: |
           . ci/scripts/install-component.sh clippy
         displayName: Install clippy
-      - script: |
+      - bash: |
           cargo clippy --all
         displayName: cargo clippy
 
@@ -59,7 +56,7 @@ jobs:
           . ci/scripts/install-component.sh rustfmt
         displayName: Install rustfmt
       - bash: |
-          . ci/scripts/fmt.sh check
+          cargo fmt --all -- --check
         displayName: cargo fmt
 
   - job: rustdoc
@@ -69,7 +66,7 @@ jobs:
       RUST_TOOLCHAIN: nightly
     steps:
       - template: ci/azure-pipelines/install-rust.yml
-      - script: |
+      - bash: |
           cargo doc --no-deps --all
         displayName: cargo doc
         env:
