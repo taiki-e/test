@@ -18,7 +18,7 @@ else
 
     echo "Query rust and cargo versions:"
     rustup -V
-    rustc -Vv
+    rustc -V
     cargo -V
 
     rustup component add "${1}"

@@ -18,5 +18,5 @@ esac
 
 echo "Query rust and cargo versions:"
 rustup -V
-rustc -Vv
+rustc -V
 cargo -V
