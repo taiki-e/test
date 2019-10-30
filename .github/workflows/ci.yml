@@ -38,9 +38,7 @@ jobs:
       - name: Install cargo-hack
         shell: bash
         run: |
-          git clone https://github.com/taiki-e/cargo-hack
-          cargo install cargo-hack --path cargo-hack
-          rm -rf cargo-hack
+          cargo install cargo-hack
       - name: cargo test
         run: |
           cargo test --all --all-features
