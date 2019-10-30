@@ -1,5 +1,4 @@
 [workspace]
 members = [
     "rust",
-    "ci/tools/remove-dev-deps"
 ]

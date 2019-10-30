@@ -13,3 +13,9 @@ quote = "1.0"
 
 [target.'cfg(unix)'.dev-dependencies]
 proc-macro2 = "1.0"
+
+[features]
+default = []
+a = []
+b = []
+c = []
