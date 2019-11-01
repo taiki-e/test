@@ -36,19 +36,16 @@ jobs:
         run: |
           . ./ci/scripts/install-rust.sh
       - name: Install cargo-hack
-        shell: bash
         run: |
           cargo install cargo-hack
       - name: cargo test
         run: |
           cargo test --all --all-features
       - name: cargo check
-        shell: bash
         run: |
           cargo hack check --all --all-features --no-dev-deps
           cargo hack run --all --all-features --no-dev-deps
       - name: cargo check -Zminimal-versions
-        shell: bash
         run: |
           # Refs: https://github.com/rust-lang/cargo/issues/5657
           cargo hack --remove-dev-deps
@@ -79,27 +76,24 @@ jobs:
         run: |
           . ./ci/scripts/install-rust.sh
       - name: Install component
-        shell: bash
         if: matrix.component != 'rustdoc'
+        shell: bash
         run: |
           . ./ci/scripts/install-component.sh ${{ matrix.component }}
       - name: cargo clippy
-        shell: bash
         if: matrix.component == 'clippy'
         run: |
           cargo clippy --all --all-features
       - name: cargo fmt
-        shell: bash
         if: matrix.component == 'rustfmt'
         run: |
           cargo fmt --all -- --check
       - name: cargo doc
-        shell: bash
         if: matrix.component == 'rustdoc'
-        run: |
-          cargo doc --no-deps --all --all-features
         env:
           RUSTDOCFLAGS: -Dwarnings
+        run: |
+          cargo doc --no-deps --all --all-features
 
   # These jobs doesn't actually test anything, but they're only used to tell
   # bors the build completed, as there is no practical way to detect when a

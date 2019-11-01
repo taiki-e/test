@@ -10,7 +10,7 @@ case "${AGENT_OS}" in
         ;;
     ubuntu-* | windows-*)
         rustup set profile minimal
-        rustup toolchain install "${RUST_TOOLCHAIN}" --no-self-update
+        rustup update "${RUST_TOOLCHAIN}" --no-self-update
         rustup default "${RUST_TOOLCHAIN}"
         ;;
 esac
