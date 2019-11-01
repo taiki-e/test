@@ -9,8 +9,7 @@ case "${AGENT_OS}" in
         echo "##[add-path]${HOME}/.cargo/bin"
         ;;
     ubuntu-* | windows-*)
-        # TODO: when default rustup is bumped to 1.20+, enable this.
-        # rustup set profile minimal
+        rustup set profile minimal
         rustup toolchain install "${RUST_TOOLCHAIN}" --no-self-update
         rustup default "${RUST_TOOLCHAIN}"
         ;;
