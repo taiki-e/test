@@ -45,12 +45,11 @@ jobs:
         run: |
           cargo hack check --all --all-features --no-dev-deps
           cargo hack run --all --all-features --no-dev-deps
+      # Refs: https://github.com/rust-lang/cargo/issues/5657
       - name: cargo check -Zminimal-versions
         run: |
-          # Refs: https://github.com/rust-lang/cargo/issues/5657
-          cargo hack --remove-dev-deps
           cargo update -Zminimal-versions
-          cargo check --all --all-features
+          cargo hack check --all --all-features --no-dev-deps
 
   style:
     name: style
