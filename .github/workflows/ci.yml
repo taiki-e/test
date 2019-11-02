@@ -54,9 +54,9 @@ jobs:
   style:
     name: style
     runs-on: ${{ matrix.os }}
-    env:
-      AGENT_OS: ${{ matrix.os }}
-      RUST_TOOLCHAIN: nightly
+    # env:
+    #   AGENT_OS: ${{ matrix.os }}
+    #   RUST_TOOLCHAIN: nightly
     strategy:
       fail-fast: false
       matrix:
@@ -66,8 +66,8 @@ jobs:
           - rustdoc
         os:
           - ubuntu-latest
-          - macos-latest
-          - windows-latest
+        #   - macos-latest
+        #   - windows-latest
     steps:
       - uses: actions/checkout@master
       - name: Install Rust
