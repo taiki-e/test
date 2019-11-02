@@ -49,7 +49,7 @@ jobs:
       - name: cargo check -Zminimal-versions
         run: |
           cargo update -Zminimal-versions
-          cargo hack check --all --all-features --no-dev-deps
+          cargo hack check --all --all-features --no-dev-deps --ignore-private
 
   style:
     name: style
