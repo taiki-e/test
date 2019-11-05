@@ -26,18 +26,18 @@ jobs:
           vmImage: windows-latest
     pool:
       vmImage: $(vmImage)
-    variables:
-      RUST_TOOLCHAIN: nightly
     steps:
       - template: ci/azure-pipelines/install-rust.yml
+        parameters:
+          toolchain: nightly
 
   - job: clippy
     pool:
       vmImage: ubuntu-latest
-    variables:
-      RUST_TOOLCHAIN: nightly
     steps:
       - template: ci/azure-pipelines/install-rust.yml
+        parameters:
+          toolchain: nightly
       - bash: |
           . ci/scripts/install-component.sh clippy
         displayName: Install clippy
@@ -48,10 +48,10 @@ jobs:
   - job: rustfmt
     pool:
       vmImage: ubuntu-latest
-    variables:
-      RUST_TOOLCHAIN: nightly
     steps:
       - template: ci/azure-pipelines/install-rust.yml
+        parameters:
+          toolchain: nightly
       - bash: |
           . ci/scripts/install-component.sh rustfmt
         displayName: Install rustfmt
@@ -62,10 +62,10 @@ jobs:
   - job: rustdoc
     pool:
       vmImage: ubuntu-latest
-    variables:
-      RUST_TOOLCHAIN: nightly
     steps:
       - template: ci/azure-pipelines/install-rust.yml
+        parameters:
+          toolchain: nightly
       - bash: |
           cargo doc --no-deps --all
         displayName: cargo doc
