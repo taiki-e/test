@@ -58,6 +58,7 @@ jobs:
           - clippy
           - rustfmt
           - rustdoc
+          - miri
         os:
           - ubuntu-latest
         #   - macos-latest
@@ -87,6 +88,10 @@ jobs:
           RUSTDOCFLAGS: -Dwarnings
         run: |
           cargo doc --no-deps --all --all-features
+      - name: cargo miri
+        if: matrix.component == 'miri'
+        run: |
+          cargo miri setup
 
   # These jobs doesn't actually test anything, but they're only used to tell
   # bors the build completed, as there is no practical way to detect when a
