@@ -1,2 +1,0 @@
-[alias]
-remove-dev-deps = "run --manifest-path ci/tools/remove-dev-deps/Cargo.toml"
