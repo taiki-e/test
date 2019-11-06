@@ -4,11 +4,7 @@ set -euo pipefail
 
 component="${1}"
 
-set +e
-if rustup component add "${component}" 2>/dev/null; then
-    set -e
-else
-    set -e
+if ! rustup component add "${component}" 2>/dev/null; then
     # If the component is unavailable on the latest nightly,
     # use the latest toolchain with the component available.
     # Refs: https://github.com/rust-lang/rustup-components-history#the-web-part
