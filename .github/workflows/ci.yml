@@ -29,22 +29,17 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Cache cargo
-        uses: actions/cache@master
+        uses: actions/cache@v1
         with:
           path: ~/.cargo
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache rustup
-        uses: actions/cache@master
-        with:
-          path: ~/.rustup
-          key: ${{ runner.os }}-rustup-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
         shell: bash
         run: |
           . ./ci/scripts/install-rust.sh ${{ matrix.rust }}
       - name: Install cargo-hack
         run: |
-          cargo install cargo-hack
+          cargo install -Zinstall-upgrade cargo-hack
       - name: cargo test
         run: |
           cargo test --all --all-features
@@ -76,15 +71,10 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Cache cargo
-        uses: actions/cache@master
+        uses: actions/cache@v1
         with:
           path: ~/.cargo
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache rustup
-        uses: actions/cache@master
-        with:
-          path: ~/.rustup
-          key: ${{ runner.os }}-rustup-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
         shell: bash
         run: |
