@@ -28,11 +28,12 @@ jobs:
           - nightly
     steps:
       - uses: actions/checkout@master
-      - name: Cache cargo
-        uses: actions/cache@v1
-        with:
-          path: ~/.cargo
-          key: ${{ runner.os }}-cargo-bin
+      # actions/cache@v1 does not works on scheduled workflows: https://github.com/actions/cache/issues/63
+      # - name: Cache cargo
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: ~/.cargo
+      #     key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
         shell: bash
         run: |
@@ -70,11 +71,12 @@ jobs:
         #   - windows-latest
     steps:
       - uses: actions/checkout@master
-      - name: Cache cargo
-        uses: actions/cache@v1
-        with:
-          path: ~/.cargo
-          key: ${{ runner.os }}-cargo-bin
+      # actions/cache@v1 does not works on scheduled workflows: https://github.com/actions/cache/issues/63
+      # - name: Cache cargo
+      #   uses: actions/cache@v1
+      #   with:
+      #     path: ~/.cargo
+      #     key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
         shell: bash
         run: |
