@@ -40,7 +40,7 @@ jobs:
           . ./ci/scripts/install-rust.sh ${{ matrix.rust }}
       - name: Install cargo-hack
         run: |
-          cargo install -Zinstall-upgrade cargo-hack
+          cargo install cargo-hack
       - name: cargo test
         run: |
           cargo test --all --all-features
