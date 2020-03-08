@@ -4,17 +4,16 @@
 #
 # Usage:
 #
-#    $ bash ci/scripts/fmt.sh
+#    $ bash ci/scripts/shfmt.sh
 #
 # To print a diff and exit 1 if code is not formatted, but without changing any
 # files, use:
 #
-#    $ bash ci/scripts/fmt.sh check
+#    $ bash ci/scripts/shfmt.sh check
 #
 
 set -euo pipefail
 
-# Shell Script
 if [[ "${1:-fmt}" == "check" ]]; then
     shfmt -i 4 -ci -d ./ci/scripts/*.sh
 else

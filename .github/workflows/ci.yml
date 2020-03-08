@@ -92,8 +92,9 @@ jobs:
           cargo clippy --all --all-features --all-targets
       - name: cargo fmt
         if: matrix.component == 'rustfmt'
+        shell: bash
         run: |
-          cargo fmt --all -- --check
+          . ./ci/scripts/fmt.sh check
       - name: cargo doc
         if: matrix.component == 'rustdoc'
         env:
