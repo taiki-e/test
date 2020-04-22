@@ -1,4 +1,4 @@
-status = ["bors build finished"]
+status = ["ci"]
 block_labels = ["S-blocked"]
 delete_merged_branches = true
 # use_squash_merge = true

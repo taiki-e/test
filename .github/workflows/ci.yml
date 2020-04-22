@@ -145,7 +145,7 @@ jobs:
   # ALL THE PREVIOUS JOBS NEEDS TO BE ADDED TO THE `needs` SECTION OF THIS JOB!
 
   ci-success:
-    name: bors build finished
+    name: ci
     if: github.event_name == 'push' && success()
     needs:
       - style
@@ -157,7 +157,7 @@ jobs:
       - name: Mark the job as a success
         run: exit 0
   ci-failure:
-    name: bors build finished
+    name: ci
     if: github.event_name == 'push' && !success()
     needs:
       - style
