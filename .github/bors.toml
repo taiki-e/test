@@ -1,8 +1,4 @@
-status = [
-    "ci",
-    "shfmt",
-    "shellcheck",
-]
+status = ["bors build finished"]
 block_labels = ["S-blocked"]
 delete_merged_branches = true
 # use_squash_merge = true

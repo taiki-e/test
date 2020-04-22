@@ -108,6 +108,34 @@ jobs:
         run: |
           cargo miri setup
 
+  shfmt:
+    name: shfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: install shfmt
+        shell: bash
+        run: |
+          . ci/scripts/install-shfmt.sh
+      - name: shfmt
+        shell: bash
+        run: |
+          . ci/scripts/shfmt.sh check
+
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: install shellcheck
+        shell: bash
+        run: |
+          sudo apt install shellcheck
+      - name: shellcheck
+        shell: bash
+        run: |
+          shellcheck ci/scripts/*.sh
+
   # Refs: https://github.com/rust-lang/crater/blob/9ab6f9697c901c4a44025cf0a39b73ad5b37d198/.github/workflows/bors.yml#L125-L149
   #
   # These jobs don't actually test anything, but they're used to tell bors the
@@ -117,23 +145,26 @@ jobs:
   # ALL THE PREVIOUS JOBS NEEDS TO BE ADDED TO THE `needs` SECTION OF THIS JOB!
 
   ci-success:
-    name: ci
+    name: bors build finished
     if: github.event_name == 'push' && success()
     needs:
       - style
       - test
+      - shfmt
+      - shellcheck
     runs-on: ubuntu-latest
     steps:
-      - name: mark the job as a success
+      - name: Mark the job as a success
         run: exit 0
-
   ci-failure:
-    name: ci
+    name: bors build finished
     if: github.event_name == 'push' && !success()
     needs:
       - style
       - test
+      - shfmt
+      - shellcheck
     runs-on: ubuntu-latest
     steps:
-      - name: mark the job as a failure
+      - name: Mark the job as a failure
         run: exit 1
