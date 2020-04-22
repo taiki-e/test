@@ -5,17 +5,10 @@ authors = ["Taiki Endo <te316e89@gmail.com>"]
 edition = "2018"
 publish = false
 
-[dependencies]
-proc-macro2 = { version = "1.0", default-features = false }
-
-[dev-dependencies]
-quote = "1.0"
-
-[target.'cfg(unix)'.dev-dependencies]
-proc-macro2 = "1.0"
-
 [features]
 default = []
 a = []
 b = []
 c = []
+
+[dependencies]

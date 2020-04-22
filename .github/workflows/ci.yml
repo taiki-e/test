@@ -1,4 +1,4 @@
-name: ci
+name: CI
 
 on:
   pull_request:
@@ -12,11 +12,11 @@ on:
 
 env:
   RUSTFLAGS: -Dwarnings
+  RUST_BACKTRACE: 1
 
 jobs:
   test:
     name: test
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -26,6 +26,7 @@ jobs:
           - windows-latest
         rust:
           - nightly
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@master
       # actions/cache@v1 does not works on scheduled workflows: https://github.com/actions/cache/issues/63
@@ -54,9 +55,9 @@ jobs:
           cargo update -Zminimal-versions
           cargo hack check --all --all-features --no-dev-deps --ignore-private
 
+  # Currently, this just checks that each component actually installed.
   style:
     name: style
-    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -69,6 +70,7 @@ jobs:
           - ubuntu-latest
         #   - macos-latest
         #   - windows-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@master
       # actions/cache@v1 does not works on scheduled workflows: https://github.com/actions/cache/issues/63
@@ -106,30 +108,32 @@ jobs:
         run: |
           cargo miri setup
 
-  # These jobs doesn't actually test anything, but they're only used to tell
-  # bors the build completed, as there is no practical way to detect when a
-  # workflow is successful listening to webhooks only.
+  # Refs: https://github.com/rust-lang/crater/blob/9ab6f9697c901c4a44025cf0a39b73ad5b37d198/.github/workflows/bors.yml#L125-L149
+  #
+  # These jobs don't actually test anything, but they're used to tell bors the
+  # build completed, as there is no practical way to detect when a workflow is
+  # successful listening to webhooks only.
   #
   # ALL THE PREVIOUS JOBS NEEDS TO BE ADDED TO THE `needs` SECTION OF THIS JOB!
 
-  end-success:
+  ci-success:
     name: ci
     if: github.event_name == 'push' && success()
-    runs-on: ubuntu-latest
     needs:
       - style
       - test
+    runs-on: ubuntu-latest
     steps:
-      - name: Mark the job as successful
+      - name: mark the job as a success
         run: exit 0
 
-  end-failure:
+  ci-failure:
     name: ci
     if: github.event_name == 'push' && !success()
-    runs-on: ubuntu-latest
     needs:
       - style
       - test
+    runs-on: ubuntu-latest
     steps:
-      - name: Mark the job as a failure
+      - name: mark the job as a failure
         run: exit 1
