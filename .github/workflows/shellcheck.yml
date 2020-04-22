@@ -19,10 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: shfmt
+      - name: install shfmt
         shell: bash
         run: |
           . ci/scripts/install-shfmt.sh
+      - name: shfmt
+        shell: bash
+        run: |
           . ci/scripts/shfmt.sh check
 
   shellcheck:
@@ -30,8 +33,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: shellcheck
+      - name: install shellcheck
         shell: bash
         run: |
           sudo apt install shellcheck
+      - name: shellcheck
+        shell: bash
+        run: |
           shellcheck ci/scripts/*.sh

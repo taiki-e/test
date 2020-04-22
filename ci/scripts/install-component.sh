@@ -24,6 +24,6 @@ fi
 
 echo "Query component versions:"
 case "${component}" in
-    clippy | miri) cargo "${component}" -V ;;
-    rustfmt) "${component}" -V ;;
+    rustfmt | rustdoc) "${component}" -V ;;
+    *) cargo "${component}" -V ;;
 esac
