@@ -122,20 +122,6 @@ jobs:
         run: |
           . ci/shfmt.sh check
 
-  shellcheck:
-    name: shellcheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: install shellcheck
-        shell: bash
-        run: |
-          sudo apt install shellcheck
-      - name: shellcheck
-        shell: bash
-        run: |
-          shellcheck ci/*.sh
-
   # Refs: https://github.com/rust-lang/crater/blob/9ab6f9697c901c4a44025cf0a39b73ad5b37d198/.github/workflows/bors.yml#L125-L149
   #
   # These jobs don't actually test anything, but they're used to tell bors the
@@ -151,7 +137,6 @@ jobs:
       - style
       - test
       - shfmt
-      - shellcheck
     runs-on: ubuntu-latest
     steps:
       - name: Mark the job as a success
@@ -163,7 +148,6 @@ jobs:
       - style
       - test
       - shfmt
-      - shellcheck
     runs-on: ubuntu-latest
     steps:
       - name: Mark the job as a failure
