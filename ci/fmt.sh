@@ -4,12 +4,12 @@
 #
 # Usage:
 #
-#    $ bash ci/scripts/fmt.sh
+#    $ bash ci/fmt.sh
 #
 # To print a diff and exit 1 if code is not formatted, but without changing any
 # files, use:
 #
-#    $ bash ci/scripts/fmt.sh check
+#    $ bash ci/fmt.sh check
 #
 
 set -euo pipefail

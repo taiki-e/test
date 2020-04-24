@@ -38,7 +38,7 @@ jobs:
       - name: Install Rust
         shell: bash
         run: |
-          . ./ci/scripts/install-rust.sh ${{ matrix.rust }}
+          . ./ci/install-rust.sh ${{ matrix.rust }}
       - name: Install cargo-hack
         run: |
           cargo install cargo-hack
@@ -82,12 +82,12 @@ jobs:
       - name: Install Rust
         shell: bash
         run: |
-          . ./ci/scripts/install-rust.sh
+          . ./ci/install-rust.sh
       - name: Install component
         if: matrix.component != 'rustdoc'
         shell: bash
         run: |
-          . ./ci/scripts/install-component.sh ${{ matrix.component }}
+          . ./ci/install-component.sh ${{ matrix.component }}
       - name: cargo clippy
         if: matrix.component == 'clippy'
         run: |
@@ -96,7 +96,7 @@ jobs:
         if: matrix.component == 'rustfmt'
         shell: bash
         run: |
-          . ./ci/scripts/fmt.sh check
+          . ./ci/fmt.sh check
       - name: cargo doc
         if: matrix.component == 'rustdoc'
         env:
@@ -116,11 +116,11 @@ jobs:
       - name: install shfmt
         shell: bash
         run: |
-          . ci/scripts/install-shfmt.sh
+          . ci/install-shfmt.sh
       - name: shfmt
         shell: bash
         run: |
-          . ci/scripts/shfmt.sh check
+          . ci/shfmt.sh check
 
   shellcheck:
     name: shellcheck
@@ -134,7 +134,7 @@ jobs:
       - name: shellcheck
         shell: bash
         run: |
-          shellcheck ci/scripts/*.sh
+          shellcheck ci/*.sh
 
   # Refs: https://github.com/rust-lang/crater/blob/9ab6f9697c901c4a44025cf0a39b73ad5b37d198/.github/workflows/bors.yml#L125-L149
   #
