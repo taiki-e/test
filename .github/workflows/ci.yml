@@ -3,16 +3,20 @@ name: CI
 on:
   pull_request:
   push:
-    branches:
-      - master
-      - staging
-      - trying
+    # branches:
+    #   - master
+    #   - staging
+    #   - trying
   schedule:
     - cron: '00 01 * * *'
 
 env:
   RUSTFLAGS: -Dwarnings
   RUST_BACKTRACE: 1
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   test:
@@ -36,7 +40,6 @@ jobs:
       #     path: ~/.cargo
       #     key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
-        shell: bash
         run: |
           . ./ci/install-rust.sh ${{ matrix.rust }}
       - name: Install cargo-hack
@@ -80,12 +83,10 @@ jobs:
       #     path: ~/.cargo
       #     key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
-        shell: bash
         run: |
           . ./ci/install-rust.sh
       - name: Install component
         if: matrix.component != 'rustdoc'
-        shell: bash
         run: |
           . ./ci/install-component.sh ${{ matrix.component }}
       - name: cargo clippy
@@ -94,7 +95,6 @@ jobs:
           cargo clippy --all --all-features --all-targets
       - name: cargo fmt
         if: matrix.component == 'rustfmt'
-        shell: bash
         run: |
           . ./ci/fmt.sh check
       - name: cargo doc
@@ -114,11 +114,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: install shfmt
-        shell: bash
         run: |
           . ci/install-shfmt.sh
       - name: shfmt
-        shell: bash
         run: |
           . ci/shfmt.sh check
 
