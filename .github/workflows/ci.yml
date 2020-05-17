@@ -52,11 +52,10 @@ jobs:
         run: |
           cargo hack check --all --all-features --no-dev-deps
           cargo hack run --all --all-features --no-dev-deps
-      # Refs: https://github.com/rust-lang/cargo/issues/5657
-      - name: cargo check -Zminimal-versions
+      - name: cargo check (minimal versions)
+        if: matrix.rust == 'nightly'
         run: |
-          cargo update -Zminimal-versions
-          cargo hack check --all --all-features --no-dev-deps --ignore-private
+          . ./ci/check-minimal-versions.sh
 
   # Currently, this just checks that each component actually installed.
   style:
