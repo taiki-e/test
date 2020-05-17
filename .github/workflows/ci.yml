@@ -52,11 +52,10 @@ jobs:
         run: |
           cargo hack check --all --all-features --no-dev-deps
           cargo hack run --all --all-features --no-dev-deps
-      # Refs: https://github.com/rust-lang/cargo/issues/5657
-      - name: cargo check -Zminimal-versions
+      - name: cargo check (minimal versions)
+        if: matrix.rust == 'nightly'
         run: |
-          cargo update -Zminimal-versions
-          cargo hack check --all --all-features --no-dev-deps --ignore-private
+          . ./ci/check-minimal-versions.sh
 
   # Currently, this just checks that each component actually installed.
   style:
@@ -68,45 +67,17 @@ jobs:
           - clippy
           - rustfmt
           - rustdoc
-          - miri
         os:
           - ubuntu-latest
-        #   - macos-latest
-        #   - windows-latest
+          - macos-latest
+          - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@master
-      # actions/cache@v1 does not works on scheduled workflows: https://github.com/actions/cache/issues/63
-      # - name: Cache cargo
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: ~/.cargo
-      #     key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
-        run: |
-          . ./ci/install-rust.sh
-      - name: Install component
-        if: matrix.component != 'rustdoc'
-        run: |
-          . ./ci/install-component.sh ${{ matrix.component }}
-      - name: cargo clippy
-        if: matrix.component == 'clippy'
-        run: |
-          cargo clippy --all --all-features --all-targets
-      - name: cargo fmt
-        if: matrix.component == 'rustfmt'
-        run: |
-          . ./ci/fmt.sh check
-      - name: cargo doc
-        if: matrix.component == 'rustdoc'
-        env:
-          RUSTDOCFLAGS: -Dwarnings
-        run: |
-          cargo doc --no-deps --all --all-features
-      - name: cargo miri
-        if: matrix.component == 'miri'
-        run: |
-          cargo miri setup
+        run: . ./ci/install-rust.sh
+      - name: Run ${{ matrix.component }}
+        run: . ./ci/${{ matrix.component }}.sh
 
   shfmt:
     name: shfmt
