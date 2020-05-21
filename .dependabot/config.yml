@@ -4,5 +4,6 @@ update_configs:
   - package_manager: "rust:cargo"
     directory: "/"
     update_schedule: "live"
-    commit_message:
-      prefix: "dependabot"
+    default_reviewers: ["taiki-e"]
+    default_assignees: ["taiki-e"]
+    default_labels: []
