@@ -32,7 +32,7 @@ jobs:
           - nightly
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       # actions/cache@v1 does not works on scheduled workflows: https://github.com/actions/cache/issues/63
       # - name: Cache cargo
       #   uses: actions/cache@v1
@@ -73,7 +73,7 @@ jobs:
           - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Install Rust
         run: . ./ci/install-rust.sh
       - name: Run ${{ matrix.component }}
@@ -83,7 +83,7 @@ jobs:
     name: shfmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: install shfmt
         run: |
           . ci/install-shfmt.sh
