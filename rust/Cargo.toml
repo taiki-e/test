@@ -12,3 +12,4 @@ b = []
 c = []
 
 [dependencies]
+pin-project = "0.3.0"

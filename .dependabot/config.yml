@@ -6,4 +6,4 @@ update_configs:
     update_schedule: "live"
     default_reviewers: ["taiki-e"]
     default_assignees: ["taiki-e"]
-    default_labels: []
+    default_labels: [""]
