@@ -58,6 +58,7 @@ jobs:
 
   # Currently, this just checks that each component actually installed.
   style:
+    name: ${{ matrix.component }} (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
