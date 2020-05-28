@@ -33,12 +33,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      # actions/cache@v1 does not works on scheduled workflows: https://github.com/actions/cache/issues/63
-      # - name: Cache cargo
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: ~/.cargo
-      #     key: ${{ runner.os }}-cargo-bin
+      - name: Cache cargo
+        uses: actions/cache@v2
+        with:
+          path: ~/.cargo/bin
+          key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
         run: |
           . ./ci/install-rust.sh ${{ matrix.rust }}
