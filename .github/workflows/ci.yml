@@ -32,11 +32,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: Cache cargo
-        uses: actions/cache@v2
-        with:
-          path: ~/.cargo/bin
-          key: ${{ runner.os }}-cargo-bin
+      # Is there an easy way to get around https://github.com/tokio-rs/tracing/issues/648?
+      # - name: Cache cargo
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~/.cargo/bin
+      #     key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
         run: |
           . ./ci/install-rust.sh ${{ matrix.rust }}
