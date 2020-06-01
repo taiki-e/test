@@ -56,16 +56,11 @@ jobs:
         run: |
           . ./ci/check-minimal-versions.sh
 
-  # Currently, this just checks that each component actually installed.
-  style:
-    name: ${{ matrix.component }} (${{ matrix.os }})
+  clippy:
+    name: clippy
     strategy:
       fail-fast: false
       matrix:
-        component:
-          - clippy
-          - rustfmt
-          - rustdoc
         os:
           - ubuntu-latest
           - macos-latest
@@ -74,9 +69,37 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install Rust
-        run: . ./ci/install-rust.sh
-      - name: Run ${{ matrix.component }}
-        run: . ./ci/${{ matrix.component }}.sh
+        run: |
+          . ./ci/install-rust.sh
+      - name: Run clippy
+        run: |
+          . ./ci/clippy.sh
+
+  rustfmt:
+    name: rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rust
+        run: |
+          . ./ci/install-rust.sh
+      - name: Run rustfmt
+        run: |
+          . ./ci/rustfmt.sh
+
+  rustdoc:
+    name: rustdoc
+    env:
+      RUSTDOCFLAGS: -Dwarnings
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Rust
+        run: |
+          . ./ci/install-rust.sh
+      - name: cargo doc
+        run: |
+          cargo doc --no-deps --all --all-features
 
   shfmt:
     runs-on: ubuntu-latest
@@ -101,8 +124,10 @@ jobs:
     name: ci
     if: github.event_name == 'push' && success()
     needs:
-      - style
       - test
+      - clippy
+      - rustfmt
+      - rustdoc
       - shfmt
     runs-on: ubuntu-latest
     steps:
@@ -112,8 +137,10 @@ jobs:
     name: ci
     if: github.event_name == 'push' && !success()
     needs:
-      - style
       - test
+      - clippy
+      - rustfmt
+      - rustdoc
       - shfmt
     runs-on: ubuntu-latest
     steps:
