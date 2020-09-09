@@ -24,3 +24,20 @@ Instead, this happened: *explanation*
 ```
 <version>
 ```
+
+<!--
+`cargo tree` subcommand is available by default since the 1.44 release.
+If you using an older compiler, you could install it from crates.io:
+https://crates.io/crates/cargo-tree
+-->
+
+`cargo tree`:
+<details><summary>output</summary>
+<p>
+
+```
+<dependencies>
+```
+
+</p>
+</details>
