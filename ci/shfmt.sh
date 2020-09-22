@@ -4,12 +4,12 @@
 #
 # Usage:
 #
-#    $ bash ci/shfmt.sh
+#    bash ci/shfmt.sh
 #
 # To print a diff and exit 1 if code is not formatted, but without changing any
 # files, use:
 #
-#    $ bash ci/shfmt.sh check
+#    bash ci/shfmt.sh check
 #
 
 set -euo pipefail
