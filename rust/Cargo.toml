@@ -6,9 +6,5 @@ edition = "2018"
 publish = false
 
 [features]
-default = []
-a = []
-b = []
-c = []
 
 [dependencies]
