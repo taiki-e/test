@@ -26,11 +26,13 @@ Instead, this happened: *explanation*
 ```
 
 <!--
-`cargo tree` subcommand is available by default since the 1.44 release.
+`cargo tree` subcommand is available by default since Rust 1.44.
 If you using an older compiler, you could install it from crates.io:
 https://crates.io/crates/cargo-tree.
 -->
-`cargo tree`:
+`cargo tree | grep <package-name>`:
+<!-- or
+`cargo tree -p <package-name>`: -->
 <details><summary>output</summary>
 <p>
 
