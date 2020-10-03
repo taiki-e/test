@@ -53,7 +53,7 @@ jobs:
       - name: cargo check (minimal versions)
         if: matrix.rust == 'nightly'
         run: |
-          bash ci/check-minimal-versions.sh
+          bash scripts/check-minimal-versions.sh
 
   clippy:
     name: clippy
@@ -82,7 +82,7 @@ jobs:
         run: ci/install-component.sh rustfmt
       - name: Run rustfmt
         run:
-          bash ci/rustfmt.sh check
+          bash scripts/rustfmt.sh check
 
   rustdoc:
     name: rustdoc
@@ -104,7 +104,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: shellcheck
         run: |
-          shellcheck ci/*.sh
+          shellcheck ci/*.sh scripts/*.sh
 
   shfmt:
     runs-on: ubuntu-latest
@@ -113,7 +113,7 @@ jobs:
       - name: Install shfmt
         run: ci/install-shfmt.sh
       - run: |
-          bash ci/shfmt.sh check
+          bash scripts/shfmt.sh check
 
   # Refs: https://github.com/rust-lang/crater/blob/9ab6f9697c901c4a44025cf0a39b73ad5b37d198/.github/workflows/bors.yml#L125-L149
   #

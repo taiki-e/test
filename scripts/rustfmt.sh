@@ -3,13 +3,11 @@
 # Format all rust code with `rustfmt`.
 #
 # Usage:
-#
-#    bash ci/rustfmt.sh
+#    bash scripts/rustfmt.sh
 #
 # To print a diff and exit 1 if code is not formatted, but without changing any
 # files, use:
-#
-#    bash ci/rustfmt.sh check
+#    bash scripts/rustfmt.sh check
 #
 
 set -euo pipefail
