@@ -6,7 +6,6 @@ on:
     branches:
       - master
       - staging
-      - trying
   schedule:
     - cron: '0 1 * * *'
 
@@ -40,20 +39,11 @@ jobs:
       #     key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
         run: ci/install-rust.sh ${{ matrix.rust }}
-      - name: Install cargo-hack
-        run: |
-          cargo install cargo-hack
-      - name: cargo test
-        run: |
-          cargo test --all --all-features
-      - name: cargo check
-        run: |
-          cargo hack check --all --all-features --no-dev-deps
-          cargo hack run --all --all-features --no-dev-deps
-      - name: cargo check (minimal versions)
-        if: matrix.rust == 'nightly'
-        run: |
-          bash scripts/check-minimal-versions.sh
+      - run: cargo install cargo-hack
+      - run: cargo test --all --all-features
+      - run: cargo hack check --all --all-features --no-dev-deps
+      - if: matrix.rust == 'nightly'
+        run: bash scripts/check-minimal-versions.sh
 
   clippy:
     name: clippy
@@ -69,9 +59,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Rust and Clippy
         run: ci/install-component.sh clippy
-      - name: Run clippy
-        run: |
-          cargo clippy --all --all-features --all-targets
+      - run: cargo clippy --all --all-features --all-targets
 
   rustfmt:
     name: rustfmt
@@ -80,9 +68,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Rust and Rustfmt
         run: ci/install-component.sh rustfmt
-      - name: Run rustfmt
-        run:
-          bash scripts/rustfmt.sh check
+      - run: bash scripts/rustfmt.sh check
 
   rustdoc:
     name: rustdoc
@@ -93,18 +79,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Rust
         run: ci/install-rust.sh
-      - name: cargo doc
-        run: |
-          cargo doc --no-deps --all --all-features
+      - run: cargo doc --no-deps --all --all-features
 
   shellcheck:
     name: shellcheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: shellcheck
-        run: |
-          shellcheck ci/*.sh scripts/*.sh
+      - run: shellcheck **/*.sh
 
   shfmt:
     runs-on: ubuntu-latest
@@ -112,8 +94,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install shfmt
         run: ci/install-shfmt.sh
-      - run: |
-          bash scripts/shfmt.sh check
+      - run: bash scripts/shfmt.sh check
 
   # Refs: https://github.com/rust-lang/crater/blob/9ab6f9697c901c4a44025cf0a39b73ad5b37d198/.github/workflows/bors.yml#L125-L149
   #
