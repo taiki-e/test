@@ -47,7 +47,7 @@ jobs:
         run: bash scripts/check-minimal-versions.sh
       - run: |
           version=$(curl -LsSf https://api.github.com/repos/taiki-e/test/releases/latest | jq -r '.name')
-          host=$(rustc -Vv | grep ^host: | sed -e "s/host: //g")
+          host=$(rustc -Vv | grep host | sed 's/host: //')
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             curl -LsSf https://github.com/taiki-e/test/releases/download/v${version}/test-v${version}-${host}.zip -o test-v${version}-${host}.zip
             7z x test-v${version}-${host}.zip

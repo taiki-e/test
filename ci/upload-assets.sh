@@ -7,7 +7,7 @@ ref="${GITHUB_REF:?}"
 tag="${ref#*/tags/}"
 
 export CARGO_PROFILE_RELEASE_LTO=true
-host=$(rustc -Vv | grep ^host: | sed -e "s/host: //g")
+host=$(rustc -Vv | grep host | sed 's/host: //')
 
 package="test"
 cd rust
