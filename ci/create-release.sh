@@ -26,7 +26,7 @@ else
 fi
 # TODO: this link will be broken when the version yanked if the project adheres to the keep-a-changelog's yanking style.
 changelog="https://github.com/${repo}/blob/HEAD/CHANGELOG.md#${version//./}---${date}"
-notes="See the [release notes](${changelog}) for details on the changes."
+notes="See the [release notes](${changelog}) for a complete list of changes."
 
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
   echo "GITHUB_TOKEN not set, skipping deploy"
