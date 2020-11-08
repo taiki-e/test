@@ -4,7 +4,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 ref="${GITHUB_REF:?}"
-tag=${ref#*/tags/}
+tag="${ref#*/tags/}"
 
 export CARGO_PROFILE_RELEASE_LTO=true
 host=$(rustc -Vv | grep ^host: | sed -e "s/host: //g")
@@ -14,11 +14,7 @@ cd rust
 cargo build --bin "${package}" --release
 cd ../target/release
 case "${OSTYPE}" in
-  linux*)
-    asset="${package}-${tag}-${host}.tar.gz"
-    tar czf ../../"${asset}" "${package}"
-    ;;
-  darwin*)
+  linux* | darwin*)
     asset="${package}-${tag}-${host}.tar.gz"
     tar czf ../../"${asset}" "${package}"
     ;;
