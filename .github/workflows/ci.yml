@@ -46,8 +46,16 @@ jobs:
       - if: matrix.rust == 'nightly'
         run: bash scripts/check-minimal-versions.sh
       - run: |
-          version=$(curl -LsSf https://api.github.com/repos/taiki-e/test/releases/latest | jq -r '.name')
+          version=$(curl -LsSf https://api.github.com/repos/taiki-e/cargo-hack/releases/latest | jq -r '.name')
           host=$(rustc -Vv | grep host | sed 's/host: //')
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            curl -LsSf https://github.com/taiki-e/cargo-hack/releases/download/v${version}/cargo-hack-v${version}-${host}.zip -o cargo-hack.zip
+            7z x cargo-hack.zip
+          else
+            curl -LsSf https://github.com/taiki-e/cargo-hack/releases/download/v${version}/cargo-hack-v${version}-${host}.tar.gz | tar xzf -
+          fi
+
+          version=$(curl -LsSf https://api.github.com/repos/taiki-e/test/releases/latest | jq -r '.name')
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             curl -LsSf https://github.com/taiki-e/test/releases/download/v${version}/test-v${version}-${host}.zip -o test-v${version}-${host}.zip
             7z x test-v${version}-${host}.zip
@@ -56,6 +64,7 @@ jobs:
           fi
           echo $(pwd) >> "${GITHUB_PATH}"
       - run: ./test
+      - run: ./cargo-hack --help
 
   install-component:
     strategy:
