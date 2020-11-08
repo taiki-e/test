@@ -8,11 +8,13 @@ tag="${ref#*/tags/}"
 
 export CARGO_PROFILE_RELEASE_LTO=true
 host=$(rustc -Vv | grep ^host: | sed -e "s/host: //g")
+
 package="test"
 cd rust
-
 cargo build --bin "${package}" --release
-cd ../target/release
+cd ..
+
+cd target/release
 case "${OSTYPE}" in
   linux* | darwin*)
     asset="${package}-${tag}-${host}.tar.gz"
