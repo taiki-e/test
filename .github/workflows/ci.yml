@@ -40,31 +40,21 @@ jobs:
       #     key: ${{ runner.os }}-cargo-bin
       - name: Install Rust
         run: ci/install-rust.sh ${{ matrix.rust }}
-      - run: cargo install cargo-hack
-      - run: cargo test --all --all-features
-      - run: cargo hack check --all --all-features --no-dev-deps
-      - if: matrix.rust == 'nightly'
-        run: bash scripts/check-minimal-versions.sh
       - run: |
+          set -ex
           version=$(curl -LsSf https://api.github.com/repos/taiki-e/cargo-hack/releases/latest | jq -r '.name')
           host=$(rustc -Vv | grep host | sed 's/host: //')
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          if [[ $host =~ windows ]]; then
             curl -LsSf https://github.com/taiki-e/cargo-hack/releases/download/v${version}/cargo-hack-v${version}-${host}.zip -o cargo-hack.zip
             7z x cargo-hack.zip
-          else
+          elif [[ $host =~ darwin|linux ]]; then
             curl -LsSf https://github.com/taiki-e/cargo-hack/releases/download/v${version}/cargo-hack-v${version}-${host}.tar.gz | tar xzf -
-          fi
-
-          version=$(curl -LsSf https://api.github.com/repos/taiki-e/test/releases/latest | jq -r '.name')
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            curl -LsSf https://github.com/taiki-e/test/releases/download/v${version}/test-v${version}-${host}.zip -o test-v${version}-${host}.zip
-            7z x test-v${version}-${host}.zip
           else
-            curl -LsSf https://github.com/taiki-e/test/releases/download/v${version}/test-v${version}-${host}.tar.gz | tar xzf -
+            echo "unsupported operating system"
+            exit 1
           fi
-          echo $(pwd) >> "${GITHUB_PATH}"
-      - run: ./test
-      - run: ./cargo-hack --help
+          mv cargo-hack $HOME/.cargo/bin/
+      - run: cargo hack --help
 
   install-component:
     strategy:
