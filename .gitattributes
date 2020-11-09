@@ -1,2 +1,3 @@
 * text=auto eol=lf
 *.rs text eol=lf whitespace=tab-in-indent,trailing-space,tabwidth=4
+CHANGELOG.md merge=union
