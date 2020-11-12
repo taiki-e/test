@@ -17,6 +17,7 @@ cd ..
 cd target/release
 case "${OSTYPE}" in
   linux* | darwin*)
+    strip "${package}"
     asset="${package}-${tag}-${host}.tar.gz"
     tar czf ../../"${asset}" "${package}"
     ;;
