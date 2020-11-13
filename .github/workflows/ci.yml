@@ -42,18 +42,16 @@ jobs:
         run: ci/install-rust.sh ${{ matrix.rust }}
       - run: |
           set -ex
-          version=$(curl -LsSf https://api.github.com/repos/taiki-e/cargo-hack/releases/latest | jq -r '.name')
           host=$(rustc -Vv | grep host | sed 's/host: //')
           if [[ $host =~ windows ]]; then
-            curl -LsSf https://github.com/taiki-e/cargo-hack/releases/download/v${version}/cargo-hack-v${version}-${host}.zip -o cargo-hack.zip
-            7z x cargo-hack.zip
+              curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-${host}.zip -o cargo-hack.zip
+              7z x cargo-hack.zip -o$HOME/.cargo/bin
           elif [[ $host =~ darwin|linux ]]; then
-            curl -LsSf https://github.com/taiki-e/cargo-hack/releases/download/v${version}/cargo-hack-v${version}-${host}.tar.gz | tar xzf -
+              curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-${host}.tar.gz | tar xzf - -C ~/.cargo/bin
           else
-            echo "unsupported operating system"
-            exit 1
+              echo "unsupported operating system"
+              exit 1
           fi
-          mv cargo-hack $HOME/.cargo/bin/
       - run: cargo hack --help
 
   install-component:
