@@ -11,7 +11,8 @@ used in infra managed by us.
   with:
     # Default toolchain to install, default value is nightly
     # If the toolchain is nightly (default) and the component is specified,
-    # the latest toolchain that specified component is available is selected.
+    # this script will install the latest nightly toolchain that the specified
+    # component is available.
     toolchain: stable
     # Component to install
     component: rustfmt
