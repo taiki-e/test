@@ -4,19 +4,19 @@
 #
 # Note:
 # - The generated note format is:
-#   "See the [release notes]($LINK_TO_CHANGELOG) for a complete list of changes."
+#   `See the [release notes]($LINK_TO_CHANGELOG) for a complete list of changes.`
 # - The generated link format is:
-#   "https://github.com/$GITHUB_REPOSITORY/blob/HEAD/CHANGELOG.md#${TAG/v/}---${RELEASE_DATE}"
+#   `https://github.com/$GITHUB_REPOSITORY/blob/HEAD/CHANGELOG.md#${TAG/v/}---${RELEASE_DATE}`
 # - This script assumes that the format (file name and title of section) of
-#   release notes is based on Keep a Changelog (https://keepachangelog.com/en/1.0.0).
-# - The valid tag format is "vMAJOR.MINOR.PATCH(-PRERELEASE)(+BUILD_METADATA)"
-#   See also Semantic Versioning (https://semver.org)
+#   release notes is based on [Keep a Changelog](https://keepachangelog.com).
+# - The valid tag format is `vMAJOR.MINOR.PATCH(-PRERELEASE)(+BUILD_METADATA)`
+#   This is based on [Semantic Versioning](https://semver.org)
 # - The release date is based on the time this script was run, the time zone is
 #   the UTC.
 # - The generated link to the release notes will be broken when the version
 #   yanked if the project adheres to the Keep a Changelog's yanking style.
-#   Consider adding a note like the following instead of using the "[YANKED]" tag:
-#   "**Note: This release has been yanked.** See $LINK_TO_YANKED_REASON for details."
+#   Consider adding a note like the following instead of using the `[YANKED]` tag:
+#   `**Note: This release has been yanked.** See $LINK_TO_YANKED_REASON for details.`
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -29,6 +29,9 @@ if [[ ! "${tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z_0-9\.-]+)?(\+[a-zA-Z_0-9\.
   exit 1
 elif [[ "${tag}" =~ ^v[0-9\.]+-[a-zA-Z_0-9\.-]+(\+[a-zA-Z_0-9\.-]+)?$ ]]; then
   prerelease="--prerelease"
+fi
+if [[ "${INPUT_DRAFT}" == "true" ]]; then
+  draft="--draft"
 fi
 version="${tag/v/}"
 date=$(date --utc '+%Y-%m-%d')
@@ -43,5 +46,5 @@ else
   if gh release view "${tag}" &>/dev/null; then
     gh release delete "${tag}" -y
   fi
-  gh release create "${tag}" ${prerelease:-} --title "${title}" --notes "${notes}"
+  gh release create "${tag}" ${prerelease:-} ${draft:-} --title "${title}" --notes "${notes}"
 fi
