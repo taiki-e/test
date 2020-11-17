@@ -12,12 +12,16 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-package="${1:?}"
-target="${2:-x86_64-unknown-linux-gnu}"
+component="${1:?}"
+host=$(rustc -Vv | grep host | sed 's/host: //')
+target="${2:-${host}}"
 
-toolchain=nightly-$(curl -sSf https://rust-lang.github.io/rustup-components-history/"${target}"/"${package}")
+toolchain="${3:-}"
+if [[ -z "${toolchain}" ]]; then
+  toolchain=nightly-$(curl -sSf https://rust-lang.github.io/rustup-components-history/"${target}"/"${component}")
+fi
 
 # shellcheck disable=1090
 "$(cd "$(dirname "${0}")" && pwd)"/install-rust.sh "${toolchain}"
 
-rustup component add "${package}"
+rustup component add "${component}"

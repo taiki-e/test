@@ -38,8 +38,9 @@ jobs:
       #   with:
       #     path: ~/.cargo/bin
       #     key: ${{ runner.os }}-cargo-bin
-      - name: Install Rust
-        run: ci/install-rust.sh ${{ matrix.rust }}
+      - uses: ./.github/actions/install-rust
+        with:
+          toolchain: ${{ matrix.rust }}
       - run: |
           set -ex
           host=$(rustc -Vv | grep host | sed 's/host: //')
@@ -69,7 +70,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - run: ci/install-component.sh ${{ matrix.component }}
+      - uses: ./.github/actions/install-rust
+        with:
+          component: ${{ matrix.component }}
       - if: matrix.component == 'clippy'
         run: cargo clippy --all --all-features --all-targets
       - if: matrix.component == 'rustfmt'
@@ -83,8 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Rust
-        run: ci/install-rust.sh
+      - uses: ./.github/actions/install-rust
       - run: cargo doc --no-deps --all --all-features
 
   shellcheck:
