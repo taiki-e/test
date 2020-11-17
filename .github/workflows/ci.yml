@@ -39,7 +39,7 @@ jobs:
       #   with:
       #     path: ~/.cargo/bin
       #     key: ${{ runner.os }}-cargo-bin
-      - uses: ./.github/actions/install-rust
+      - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust }}
       - run: |
@@ -78,7 +78,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/install-rust
+      - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust }}
           component: ${{ matrix.component }}
@@ -95,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/install-rust
+      - uses: taiki-e/github-actions/install-rust@main
       - run: cargo doc --no-deps --all --all-features
 
   shellcheck:
