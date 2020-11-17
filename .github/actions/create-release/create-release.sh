@@ -30,9 +30,6 @@ if [[ ! "${tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z_0-9\.-]+)?(\+[a-zA-Z_0-9\.
 elif [[ "${tag}" =~ ^v[0-9\.]+-[a-zA-Z_0-9\.-]+(\+[a-zA-Z_0-9\.-]+)?$ ]]; then
   prerelease="--prerelease"
 fi
-if [[ "${INPUT_DRAFT}" == "true" ]]; then
-  draft="--draft"
-fi
 version="${tag/v/}"
 date=$(date --utc '+%Y-%m-%d')
 title="${version}"
@@ -46,5 +43,5 @@ else
   if gh release view "${tag}" &>/dev/null; then
     gh release delete "${tag}" -y
   fi
-  gh release create "${tag}" ${prerelease:-} ${draft:-} --title "${title}" --notes "${notes}"
+  gh release create "${tag}" ${prerelease:-} --title "${title}" --notes "${notes}"
 fi
