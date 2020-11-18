@@ -4,3 +4,6 @@ version = "0.0.0"
 authors = ["Taiki Endo <te316e89@gmail.com>"]
 edition = "2018"
 publish = false
+
+[dependencies]
+pin-project-lite = "0.1"
