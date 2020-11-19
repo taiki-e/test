@@ -19,6 +19,23 @@ defaults:
     shell: bash
 
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          set -x
+          echo "${{ github.event_name }}"
+          echo "${{ github.ref }}"
+
+  dependabot:
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'dependabot/') && github.repository_owner == 'taiki-e'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: taiki-e/github-actions/update-dependabot-pr@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   test:
     strategy:
       fail-fast: false
