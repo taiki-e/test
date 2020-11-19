@@ -3,9 +3,9 @@ name: CI
 on:
   pull_request:
   push:
-    branches:
-      - master
-      - staging
+    # branches:
+    #   - master
+    #   - staging
   schedule:
     - cron: '0 1 * * *'
 
