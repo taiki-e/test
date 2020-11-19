@@ -16,7 +16,7 @@ defaults:
 
 jobs:
   create-release:
-    if: github.repository_owner == 'taiki-e'
+    if: startsWith(github.ref, 'refs/tags/') && github.repository_owner == 'taiki-e'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

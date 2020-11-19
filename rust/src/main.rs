@@ -3,6 +3,7 @@ fn main() {
     println!("macos");
     #[cfg(target_os = "linux")]
     println!("linux");
+
     #[cfg(windows)]
     println!("windows");
 }
