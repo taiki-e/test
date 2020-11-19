@@ -6,4 +6,4 @@ edition = "2018"
 publish = false
 
 [dependencies]
-pin-project = "1.0.0"
+pin-project = "1.0.2"
