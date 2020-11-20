@@ -3,10 +3,17 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+function error {
+  echo "$*" >&2
+}
+
 cd "$(cd "$(dirname "${0}")" && pwd)"/..
 
-ref="${GITHUB_REF:?}"
-tag="${ref#*/tags/}"
+if [[ "${GITHUB_REF:?}" != "refs/tags/"* ]]; then
+  error "GITHUB_REF should start with 'refs/tags/'"
+  exit 1
+fi
+tag="${GITHUB_REF#refs/tags/}"
 
 export CARGO_PROFILE_RELEASE_LTO=true
 host=$(rustc -Vv | grep host | sed 's/host: //')

@@ -24,17 +24,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
+          set -euo pipefail
           set -x
           echo "${{ github.event_name }}"
           echo "${{ github.ref }}"
-
-  dependabot:
-    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'dependabot/') && github.repository_owner == 'taiki-e'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: taiki-e/github-actions/update-dependabot-pr@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   test:
     strategy:
@@ -129,8 +122,6 @@ jobs:
         run: ci/install-shfmt.sh
       - run: bash scripts/shfmt.sh
 
-  # Refs: https://github.com/rust-lang/crater/blob/9ab6f9697c901c4a44025cf0a39b73ad5b37d198/.github/workflows/bors.yml#L125-L149
-  #
   # These jobs don't actually test anything, but they're used to tell bors the
   # build completed, as there is no practical way to detect when a workflow is
   # successful listening to webhooks only.
