@@ -28,6 +28,9 @@ jobs:
           set -x
           echo "${{ github.event_name }}"
           echo "${{ github.ref }}"
+      - uses: actions/setup-node@v2.1.1
+        with:
+          node-version: '12'
 
   test:
     strategy:
@@ -42,7 +45,7 @@ jobs:
           - nightly
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       # Is there an easy way to get around https://github.com/tokio-rs/tracing/issues/648?
       # - name: Cache cargo
       #   uses: actions/cache@v2
