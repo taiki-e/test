@@ -3,14 +3,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-function error {
-  echo "$*" >&2
-}
-
 cd "$(cd "$(dirname "${0}")" && pwd)"/..
 
 if [[ "${GITHUB_REF:?}" != "refs/tags/"* ]]; then
-  error "GITHUB_REF should start with 'refs/tags/'"
+  echo "GITHUB_REF should start with 'refs/tags/'"
   exit 1
 fi
 tag="${GITHUB_REF#refs/tags/}"
