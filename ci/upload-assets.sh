@@ -3,6 +3,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+PACKAGE="rust-test"
+
 cd "$(cd "$(dirname "${0}")" && pwd)"/..
 
 if [[ "${GITHUB_REF:?}" != "refs/tags/"* ]]; then
@@ -11,23 +13,28 @@ if [[ "${GITHUB_REF:?}" != "refs/tags/"* ]]; then
 fi
 tag="${GITHUB_REF#refs/tags/}"
 
-export CARGO_PROFILE_RELEASE_LTO=true
 host=$(rustc -Vv | grep host | sed 's/host: //')
+target="${1:?}"
+if [[ "${host}" == "${target}" ]]; then
+  cargo="cargo"
+else
+  cargo install cross
+  cargo="cross"
+fi
 
-PACKAGE="rust-test"
-cd rust
-cargo build --bin "${PACKAGE}" --release
-cd ..
+export CARGO_PROFILE_RELEASE_LTO=true
 
-assets=("${PACKAGE}-${host}.tar.gz")
-cd target/release
+$cargo build --bin "${PACKAGE}" --release --target "${target}"
+
+assets=("${PACKAGE}-${target}.tar.gz")
+cd target/"${target}"/release
 case "${OSTYPE}" in
   linux* | darwin*)
     strip "${PACKAGE}"
     tar czf ../../"${assets[0]}" "${PACKAGE}"
     ;;
   cygwin* | msys*)
-    assets+=("${PACKAGE}-${host}.zip")
+    assets+=("${PACKAGE}-${target}.zip")
     tar czf ../../"${assets[0]}" "${PACKAGE}".exe
     7z a ../../"${assets[1]}" "${PACKAGE}".exe
     ;;
