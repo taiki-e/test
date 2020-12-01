@@ -14,21 +14,22 @@ tag="${GITHUB_REF#refs/tags/}"
 export CARGO_PROFILE_RELEASE_LTO=true
 host=$(rustc -Vv | grep host | sed 's/host: //')
 
-package="test"
+PACKAGE="rust-test"
 cd rust
-cargo build --bin "${package}" --release
+cargo build --bin "${PACKAGE}" --release
 cd ..
 
+assets=("${PACKAGE}-${host}.tar.gz")
 cd target/release
 case "${OSTYPE}" in
   linux* | darwin*)
-    strip "${package}"
-    asset="${package}-${host}.tar.gz"
-    tar czf ../../"${asset}" "${package}"
+    strip "${PACKAGE}"
+    tar czf ../../"${assets[0]}" "${PACKAGE}"
     ;;
   cygwin* | msys*)
-    asset="${package}-${host}.zip"
-    7z a ../../"${asset}" "${package}".exe
+    assets+=("${PACKAGE}-${host}.zip")
+    tar czf ../../"${assets[0]}" "${PACKAGE}".exe
+    7z a ../../"${assets[1]}" "${PACKAGE}".exe
     ;;
   *)
     echo "unrecognized OSTYPE: ${OSTYPE}"
@@ -41,5 +42,5 @@ if [[ -z "${GITHUB_TOKEN:-}" ]]; then
   echo "GITHUB_TOKEN not set, skipping deploy"
   exit 1
 else
-  gh release upload "${tag}" "${asset}" --clobber
+  gh release upload "${tag}" "${assets[@]}" --clobber
 fi

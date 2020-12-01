@@ -20,14 +20,19 @@ defaults:
 
 jobs:
   debug:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - run: |
-          set -euo pipefail
-          set -x
-          echo "${{ github.event_name }}"
-          echo "${{ github.ref }}"
+          ./scripts/install.sh
+          rust-test --help
 
   test:
     strategy:
