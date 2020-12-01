@@ -23,11 +23,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
-    runs-on: ${{ matrix.os }}
+        build:
+          - { target: x86_64-apple-darwin, os: macos-latest }
+          - { target: x86_64-pc-windows-msvc, os: windows-latest }
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-latest }
+    runs-on: ${{ matrix.build.os }}
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -35,17 +35,24 @@ jobs:
           rust-test --help
 
   test:
+    name: ${{ matrix.build.target || matrix.build.rust }}
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
-        rust:
-          - stable
-          - nightly
-    runs-on: ${{ matrix.os }}
+        build:
+          - { rust: stable }
+          # Tier1
+          - { target: aarch64-unknown-linux-gnu, os: ubuntu-latest }
+          # - { rust: nightly-x86_64-gnu, target: i686-pc-windows-gnu, os: windows-latest }
+          - { target: i686-pc-windows-msvc, os: windows-latest }
+          - { target: i686-unknown-linux-gnu, os: ubuntu-latest }
+          - { target: x86_64-apple-darwin, os: macos-latest }
+          # - { rust: nightly-x86_64-gnu, target: x86_64-pc-windows-gnu, os: windows-latest }
+          - { target: x86_64-pc-windows-msvc, os: windows-latest }
+          - { target: x86_64-unknown-linux-gnu, os: ubuntu-latest }
+          # Tier2
+          - { target: x86_64-unknown-linux-musl, os: ubuntu-latest }
+    runs-on: ${{ matrix.build.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v2
       # Is there an easy way to get around https://github.com/tokio-rs/tracing/issues/648?
@@ -56,20 +63,35 @@ jobs:
       #     key: ${{ runner.os }}-cargo-bin
       - uses: taiki-e/github-actions/install-rust@main
         with:
-          toolchain: ${{ matrix.rust }}
+          toolchain: ${{ matrix.build.rust || 'nightly' }}
       - run: |
           set -ex
           host=$(rustc -Vv | grep host | sed 's/host: //')
-          if [[ $host =~ windows ]]; then
-              curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-${host}.zip -o cargo-hack.zip
-              7z x cargo-hack.zip -o$HOME/.cargo/bin
-          elif [[ $host =~ darwin|linux ]]; then
-              curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-${host}.tar.gz | tar xzf - -C ~/.cargo/bin
+          target=${{ matrix.build.target }}
+          target=${target:-${host}}
+          if [[ "${host}" == "${target}" ]]; then
+            cargo="cargo"
+          elif [[ "${host}" =~ windows ]]; then
+            rustup target add $target
+            cargo="cargo"
           else
-              echo "unsupported operating system"
-              exit 1
+            cargo install cross
+            cargo="cross"
           fi
-      - run: cargo hack --help
+          $cargo build --target $target
+      # - run: |
+      #     set -ex
+      #     host=$(rustc -Vv | grep host | sed 's/host: //')
+      #     if [[ $host =~ windows ]]; then
+      #         curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-${host}.zip -o cargo-hack.zip
+      #         7z x cargo-hack.zip -o$HOME/.cargo/bin
+      #     elif [[ $host =~ darwin|linux ]]; then
+      #         curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-${host}.tar.gz | tar xzf - -C ~/.cargo/bin
+      #     else
+      #         echo "unsupported operating system"
+      #         exit 1
+      #     fi
+      # - run: cargo hack --help
 
   install-component:
     strategy:
