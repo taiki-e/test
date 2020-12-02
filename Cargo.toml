@@ -1,2 +1,6 @@
 [workspace]
-members = ["rust"]
+members = [
+    "rust/bin",
+    "rust/lib",
+    "rust/lib-no-std",
+]
