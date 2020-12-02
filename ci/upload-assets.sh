@@ -5,10 +5,18 @@ IFS=$'\n\t'
 
 PACKAGE="rust-test-bin"
 
+function error {
+  if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+    echo "::error::$*"
+  else
+    echo "error: $*" >&2
+  fi
+}
+
 cd "$(cd "$(dirname "${0}")" && pwd)"/..
 
 if [[ "${GITHUB_REF:?}" != "refs/tags/"* ]]; then
-  echo "GITHUB_REF should start with 'refs/tags/'"
+  error "GITHUB_REF should start with 'refs/tags/'"
   exit 1
 fi
 tag="${GITHUB_REF#refs/tags/}"
@@ -38,14 +46,14 @@ case "${OSTYPE}" in
     7z a ../../"${assets[1]}" "${PACKAGE}".exe
     ;;
   *)
-    echo "unrecognized OSTYPE: ${OSTYPE}"
+    error "unrecognized OSTYPE: ${OSTYPE}"
     exit 1
     ;;
 esac
 cd ../..
 
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
-  echo "GITHUB_TOKEN not set, skipping deploy"
+  error "GITHUB_TOKEN not set, skipping deploy"
   exit 1
 else
   gh release upload "${tag}" "${assets[@]}" --clobber

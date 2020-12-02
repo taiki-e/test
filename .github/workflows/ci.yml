@@ -25,15 +25,17 @@ jobs:
       matrix:
         include:
           - rust: stable
-          - os: ubuntu-latest
-          - os: windows-latest
-          - os: macos-latest
+          - rust: nightly
+          - rust: nightly
+            os: windows-latest
+          - rust: nightly
+            os: macos-latest
     runs-on: ${{ matrix.build.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v2
       - uses: taiki-e/github-actions/install-rust@main
         with:
-          toolchain: ${{ matrix.rust || 'nightly' }}
+          toolchain: ${{ matrix.rust }}
       - run: |
           set -ex
           host=$(rustc -Vv | grep host | sed 's/host: //')
