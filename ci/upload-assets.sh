@@ -14,12 +14,15 @@ fi
 tag="${GITHUB_REF#refs/tags/}"
 
 host=$(rustc -Vv | grep host | sed 's/host: //')
-target="${1:?}"
-if [[ "${host}" == "${target}" ]]; then
-  cargo="cargo"
-else
-  cargo install cross
-  cargo="cross"
+target="${1:-${host}}"
+cargo="cargo"
+if [[ "${host}" != "${target}" ]]; then
+  if [[ "${target}" =~ windows ]]; then
+    rustup target add "${target}"
+  else
+    cargo="cross"
+    cargo install cross
+  fi
 fi
 
 export CARGO_PROFILE_RELEASE_LTO=true
