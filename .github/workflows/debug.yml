@@ -2,6 +2,10 @@ name: Debug
 
 on:
   push:
+    branches:
+      - master
+      - staging
+      - debug
 
 env:
   CARGO_INCREMENTAL: 0
