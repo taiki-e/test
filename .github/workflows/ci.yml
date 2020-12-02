@@ -24,31 +24,34 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - rust: stable
-          - rust: nightly
-          - rust: nightly
-            os: windows-latest
-          - rust: nightly
+          - target: x86_64-unknown-linux-gnu
+          - target: x86_64-apple-darwin
             os: macos-latest
-    runs-on: ${{ matrix.build.os || 'ubuntu-latest' }}
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+          - target: x86_64-pc-windows-gnu
+            rust: nightly-x86_64-gnu
+            os: windows-latest
+          - target: x86_64-unknown-linux-musl
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v2
       - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust }}
-      - run: |
-          set -ex
-          host=$(rustc -Vv | grep host | sed 's/host: //')
-          if [[ $host =~ windows ]]; then
-              curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-${host}.zip -o cargo-hack.zip
-              7z x cargo-hack.zip -o$HOME/.cargo/bin
-          elif [[ $host =~ darwin|linux ]]; then
-              curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-${host}.tar.gz | tar xzf - -C ~/.cargo/bin
-          else
-              echo "unsupported operating system"
-              exit 1
-          fi
-      - run: cargo hack --help
+      - run: scripts/install.sh
+        env:
+          PACKAGE: rust-test-bin
+          REPOSITORY: taiki-e/test
+          TARGET: ${{ matrix.target }}
+      - run: rust-test-bin
+      - run: scripts/install.sh
+        env:
+          PACKAGE: cargo-hack
+          TARGET: ${{ matrix.target }}
+        if: matrix.target != 'x86_64-unknown-linux-musl' && matrix.target != 'x86_64-pc-windows-gnu' && matrix.target != 'x86_64-pc-windows-msvc'
+      - run: cargo hack build --all
+        if: matrix.target != 'x86_64-unknown-linux-musl' && matrix.target != 'x86_64-pc-windows-gnu' && matrix.target != 'x86_64-pc-windows-msvc'
 
   install-component:
     strategy:
