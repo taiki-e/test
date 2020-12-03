@@ -41,3 +41,12 @@ jobs:
           PACKAGE: rust-test-bin
           REPOSITORY: taiki-e/test
           TARGET: ${{ matrix.target }}
+      - run: |
+          set -ex
+          rm -f ~/.cargo/bin/rust-test-bin
+          ./scripts/install-zip.sh ${{ matrix.target }}
+          rust-test-bin --help
+        env:
+          PACKAGE: rust-test-bin
+          REPOSITORY: taiki-e/test
+          TARGET: ${{ matrix.target }}

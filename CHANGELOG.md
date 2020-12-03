@@ -1,11 +1,23 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-This project adheres to [Semantic Versioning](https://semver.org).
-
 ## Unreleased
 
-## 0.0.0 - Unreleased
+## 0.0.4
 
-Initial release
+0.0.4
+
+## 0.0.3
+
+0.0.3
+
+## 0.0.2
+
+0.0.2
+
+## 0.0.1
+
+0.0.1
+
+## 0.0.0
+
+0.0.0
