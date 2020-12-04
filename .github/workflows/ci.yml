@@ -49,9 +49,9 @@ jobs:
         env:
           PACKAGE: cargo-hack
           TARGET: ${{ matrix.target }}
-        if: matrix.target != 'x86_64-unknown-linux-musl' && matrix.target != 'x86_64-pc-windows-gnu' && matrix.target != 'x86_64-pc-windows-msvc'
+        if: matrix.target != 'x86_64-pc-windows-gnu'
       - run: cargo hack build --all
-        if: matrix.target != 'x86_64-unknown-linux-musl' && matrix.target != 'x86_64-pc-windows-gnu' && matrix.target != 'x86_64-pc-windows-msvc'
+        if: matrix.target != 'x86_64-pc-windows-gnu'
 
   install-component:
     strategy:
@@ -59,32 +59,20 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          # - macos-latest
-          # - windows-latest
-        component:
-          - clippy
-          - rustfmt
-          - miri
+          - macos-latest
+          - windows-latest
         rust:
           - stable
           - nightly
-        exclude:
-          # Miri is unavailable on stable Rust
-          - component: miri
-            rust: stable
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust }}
-          component: ${{ matrix.component }}
-      - if: matrix.component == 'clippy'
-        run: cargo clippy --all --all-features --all-targets
-      - if: matrix.component == 'rustfmt'
-        run: bash scripts/rustfmt.sh
-      - if: matrix.component == 'miri'
-        run: cargo miri test
+          component: clippy,rustfmt
+      - run: cargo clippy --all --all-features --all-targets
+      - run: ./scripts/rustfmt.sh
 
   rustdoc:
     env:
