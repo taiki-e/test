@@ -15,3 +15,11 @@ updates:
     commit-message:
       prefix: ""
     labels: []
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: ""
+    labels: []
