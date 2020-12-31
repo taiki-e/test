@@ -3,6 +3,7 @@ name: Bug Report
 about: Create a bug report.
 labels: C-bug
 ---
+
 <!--
 Thank you for filing a bug report! 🐛 Please provide a short summary of the bug,
 along with any information you feel relevant to replicating the bug.
@@ -21,6 +22,7 @@ Instead, this happened: *explanation*
 ### Meta
 
 `rustc --version --verbose`:
+
 ```
 <version>
 ```
@@ -30,7 +32,9 @@ Instead, this happened: *explanation*
 If you using an older compiler, you could install it from crates.io:
 https://crates.io/crates/cargo-tree.
 -->
+
 `cargo tree | grep <package-name>`:
+
 <!-- or
 `cargo tree -p <package-name>`: -->
 <details><summary>output</summary>
@@ -44,6 +48,7 @@ https://crates.io/crates/cargo-tree.
 </details>
 
 Platform:
+
 <!--
 The output of `uname -a` (UNIX), or version and 32 or 64-bit (Windows)
 -->
