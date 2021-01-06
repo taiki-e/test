@@ -16,6 +16,7 @@ on:
 
 env:
   CARGO_INCREMENTAL: 0
+  CARGO_TERM_COLOR: always
   RUSTFLAGS: -D warnings
   RUST_BACKTRACE: 1
 
@@ -24,6 +25,7 @@ defaults:
     shell: bash
 
 jobs:
+  # https://github.com/rust-lang/rust/blob/0324a2b309cd66cb7bd4a156bd0b84cb136e254f/src/librustc_target/spec/mod.rs#L330-L479
   target:
     name: ${{ matrix.target }}
     strategy:
