@@ -3,4 +3,5 @@ members = [
     "rust/bin",
     "rust/lib",
     "rust/lib-no-std",
+    "rust/lint",
 ]

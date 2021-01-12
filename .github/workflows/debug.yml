@@ -43,7 +43,7 @@ jobs:
           REPOSITORY: taiki-e/test
           TARGET: ${{ matrix.target }}
       - run: |
-          set -ex
+          set -x
           rm -f ~/.cargo/bin/rust-test-bin
           ./scripts/install-zip.sh ${{ matrix.target }}
           rust-test-bin --help

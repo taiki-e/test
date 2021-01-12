@@ -1,0 +1,12 @@
+[package]
+name = "check_lint_list"
+version = "0.0.0"
+authors = ["Taiki Endo <te316e89@gmail.com>"]
+edition = "2018"
+publish = false
+
+[dependencies]
+
+[dev-dependencies]
+rustversion = "1"
+tempfile = "3"
