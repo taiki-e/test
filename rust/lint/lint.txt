@@ -20,6 +20,7 @@ Lint checks provided by rustc:
                                              keyword-idents  allow    detects edition keywords being used as an identifier
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
+                                                missing-abi  allow    No declared ABI for extern declaration
                                missing-copy-implementations  allow    detects potentially-forgotten implementations of `Copy`
                                    missing-crate-level-docs  allow    detects crates with no crate-level documentation
                               missing-debug-implementations  allow    detects missing implementations of Debug
