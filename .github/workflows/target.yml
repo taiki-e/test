@@ -3,7 +3,7 @@ name: Target
 on:
   push:
     branches:
-      - master
+      - main
       - staging
       - target
     paths:
