@@ -4,7 +4,6 @@
 Note: In this file, do not use the hard wrap in the middle of a sentence for compatibility with GitHub comment style markdown rendering.
 -->
 
-
 ## Unreleased
 
 ## 0.0.4
