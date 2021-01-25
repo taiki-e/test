@@ -3,7 +3,7 @@
 # Format all rust code with `rustfmt`.
 #
 # Usage:
-#    bash scripts/rustfmt.sh
+#    ./scripts/rustfmt.sh
 #
 
 set -euo pipefail

@@ -3,7 +3,7 @@
 # Format all shell scripts with `shfmt`.
 #
 # Usage:
-#    bash scripts/shfmt.sh
+#    ./scripts/shfmt.sh
 #
 
 set -euo pipefail
