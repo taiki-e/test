@@ -203,25 +203,25 @@ jobs:
         with:
           target: ${{ matrix.target }}
 
-      - if: matrix.apt != ''
-        run: |
+      - run: |
           sudo apt-get update
           sudo apt-get install ${{ matrix.apt }}
+        if: matrix.apt != ''
 
-      - if: contains(matrix.target, 'musl')
-        run: |
+      - run: |
           sudo apt-get install musl musl-dev musl-tools
+        if: contains(matrix.target, 'musl')
 
-      - if: endsWith(matrix.target, 'emscripten')
-        run: ci/install-emscripten.sh
+      - run: ci/install-emscripten.sh
+        if: endsWith(matrix.target, 'emscripten')
 
-      # - if: endsWith(matrix.target, 'rumprun-netbsd')
-      #   run: ci/install-rumprun.sh
+      # - run: ci/install-rumprun.sh
+      #   if: endsWith(matrix.target, 'rumprun-netbsd')
 
-      - if: contains(matrix.target, 'apple')
-        run: |
+      - run: |
           sudo xcode-select -s "/Applications/Xcode_12.2.app"
           echo "DEVELOPER_DIR=/Applications/Xcode_12.2.app/Contents/Developer" >> $GITHUB_ENV
+        if: contains(matrix.target, 'apple')
 
       - run: scripts/target-test.sh ${{ matrix.target }}
         env:
