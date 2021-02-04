@@ -42,19 +42,19 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
       - run: cargo test --all
-      - run: scripts/install.sh
-        env:
-          PACKAGE: rust-test-bin
-          REPOSITORY: taiki-e/test
-          TARGET: ${{ matrix.target }}
-      - run: rust-test-bin
-      - run: scripts/install.sh
-        env:
-          PACKAGE: cargo-hack
-          TARGET: ${{ matrix.target }}
-        if: matrix.target != 'x86_64-pc-windows-gnu'
-      - run: cargo hack build --all
-        if: matrix.target != 'x86_64-pc-windows-gnu'
+      # - run: scripts/install.sh
+      #   env:
+      #     PACKAGE: rust-test-bin
+      #     REPOSITORY: taiki-e/test
+      #     TARGET: ${{ matrix.target }}
+      # - run: rust-test-bin
+      # - run: scripts/install.sh
+      #   env:
+      #     PACKAGE: cargo-hack
+      #     TARGET: ${{ matrix.target }}
+      #   if: matrix.target != 'x86_64-pc-windows-gnu'
+      # - run: cargo hack build --all
+      #   if: matrix.target != 'x86_64-pc-windows-gnu'
 
   install-component:
     strategy:
