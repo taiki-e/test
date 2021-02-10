@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - v*
+      - v[0-9]+.*
 
 env:
   CARGO_INCREMENTAL: 0
@@ -54,7 +54,6 @@ jobs:
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
           bin: rust-test-bin
-          archive: $bin-$tag-$target
           target: ${{ matrix.target }}
           tar: all
           zip: all
