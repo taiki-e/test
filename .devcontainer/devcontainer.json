@@ -13,7 +13,7 @@
   },
   "extensions": [
     "editorconfig.editorconfig",
-    "bungcip.better-toml",
+    "tamasfe.even-better-toml",
     "matklad.rust-analyzer",
     "serayuzgur.crates",
     "vadimcn.vscode-lldb",
