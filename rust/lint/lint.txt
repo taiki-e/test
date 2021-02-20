@@ -72,7 +72,7 @@ Lint checks provided by rustc:
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[no_sanitize(...)]`
                                invalid-codeblock-attributes  warn     codeblock attribute looks a lot like a known one
                                               invalid-value  warn     an invalid value is being created (such as a NULL reference)
-                                   irrefutable-let-patterns  warn     detects irrefutable patterns in if-let and while-let statements
+                                   irrefutable-let-patterns  warn     detects irrefutable patterns in `if let` and `while let` statements
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
