@@ -15,14 +15,14 @@ outdir="${OUTDIR:-"${HOME}/.cargo/bin"}"
 
 curl -LsSf "https://github.com/${repository}/releases/latest/download/${package}-${target}.zip" -o cargo-hack.zip
 case "${OSTYPE}" in
-  linux* | darwin*)
-    unzip cargo-hack.zip -d "${outdir}"
-    ;;
-  cygwin* | msys*)
-    7z x cargo-hack.zip -o"${outdir}"
-    ;;
-  *)
-    error "unrecognized OSTYPE: ${OSTYPE}"
-    exit 1
-    ;;
+    linux* | darwin*)
+        unzip cargo-hack.zip -d "${outdir}"
+        ;;
+    cygwin* | msys*)
+        7z x cargo-hack.zip -o"${outdir}"
+        ;;
+    *)
+        error "unrecognized OSTYPE: ${OSTYPE}"
+        exit 1
+        ;;
 esac

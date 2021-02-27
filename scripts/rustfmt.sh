@@ -1,18 +1,25 @@
 #!/bin/bash
 
-# Format all rust code with `rustfmt`.
+# Format all rust code with rustfmt.
 #
 # Usage:
 #    ./scripts/rustfmt.sh
 #
+# Note: This script requires rustfmt.
 
 set -euo pipefail
 IFS=$'\n\t'
 
 if [[ -z "${CI:-}" ]]; then
-  # shellcheck disable=SC2046
-  rustfmt --edition 2018 $(git ls-files '*rs')
+    (
+        set -x
+        # shellcheck disable=SC2046
+        rustfmt --edition 2018 $(git ls-files '*rs')
+    )
 else
-  # shellcheck disable=SC2046
-  rustfmt --check --edition 2018 $(git ls-files '*rs')
+    (
+        set -x
+        # shellcheck disable=SC2046
+        rustfmt --check --edition 2018 $(git ls-files '*rs')
+    )
 fi

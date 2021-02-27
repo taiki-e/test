@@ -1,16 +1,23 @@
 #!/bin/bash
 
-# Format all shell scripts with `shfmt`.
+# Format all shell scripts with shfmt.
 #
 # Usage:
 #    ./scripts/shfmt.sh
 #
+# Note: This script requires shfmt.
 
 set -euo pipefail
 IFS=$'\n\t'
 
 if [[ -z "${CI:-}" ]]; then
-  shfmt -l -w ./**/*.sh
+    (
+        set -x
+        shfmt -l -w ./**/*.sh
+    )
 else
-  shfmt -d ./**/*.sh
+    (
+        set -x
+        shfmt -d ./**/*.sh
+    )
 fi
