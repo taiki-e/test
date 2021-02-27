@@ -175,10 +175,6 @@ jobs:
             # TODO: error: linking with `rust-lld` failed
             bin-fail: true
           - target: x86_64-linux-android
-          # rumprun is unmaintained: https://github.com/rust-lang/rust/issues/81514
-          # - target: x86_64-rumprun-netbsd
-          #   # TODO: error: linker `x86_64-rumprun-netbsd-gcc` not found
-          #   bin-fail: true
           - target: x86_64-sun-solaris
           - target: x86_64-unknown-freebsd
             # TODO: error: linking with `cc` failed
