@@ -175,9 +175,10 @@ jobs:
             # TODO: error: linking with `rust-lld` failed
             bin-fail: true
           - target: x86_64-linux-android
-          - target: x86_64-rumprun-netbsd
-            # TODO: error: linker `x86_64-rumprun-netbsd-gcc` not found
-            bin-fail: true
+          # rumprun is unmaintained: https://github.com/rust-lang/rust/issues/81514
+          # - target: x86_64-rumprun-netbsd
+          #   # TODO: error: linker `x86_64-rumprun-netbsd-gcc` not found
+          #   bin-fail: true
           - target: x86_64-sun-solaris
           - target: x86_64-unknown-freebsd
             # TODO: error: linking with `cc` failed
@@ -214,9 +215,6 @@ jobs:
 
       - run: ci/install-emscripten.sh
         if: endsWith(matrix.target, 'emscripten')
-
-      # - run: ci/install-rumprun.sh
-      #   if: endsWith(matrix.target, 'rumprun-netbsd')
 
       - run: |
           sudo xcode-select -s "/Applications/Xcode_12.2.app"
