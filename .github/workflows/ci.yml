@@ -127,19 +127,19 @@ jobs:
       - name: Mark the job as a success
         run: exit 0
 
-  cron-job-failure:
-    if: github.event_name == 'schedule' && !success() || github.event_name == 'push' && github.event.ref == 'refs/heads/main' && !success()
-    needs:
-      - test
-      # - install-component
-      # - rustdoc
-      - shellcheck
-      - shfmt
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: JasonEtco/create-an-issue@v2
-        with:
-          filename: .github/cron-job-failure.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # cron-job-failure:
+  #   if: github.event_name == 'schedule' && !success() || github.event_name == 'push' && github.event.ref == 'refs/heads/main' && !success()
+  #   needs:
+  #     - test
+  #     # - install-component
+  #     # - rustdoc
+  #     - shellcheck
+  #     - shfmt
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: JasonEtco/create-an-issue@v2
+  #       with:
+  #         filename: .github/cron-job-failure.md
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
