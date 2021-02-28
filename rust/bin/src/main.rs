@@ -6,3 +6,4 @@ fn main() {
     #[cfg(windows)]
     println!("windows");
 }
+@
