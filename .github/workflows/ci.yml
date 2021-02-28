@@ -42,12 +42,12 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
       - run: cargo test --all
-      # - run: scripts/install.sh
-      #   env:
-      #     PACKAGE: rust-test-bin
-      #     REPOSITORY: taiki-e/test
-      #     TARGET: ${{ matrix.target }}
-      # - run: rust-test-bin
+      - run: scripts/install.sh
+        env:
+          PACKAGE: rust-test-bin
+          REPOSITORY: taiki-e/test
+          TARGET: ${{ matrix.target }}
+      - run: rust-test-bin
       # - run: scripts/install.sh
       #   env:
       #     PACKAGE: cargo-hack
