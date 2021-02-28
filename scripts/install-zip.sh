@@ -13,6 +13,8 @@ repository="${REPOSITORY:-"taiki-e/$package"}"
 target="${TARGET:-"$(rustc -Vv | grep host | sed 's/host: //')"}"
 outdir="${OUTDIR:-"${HOME}/.cargo/bin"}"
 
+set -x
+
 curl -LsSf "https://github.com/${repository}/releases/latest/download/${package}-${target}.zip" -o cargo-hack.zip
 case "${OSTYPE}" in
     linux* | darwin*)

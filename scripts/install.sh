@@ -13,5 +13,7 @@ repository="${REPOSITORY:-"taiki-e/$package"}"
 target="${TARGET:-"$(rustc -Vv | grep host | sed 's/host: //')"}"
 outdir="${OUTDIR:-"${HOME}/.cargo/bin"}"
 
+set -x
+
 curl -LsSf "https://github.com/${repository}/releases/latest/download/${package}-${target}.tar.gz" \
     | tar xzf - -C "${outdir}"
