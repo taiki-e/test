@@ -42,12 +42,12 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
       - run: cargo test --all
-      - run: scripts/install.sh
-        env:
-          PACKAGE: rust-test-bin
-          REPOSITORY: taiki-e/test
-          TARGET: ${{ matrix.target }}
-      - run: rust-test-bin
+      # - run: scripts/install.sh
+      #   env:
+      #     PACKAGE: rust-test-bin
+      #     REPOSITORY: taiki-e/test
+      #     TARGET: ${{ matrix.target }}
+      # - run: rust-test-bin
       # - run: scripts/install.sh
       #   env:
       #     PACKAGE: cargo-hack
@@ -56,41 +56,41 @@ jobs:
       # - run: cargo hack build --all
       #   if: matrix.target != 'x86_64-pc-windows-gnu'
 
-  install-component:
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
-        rust:
-          - stable
-          - nightly
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: taiki-e/github-actions/install-rust@main
-        with:
-          toolchain: ${{ matrix.rust }}
-          component: clippy,rustfmt
-      - run: cargo clippy --all --all-features --all-targets
-      - run: scripts/rustfmt.sh
+  # install-component:
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os:
+  #         - ubuntu-latest
+  #         - macos-latest
+  #         - windows-latest
+  #       rust:
+  #         - stable
+  #         - nightly
+  #   runs-on: ${{ matrix.os }}
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: taiki-e/github-actions/install-rust@main
+  #       with:
+  #         toolchain: ${{ matrix.rust }}
+  #         component: clippy,rustfmt
+  #     - run: cargo clippy --all --all-features --all-targets
+  #     - run: scripts/rustfmt.sh
 
-  rustdoc:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: taiki-e/github-actions/install-rust@main
-      - run: cargo doc --no-deps --all --all-features
-        env:
-          RUSTDOCFLAGS: -D warnings
-      - uses: taiki-e/github-actions/deploy-gh-pages@main
-        with:
-          deploy_dir: target/doc
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.event_name == 'push' && github.event.ref == 'refs/heads/main' && github.repository_owner == 'taiki-e'
+  # rustdoc:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: taiki-e/github-actions/install-rust@main
+  #     - run: cargo doc --no-deps --all --all-features
+  #       env:
+  #         RUSTDOCFLAGS: -D warnings
+  #     - uses: taiki-e/github-actions/deploy-gh-pages@main
+  #       with:
+  #         deploy_dir: target/doc
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       if: github.event_name == 'push' && github.event.ref == 'refs/heads/main' && github.repository_owner == 'taiki-e'
 
   shellcheck:
     runs-on: ubuntu-latest
@@ -117,8 +117,8 @@ jobs:
     if: github.event_name == 'push' && success()
     needs:
       - test
-      - install-component
-      - rustdoc
+      # - install-component
+      # - rustdoc
       - shellcheck
       - shfmt
     runs-on: ubuntu-latest
