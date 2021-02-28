@@ -8,8 +8,7 @@ on:
       - staging
       - v[0-9]+.[0-9]+
   schedule:
-    - cron: "20,30 * * * *"
-    # - cron: "0 1 * * *"
+    - cron: '0 1 * * *'
 
 env:
   CARGO_INCREMENTAL: 0
@@ -143,14 +142,11 @@ jobs:
           title="Cron Job Failed"
           issue_number=$(
               curl -LsSf https://api.github.com/repos/"${GITHUB_REPOSITORY}"/issues \
-                  | jq "map(select(.title | match(\"^${title}\"))) | .[0].number"
+                  | jq "map(select(.title == \"${title}\" and .user.login == \"github-actions[bot]\")) | .[0].number"
           )
           if [[ "${issue_number}" == "null" ]]; then
               echo "::set-output name=exists::false"
-          else
-              echo "::set-output name=exists::true"
           fi
-          echo "DATE=$(date -u "+%Y/%m/%d")" >> "${GITHUB_ENV}"
       - uses: JasonEtco/create-an-issue@v2
         with:
           filename: .github/cron-job-failure.md

@@ -1,5 +1,5 @@
 ---
-title: Cron Job Failed ({{ env.DATE }})
+title: Cron Job Failed
 assignees: taiki-e
 ---
 
