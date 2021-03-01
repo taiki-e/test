@@ -14,12 +14,12 @@ if [[ -z "${CI:-}" ]]; then
     (
         set -x
         # shellcheck disable=SC2046
-        rustfmt --edition 2018 $(git ls-files '*rs')
+        rustfmt --edition 2018 $(git ls-files "*rs")
     )
 else
     (
         set -x
         # shellcheck disable=SC2046
-        rustfmt --check --edition 2018 $(git ls-files '*rs')
+        rustfmt --check --edition 2018 $(git ls-files "*rs")
     )
 fi
