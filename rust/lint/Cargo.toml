@@ -8,5 +8,4 @@ publish = false
 [dependencies]
 
 [dev-dependencies]
-rustversion = "1"
 tempfile = "3"

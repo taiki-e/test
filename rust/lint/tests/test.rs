@@ -2,7 +2,6 @@ use std::{env, fs, path::Path, process::Command, str};
 
 use tempfile::Builder;
 
-#[rustversion::attr(before(2021-02-19), ignore)] // Note: This date is commit-date and the day before the toolchain date.
 #[test]
 fn check_lint_list() {
     let rustc = env::var_os("RUSTC").unwrap_or_else(|| "rustc".into());
