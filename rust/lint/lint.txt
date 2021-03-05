@@ -17,19 +17,15 @@ Lint checks provided by rustc:
                               disjoint-capture-drop-reorder  allow    Drop reorder because of `capture_disjoint_fields`
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
-                                          invalid-html-tags  allow    detects invalid HTML tags in doc comments
                                              keyword-idents  allow    detects edition keywords being used as an identifier
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
                                                 missing-abi  allow    No declared ABI for extern declaration
                                missing-copy-implementations  allow    detects potentially-forgotten implementations of `Copy`
-                                   missing-crate-level-docs  allow    detects crates with no crate-level documentation
                               missing-debug-implementations  allow    detects missing implementations of Debug
                                                missing-docs  allow    detects missing documentation for public members
-                                  missing-doc-code-examples  allow    detects publicly-exported items without code samples in their documentation
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                                    pointer-structural-match  allow    pointers are not structural-match
-                                          private-doc-tests  allow    detects code samples in docs of private items not documented by rustdoc
                        semicolon-in-expressions-from-macros  allow    trailing semicolon in macro body used as expression
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
                                               trivial-casts  allow    detects trivial casts which could be removed
@@ -50,7 +46,6 @@ Lint checks provided by rustc:
                                            asm-sub-register  warn     using only a subset of a register for inline asm inputs
                                          bare-trait-objects  warn     suggest using `dyn Trait` for trait objects
                                  bindings-with-variant-name  warn     detects pattern bindings with the same name as one of the matched variants
-                                     broken-intra-doc-links  warn     failures in resolving intra-doc link targets
                                        cenum-impl-drop-cast  warn     a C-like enum implementing Drop is cast
                                clashing-extern-declarations  warn     detects when an extern fn has been declared with the same name but different types
                                        coherence-leak-check  warn     distinct impls distinguished only by the leak-check code
@@ -70,7 +65,6 @@ Lint checks provided by rustc:
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
                                   indirect-structural-match  warn     constant used in pattern contains value of non-structural-match type in a field or a variant
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[no_sanitize(...)]`
-                               invalid-codeblock-attributes  warn     codeblock attribute looks a lot like a known one
                                               invalid-value  warn     an invalid value is being created (such as a NULL reference)
                                    irrefutable-let-patterns  warn     detects irrefutable patterns in `if let` and `while let` statements
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
@@ -78,7 +72,6 @@ Lint checks provided by rustc:
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                         mutable-borrow-reservation-conflict  warn     reservation of a two-phased borrow conflicts with other shared borrows
                                 nontrivial-structural-match  warn     constant used in pattern of non-structural-match type and the constant's initializer expression contains values of non-structural-match types
-                                              non-autolinks  warn     detects URLs that could be written using only angle brackets
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
                                               non-fmt-panic  warn     detect single-argument panic!() invocations in which the argument is not a format string
                                non-shorthand-field-patterns  warn     using `Struct { x: x }` instead of `Struct { x }` in a pattern
@@ -87,7 +80,6 @@ Lint checks provided by rustc:
                                     no-mangle-generic-items  warn     generic items must be mangled
                                 overlapping-range-endpoints  warn     detects range patterns with overlapping endpoints
                                             path-statements  warn     path statements with no effect
-                                    private-intra-doc-links  warn     linking from a public item to a private one
                                           private-in-public  warn     detect private items in public interfaces not caught by the old implementation
                       proc-macro-derive-resolution-fallback  warn     detects proc macro derives using inaccessible names from parent modules
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
@@ -156,7 +148,6 @@ Lint groups provided by rustc:
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
     rust-2018-compatibility  keyword-idents, anonymous-parameters, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
-                    rustdoc  non-autolinks, broken-intra-doc-links, private-intra-doc-links, invalid-codeblock-attributes, missing-doc-code-examples, private-doc-tests, invalid-html-tags
                      unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons
 
 
