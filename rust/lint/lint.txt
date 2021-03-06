@@ -25,6 +25,7 @@ Lint checks provided by rustc:
                               missing-debug-implementations  allow    detects missing implementations of Debug
                                                missing-docs  allow    detects missing documentation for public members
                                            non-ascii-idents  allow    detects non-ASCII identifiers
+                                           noop-method-call  allow    detects the use of well-known noop methods
                                    pointer-structural-match  allow    pointers are not structural-match
                        semicolon-in-expressions-from-macros  allow    trailing semicolon in macro body used as expression
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
