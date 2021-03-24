@@ -3,7 +3,7 @@
 # Format all rust code with rustfmt.
 #
 # Usage:
-#    ./scripts/rustfmt.sh
+#    ./tools/rustfmt.sh
 #
 # Note: This script requires rustfmt.
 

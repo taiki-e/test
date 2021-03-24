@@ -3,7 +3,7 @@
 # Format shell scripts and YAML files.
 #
 # Usage:
-#    ./scripts/fmt.sh
+#    ./tools/fmt.sh
 #
 # Note: This script requires shfmt and prettier.
 

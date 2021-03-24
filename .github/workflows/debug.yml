@@ -36,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       # - run: |
-      #     ./scripts/install.sh ${{ matrix.target }}
+      #     ./tools/install.sh ${{ matrix.target }}
       #     rust-test-bin --help
       #   env:
       #     PACKAGE: rust-test-bin
@@ -45,7 +45,7 @@ jobs:
       # - run: |
       #     set -x
       #     rm -f ~/.cargo/bin/rust-test-bin
-      #     ./scripts/install-zip.sh ${{ matrix.target }}
+      #     ./tools/install-zip.sh ${{ matrix.target }}
       #     rust-test-bin --help
       #   env:
       #     PACKAGE: rust-test-bin

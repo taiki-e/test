@@ -42,13 +42,13 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
       - run: cargo test --all
-      # - run: scripts/install.sh
+      # - run: tools/install.sh
       #   env:
       #     PACKAGE: rust-test-bin
       #     REPOSITORY: taiki-e/test
       #     TARGET: ${{ matrix.target }}
       # - run: rust-test-bin
-      # - run: scripts/install.sh
+      # - run: tools/install.sh
       #   env:
       #     PACKAGE: cargo-hack
       #     TARGET: ${{ matrix.target }}
@@ -75,7 +75,7 @@ jobs:
   #         toolchain: ${{ matrix.rust }}
   #         component: clippy,rustfmt
   #     - run: cargo clippy --all --all-features --all-targets
-  #     - run: scripts/rustfmt.sh
+  #     - run: tools/rustfmt.sh
 
   # rustdoc:
   #   runs-on: ubuntu-latest
@@ -106,7 +106,7 @@ jobs:
         run: sudo npm install -g prettier
       - name: Install shfmt
         run: ci/install-shfmt.sh
-      - run: scripts/fmt.sh
+      - run: tools/fmt.sh
 
   # This job doesn't actually test anything, but they're used to tell bors the
   # build completed, as there is no practical way to detect when a workflow is
