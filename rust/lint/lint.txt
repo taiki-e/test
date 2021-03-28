@@ -31,7 +31,6 @@ Lint checks provided by rustc:
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
                                               trivial-casts  allow    detects trivial casts which could be removed
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
-                                       unaligned-references  allow    detects unaligned references to fields of packed structs
                                             unreachable-pub  allow    `pub` items not reachable from crate root
                                                 unsafe-code  allow    usage of `unsafe` code
                                      unsafe-op-in-unsafe-fn  allow    unsafe operations in unsafe functions without an explicit unsafe block are deprecated
@@ -86,12 +85,12 @@ Lint checks provided by rustc:
                       proc-macro-derive-resolution-fallback  warn     detects proc macro derives using inaccessible names from parent modules
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
-                                        safe-packed-borrows  warn     safe borrows of fields of packed structs were erroneously allowed
                                             stable-features  warn     stable features found in `#[feature]` directive
                                    temporary-cstring-as-ptr  warn     detects getting the inner pointer of a temporary `CString`
                                              trivial-bounds  warn     these bounds don't depend on an type parameters
                                           type-alias-bounds  warn     bounds in type aliases are not enforced
                                    tyvar-behind-raw-pointer  warn     raw pointer to an inference variable
+                                       unaligned-references  warn     detects unaligned references to fields of packed structs
                                         uncommon-codepoints  warn     detects uncommon Unicode codepoints in identifiers
                                     unconditional-recursion  warn     functions that cannot return without calling themselves
                                          uninhabited-static  warn     uninhabited static
@@ -146,7 +145,7 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  keyword-idents, anonymous-parameters, forbidden-lint-groups, illegal-floating-point-literal-pattern, private-in-public, pub-use-of-private-extern-crate, invalid-type-param-default, const-err, safe-packed-borrows, patterns-in-fns-without-body, missing-fragment-specifier, late-bound-lifetime-arguments, order-dependent-trait-objects, coherence-leak-check, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate, unstable-name-collisions, where-clauses-object-safety, proc-macro-derive-resolution-fallback, macro-expanded-macro-exports-accessed-by-absolute-paths, ill-formed-attribute-input, conflicting-repr-hints, ambiguous-associated-items, mutable-borrow-reservation-conflict, indirect-structural-match, pointer-structural-match, nontrivial-structural-match, soft-unstable, cenum-impl-drop-cast, const-evaluatable-unchecked, uninhabited-static, unsupported-naked-functions, semicolon-in-expressions-from-macros, legacy-derive-helpers, proc-macro-back-compat, array-into-iter
+        future-incompatible  keyword-idents, anonymous-parameters, forbidden-lint-groups, illegal-floating-point-literal-pattern, private-in-public, pub-use-of-private-extern-crate, invalid-type-param-default, const-err, unaligned-references, patterns-in-fns-without-body, missing-fragment-specifier, late-bound-lifetime-arguments, order-dependent-trait-objects, coherence-leak-check, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate, unstable-name-collisions, where-clauses-object-safety, proc-macro-derive-resolution-fallback, macro-expanded-macro-exports-accessed-by-absolute-paths, ill-formed-attribute-input, conflicting-repr-hints, ambiguous-associated-items, mutable-borrow-reservation-conflict, indirect-structural-match, pointer-structural-match, nontrivial-structural-match, soft-unstable, cenum-impl-drop-cast, const-evaluatable-unchecked, uninhabited-static, unsupported-naked-functions, semicolon-in-expressions-from-macros, legacy-derive-helpers, proc-macro-back-compat, array-into-iter
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
     rust-2018-compatibility  keyword-idents, anonymous-parameters, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
