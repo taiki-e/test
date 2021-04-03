@@ -26,6 +26,7 @@ Lint checks provided by rustc:
                                                missing-docs  allow    detects missing documentation for public members
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                                            noop-method-call  allow    detects the use of well-known noop methods
+                                    or-patterns-back-compat  allow    detects usage of old versions of or-patterns
                                    pointer-structural-match  allow    pointers are not structural-match
                        semicolon-in-expressions-from-macros  allow    trailing semicolon in macro body used as expression
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
