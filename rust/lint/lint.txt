@@ -45,6 +45,7 @@ Lint checks provided by rustc:
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
                                             array-into-iter  warn     detects calling `into_iter` on arrays
                                            asm-sub-register  warn     using only a subset of a register for inline asm inputs
+                                              bad-asm-style  warn     incorrect use of inline assembly
                                          bare-trait-objects  warn     suggest using `dyn Trait` for trait objects
                                  bindings-with-variant-name  warn     detects pattern bindings with the same name as one of the matched variants
                                        cenum-impl-drop-cast  warn     a C-like enum implementing Drop is cast
