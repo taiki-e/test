@@ -11,7 +11,6 @@ Lint checks provided by rustc:
                                                        name  default  meaning
                                                        ----  -------  -------
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
-                                       anonymous-parameters  allow    detects anonymous parameters
                                                box-pointers  allow    use of owned (Box type) heap memory
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
                               disjoint-capture-drop-reorder  allow    Drop reorder because of `capture_disjoint_fields`
@@ -43,6 +42,7 @@ Lint checks provided by rustc:
                                       unused-qualifications  allow    detects unnecessarily qualified names
                                              unused-results  allow    unused result of an expression in a statement
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
+                                       anonymous-parameters  warn     detects anonymous parameters
                                             array-into-iter  warn     detects calling `into_iter` on arrays
                                            asm-sub-register  warn     using only a subset of a register for inline asm inputs
                                               bad-asm-style  warn     incorrect use of inline assembly
