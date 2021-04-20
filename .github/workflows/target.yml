@@ -176,6 +176,8 @@ jobs:
             bin-fail: true
           - target: x86_64-linux-android
           - target: x86_64-pc-solaris
+            # TODO: error: linking with `cc` failed
+            bin-fail: true
           - target: x86_64-unknown-freebsd
             # TODO: error: linking with `cc` failed
             bin-fail: true
