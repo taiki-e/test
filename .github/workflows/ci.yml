@@ -149,7 +149,7 @@ jobs:
           if [[ "${issue_number}" == "null" ]]; then
               echo "::set-output name=exists::false"
           fi
-      - uses: JasonEtco/create-an-issue@v2
+      - uses: JasonEtco/create-an-issue@v2.5.0
         with:
           filename: .github/cron-job-failure.md
         env:
