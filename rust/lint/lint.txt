@@ -13,7 +13,7 @@ Lint checks provided by rustc:
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
                                                box-pointers  allow    use of owned (Box type) heap memory
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
-                              disjoint-capture-drop-reorder  allow    Drop reorder because of `capture_disjoint_fields`
+                                 disjoint-capture-migration  allow    Drop reorder and auto traits error because of `capture_disjoint_fields`
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
                                              keyword-idents  allow    detects edition keywords being used as an identifier
