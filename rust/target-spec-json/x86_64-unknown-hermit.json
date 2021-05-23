@@ -1,0 +1,29 @@
+{
+  "arch": "x86_64",
+  "cpu": "x86-64",
+  "data-layout": "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+  "executables": true,
+  "features": "+rdrnd,+rdseed",
+  "has-elf-tls": true,
+  "is-builtin": true,
+  "linker": "rust-lld",
+  "linker-flavor": "ld.lld",
+  "llvm-target": "x86_64-unknown-hermit",
+  "max-atomic-width": 64,
+  "os": "hermit",
+  "panic-strategy": "abort",
+  "position-independent-executables": true,
+  "pre-link-args": {
+    "ld.lld": [
+      "--build-id",
+      "--hash-style=gnu",
+      "--Bstatic"
+    ]
+  },
+  "stack-probes": {
+    "kind": "call"
+  },
+  "static-position-independent-executables": true,
+  "target-pointer-width": "64",
+  "tls-model": "initial-exec"
+}

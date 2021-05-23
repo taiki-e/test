@@ -1,0 +1,33 @@
+{
+  "arch": "x86",
+  "cpu": "pentium4",
+  "crt-static-allows-dylibs": true,
+  "crt-static-default": true,
+  "crt-static-respected": true,
+  "data-layout": "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-f64:32:64-f80:32-n8:16:32-S128",
+  "dynamic-linking": true,
+  "env": "gnu",
+  "exe-suffix": ".vxe",
+  "executables": true,
+  "has-elf-tls": true,
+  "has-rpath": true,
+  "is-builtin": true,
+  "linker": "wr-c++",
+  "llvm-target": "i686-unknown-linux-gnu",
+  "max-atomic-width": 64,
+  "os": "vxworks",
+  "pre-link-args": {
+    "gcc": [
+      "-m32"
+    ]
+  },
+  "stack-probes": {
+    "kind": "call"
+  },
+  "target-family": [
+    "unix"
+  ],
+  "target-mcount": "_mcount",
+  "target-pointer-width": "32",
+  "vendor": "wrs"
+}

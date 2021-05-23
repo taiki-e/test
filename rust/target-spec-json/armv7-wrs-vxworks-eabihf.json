@@ -1,0 +1,35 @@
+{
+  "arch": "arm",
+  "crt-static-allows-dylibs": true,
+  "crt-static-default": true,
+  "crt-static-respected": true,
+  "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+  "dynamic-linking": true,
+  "env": "gnu",
+  "exe-suffix": ".vxe",
+  "executables": true,
+  "features": "+v7,+vfp3,-d32,+thumb2,-neon",
+  "has-elf-tls": true,
+  "has-rpath": true,
+  "is-builtin": true,
+  "linker": "wr-c++",
+  "llvm-target": "armv7-unknown-linux-gnueabihf",
+  "max-atomic-width": 64,
+  "os": "vxworks",
+  "target-family": [
+    "unix"
+  ],
+  "target-mcount": "_mcount",
+  "target-pointer-width": "32",
+  "unsupported-abis": [
+    "stdcall",
+    "stdcall-unwind",
+    "fastcall",
+    "vectorcall",
+    "thiscall",
+    "thiscall-unwind",
+    "win64",
+    "sysv64"
+  ],
+  "vendor": "wrs"
+}

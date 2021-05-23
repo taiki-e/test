@@ -1,0 +1,33 @@
+{
+  "abi-return-struct-as-int": true,
+  "arch": "arm",
+  "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+  "dwarf-version": 2,
+  "dynamic-linking": true,
+  "eliminate-frame-pointer": false,
+  "env": "gnueabihf",
+  "executables": true,
+  "features": "+v6,+vfp2,-d32",
+  "has-rpath": true,
+  "is-builtin": true,
+  "llvm-target": "armv6-unknown-freebsd-gnueabihf",
+  "max-atomic-width": 64,
+  "os": "freebsd",
+  "position-independent-executables": true,
+  "relro-level": "full",
+  "target-family": [
+    "unix"
+  ],
+  "target-mcount": "\u0001__gnu_mcount_nc",
+  "target-pointer-width": "32",
+  "unsupported-abis": [
+    "stdcall",
+    "stdcall-unwind",
+    "fastcall",
+    "vectorcall",
+    "thiscall",
+    "thiscall-unwind",
+    "win64",
+    "sysv64"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "arch": "mips",
+  "cpu": "mips2",
+  "data-layout": "e-m:m-p:32:32-i8:8:32-i16:16:32-i64:64-n32-S64",
+  "executables": true,
+  "features": "+single-float",
+  "is-builtin": true,
+  "link-script": "ENTRY(module_start)\nSECTIONS\n{\n  /* PRX format requires text to begin at 0 */\n  .text 0 : { *(.text .text.*) }\n\n  /* Sort stubs for convenient ordering */\n  .sceStub.text : { *(.sceStub.text) *(SORT(.sceStub.text.*)) }\n\n  /* Keep these sections around, even though they may appear unused to the linker */\n  .lib.ent.top :  { KEEP(*(.lib.ent.top)) }\n  .lib.ent :      { KEEP(*(.lib.ent)) }\n  .lib.ent.btm :  { KEEP(*(.lib.ent.btm)) }\n  .lib.stub.top : { KEEP(*(.lib.stub.top)) }\n  .lib.stub :     { KEEP(*(.lib.stub)) }\n  .lib.stub.btm : { KEEP(*(.lib.stub.btm)) }\n  .eh_frame_hdr : { KEEP(*(.eh_frame_hdr)) }\n\n  /* Add symbols for LLVM's libunwind */\n  __eh_frame_hdr_start = SIZEOF(.eh_frame_hdr) > 0 ? ADDR(.eh_frame_hdr) : 0;\n  __eh_frame_hdr_end = SIZEOF(.eh_frame_hdr) > 0 ? . : 0;\n  .eh_frame :\n  {\n    __eh_frame_start = .;\n    KEEP(*(.eh_frame))\n    __eh_frame_end = .;\n  }\n\n  /* These are explicitly listed to avoid being merged into .rodata */\n  .rodata.sceResident : { *(.rodata.sceResident) }\n  .rodata.sceModuleInfo : { *(.rodata.sceModuleInfo) }\n  /* Sort NIDs for convenient ordering */\n  .rodata.sceNid : { *(.rodata.sceNid) *(SORT(.rodata.sceNid.*)) }\n}\n",
+  "linker": "rust-lld",
+  "linker-flavor": "ld.lld",
+  "llvm-args": [
+    "-mno-check-zero-division"
+  ],
+  "llvm-target": "mipsel-sony-psp",
+  "os": "psp",
+  "pre-link-args": {
+    "ld.lld": [
+      "--emit-relocs"
+    ]
+  },
+  "relocation-model": "static",
+  "target-pointer-width": "32",
+  "vendor": "sony"
+}

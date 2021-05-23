@@ -1,0 +1,55 @@
+{
+  "abi-return-struct-as-int": true,
+  "arch": "arm",
+  "crt-static-allows-dylibs": true,
+  "crt-static-respected": true,
+  "data-layout": "e-m:w-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+  "dll-prefix": "",
+  "dll-suffix": ".dll",
+  "dynamic-linking": true,
+  "emit-debug-gdb-scripts": false,
+  "env": "msvc",
+  "exe-suffix": ".exe",
+  "executables": true,
+  "features": "+vfp3,+neon",
+  "is-builtin": true,
+  "is-like-msvc": true,
+  "is-like-windows": true,
+  "linker-flavor": "msvc",
+  "linker-is-gnu": false,
+  "lld-flavor": "link",
+  "llvm-target": "thumbv7a-pc-windows-msvc",
+  "max-atomic-width": 64,
+  "no-default-libraries": false,
+  "os": "windows",
+  "panic-strategy": "abort",
+  "pre-link-args": {
+    "lld-link": [
+      "/NOLOGO",
+      "/OPT:NOLBR"
+    ],
+    "msvc": [
+      "/NOLOGO",
+      "/OPT:NOLBR"
+    ]
+  },
+  "requires-uwtable": true,
+  "split-debuginfo": "packed",
+  "staticlib-prefix": "",
+  "staticlib-suffix": ".lib",
+  "target-family": [
+    "windows"
+  ],
+  "target-pointer-width": "32",
+  "unsupported-abis": [
+    "stdcall",
+    "stdcall-unwind",
+    "fastcall",
+    "vectorcall",
+    "thiscall",
+    "thiscall-unwind",
+    "win64",
+    "sysv64"
+  ],
+  "vendor": "pc"
+}

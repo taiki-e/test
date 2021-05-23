@@ -1,0 +1,36 @@
+{
+  "arch": "arm",
+  "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+  "default-uwtable": true,
+  "dwarf-version": 2,
+  "dynamic-linking": true,
+  "env": "gnu",
+  "executables": true,
+  "features": "+strict-align,+v5te",
+  "has-rpath": true,
+  "is-builtin": true,
+  "llvm-target": "arm-linux-androideabi",
+  "max-atomic-width": 32,
+  "os": "android",
+  "position-independent-executables": true,
+  "pre-link-args": {
+    "gcc": [
+      "-Wl,--allow-multiple-definition"
+    ]
+  },
+  "relro-level": "full",
+  "target-family": [
+    "unix"
+  ],
+  "target-pointer-width": "32",
+  "unsupported-abis": [
+    "stdcall",
+    "stdcall-unwind",
+    "fastcall",
+    "vectorcall",
+    "thiscall",
+    "thiscall-unwind",
+    "win64",
+    "sysv64"
+  ]
+}

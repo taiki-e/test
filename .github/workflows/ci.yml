@@ -92,21 +92,34 @@ jobs:
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #       if: github.event_name == 'push' && github.event.ref == 'refs/heads/main' && github.repository_owner == 'taiki-e'
 
-  shellcheck:
+  codegen:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: shellcheck **/*.sh
+      - uses: taiki-e/github-actions/install-rust@main
+        with:
+          component: rustfmt
+      - run: tools/gen.sh
+      - run: git diff --exit-code
 
   fmt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: taiki-e/github-actions/install-rust@main
+        with:
+          component: rustfmt
       - name: Install prettier
         run: sudo npm install -g prettier
       - name: Install shfmt
         run: ci/install-shfmt.sh
       - run: tools/fmt.sh
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: shellcheck **/*.sh
 
   # This job doesn't actually test anything, but they're used to tell bors the
   # build completed, as there is no practical way to detect when a workflow is
@@ -121,8 +134,9 @@ jobs:
       - test
       # - install-component
       # - docs
-      - shellcheck
+      - codegen
       - fmt
+      - shellcheck
     runs-on: ubuntu-latest
     steps:
       - name: Mark the job as a success
@@ -134,8 +148,9 @@ jobs:
       - test
       # - install-component
       # - docs
-      - shellcheck
+      - codegen
       - fmt
+      - shellcheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

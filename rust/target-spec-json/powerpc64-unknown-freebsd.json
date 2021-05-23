@@ -1,0 +1,28 @@
+{
+  "abi-return-struct-as-int": true,
+  "arch": "powerpc64",
+  "cpu": "ppc64",
+  "data-layout": "E-m:e-i64:64-n32:64",
+  "dwarf-version": 2,
+  "dynamic-linking": true,
+  "eliminate-frame-pointer": false,
+  "executables": true,
+  "has-rpath": true,
+  "is-builtin": true,
+  "llvm-target": "powerpc64-unknown-freebsd",
+  "max-atomic-width": 64,
+  "os": "freebsd",
+  "position-independent-executables": true,
+  "pre-link-args": {
+    "gcc": [
+      "-m64"
+    ]
+  },
+  "relro-level": "full",
+  "target-endian": "big",
+  "target-family": [
+    "unix"
+  ],
+  "target-mcount": "_mcount",
+  "target-pointer-width": "64"
+}
