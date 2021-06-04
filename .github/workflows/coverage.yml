@@ -25,11 +25,13 @@ jobs:
         with:
           component: llvm-tools-preview
       - run: |
+          set -x
           cargo install --git https://github.com/taiki-e/cargo-llvm-cov.git --branch main
           cargo install cargo-binutils
           cargo install rustfilt
-          cargo llvm-cov --text > cov.txt
+          cargo llvm-cov --lcov > lcov.info
       - uses: codecov/codecov-action@v1
         with:
-          file: cov.txt
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: lcov.info
           fail_ci_if_error: true
