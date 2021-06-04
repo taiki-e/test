@@ -8,6 +8,7 @@
   "dwarf-version": 2,
   "dynamic-linking": true,
   "eh-frame-header": false,
+  "eliminate-frame-pointer": false,
   "emit-debug-gdb-scripts": false,
   "executables": true,
   "function-sections": false,
