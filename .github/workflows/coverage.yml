@@ -1,0 +1,35 @@
+name: Coverage
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: -D warnings
+  RUST_BACKTRACE: 1
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: taiki-e/github-actions/install-rust@main
+        with:
+          component: llvm-tools-preview
+      - run: |
+          cargo install --git https://github.com/taiki-e/cargo-llvm-cov.git --branch main
+          cargo install cargo-binutils
+          cargo install rustfilt
+          cargo llvm-cov --text > cov.txt
+      - uses: codecov/codecov-action@v1
+        with:
+          file: cov.txt
+          fail_ci_if_error: true
