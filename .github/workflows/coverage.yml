@@ -17,28 +17,21 @@ defaults:
     shell: bash
 
 jobs:
-  test:
+  coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: taiki-e/github-actions/install-rust@main
+      - name: Install Rust nightly and llvm-tools-preview
+        run: rustup toolchain install nightly --component llvm-tools-preview && rustup default nightly
+      - name: Install cargo-llvm-cov
+        run: cargo install cargo-llvm-cov --git https://github.com/taiki-e/cargo-llvm-cov.git --branch dev
+      - name: Install rustfilt
+        run: cargo install rustfilt
+      - name: Generate code coverage
+        run: cargo llvm-cov --all-features --workspace --lcov > lcov.info
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
         with:
-          component: llvm-tools-preview
-      - run: curl -LsSf https://github.com/taiki-e/cargo-llvm-cov/releases/download/v0.1.0-alpha.3/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C ~/.cargo/bin
-      - run: cargo install rustfilt
-      - run: |
-          cargo llvm-cov --text > lcov.txt
-          # cargo llvm-cov --lcov > lcov.info
-          # cargo llvm-cov --json > lcov.json
-      - run: |
-          cat lcov.txt
-          # cat lcov.info
-          # cat lcov.json
-      - uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./lcov.txt
-          # files: ./lcov.info
-          # files: ./lcov.json
+          # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: lcov.info
           fail_ci_if_error: true
-          verbose: true
