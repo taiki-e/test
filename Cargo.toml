@@ -5,4 +5,5 @@ members = [
     "rust/lib",
     "rust/lib-no-std",
     "rust/lint",
+    "cargo-hack",
 ]

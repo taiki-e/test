@@ -24,14 +24,21 @@ jobs:
       - uses: taiki-e/github-actions/install-rust@main
         with:
           component: llvm-tools-preview
+      - run: curl -LsSf https://github.com/taiki-e/cargo-llvm-cov/releases/download/v0.1.0-alpha.3/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C ~/.cargo/bin
+      - run: cargo install rustfilt
       - run: |
-          set -x
-          cargo install --git https://github.com/taiki-e/cargo-llvm-cov.git --branch main
-          cargo install cargo-binutils
-          cargo install rustfilt
-          cargo llvm-cov --lcov > lcov.info
+          cargo llvm-cov --text > lcov.txt
+          # cargo llvm-cov --lcov > lcov.info
+          # cargo llvm-cov --json > lcov.json
+      - run: |
+          cat lcov.txt
+          # cat lcov.info
+          # cat lcov.json
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: lcov.info
+          files: ./lcov.txt
+          # files: ./lcov.info
+          # files: ./lcov.json
           fail_ci_if_error: true
+          verbose: true
