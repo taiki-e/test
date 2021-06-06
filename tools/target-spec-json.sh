@@ -14,5 +14,5 @@ cd "$(cd "$(dirname "${0}")" && pwd)"/..
 
 for target in $(rustc --print target-list); do
     rustc --print target-spec-json -Z unstable-options --target "${target}" \
-        >./rust/target-spec-json/"${target}".json
+        >./target-spec-json/"${target}".json
 done
