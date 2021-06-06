@@ -142,31 +142,31 @@ jobs:
       - name: Mark the job as a success
         run: exit 0
 
-  cron-job-failure:
-    if: github.event_name == 'schedule' && !success()
-    needs:
-      - test
-      # - install-component
-      # - docs
-      - codegen
-      - fmt
-      - shellcheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - id: issue_check
-        run: |
-          title="Cron Job Failed"
-          issue_number=$(
-              curl -LsSf "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues" \
-                  | jq "map(select(.title == \"${title}\" and .user.login == \"github-actions[bot]\")) | .[0].number"
-          )
-          if [[ "${issue_number}" == "null" ]]; then
-              echo "::set-output name=exists::false"
-          fi
-      - uses: JasonEtco/create-an-issue@v2
-        with:
-          filename: .github/cron-job-failure.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: steps.issue_check.outputs.exists == 'false'
+  # cron-job-failure:
+  #   if: github.event_name == 'schedule' && !success()
+  #   needs:
+  #     - test
+  #     # - install-component
+  #     # - docs
+  #     - codegen
+  #     - fmt
+  #     - shellcheck
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - id: issue_check
+  #       run: |
+  #         title="Cron Job Failed"
+  #         issue_number=$(
+  #             curl -LsSf "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues" \
+  #                 | jq "map(select(.title == \"${title}\" and .user.login == \"github-actions[bot]\")) | .[0].number"
+  #         )
+  #         if [[ "${issue_number}" == "null" ]]; then
+  #             echo "::set-output name=exists::false"
+  #         fi
+  #     - uses: JasonEtco/create-an-issue@v2
+  #       with:
+  #         filename: .github/cron-job-failure.md
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       if: steps.issue_check.outputs.exists == 'false'
