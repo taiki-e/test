@@ -24,14 +24,13 @@ jobs:
       - name: Install Rust nightly and llvm-tools-preview
         run: rustup toolchain install nightly --component llvm-tools-preview && rustup default nightly
       - name: Install cargo-llvm-cov
-        run: cargo install cargo-llvm-cov --git https://github.com/taiki-e/cargo-llvm-cov.git --branch dev
-      - name: Install rustfilt
-        run: cargo install rustfilt
+        run: cargo install cargo-llvm-cov --git https://github.com/taiki-e/cargo-llvm-cov.git --branch main
       - name: Generate code coverage
-        run: cd cargo-hack; cargo llvm-cov --all-features --lcov > ../lcov.info
+        run: cargo llvm-cov --all-features --lcov > lcov.info
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           files: lcov.info
           fail_ci_if_error: true
+          verbose: true
