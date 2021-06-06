@@ -11,6 +11,7 @@
   "executables": true,
   "is-builtin": true,
   "linker": "msp430-elf-gcc",
+  "linker-is-gnu": false,
   "llvm-target": "msp430-none-elf",
   "max-atomic-width": 0,
   "panic-strategy": "abort",

@@ -63,7 +63,6 @@
     ]
   },
   "relocation-model": "static",
-  "simd-types-indirect": false,
   "singlethread": true,
   "target-family": [
     "wasm"
