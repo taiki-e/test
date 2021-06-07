@@ -19,6 +19,7 @@
   "limit-rdylib-exports": false,
   "linker": "rust-lld",
   "linker-flavor": "wasm-ld",
+  "linker-is-gnu": false,
   "lld-flavor": "wasm",
   "llvm-target": "wasm32-wasi",
   "main-needs-argc-argv": false,

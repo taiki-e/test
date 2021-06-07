@@ -16,6 +16,7 @@
   "is-like-wasm": true,
   "limit-rdylib-exports": false,
   "linker-flavor": "em",
+  "linker-is-gnu": false,
   "lld-flavor": "wasm",
   "llvm-target": "wasm32-unknown-emscripten",
   "max-atomic-width": 64,
