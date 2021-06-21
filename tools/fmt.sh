@@ -19,7 +19,9 @@ if [[ -z "${CI:-}" ]]; then
     # Refs: https://github.com/rust-lang/rustfmt/issues/4078
     rustfmt $(git ls-files '*.rs')
     shfmt -l -w $(git ls-files '*.sh')
-    prettier -l -w $(git ls-files '*.yml')
+    if prettier --version &>/dev/null; then
+        prettier -l -w $(git ls-files '*.yml')
+    fi
 else
     # `cargo fmt` cannot recognize modules defined inside macros, so run
     # rustfmt directly.
