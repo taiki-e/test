@@ -23,12 +23,12 @@ error() {
     fi
 }
 
-cd "$(cd "$(dirname "${0}")" && pwd)"/..
+cd "$(cd "$(dirname "$0")" && pwd)"/..
 
 # Decide Rust toolchain.
 # Nightly is used by default if the `CI` environment variable is unset.
 if [[ "${1:-}" == "+"* ]]; then
-    toolchain="${1}"
+    toolchain="$1"
     shift
 elif [[ -z "${CI:-}" ]]; then
     toolchain="+nightly"
@@ -43,7 +43,7 @@ fi
 # Decide subcommand.
 subcmd="check"
 if [[ "${1:-}" =~ ^(check|test)$ ]]; then
-    subcmd="${1}"
+    subcmd="$1"
     shift
 fi
 
