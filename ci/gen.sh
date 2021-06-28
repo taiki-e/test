@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Run code generators.
-#
-# Usage:
-#    ./tools/gen.sh
-
 set -euo pipefail
 IFS=$'\n\t'
 
