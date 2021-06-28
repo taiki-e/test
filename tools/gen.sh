@@ -11,3 +11,5 @@ IFS=$'\n\t'
 cd "$(cd "$(dirname "$0")" && pwd)"/..
 
 ./tools/target-spec-json.sh
+
+cargo run --manifest-path rust/lint/Cargo.toml

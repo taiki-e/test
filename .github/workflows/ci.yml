@@ -8,7 +8,7 @@ on:
       - staging
       - v[0-9]+.[0-9]+
   schedule:
-    - cron: '55 * * * *'
+    - cron: '30 * * * *'
 
 env:
   CARGO_INCREMENTAL: 0
@@ -101,18 +101,12 @@ jobs:
       - run: git add -N . && git diff --exit-code
         if: github.event_name != 'schedule'
       - id: diff
-        run: |
-          git add -N .
-          if ! git diff --exit-code; then
-            echo "::set-output name=success::false"
-          fi
-          echo "::set-output name=date::false"
+        run: ci/gen.sh
         if: github.event_name == 'schedule'
       - uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: Update target-spec-json
-          title: Update target-spec-json
-          branch: target-spec-json
+          title: Update generated code
+          branch: gen
         if: github.event_name == 'schedule' && steps.diff.outputs.success == 'false'
 
   fmt:
