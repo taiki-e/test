@@ -97,10 +97,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: taiki-e/github-actions/install-rust@main
-        with:
-          component: rustfmt
       - run: make gen
-      - run: git diff --exit-code
+      # - run: git diff --exit-code
+      #   if: github.event_name != 'schedule'
+      - id: diff
+        run: |
+          git add -N .
+          if ! git diff --exit-code; then
+            echo "::set-output name=success::false"
+          fi
+          echo "::set-output name=date::false"
+      - uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: Update target-spec-json
+          title: Update target-spec-json
+          signoff: true
+          branch: target-spec-json
+        if: steps.diff.outputs.success == 'false'
 
   fmt:
     runs-on: ubuntu-latest
