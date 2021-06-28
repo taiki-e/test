@@ -100,18 +100,17 @@ jobs:
         with:
           component: rustfmt
       - run: make gen
-      - run: git diff --exit-code
-        if: github.event_name != 'schedule'
+      # - run: git diff --exit-code
+      #   if: github.event_name != 'schedule'
       - id: diff
         run: |
           if ! git diff --exit-code; then
             echo "::set-output name=success::false"
           fi
-        if: github.event_name == 'schedule'
       - uses: peter-evans/create-pull-request@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.event_name == 'schedule' && steps.diff.outputs.success == 'false'
+        if: steps.diff.outputs.success == 'false'
 
   fmt:
     runs-on: ubuntu-latest
