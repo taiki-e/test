@@ -106,6 +106,7 @@ jobs:
       - uses: peter-evans/create-pull-request@v3
         with:
           title: Update generated code
+          body: ''
           branch: gen
         if: github.event_name == 'schedule' && steps.diff.outputs.success == 'false'
 
