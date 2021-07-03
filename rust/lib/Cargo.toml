@@ -6,3 +6,4 @@ edition = "2018"
 publish = false
 
 [dependencies]
+pin-project-lite = "0.1"
