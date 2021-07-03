@@ -25,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - uses: taiki-e/create-gh-release-action@main
         with:
           changelog: CHANGELOG.md
@@ -54,6 +56,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust || 'nightly' }}

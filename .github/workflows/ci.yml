@@ -41,6 +41,8 @@ jobs:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust }}
@@ -73,6 +75,8 @@ jobs:
   #   runs-on: ${{ matrix.os }}
   #   steps:
   #     - uses: actions/checkout@v2
+  #       with:
+  #         persist-credentials: false
   #     - uses: taiki-e/github-actions/install-rust@main
   #       with:
   #         toolchain: ${{ matrix.rust }}
@@ -84,6 +88,8 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v2
+  #       with:
+  #         persist-credentials: false
   #     - uses: taiki-e/github-actions/install-rust@main
   #     - run: cargo doc --no-deps --all --all-features
   #       env:
@@ -99,6 +105,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - uses: taiki-e/github-actions/install-rust@main
       - run: make gen
       - run: git add -N . && git diff --exit-code
@@ -117,6 +125,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - uses: taiki-e/github-actions/install-rust@main
         with:
           component: rustfmt
@@ -130,6 +140,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - run: shellcheck **/*.sh
 
   glibc:
@@ -177,6 +189,8 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v2
+  #       with:
+  #         persist-credentials: false
   #     - id: issue_check
   #       run: |
   #         title="Cron Job Failed"
@@ -367,6 +381,8 @@ jobs:
   #   runs-on: ${{ matrix.os || 'ubuntu-latest' }}
   #   steps:
   #     - uses: actions/checkout@v2
+  #       with:
+  #         persist-credentials: false
   #     - uses: taiki-e/github-actions/install-rust@main
   #       with:
   #         target: ${{ matrix.target }}

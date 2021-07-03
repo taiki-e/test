@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: Install Rust nightly and llvm-tools-preview
         run: rustup toolchain install nightly --component llvm-tools-preview && rustup default nightly
       - name: Install cargo-llvm-cov
