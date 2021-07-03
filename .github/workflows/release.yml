@@ -1,5 +1,9 @@
 name: Release
 
+permissions:
+  # TODO: once `releases: write` is supported, use it instead of permit to writing to contents.
+  contents: write
+
 on:
   push:
     tags:
