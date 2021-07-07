@@ -2,7 +2,7 @@ name: PR
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: write # TODO test
 
 on:
   pull_request_target:
