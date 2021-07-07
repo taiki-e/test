@@ -5,13 +5,13 @@ permissions:
   pull-requests: write # TODO test
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, reopened]
 
 jobs:
   # This only affects PRs created by Dependabot.
   dependabot:
-    if: github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]' && github.repository_owner == 'taiki-e'
+    if: startsWith(github.head_ref, 'dependabot/') && github.repository_owner == 'taiki-e'
     runs-on: ubuntu-latest
     steps:
       - uses: taiki-e/github-actions/update-dependabot-pr@main
