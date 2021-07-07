@@ -31,15 +31,5 @@
     "unix"
   ],
   "target-pointer-width": "64",
-  "unsupported-abis": [
-    "stdcall",
-    "stdcall-unwind",
-    "fastcall",
-    "vectorcall",
-    "thiscall",
-    "thiscall-unwind",
-    "win64",
-    "sysv64"
-  ],
   "vendor": "apple"
 }

@@ -18,15 +18,5 @@
     "unix"
   ],
   "target-mcount": "\u0001_mcount",
-  "target-pointer-width": "64",
-  "unsupported-abis": [
-    "stdcall",
-    "stdcall-unwind",
-    "fastcall",
-    "vectorcall",
-    "thiscall",
-    "thiscall-unwind",
-    "win64",
-    "sysv64"
-  ]
+  "target-pointer-width": "64"
 }
