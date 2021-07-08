@@ -13,10 +13,8 @@ Lint checks provided by rustc:
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
                                                box-pointers  allow    use of owned (Box type) heap memory
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
-                                 disjoint-capture-migration  allow    detects closures affected by Rust 2021 changes
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
-                                   future-prelude-collision  allow    detects the usage of trait methods which are ambiguous with traits added to the prelude in future editions
                                              keyword-idents  allow    detects edition keywords being used as an identifier
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
@@ -26,9 +24,11 @@ Lint checks provided by rustc:
                                                missing-docs  allow    detects missing documentation for public members
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                                            noop-method-call  allow    detects the use of well-known noop methods
-                                    or-patterns-back-compat  allow    detects usage of old versions of or-patterns
                                    pointer-structural-match  allow    pointers are not structural-match
-                                            reserved-prefix  allow    identifiers that will be parsed as a prefix in Rust 2021
+                    rust-2021-incompatible-closure-captures  allow    detects closures affected by Rust 2021 changes
+                         rust-2021-incompatible-or-patterns  allow    detects usage of old versions of or-patterns
+                     rust-2021-prefixes-incompatible-syntax  allow    identifiers that will be parsed as a prefix in Rust 2021
+                               rust-2021-prelude-collisions  allow    detects the usage of trait methods which are ambiguous with traits added to the prelude in future editions
                        semicolon-in-expressions-from-macros  allow    trailing semicolon in macro body used as expression
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
                                               trivial-casts  allow    detects trivial casts which could be removed
@@ -80,7 +80,7 @@ Lint checks provided by rustc:
                         mutable-borrow-reservation-conflict  warn     reservation of a two-phased borrow conflicts with other shared borrows
                                 nontrivial-structural-match  warn     constant used in pattern of non-structural-match type and the constant's initializer expression contains values of non-structural-match types
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
-                                              non-fmt-panic  warn     detect single-argument panic!() invocations in which the argument is not a format string
+                                             non-fmt-panics  warn     detect single-argument panic!() invocations in which the argument is not a format string
                                non-shorthand-field-patterns  warn     using `Struct { x: x }` instead of `Struct { x }` in a pattern
                                              non-snake-case  warn     variables, methods, functions, lifetime parameters and modules should have snake case names
                                      non-upper-case-globals  warn     static constants should have uppercase identifiers
@@ -157,7 +157,7 @@ Lint groups provided by rustc:
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
     rust-2018-compatibility  keyword-idents, anonymous-parameters, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
-    rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, disjoint-capture-migration, or-patterns-back-compat, future-prelude-collision, reserved-prefix, array-into-iter, non-fmt-panic
+    rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prelude-collisions, rust-2021-prefixes-incompatible-syntax, array-into-iter, non-fmt-panics
                      unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons
 
 
