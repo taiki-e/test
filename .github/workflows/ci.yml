@@ -104,7 +104,7 @@ jobs:
   codegen:
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: write # TODO test
+      contents: write # TODO test
     steps:
       - uses: actions/checkout@v2
         with:
