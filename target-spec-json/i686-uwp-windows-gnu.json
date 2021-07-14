@@ -1,4 +1,5 @@
 {
+  "abi": "uwp",
   "abi-return-struct-as-int": true,
   "allows-weak-linkage": false,
   "arch": "x86",

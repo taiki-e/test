@@ -1,4 +1,5 @@
 {
+  "abi": "eabi",
   "arch": "arm",
   "crt-objects-fallback": "musl",
   "crt-static-default": true,

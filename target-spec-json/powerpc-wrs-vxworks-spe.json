@@ -1,4 +1,5 @@
 {
+  "abi": "spe",
   "arch": "powerpc",
   "crt-static-allows-dylibs": true,
   "crt-static-default": true,

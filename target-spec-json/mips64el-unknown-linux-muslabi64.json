@@ -1,4 +1,5 @@
 {
+  "abi": "abi64",
   "arch": "mips64",
   "cpu": "mips64r2",
   "crt-objects-fallback": "musl",

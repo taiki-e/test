@@ -1,4 +1,5 @@
 {
+  "abi": "eabi",
   "arch": "arm",
   "asm-args": [
     "-mthumb-interwork",
