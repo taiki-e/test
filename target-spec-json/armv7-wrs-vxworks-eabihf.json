@@ -1,4 +1,5 @@
 {
+  "abi": "eabihf",
   "arch": "arm",
   "crt-static-allows-dylibs": true,
   "crt-static-default": true,

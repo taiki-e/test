@@ -1,4 +1,5 @@
 {
+  "abi": "spe",
   "arch": "powerpc",
   "crt-static-respected": true,
   "data-layout": "E-m:e-p:32:32-i64:64-n32",

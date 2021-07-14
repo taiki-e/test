@@ -1,4 +1,5 @@
 {
+  "abi": "abi64",
   "arch": "mips64",
   "cpu": "mips64r6",
   "crt-static-respected": true,

@@ -1,4 +1,5 @@
 {
+  "abi": "sim",
   "abi-return-struct-as-int": true,
   "arch": "aarch64",
   "archive-format": "darwin",

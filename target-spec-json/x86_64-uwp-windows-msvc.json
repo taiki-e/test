@@ -1,4 +1,5 @@
 {
+  "abi": "uwp",
   "abi-return-struct-as-int": true,
   "arch": "x86_64",
   "cpu": "x86-64",
