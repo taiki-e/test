@@ -60,6 +60,7 @@ Lint checks provided by rustc:
                                                  deprecated  warn     detects use of deprecated items
                                               deref-nullptr  warn     detects when an null pointer is dereferenced
                                                 drop-bounds  warn     bounds of the form `T: Drop` are useless
+                                                   dyn-drop  warn     trait objects of the form `dyn Drop` are useless
                           ellipsis-inclusive-range-patterns  warn     `...` range patterns are deprecated
                               exported-private-dependencies  warn     public interface leaks type from a private dependency
                                       forbidden-lint-groups  warn     applying forbid to lint-groups
