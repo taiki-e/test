@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
-      - uses: taiki-e/create-gh-release-action@dev
+      - uses: taiki-e/create-gh-release-action@main
         with:
           changelog: CHANGELOG.md
           title: $version
@@ -71,4 +71,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CARGO_PROFILE_RELEASE_LTO: true
-          RUSTFLAGS: -C codegen-units=1
+          CARGO_PROFILE_RELEASE_CODEGEN_UNITS: 1

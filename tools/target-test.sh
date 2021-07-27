@@ -37,8 +37,6 @@ if [[ "${host}" != "${target}" ]]; then
     esac
 fi
 
-export CARGO_PROFILE_RELEASE_LTO=true
-
 set -x
 
 $cargo build --lib --target "${target}" --manifest-path rust/lib-no-std/Cargo.toml
