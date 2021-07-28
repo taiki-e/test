@@ -5,7 +5,6 @@
   "dwarf-version": 2,
   "dynamic-linking": true,
   "executables": true,
-  "frame-pointer": "always",
   "has-rpath": true,
   "is-builtin": true,
   "llvm-target": "aarch64-unknown-freebsd",

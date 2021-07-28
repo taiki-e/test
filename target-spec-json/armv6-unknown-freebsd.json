@@ -8,7 +8,6 @@
   "env": "gnueabihf",
   "executables": true,
   "features": "+v6,+vfp2,-d32",
-  "frame-pointer": "always",
   "has-rpath": true,
   "is-builtin": true,
   "llvm-target": "armv6-unknown-freebsd-gnueabihf",
