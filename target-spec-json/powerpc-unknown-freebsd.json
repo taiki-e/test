@@ -6,7 +6,6 @@
   "dynamic-linking": true,
   "executables": true,
   "features": "+secure-plt",
-  "frame-pointer": "always",
   "has-rpath": true,
   "is-builtin": true,
   "llvm-target": "powerpc-unknown-freebsd13.0",
