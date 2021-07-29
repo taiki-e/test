@@ -12,6 +12,7 @@ on:
       - v[0-9]+.[0-9]+
   schedule:
     - cron: '40 1 * * *'
+  workflow_dispatch:
 
 env:
   CARGO_INCREMENTAL: 0
@@ -61,29 +62,6 @@ jobs:
       # - run: cargo hack build --all
       #   if: matrix.target != 'x86_64-pc-windows-gnu'
 
-  # install-component:
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os:
-  #         - ubuntu-latest
-  #         - macos-latest
-  #         - windows-latest
-  #       rust:
-  #         - stable
-  #         - nightly
-  #   runs-on: ${{ matrix.os }}
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         persist-credentials: false
-  #     - uses: taiki-e/github-actions/install-rust@main
-  #       with:
-  #         toolchain: ${{ matrix.rust }}
-  #         component: clippy,rustfmt
-  #     - run: cargo clippy --all --all-features --all-targets
-  #     - run: tools/rustfmt.sh
-
   # docs:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -124,7 +102,7 @@ jobs:
           branch: gen
         if: github.event_name == 'schedule' && steps.diff.outputs.success == 'false'
 
-  fmt:
+  tidy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -132,20 +110,16 @@ jobs:
           persist-credentials: false
       - uses: taiki-e/github-actions/install-rust@main
         with:
-          component: rustfmt
+          component: clippy,rustfmt
       - name: Install prettier
         run: sudo npm install -g prettier
       - name: Install shfmt
         run: ci/install-shfmt.sh
+      - run: cargo clippy --all --all-features --all-targets
       - run: make fmt
-
-  shellcheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
+        if: always()
       - run: shellcheck **/*.sh
+        if: always()
 
   glibc:
     strategy:
@@ -170,11 +144,9 @@ jobs:
     if: github.event_name == 'push' && success()
     needs:
       - test
-      # - install-component
       # - docs
       - codegen
-      - fmt
-      - shellcheck
+      - tidy
     runs-on: ubuntu-latest
     steps:
       - name: Mark the job as a success
