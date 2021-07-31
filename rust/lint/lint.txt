@@ -29,7 +29,6 @@ Lint checks provided by rustc:
                          rust-2021-incompatible-or-patterns  allow    detects usage of old versions of or-patterns
                      rust-2021-prefixes-incompatible-syntax  allow    identifiers that will be parsed as a prefix in Rust 2021
                                rust-2021-prelude-collisions  allow    detects the usage of trait methods which are ambiguous with traits added to the prelude in future editions
-                       semicolon-in-expressions-from-macros  allow    trailing semicolon in macro body used as expression
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
                                               trivial-casts  allow    detects trivial casts which could be removed
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
@@ -93,6 +92,7 @@ Lint checks provided by rustc:
                       proc-macro-derive-resolution-fallback  warn     detects proc macro derives using inaccessible names from parent modules
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
+                       semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
                                             stable-features  warn     stable features found in `#[feature]` directive
                                    temporary-cstring-as-ptr  warn     detects getting the inner pointer of a temporary `CString`
                                              trivial-bounds  warn     these bounds don't depend on an type parameters
