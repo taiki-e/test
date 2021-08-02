@@ -21,6 +21,12 @@
   "stack-probes": {
     "kind": "call"
   },
+  "supported-sanitizers": [
+    "address",
+    "leak",
+    "memory",
+    "thread"
+  ],
   "target-family": [
     "unix"
   ],
