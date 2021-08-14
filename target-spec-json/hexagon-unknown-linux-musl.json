@@ -1,5 +1,6 @@
 {
   "arch": "hexagon",
+  "c-enum-min-bits": 8,
   "cpu": "hexagonv60",
   "crt-objects-fallback": "musl",
   "crt-static-respected": true,
