@@ -139,6 +139,7 @@ Lint checks provided by rustc:
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
                                  missing-fragment-specifier  deny     detects missing fragment specifiers in unused `macro_rules!` patterns
                                          mutable-transmutes  deny     mutating transmuted &mut T from &T may cause undefined behavior
+                                           named-asm-labels  deny     named labels in inline assembly
                                       no-mangle-const-items  deny     const items will not have their symbols exported
                               order-dependent-trait-objects  deny     trait-object types were treated as different depending on marker-trait order
                                        overflowing-literals  deny     literal out of range for its type
