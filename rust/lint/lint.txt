@@ -135,6 +135,7 @@ Lint checks provided by rustc:
                                  ill-formed-attribute-input  deny     ill-formed attribute inputs that were previously accepted and used in practice
                                          incomplete-include  deny     trailing content in included file
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
+                                    invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
                                  missing-fragment-specifier  deny     detects missing fragment specifiers in unused `macro_rules!` patterns
