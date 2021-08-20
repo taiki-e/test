@@ -12,6 +12,11 @@
   "os": "freebsd",
   "position-independent-executables": true,
   "relro-level": "full",
+  "supported-sanitizers": [
+    "address",
+    "memory",
+    "thread"
+  ],
   "target-family": [
     "unix"
   ],
