@@ -2,7 +2,7 @@
   "arch": "powerpc64",
   "cpu": "ppc64le",
   "crt-static-respected": true,
-  "data-layout": "e-m:e-i64:64-n32:64-v256:256:256-v512:512:512",
+  "data-layout": "e-m:e-i64:64-n32:64-S128-v256:256:256-v512:512:512",
   "dynamic-linking": true,
   "env": "gnu",
   "executables": true,
