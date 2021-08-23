@@ -24,7 +24,7 @@
     "MACOSX_DEPLOYMENT_TARGET"
   ],
   "linker-is-gnu": false,
-  "llvm-target": "arm64-apple-ios",
+  "llvm-target": "arm64-apple-ios7.0.0",
   "max-atomic-width": 128,
   "os": "ios",
   "split-debuginfo": "packed",
