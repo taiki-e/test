@@ -21,6 +21,7 @@
     "MACOSX_DEPLOYMENT_TARGET"
   ],
   "linker-is-gnu": false,
+  "lld-flavor": "darwin",
   "llvm-target": "i386-apple-ios7.0.0-simulator",
   "max-atomic-width": 64,
   "os": "ios",
