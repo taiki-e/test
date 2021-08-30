@@ -23,6 +23,7 @@
     "MACOSX_DEPLOYMENT_TARGET"
   ],
   "linker-is-gnu": false,
+  "lld-flavor": "darwin",
   "llvm-target": "arm64-apple-tvos",
   "max-atomic-width": 128,
   "os": "tvos",

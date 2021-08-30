@@ -22,6 +22,7 @@
     "MACOSX_DEPLOYMENT_TARGET"
   ],
   "linker-is-gnu": false,
+  "lld-flavor": "darwin",
   "llvm-target": "armv7s-apple-ios",
   "max-atomic-width": 64,
   "os": "ios",

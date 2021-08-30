@@ -22,6 +22,7 @@
     "IPHONEOS_DEPLOYMENT_TARGET"
   ],
   "linker-is-gnu": false,
+  "lld-flavor": "darwin",
   "llvm-target": "x86_64-apple-ios13.0-macabi",
   "max-atomic-width": 64,
   "os": "ios",
