@@ -21,6 +21,9 @@
   "stack-probes": {
     "kind": "call"
   },
+  "supported-sanitizers": [
+    "address"
+  ],
   "target-family": [
     "unix"
   ],

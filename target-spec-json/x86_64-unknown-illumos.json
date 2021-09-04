@@ -26,6 +26,9 @@
       "-std=c99"
     ]
   },
+  "supported-sanitizers": [
+    "address"
+  ],
   "target-family": [
     "unix"
   ],
