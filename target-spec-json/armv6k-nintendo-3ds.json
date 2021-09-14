@@ -1,0 +1,29 @@
+{
+  "abi": "eabihf",
+  "arch": "arm",
+  "cpu": "mpcore",
+  "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+  "env": "newlib",
+  "exe-suffix": ".elf",
+  "executables": true,
+  "features": "+vfp2",
+  "is-builtin": true,
+  "linker": "arm-none-eabi-gcc",
+  "llvm-target": "armv6k-none-eabihf",
+  "os": "horizon",
+  "panic-strategy": "abort",
+  "pre-link-args": {
+    "gcc": [
+      "-specs=3dsx.specs",
+      "-mtune=mpcore",
+      "-mfloat-abi=hard",
+      "-mtp=soft"
+    ]
+  },
+  "relocation-model": "static",
+  "target-family": [
+    "unix"
+  ],
+  "target-pointer-width": "32",
+  "vendor": "nintendo"
+}
