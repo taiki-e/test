@@ -23,6 +23,7 @@ Lint checks provided by rustc:
                               missing-debug-implementations  allow    detects missing implementations of Debug
                                                missing-docs  allow    detects missing documentation for public members
                                            non-ascii-idents  allow    detects non-ASCII identifiers
+                            non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
                                            noop-method-call  allow    detects the use of well-known noop methods
                                    pointer-structural-match  allow    pointers are not structural-match
                     rust-2021-incompatible-closure-captures  allow    detects closures affected by Rust 2021 changes
