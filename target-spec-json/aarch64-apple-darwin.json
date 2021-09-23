@@ -36,7 +36,6 @@
   "split-debuginfo": "packed",
   "supported-sanitizers": [
     "address",
-    "leak",
     "thread"
   ],
   "target-family": [
