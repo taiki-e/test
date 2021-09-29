@@ -1,0 +1,16 @@
+{
+  "arch": "arm",
+  "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+  "disable-redzone": true,
+  "features": "+v7,+vfp3,-d32,+thumb2,-neon",
+  "frame-pointer": "non-leaf",
+  "has-elf-tls": true,
+  "is-builtin": true,
+  "linker": "arm-kmc-eabi-gcc",
+  "llvm-target": "armv7a-none-eabihf",
+  "max-atomic-width": 64,
+  "os": "solid_asp3",
+  "relocation-model": "static",
+  "target-pointer-width": "32",
+  "vendor": "kmc"
+}
