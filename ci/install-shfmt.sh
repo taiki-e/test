@@ -3,5 +3,5 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-GO111MODULE=on go get mvdan.cc/sh/v3/cmd/shfmt
+"${GOROOT_1_17_X64}"/bin/go install mvdan.cc/sh/v3/cmd/shfmt@latest
 echo "${HOME}/go/bin" >>"${GITHUB_PATH}"
