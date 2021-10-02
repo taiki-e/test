@@ -1,8 +1,0 @@
-[package]
-name = "check_lint_list"
-version = "0.0.0"
-edition = "2018"
-publish = false
-
-[dependencies]
-anyhow = "1"

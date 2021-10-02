@@ -1,8 +1,6 @@
 [workspace]
 resolver = "2"
 members = [
-    "rust/bin",
-    "rust/lib",
-    "rust/lib-no-std",
-    "rust/lint",
+    "tools/codegen",
+    "xarch-test",
 ]
