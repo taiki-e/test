@@ -10,10 +10,10 @@ failed=0
 git config user.name "Taiki Endo"
 git config user.email "te316e89@gmail.com"
 
-./tools/target-spec-json.sh
-git add -N target-spec-json
-if ! git diff --exit-code -- target-spec-json; then
-    git add target-spec-json
+cargo run --manifest-path tools/codegen/Cargo.toml
+git add -N tools
+if ! git diff --exit-code -- tools; then
+    git add tools
     git commit -m "Update target-spec-json"
     failed=1
 fi
