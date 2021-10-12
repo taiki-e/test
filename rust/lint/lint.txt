@@ -135,6 +135,7 @@ Lint checks provided by rustc:
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                                                   const-err  deny     constant evaluation encountered erroneous expression
+                                  enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
                                  ill-formed-attribute-input  deny     ill-formed attribute inputs that were previously accepted and used in practice
                                          incomplete-include  deny     trailing content in included file
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
