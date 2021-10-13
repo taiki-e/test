@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
+    "test",
     "tools/codegen",
     "xarch-test",
 ]

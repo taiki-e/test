@@ -6,6 +6,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        binfmt-support \
         ca-certificates \
         curl \
         file \
@@ -19,8 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY qemu.sh /
 RUN /qemu.sh aarch64
 
-ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
-ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUNNER="qemu-aarch64 -L /usr/aarch64-linux-gnu"
-ENV CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc
-ENV CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++
-ENV OBJDUMP=aarch64-linux-gnu-objdump
+ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
+    CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUNNER=qemu-aarch64 \
+    CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc \
+    CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++ \
+    OBJDUMP=aarch64-linux-gnu-objdump \
+    QEMU_LD_PREFIX=/usr/aarch64-linux-gnu

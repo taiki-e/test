@@ -1,97 +1,38 @@
-// #[path = "gen/target_spec.rs"]
-// mod gen;
-
 use std::collections::BTreeMap;
 
-use duct::cmd;
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use strum::{Display, IntoStaticStr};
 
-// use self::gen::*;
 use super::*;
-
-pub fn gen() -> Result<()> {
-    gen_target_spec()?;
-    Ok(())
-}
 
 pub static TARGET_SPEC: Lazy<BTreeMap<String, TargetSpec>> =
     Lazy::new(|| target_spec_map().unwrap());
 
 pub static TARGET_TIER: Lazy<TargetTier> = Lazy::new(|| target_tier().unwrap());
 
-// creates a full list of target spec
-fn gen_target_spec() -> Result<()> {
-    let mut map = BTreeMap::new();
-    // let mut target_os = BTreeSet::new();
-    for triple in target_list()? {
-        let text = target_spec_json(&triple)?;
-        let value: serde_json::Value = serde_json::from_str(&text)?;
-        // if let Some(v) = value.get("os") {
-        //     let v = v.as_str().unwrap();
-        //     if !target_os.contains(v) {
-        //         target_os.insert(v.to_owned());
-        //     }
-        // }
-        map.insert(triple, value);
-    }
-    write_json(root_dir().join("tools/target-spec.json"), &map)?;
-    // target_os.insert("none".into());
-    // gen_enums(["TargetOs"], [&target_os])?;
+pub fn download() -> Result<()> {
+    let target_spec_url =
+        "https://raw.githubusercontent.com/taiki-e/test/main/tools/target-spec.json";
+    let target_tier_url =
+        "https://raw.githubusercontent.com/taiki-e/test/main/tools/target-tier.json";
+
+    fs::write(
+        workspace_root().join("tools/target-spec.json"),
+        ureq::get(target_spec_url).call()?.into_string()?,
+    )?;
+    fs::write(
+        workspace_root().join("tools/target-tier.json"),
+        ureq::get(target_tier_url).call()?.into_string()?,
+    )?;
+
     Ok(())
 }
 
 // creates structured spec map
 fn target_spec_map() -> Result<BTreeMap<String, TargetSpec>> {
-    Ok(serde_json::from_slice(&fs::read(&root_dir().join("tools/target-spec.json"))?)?)
+    Ok(serde_json::from_slice(&fs::read(workspace_root().join("tools/target-spec.json"))?)?)
 }
-
-/// Return a list of all built-in targets.
-fn target_list() -> Result<Vec<String>> {
-    Ok(cmd!("rustc", "--print", "target-list",)
-        .read()?
-        .split('\n')
-        .filter(|s| !s.is_empty())
-        .map(str::to_owned)
-        .collect())
-}
-
-fn target_spec_json(target: &str) -> Result<String> {
-    Ok(cmd!("rustc", "--print", "target-spec-json", "-Z", "unstable-options", "--target", &target)
-        .read()?)
-}
-
-// fn gen_enums<const N: usize>(name: [&str; N], variants: [&BTreeSet<String>; N]) -> Result<()> {
-//     let mut out = quote! {
-//         use serde::{Serialize, Deserialize};
-//         use strum::{Display, IntoStaticStr};
-//     };
-//     let attrs = quote! {
-//         #[derive(
-//             Debug, Clone, Copy, PartialEq, Eq,
-//             Serialize, Deserialize,
-//             Display, IntoStaticStr,
-//         )]
-//         #[allow(non_camel_case_types)]
-//     };
-
-//     for (name, variants) in name.iter().zip(variants) {
-//         let name = format_ident!("{}", name);
-//         let variants = variants.iter().map(|v| format_ident!("{}", v));
-//         out.extend(quote! {
-//             #attrs
-//             pub enum #name {
-//                 #(#variants,)*
-//             }
-//         });
-//     }
-
-//     let outdir = &root_dir().join("tools/codegen/src/gen");
-//     fs::create_dir_all(outdir)?;
-//     write(outdir.join("target_spec.rs"), out)?;
-//     Ok(())
-// }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
@@ -191,6 +132,7 @@ pub enum TargetOs {
     psp,
     redox,
     solaris,
+    solid_asp3,
     tvos,
     uefi,
     unknown,
@@ -229,5 +171,5 @@ pub struct TargetTier {
 }
 
 fn target_tier() -> Result<TargetTier> {
-    Ok(serde_json::from_slice(&fs::read(root_dir().join("tools/target-tier.json"))?)?)
+    Ok(serde_json::from_slice(&fs::read(workspace_root().join("tools/target-tier.json"))?)?)
 }

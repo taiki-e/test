@@ -6,6 +6,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        binfmt-support \
         ca-certificates \
         curl \
         file \
@@ -19,8 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY qemu.sh /
 RUN /qemu.sh arm
 
-ENV CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABI_LINKER=arm-linux-gnueabi-gcc
-ENV CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABI_RUNNER="qemu-arm -L /usr/arm-linux-gnueabi"
-ENV CC_armv7_unknown_linux_gnueabi=arm-linux-gnueabi-gcc
-ENV CXX_armv7_unknown_linux_gnueabi=arm-linux-gnueabi-g++
-ENV OBJDUMP=arm-linux-gnueabi-objdump
+ENV CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABI_LINKER=arm-linux-gnueabi-gcc \
+    CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABI_RUNNER=qemu-arm \
+    CC_armv7_unknown_linux_gnueabi=arm-linux-gnueabi-gcc \
+    CXX_armv7_unknown_linux_gnueabi=arm-linux-gnueabi-g++ \
+    OBJDUMP=arm-linux-gnueabi-objdump \
+    QEMU_LD_PREFIX=/usr/arm-linux-gnueabi

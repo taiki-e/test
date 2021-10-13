@@ -1,13 +1,6 @@
-use std::{
-    panic::Location,
-    path::{Path, PathBuf},
-};
+use std::{panic::Location, path::PathBuf};
 
-use anyhow::Result;
-use fs_err as fs;
-use serde::Serialize;
-
-pub fn root_dir() -> PathBuf {
+pub fn workspace_root() -> PathBuf {
     let mut dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     dir.pop(); // codegen
     dir.pop(); // tools
@@ -25,24 +18,4 @@ pub fn header(comment_token: &str, include_caller_location: bool) -> String {
     }
     out += "\n";
     out
-}
-
-// #[track_caller]
-// pub fn write(path: impl AsRef<Path>, content: impl ToString) -> Result<()> {
-//     fs::write(path.as_ref(), header("//", true) + &content.to_string())?;
-//     let status = Command::new("rustfmt")
-//         .arg(path.as_ref())
-//         .args(&["--config", "normalize_doc_attributes=true,format_macro_matchers=true"])
-//         .status()?;
-//     if !status.success() {
-//         bail!("rustfmt didn't exit successfully");
-//     }
-//     Ok(())
-// }
-
-pub fn write_json(path: impl AsRef<Path>, value: &impl Serialize) -> Result<()> {
-    let mut buf = serde_json::to_vec_pretty(value)?;
-    buf.push(b'\n'); // insert_final_newline
-    fs::write(path, buf)?;
-    Ok(())
 }

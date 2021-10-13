@@ -5,13 +5,14 @@ IFS=$'\n\t'
 
 cd "$(cd "$(dirname "$0")" && pwd)"/..
 
+OWNER="taiki-e"
 PROJECT="xarch"
 
 set -x
 
 build() {
-    echo "Building docker image for ${1}"
-    docker build -t "${PROJECT}/${1}" -f "docker/${1}/Dockerfile" docker/
+    echo "Building docker image for ${1:?}"
+    docker build -t "${OWNER}/${PROJECT}:${1}" -f "docker/${1}/Dockerfile" docker/
 }
 
 if [[ -z "${1:-}" ]]; then

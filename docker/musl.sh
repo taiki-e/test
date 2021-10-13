@@ -12,7 +12,7 @@ MUSL=musl-1.1.24
 
 # may have been downloaded in a previous run
 if [[ ! -d "$MUSL" ]]; then
-    curl --retry 3 -LsSf curl https://www.musl-libc.org/releases/"$MUSL".tar.gz | tar xzf -
+    curl --retry 3 -LsSf https://www.musl-libc.org/releases/"$MUSL".tar.gz | tar xzf -
 fi
 
 cd "$MUSL"

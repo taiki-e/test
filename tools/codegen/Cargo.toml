@@ -6,7 +6,6 @@ publish = false
 
 [dependencies]
 anyhow = "1"
-clap = { version = "=3.0.0-beta.4", default-features = false, features = ["derive", "std", "suggestions"] }
 duct = "0.13"
 fs-err = "2"
 indoc = "1"
@@ -15,11 +14,6 @@ quote = "1"
 semver = "1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-strum = { version = "0.21", features = ["derive"] }
+strum = { version = "0.22", features = ["derive"] }
+ureq = "2"
 walkdir = "2"
-# bzip2 = "0.4"
-# ureq = "2"
-# tar = "0.4"
-
-# This is needed until https://github.com/clap-rs/clap/pull/2706 is released.
-clap_derive = "=3.0.0-beta.4"

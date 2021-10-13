@@ -246,6 +246,22 @@
     ],
     "target-pointer-width": "64"
   },
+  "aarch64-kmc-solid_asp3": {
+    "arch": "aarch64",
+    "data-layout": "e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
+    "disable-redzone": true,
+    "features": "+neon,+fp-armv8",
+    "frame-pointer": "non-leaf",
+    "has-elf-tls": true,
+    "is-builtin": true,
+    "linker": "aarch64-kmc-elf-gcc",
+    "llvm-target": "aarch64-unknown-none",
+    "max-atomic-width": 128,
+    "os": "solid_asp3",
+    "relocation-model": "static",
+    "target-pointer-width": "64",
+    "vendor": "kmc"
+  },
   "aarch64-linux-android": {
     "arch": "aarch64",
     "data-layout": "e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
@@ -1539,6 +1555,29 @@
     "target-mcount": "\u0001mcount",
     "target-pointer-width": "32"
   },
+  "armv7-unknown-linux-uclibceabihf": {
+    "abi": "eabihf",
+    "arch": "arm",
+    "crt-static-respected": true,
+    "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+    "dynamic-linking": true,
+    "env": "uclibc",
+    "executables": true,
+    "features": "+v7,+vfp3,-d32,+thumb2,-neon",
+    "has-elf-tls": true,
+    "has-rpath": true,
+    "is-builtin": true,
+    "llvm-target": "armv7-unknown-linux-gnueabihf",
+    "max-atomic-width": 64,
+    "os": "linux",
+    "position-independent-executables": true,
+    "relro-level": "full",
+    "target-family": [
+      "unix"
+    ],
+    "target-mcount": "_mcount",
+    "target-pointer-width": "32"
+  },
   "armv7-unknown-netbsd-eabihf": {
     "abi": "eabihf",
     "arch": "arm",
@@ -1588,6 +1627,38 @@
     "target-mcount": "_mcount",
     "target-pointer-width": "32",
     "vendor": "wrs"
+  },
+  "armv7a-kmc-solid_asp3-eabi": {
+    "arch": "arm",
+    "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+    "disable-redzone": true,
+    "features": "+v7,+soft-float,+thumb2,-neon",
+    "frame-pointer": "non-leaf",
+    "has-elf-tls": true,
+    "is-builtin": true,
+    "linker": "arm-kmc-eabi-gcc",
+    "llvm-target": "armv7a-none-eabi",
+    "max-atomic-width": 64,
+    "os": "solid_asp3",
+    "relocation-model": "static",
+    "target-pointer-width": "32",
+    "vendor": "kmc"
+  },
+  "armv7a-kmc-solid_asp3-eabihf": {
+    "arch": "arm",
+    "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+    "disable-redzone": true,
+    "features": "+v7,+vfp3,-d32,+thumb2,-neon",
+    "frame-pointer": "non-leaf",
+    "has-elf-tls": true,
+    "is-builtin": true,
+    "linker": "arm-kmc-eabi-gcc",
+    "llvm-target": "armv7a-none-eabihf",
+    "max-atomic-width": 64,
+    "os": "solid_asp3",
+    "relocation-model": "static",
+    "target-pointer-width": "32",
+    "vendor": "kmc"
   },
   "armv7a-none-eabi": {
     "abi": "eabi",

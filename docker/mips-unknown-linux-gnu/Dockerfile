@@ -6,6 +6,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        binfmt-support \
         ca-certificates \
         curl \
         file \
@@ -19,8 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY qemu.sh /
 RUN /qemu.sh mips
 
-ENV CARGO_TARGET_MIPS_UNKNOWN_LINUX_GNU_LINKER=mips-linux-gnu-gcc
-ENV CARGO_TARGET_MIPS_UNKNOWN_LINUX_GNU_RUNNER="qemu-mips -L /usr/mips-linux-gnu"
-ENV CC_mips_unknown_linux_gnu=mips-linux-gnu-gcc
-ENV CXX_mips_unknown_linux_gnu=mips-linux-gnu-g++
-ENV OBJDUMP=mips-linux-gnu-objdump
+ENV CARGO_TARGET_MIPS_UNKNOWN_LINUX_GNU_LINKER=mips-linux-gnu-gcc \
+    CARGO_TARGET_MIPS_UNKNOWN_LINUX_GNU_RUNNER=qemu-mips \
+    CC_mips_unknown_linux_gnu=mips-linux-gnu-gcc \
+    CXX_mips_unknown_linux_gnu=mips-linux-gnu-g++ \
+    OBJDUMP=mips-linux-gnu-objdump \
+    QEMU_LD_PREFIX=/usr/mips-linux-gnu

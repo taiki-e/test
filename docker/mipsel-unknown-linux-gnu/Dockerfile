@@ -6,6 +6,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        binfmt-support \
         ca-certificates \
         curl \
         file \
@@ -19,8 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY qemu.sh /
 RUN /qemu.sh mipsel
 
-ENV CARGO_TARGET_MIPSEL_UNKNOWN_LINUX_GNU_LINKER=mipsel-linux-gnu-gcc
-ENV CARGO_TARGET_MIPSEL_UNKNOWN_LINUX_GNU_RUNNER="qemu-mipsel -L /usr/mipsel-linux-gnu"
-ENV CC_mipsel_unknown_linux_gnu=mipsel-linux-gnu-gcc
-ENV CXX_mipsel_unknown_linux_gnu=mipsel-linux-gnu-g++
-ENV OBJDUMP=mipsel-linux-gnu-objdump
+ENV CARGO_TARGET_MIPSEL_UNKNOWN_LINUX_GNU_LINKER=mipsel-linux-gnu-gcc \
+    CARGO_TARGET_MIPSEL_UNKNOWN_LINUX_GNU_RUNNER=qemu-mipsel \
+    CC_mipsel_unknown_linux_gnu=mipsel-linux-gnu-gcc \
+    CXX_mipsel_unknown_linux_gnu=mipsel-linux-gnu-g++ \
+    OBJDUMP=mipsel-linux-gnu-objdump \
+    QEMU_LD_PREFIX=/usr/mipsel-linux-gnu

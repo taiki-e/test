@@ -6,6 +6,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        binfmt-support \
         ca-certificates \
         curl \
         file \
@@ -19,8 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY qemu.sh /
 RUN /qemu.sh riscv64
 
-ENV CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_LINKER=riscv64-linux-gnu-gcc
-ENV CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_RUNNER="qemu-riscv64 -L /usr/riscv64-linux-gnu"
-ENV CC_riscv64gc_unknown_linux_gnu=riscv64-linux-gnu-gcc
-ENV CXX_riscv64gc_unknown_linux_gnu=riscv64-linux-gnu-g++
-ENV OBJDUMP=riscv64-linux-gnu-objdump
+ENV CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_LINKER=riscv64-linux-gnu-gcc \
+    CARGO_TARGET_RISCV64GC_UNKNOWN_LINUX_GNU_RUNNER=qemu-riscv64 \
+    CC_riscv64gc_unknown_linux_gnu=riscv64-linux-gnu-gcc \
+    CXX_riscv64gc_unknown_linux_gnu=riscv64-linux-gnu-g++ \
+    OBJDUMP=riscv64-linux-gnu-objdump \
+    QEMU_LD_PREFIX=/usr/riscv64-linux-gnu

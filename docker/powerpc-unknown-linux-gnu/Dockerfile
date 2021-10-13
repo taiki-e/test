@@ -6,6 +6,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        binfmt-support \
         ca-certificates \
         curl \
         file \
@@ -19,8 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY qemu.sh /
 RUN /qemu.sh ppc
 
-ENV CARGO_TARGET_POWERPC_UNKNOWN_LINUX_GNU_LINKER=powerpc-linux-gnu-gcc
-ENV CARGO_TARGET_POWERPC_UNKNOWN_LINUX_GNU_RUNNER="qemu-ppc -cpu Vger -L /usr/powerpc-linux-gnu"
-ENV CC_powerpc_unknown_linux_gnu=powerpc-linux-gnu-gcc
-ENV CXX_powerpc_unknown_linux_gnu=powerpc-linux-gnu-g++
-ENV OBJDUMP=powerpc-linux-gnu-objdump
+ENV CARGO_TARGET_POWERPC_UNKNOWN_LINUX_GNU_LINKER=powerpc-linux-gnu-gcc \
+    CARGO_TARGET_POWERPC_UNKNOWN_LINUX_GNU_RUNNER="qemu-ppc -cpu Vger" \
+    CC_powerpc_unknown_linux_gnu=powerpc-linux-gnu-gcc \
+    CXX_powerpc_unknown_linux_gnu=powerpc-linux-gnu-g++ \
+    OBJDUMP=powerpc-linux-gnu-objdump \
+    QEMU_LD_PREFIX=/usr/powerpc-linux-gnu

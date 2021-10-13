@@ -4,72 +4,71 @@ passthrough = [
     "CARGO_TERM_COLOR",
     "RUST_BACKTRACE",
     "RUSTFLAGS",
-    "CARGO_BUILD_TARGET",
 ]
 
 [target.aarch64-unknown-linux-gnu]
-image = "xarch/aarch64-unknown-linux-gnu"
+image = "taiki-e/xarch:aarch64-unknown-linux-gnu"
 
 [target.arm-unknown-linux-gnueabi]
-image = "xarch/arm-unknown-linux-gnueabi"
+image = "taiki-e/xarch:arm-unknown-linux-gnueabi"
 
 [target.arm-unknown-linux-gnueabihf]
-image = "xarch/arm-unknown-linux-gnueabihf"
+image = "taiki-e/xarch:arm-unknown-linux-gnueabihf"
 
 [target.armv5te-unknown-linux-gnueabi]
-image = "xarch/armv5te-unknown-linux-gnueabi"
+image = "taiki-e/xarch:armv5te-unknown-linux-gnueabi"
 
 [target.armv7-unknown-linux-gnueabihf]
-image = "xarch/armv7-unknown-linux-gnueabihf"
+image = "taiki-e/xarch:armv7-unknown-linux-gnueabihf"
 
 [target.armv7-unknown-linux-gnueabi]
-image = "xarch/armv7-unknown-linux-gnueabi"
+image = "taiki-e/xarch:armv7-unknown-linux-gnueabi"
 
 [target.i586-unknown-linux-gnu]
-image = "xarch/i586-unknown-linux-gnu"
+image = "taiki-e/xarch:i586-unknown-linux-gnu"
 
 [target.i686-unknown-linux-gnu]
-image = "xarch/i686-unknown-linux-gnu"
+image = "taiki-e/xarch:i686-unknown-linux-gnu"
 
 [target.mips-unknown-linux-gnu]
-image = "xarch/mips-unknown-linux-gnu"
+image = "taiki-e/xarch:mips-unknown-linux-gnu"
 
 [target.mips64-unknown-linux-gnuabi64]
-image = "xarch/mips64-unknown-linux-gnuabi64"
+image = "taiki-e/xarch:mips64-unknown-linux-gnuabi64"
 
 [target.mips64el-unknown-linux-gnuabi64]
-image = "xarch/mips64el-unknown-linux-gnuabi64"
+image = "taiki-e/xarch:mips64el-unknown-linux-gnuabi64"
 
 [target.mipsel-unknown-linux-gnu]
-image = "xarch/mipsel-unknown-linux-gnu"
+image = "taiki-e/xarch:mipsel-unknown-linux-gnu"
 
 [target.powerpc-unknown-linux-gnu]
-image = "xarch/powerpc-unknown-linux-gnu"
+image = "taiki-e/xarch:powerpc-unknown-linux-gnu"
 
 [target.powerpc64-unknown-linux-gnu]
-image = "xarch/powerpc64-unknown-linux-gnu"
+image = "taiki-e/xarch:powerpc64-unknown-linux-gnu"
 
 [target.powerpc64le-unknown-linux-gnu]
-image = "xarch/powerpc64le-unknown-linux-gnu"
+image = "taiki-e/xarch:powerpc64le-unknown-linux-gnu"
 
 [target.riscv64gc-unknown-linux-gnu]
-image = "xarch/riscv64gc-unknown-linux-gnu"
+image = "taiki-e/xarch:riscv64gc-unknown-linux-gnu"
 
 [target.s390x-unknown-linux-gnu]
-image = "xarch/s390x-unknown-linux-gnu"
+image = "taiki-e/xarch:s390x-unknown-linux-gnu"
 
 [target.sparc64-unknown-linux-gnu]
-image = "xarch/sparc64-unknown-linux-gnu"
+image = "taiki-e/xarch:sparc64-unknown-linux-gnu"
 
 [target.thumbv7neon-unknown-linux-gnueabihf]
-image = "xarch/thumbv7neon-unknown-linux-gnueabihf"
+image = "taiki-e/xarch:thumbv7neon-unknown-linux-gnueabihf"
 
 [target.wasm32-wasi]
-image = "xarch/wasm32-wasi"
+image = "taiki-e/xarch:wasm32-wasi"
 
 [target.x86_64-unknown-linux-gnu]
-# image = "xarch/x86_64-unknown-linux-gnu"
-image = "xarch/x86_64-unknown-linux-gnu-emulated"
+# image = "taiki-e/xarch:x86_64-unknown-linux-gnu"
+image = "taiki-e/xarch:x86_64-unknown-linux-gnu-emulated"
 
 [target.x86_64-unknown-linux-gnux32]
-image = "xarch/x86_64-unknown-linux-gnux32"
+image = "taiki-e/xarch:x86_64-unknown-linux-gnux32"

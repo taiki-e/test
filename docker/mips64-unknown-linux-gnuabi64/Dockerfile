@@ -6,6 +6,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        binfmt-support \
         ca-certificates \
         curl \
         file \
@@ -19,8 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY qemu.sh /
 RUN /qemu.sh mips64
 
-ENV CARGO_TARGET_MIPS64_UNKNOWN_LINUX_GNUABI64_LINKER=mips64-linux-gnuabi64-gcc
-ENV CARGO_TARGET_MIPS64_UNKNOWN_LINUX_GNUABI64_RUNNER="qemu-mips64 -L /usr/mips64-linux-gnuabi64"
-ENV CC_mips64_unknown_linux_gnuabi64=mips64-linux-gnuabi64-gcc
-ENV CXX_mips64_unknown_linux_gnuabi64=mips64-linux-gnuabi64-g++
-ENV OBJDUMP=mips64-linux-gnuabi64-objdump
+ENV CARGO_TARGET_MIPS64_UNKNOWN_LINUX_GNUABI64_LINKER=mips64-linux-gnuabi64-gcc \
+    CARGO_TARGET_MIPS64_UNKNOWN_LINUX_GNUABI64_RUNNER=qemu-mips64 \
+    CC_mips64_unknown_linux_gnuabi64=mips64-linux-gnuabi64-gcc \
+    CXX_mips64_unknown_linux_gnuabi64=mips64-linux-gnuabi64-g++ \
+    OBJDUMP=mips64-linux-gnuabi64-objdump \
+    QEMU_LD_PREFIX=/usr/mips64-linux-gnuabi64

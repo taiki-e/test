@@ -51,7 +51,7 @@ const APT_PACKAGES_COMMON: &[&str] = &[
 ];
 
 pub fn gen() -> Result<()> {
-    let out_dir = &root_dir().join("docker");
+    let out_dir = &workspace_root().join("docker");
 
     let targets: BTreeSet<_> = TARGET_TIER
         .tier1
@@ -184,11 +184,24 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
                         dockerfile.apt_install(format!("g++-{}", linker_base_name));
                         dockerfile.apt_install(format!("{}-{}-cross", libc, libc_arch_name));
 
+                        dockerfile.apt_install("binfmt-support");
+                        dockerfile.free_env("QEMU_LD_PREFIX", format!("/usr/{}", linker_base_name));
                         dockerfile.copy("qemu.sh", "/");
                         dockerfile.run(format!("/qemu.sh {}", qemu_arch_name));
+                        // dockerfile.env("QEMU_VERSION", "6.1+dfsg-5");
+                        // dockerfile.run(formatdoc!(
+                        //     "
+                        //     set -x && apt-get update && curl --retry 3 -LsSf \"http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{QEMU_VERSION}}_amd64.deb\" \\
+                        //         | dpkg --fsys-tarfile - \\
+                        //         | tar xvf - --wildcards ./usr/bin/qemu-{0}-static --strip-components=3 \\
+                        //         && mv qemu-{0}-static /usr/bin/qemu-{0} \
+                        //         && rm -rf /var/lib/apt/lists/*
+                        //     ",
+                        //     qemu_arch_name
+                        // ));
+
                         // dockerfile.apt_install("qemu-user");
-                        let qemu_ld_prefix = format!("/usr/{}", linker_base_name);
-                        let mut qemu_cpu = None;
+                        let mut qemu_cpu = None; // run `qemu-system-x -cpu help` for list
                         match spec.arch {
                             x86 | x86_64 => unreachable!(),
                             arm | aarch64 | s390x | riscv64 => {
@@ -218,9 +231,9 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
                         }
 
                         let runner = if let Some(cpu) = qemu_cpu {
-                            format!("qemu-{} -cpu {} -L {}", qemu_arch_name, cpu, qemu_ld_prefix)
+                            format!("qemu-{} -cpu {}", qemu_arch_name, cpu)
                         } else {
-                            format!("qemu-{} -L {}", qemu_arch_name, qemu_ld_prefix)
+                            format!("qemu-{}", qemu_arch_name)
                         };
                         dockerfile
                             .free_env(format!("CARGO_TARGET_{}_RUNNER", env_triple_upper), runner);
@@ -311,13 +324,26 @@ impl Dockerfile {
     }
     fn build(&self, base: impl AsRef<str>) -> String {
         let fill_env = |buf: &mut String, env: &mut BTreeMap<&String, &String>| {
+            let mut first = true;
             while let Some((key, value)) = env.pop_first() {
-                // TODO: more accurate escape
-                *buf += &if value.contains(' ') {
-                    format!("ENV {}=\"{}\"\n", key, value)
+                if first {
+                    first = false;
+                    *buf += "ENV "
                 } else {
-                    format!("ENV {}={}\n", key, value)
+                    *buf += "    "
+                }
+                *buf += &if value.contains(' ') {
+                    // TODO: more accurate escape
+                    format!("{}=\"{}\" \\\n", key, value)
+                } else {
+                    format!("{}={} \\\n", key, value)
                 };
+            }
+            if !first {
+                buf.pop(); // '\n'
+                buf.pop(); // '\\'
+                buf.pop(); // ' '
+                *buf += "\n";
             }
         };
 

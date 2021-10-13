@@ -6,6 +6,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        binfmt-support \
         ca-certificates \
         curl \
         file \
@@ -19,8 +20,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY qemu.sh /
 RUN /qemu.sh s390x
 
-ENV CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_LINKER=s390x-linux-gnu-gcc
-ENV CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_RUNNER="qemu-s390x -L /usr/s390x-linux-gnu"
-ENV CC_s390x_unknown_linux_gnu=s390x-linux-gnu-gcc
-ENV CXX_s390x_unknown_linux_gnu=s390x-linux-gnu-g++
-ENV OBJDUMP=s390x-linux-gnu-objdump
+ENV CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_LINKER=s390x-linux-gnu-gcc \
+    CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_RUNNER=qemu-s390x \
+    CC_s390x_unknown_linux_gnu=s390x-linux-gnu-gcc \
+    CXX_s390x_unknown_linux_gnu=s390x-linux-gnu-g++ \
+    OBJDUMP=s390x-linux-gnu-objdump \
+    QEMU_LD_PREFIX=/usr/s390x-linux-gnu
