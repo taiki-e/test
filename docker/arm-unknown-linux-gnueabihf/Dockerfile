@@ -21,7 +21,7 @@ COPY qemu.sh /
 RUN /qemu.sh arm
 
 ENV CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_LINKER=arm-linux-gnueabihf-gcc \
-    CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_RUNNER=qemu-arm \
+    CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABIHF_RUNNER="qemu-arm -cpu cortex-a8" \
     CC_arm_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc \
     CXX_arm_unknown_linux_gnueabihf=arm-linux-gnueabihf-g++ \
     OBJDUMP=arm-linux-gnueabihf-objdump \

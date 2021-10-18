@@ -128,7 +128,7 @@ case "${target}" in
         set_env "CARGO_TARGET_${triple_upper}_RUNNER=wasmtime --enable-simd --enable-threads --"
 
         if [[ -n "${NO_RUN:-}" ]]; then
-            echo "skipped installation due to NO_RUN environment variable is set" 1>&2
+            echo "skipped installation due to NO_RUN environment variable is set" >&2
             exit 0
         fi
 
@@ -144,7 +144,7 @@ case "${target}" in
         ;;
 
     *)
-        echo "unrecognized target ${target}" 1>&2
+        echo "unrecognized target ${target}" >&2
         exit 1
         ;;
 esac
@@ -174,7 +174,7 @@ if [[ -n "${libc_arch:-}" ]]; then
 fi
 
 if [[ -n "${NO_RUN:-}" ]]; then
-    echo "skipped installation due to NO_RUN environment variable is set" 1>&2
+    echo "skipped installation due to NO_RUN environment variable is set" >&2
     exit 0
 fi
 

@@ -18,7 +18,7 @@ run() {
 
 if [ -z "${1:-}" ]; then
     for d in docker/*; do
-        if [[ -d "$d" ]]; then
+        if [[ -d "${d}" ]]; then
             target="${d/docker\//}"
             case "${target}" in
                 arm* | i586* | i686* | wasm* | x86_64*)
@@ -31,5 +31,5 @@ if [ -z "${1:-}" ]; then
         fi
     done
 else
-    run "${1}"
+    run "$1"
 fi

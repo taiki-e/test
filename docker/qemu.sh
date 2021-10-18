@@ -8,7 +8,7 @@ set -x
 ARCH="$1"
 # QEMU_VERSION=6.1.0
 # http://ftp.debian.org/debian/pool/main/q/qemu
-QEMU_VERSION=6.1+dfsg-5
+QEMU_VERSION=6.1+dfsg-6
 
 # https://wiki.qemu.org/Hosts/Linux#Building_QEMU_for_Linux
 # DEPS=(

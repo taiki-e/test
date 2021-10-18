@@ -11,13 +11,13 @@ shift
 MUSL=musl-1.1.24
 
 # may have been downloaded in a previous run
-if [[ ! -d "$MUSL" ]]; then
-    curl --retry 3 -LsSf https://www.musl-libc.org/releases/"$MUSL".tar.gz | tar xzf -
+if [[ ! -d "${MUSL}" ]]; then
+    curl --retry 3 -LsSf https://www.musl-libc.org/releases/"${MUSL}".tar.gz | tar xzf -
 fi
 
-cd "$MUSL"
-./configure --enable-optimize --enable-debug --disable-shared --prefix=/musl-"$TAG" "$@"
-if [[ "$TAG" == "i586" ]] || [[ "$TAG" == "i686" ]]; then
+cd "${MUSL}"
+./configure --enable-optimize --enable-debug --disable-shared --prefix=/musl-"${TAG}" "$@"
+if [[ "${TAG}" == "i586" ]] || [[ "${TAG}" == "i686" ]]; then
     make -j"$(nproc)" AR=ar RANLIB=ranlib
 else
     make -j"$(nproc)"

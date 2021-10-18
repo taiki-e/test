@@ -12,15 +12,15 @@ set -x
 
 build() {
     echo "Building docker image for ${1:?}"
-    docker build -t "${OWNER}/${PROJECT}:${1}" -f "docker/${1}/Dockerfile" docker/
+    docker build -t "${OWNER}/${PROJECT}:$1" -f "docker/$1/Dockerfile" docker/
 }
 
 if [[ -z "${1:-}" ]]; then
     for d in docker/*; do
-        if [[ -d "$d" ]]; then
+        if [[ -d "${d}" ]]; then
             build "${d/docker\//}"
         fi
     done
 else
-    build "${1}"
+    build "$1"
 fi

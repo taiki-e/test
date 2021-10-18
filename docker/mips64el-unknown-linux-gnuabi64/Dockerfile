@@ -21,7 +21,7 @@ COPY qemu.sh /
 RUN /qemu.sh mips64el
 
 ENV CARGO_TARGET_MIPS64EL_UNKNOWN_LINUX_GNUABI64_LINKER=mips64el-linux-gnuabi64-gcc \
-    CARGO_TARGET_MIPS64EL_UNKNOWN_LINUX_GNUABI64_RUNNER=qemu-mips64el \
+    CARGO_TARGET_MIPS64EL_UNKNOWN_LINUX_GNUABI64_RUNNER="qemu-mips64el -cpu Loongson-3A4000" \
     CC_mips64el_unknown_linux_gnuabi64=mips64el-linux-gnuabi64-gcc \
     CXX_mips64el_unknown_linux_gnuabi64=mips64el-linux-gnuabi64-g++ \
     OBJDUMP=mips64el-linux-gnuabi64-objdump \

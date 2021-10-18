@@ -204,16 +204,22 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
                         let mut qemu_cpu = None; // run `qemu-system-x -cpu help` for list
                         match spec.arch {
                             x86 | x86_64 => unreachable!(),
-                            arm | aarch64 | s390x | riscv64 => {
-                                if triple.starts_with("thumbv7neon") {
+                            arm  => {
+                                //if triple.starts_with("thumbv7neon") {
                                     qemu_cpu = Some("cortex-a8");
-                                }
+                                //}
                             }
+                            aarch64 | s390x | riscv64=>{}
                             mips => {
                                 // ubuntu's qemu-system-mips package contains qemu-system-mipsel
                                 // dockerfile.apt_install(format!("qemu-system-{}", spec.arch));
                             }
-                            mips64 | sparc64 => {
+                            mips64 => {
+                                // qemu triggering a SIGILL on MSA intrinsics if the cpu target is not defined.
+                                qemu_cpu = Some("Loongson-3A4000");
+                                // dockerfile.apt_install(format!("qemu-system-{}", qemu_arch_name));
+                            }
+                            sparc64 => {
                                 // dockerfile.apt_install(format!("qemu-system-{}", qemu_arch_name));
                             }
                             powerpc | powerpc64 => {
