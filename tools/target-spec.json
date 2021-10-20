@@ -6365,7 +6365,6 @@
     "disable-redzone": true,
     "executables": true,
     "features": "-mmx,-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-3dnow,-3dnowa,-avx,-avx2,+soft-float",
-    "has-elf-tls": true,
     "is-builtin": true,
     "linker": "rust-lld",
     "linker-flavor": "ld.lld",
@@ -6385,8 +6384,7 @@
       "kind": "call"
     },
     "static-position-independent-executables": true,
-    "target-pointer-width": "64",
-    "tls-model": "initial-exec"
+    "target-pointer-width": "64"
   },
   "x86_64-unknown-none-linuxkernel": {
     "arch": "x86_64",
