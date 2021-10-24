@@ -92,8 +92,6 @@ Lint checks provided by rustc:
                                 overlapping-range-endpoints  warn     detects range patterns with overlapping endpoints
                                             path-statements  warn     path statements with no effect
                                           private-in-public  warn     detect private items in public interfaces not caught by the old implementation
-                                     proc-macro-back-compat  warn     detects usage of old versions of certain proc-macro crates
-                      proc-macro-derive-resolution-fallback  warn     detects proc macro derives using inaccessible names from parent modules
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
                        semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
@@ -149,6 +147,8 @@ Lint checks provided by rustc:
                               order-dependent-trait-objects  deny     trait-object types were treated as different depending on marker-trait order
                                        overflowing-literals  deny     literal out of range for its type
                                patterns-in-fns-without-body  deny     patterns in functions without body were erroneously allowed
+                                     proc-macro-back-compat  deny     detects usage of old versions of certain proc-macro crates
+                      proc-macro-derive-resolution-fallback  deny     detects proc macro derives using inaccessible names from parent modules
                             pub-use-of-private-extern-crate  deny     detect public re-exports of private extern crates
                                               soft-unstable  deny     a feature gate that doesn't break dependent crates
                                         unconditional-panic  deny     operation will cause a panic at runtime
