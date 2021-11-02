@@ -22,6 +22,7 @@ Lint checks provided by rustc:
                                missing-copy-implementations  allow    detects potentially-forgotten implementations of `Copy`
                               missing-debug-implementations  allow    detects missing implementations of Debug
                                                missing-docs  allow    detects missing documentation for public members
+                                           must-not-suspend  allow    use of a `#[must_not_suspend]` value across a yield point
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
                                            noop-method-call  allow    detects the use of well-known noop methods
@@ -80,7 +81,6 @@ Lint checks provided by rustc:
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
-                                           must-not-suspend  warn     use of a `#[must_not_suspend]` value across a yield point
                         mutable-borrow-reservation-conflict  warn     reservation of a two-phased borrow conflicts with other shared borrows
                                 nontrivial-structural-match  warn     constant used in pattern of non-structural-match type and the constant's initializer expression contains values of non-structural-match types
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
@@ -151,6 +151,7 @@ Lint checks provided by rustc:
                       proc-macro-derive-resolution-fallback  deny     detects proc macro derives using inaccessible names from parent modules
                             pub-use-of-private-extern-crate  deny     detect public re-exports of private extern crates
                                               soft-unstable  deny     a feature gate that doesn't break dependent crates
+                        text-direction-codepoint-in-literal  deny     detect special Unicode codepoints that affect the visual representation of text on screen, changing the direction in which text flows
                                         unconditional-panic  deny     operation will cause a panic at runtime
                                         unknown-crate-types  deny     unknown crate type found in `#[crate_type]` directive
                                          useless-deprecated  deny     detects deprecation attributes with no effect
@@ -166,7 +167,7 @@ Lint groups provided by rustc:
     rust-2018-compatibility  keyword-idents, anonymous-parameters, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
     rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prelude-collisions, rust-2021-prefixes-incompatible-syntax, array-into-iter, non-fmt-panics
-                     unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, must-not-suspend, redundant-semicolons
+                     unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons
 
 
 Lint tools like Clippy can provide additional lints and lint groups.
