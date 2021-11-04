@@ -3,7 +3,7 @@
     "abi-return-struct-as-int": true,
     "arch": "aarch64",
     "archive-format": "darwin",
-    "cpu": "apple-a12",
+    "cpu": "apple-a14",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
     "dll-suffix": ".dylib",
     "dwarf-version": 2,
