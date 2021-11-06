@@ -121,17 +121,19 @@ jobs:
       - run: shellcheck **/*.sh
         if: always()
 
-  glibc:
+  version:
     strategy:
       fail-fast: false
       matrix:
         os:
           - ubuntu-18.04
           - ubuntu-20.04
-          - ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - run: /lib/x86_64-linux-gnu/libc.so.6
+      - name: glibc
+        run: /lib/x86_64-linux-gnu/libc.so.6
+      - name: docker
+        run: docker --version
 
   # This job doesn't actually test anything, but they're used to tell bors the
   # build completed, as there is no practical way to detect when a workflow is
