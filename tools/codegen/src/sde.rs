@@ -22,12 +22,12 @@ fn download_and_unpack() -> Result<()> {
     } else {
         bail!("Intel SDE only available on Linux, macOS, and Windows");
     };
-    let url = format!("https://software.intel.com/content/dam/develop/external/us/en/documents/downloads/sde-external-{}-{}.tar.bz2", VERSION, os);
+    let url = format!("https://software.intel.com/content/dam/develop/external/us/en/documents/downloads/sde-external-{VERSION}-{os}.tar.bz2");
 
     let response = ureq::get(&url).call()?;
     let decoder = BzDecoder::new(response.into_reader());
     let mut archive = tar::Archive::new(decoder);
-    let prefix = format!("stdarch-{}", REVISION);
+    let prefix = format!("stdarch-{REVISION}");
 
     let local_path = &stdarch_dir();
     if local_path.exists() {

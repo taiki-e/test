@@ -31,7 +31,7 @@ QEMU_VERSION=6.1+dfsg-6
 # done
 # DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${new_deps[@]}"
 
-# curl --retry 3 -LsSf https://download.qemu.org/qemu-"${QEMU_VERSION}".tar.xz | tar xJf -
+# curl -fsSL --retry 3 https://download.qemu.org/qemu-"${QEMU_VERSION}".tar.xz | tar xJf -
 
 # pushd "qemu-${QEMU_VERSION}"
 
@@ -57,7 +57,7 @@ QEMU_VERSION=6.1+dfsg-6
 # fi
 
 dpkg_arch="$(dpkg --print-architecture)"
-curl --retry 3 -LsSf "http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${QEMU_VERSION}_${dpkg_arch##*-}.deb" \
+curl -fsSL --retry 3 "http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${QEMU_VERSION}_${dpkg_arch##*-}.deb" \
     | dpkg-deb --fsys-tarfile - \
     | tar xvf - --wildcards ./usr/bin/qemu-"${ARCH}"-static --strip-components=3
 mv qemu-"${ARCH}"-static /usr/bin/qemu-"${ARCH}"

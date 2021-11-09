@@ -135,7 +135,7 @@ case "${target}" in
         sudo apt-get update
         DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends "${apt_deps[@]}"
 
-        curl --retry 3 -LsSf "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" | tar xJf -
+        curl -fsSL --retry 3 "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" | tar xJf -
         set_path "/wasmtime-v${WASMTIME_VERSION}-x86_64-linux"
 
         rustup target add "${target}"
@@ -183,7 +183,7 @@ DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends "
 
 if [[ -n "${qemu_arch:-}" ]]; then
     dpkg_arch="$(dpkg --print-architecture)"
-    curl --retry 3 -LsSf "http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${QEMU_VERSION}_${dpkg_arch##*-}.deb" \
+    curl -fsSL --retry 3 "http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${QEMU_VERSION}_${dpkg_arch##*-}.deb" \
         | dpkg-deb --fsys-tarfile - \
         | tar xvf - --wildcards ./usr/bin/qemu-"${qemu_arch}"-static --strip-components=3
     sudo mv qemu-"${qemu_arch}"-static /usr/bin/qemu-"${qemu_arch}"

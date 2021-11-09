@@ -15,7 +15,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     && rm -rf /var/lib/apt/lists/*
 
 ENV WASMTIME_VERSION=0.30.0
-RUN curl --retry 3 -LsSf https://github.com/bytecodealliance/wasmtime/releases/download/v$WASMTIME_VERSION/wasmtime-v$WASMTIME_VERSION-x86_64-linux.tar.xz | tar xJf -
+RUN curl -fsSL --retry 3 https://github.com/bytecodealliance/wasmtime/releases/download/v$WASMTIME_VERSION/wasmtime-v$WASMTIME_VERSION-x86_64-linux.tar.xz | tar xJf -
 ENV PATH=/wasmtime-v$WASMTIME_VERSION-x86_64-linux:$PATH
 
 ENV CARGO_TARGET_WASM32_WASI_RUNNER="wasmtime --enable-simd --enable-threads --"

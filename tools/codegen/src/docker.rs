@@ -73,7 +73,7 @@ pub fn gen() -> Result<()> {
         let dockerfile = dockerfile(triple)?;
         fs::write(
             out_dir.join("Dockerfile"),
-            dockerfile.build(format!("ubuntu:{}", UBUNTU_VERSION)),
+            dockerfile.build(format!("ubuntu:{UBUNTU_VERSION}")),
         )?;
     }
 
@@ -125,10 +125,10 @@ fn libc_arch_name(spec: &TargetSpec) -> String {
             // arm, armel, armhf
             let abi = abi.strip_prefix("eabi").unwrap_or(abi);
             let suffix = if abi.is_empty() { arch_suffix } else { abi };
-            format!("arm{}", suffix)
+            format!("arm{suffix}")
         }
-        mips | mips64 => format!("{}{}", spec.arch, arch_suffix),
-        powerpc64 => format!("{}{}", spec.arch.to_string().replace("powerpc", "ppc"), arch_suffix),
+        mips | mips64 => format!("{}{arch_suffix}", spec.arch),
+        powerpc64 => format!("{}{arch_suffix}", spec.arch.to_string().replace("powerpc", "ppc")),
         _ => todo!("{}", spec.arch),
     }
 }
@@ -171,27 +171,27 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
                         let libc_arch_name = libc_arch_name(spec);
                         let qemu_arch_name = qemu_arch_name(spec);
 
-                        let c_linker = &format!("{}-gcc", linker_base_name);
-                        let cpp_linker = &format!("{}-g++", linker_base_name);
+                        let c_linker = &format!("{linker_base_name}-gcc");
+                        let cpp_linker = &format!("{linker_base_name}-g++");
                         dockerfile.free_env(
-                            format!("CARGO_TARGET_{}_LINKER", env_triple_upper),
+                            format!("CARGO_TARGET_{env_triple_upper}_LINKER"),
                             c_linker,
                         );
-                        dockerfile.free_env(format!("CC_{}", env_triple_lower), c_linker);
-                        dockerfile.free_env(format!("CXX_{}", env_triple_lower), cpp_linker);
-                        dockerfile.free_env("OBJDUMP", format!("{}-objdump", linker_base_name));
+                        dockerfile.free_env(format!("CC_{env_triple_lower}"), c_linker);
+                        dockerfile.free_env(format!("CXX_{env_triple_lower}"), cpp_linker);
+                        dockerfile.free_env("OBJDUMP", format!("{linker_base_name}-objdump"));
 
-                        dockerfile.apt_install(format!("g++-{}", linker_base_name));
-                        dockerfile.apt_install(format!("{}-{}-cross", libc, libc_arch_name));
+                        dockerfile.apt_install(format!("g++-{linker_base_name}"));
+                        dockerfile.apt_install(format!("{libc}-{libc_arch_name}-cross"));
 
                         dockerfile.apt_install("binfmt-support");
-                        dockerfile.free_env("QEMU_LD_PREFIX", format!("/usr/{}", linker_base_name));
+                        dockerfile.free_env("QEMU_LD_PREFIX", format!("/usr/{linker_base_name}"));
                         dockerfile.copy("qemu.sh", "/");
-                        dockerfile.run(format!("/qemu.sh {}", qemu_arch_name));
+                        dockerfile.run(format!("/qemu.sh {qemu_arch_name}"));
                         // dockerfile.env("QEMU_VERSION", "6.1+dfsg-5");
                         // dockerfile.run(formatdoc!(
                         //     "
-                        //     set -x && apt-get update && curl --retry 3 -LsSf \"http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{QEMU_VERSION}}_amd64.deb\" \\
+                        //     set -x && apt-get update && curl -fsSL --retry 3 \"http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{QEMU_VERSION}}_amd64.deb\" \\
                         //         | dpkg --fsys-tarfile - \\
                         //         | tar xvf - --wildcards ./usr/bin/qemu-{0}-static --strip-components=3 \\
                         //         && mv qemu-{0}-static /usr/bin/qemu-{0} \
@@ -204,12 +204,12 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
                         let mut qemu_cpu = None; // run `qemu-system-x -cpu help` for list
                         match spec.arch {
                             x86 | x86_64 => unreachable!(),
-                            arm  => {
+                            arm => {
                                 //if triple.starts_with("thumbv7neon") {
-                                    qemu_cpu = Some("cortex-a8");
+                                qemu_cpu = Some("cortex-a8");
                                 //}
                             }
-                            aarch64 | s390x | riscv64=>{}
+                            aarch64 | s390x | riscv64 => {}
                             mips => {
                                 // ubuntu's qemu-system-mips package contains qemu-system-mipsel
                                 // dockerfile.apt_install(format!("qemu-system-{}", spec.arch));
@@ -217,10 +217,10 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
                             mips64 => {
                                 // qemu triggering a SIGILL on MSA intrinsics if the cpu target is not defined.
                                 qemu_cpu = Some("Loongson-3A4000");
-                                // dockerfile.apt_install(format!("qemu-system-{}", qemu_arch_name));
+                                // dockerfile.apt_install(format!("qemu-system-{qemu_arch_name}"));
                             }
                             sparc64 => {
-                                // dockerfile.apt_install(format!("qemu-system-{}", qemu_arch_name));
+                                // dockerfile.apt_install(format!("qemu-system-{qemu_arch_name}"));
                             }
                             powerpc | powerpc64 => {
                                 // dockerfile.apt_install("qemu-system-ppc");
@@ -237,12 +237,12 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
                         }
 
                         let runner = if let Some(cpu) = qemu_cpu {
-                            format!("qemu-{} -cpu {}", qemu_arch_name, cpu)
+                            format!("qemu-{qemu_arch_name} -cpu {cpu}")
                         } else {
-                            format!("qemu-{}", qemu_arch_name)
+                            format!("qemu-{qemu_arch_name}")
                         };
                         dockerfile
-                            .free_env(format!("CARGO_TARGET_{}_RUNNER", env_triple_upper), runner);
+                            .free_env(format!("CARGO_TARGET_{env_triple_upper}_RUNNER"), runner);
                     }
                 }
                 _ => todo!(),
@@ -255,7 +255,7 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
             dockerfile.run_curl("https://github.com/bytecodealliance/wasmtime/releases/download/v$WASMTIME_VERSION/wasmtime-v$WASMTIME_VERSION-x86_64-linux.tar.xz");
             dockerfile.path("/wasmtime-v$WASMTIME_VERSION-x86_64-linux");
             dockerfile.free_env(
-                format!("CARGO_TARGET_{}_RUNNER", env_triple_upper),
+                format!("CARGO_TARGET_{env_triple_upper}_RUNNER"),
                 "wasmtime --enable-simd --enable-threads --",
             );
         }
@@ -307,7 +307,7 @@ impl Dockerfile {
         } else {
             todo!()
         };
-        self.run(format!("curl --retry 3 -LsSf {}{}", url, pipe));
+        self.run(format!("curl -fsSL --retry 3 {url}{pipe}"));
     }
     fn run_apt(&mut self) {
         self.instructions.push(Instruction::RunApt);
@@ -340,9 +340,9 @@ impl Dockerfile {
                 }
                 *buf += &if value.contains(' ') {
                     // TODO: more accurate escape
-                    format!("{}=\"{}\" \\\n", key, value)
+                    format!("{key}=\"{value}\" \\\n")
                 } else {
-                    format!("{}={} \\\n", key, value)
+                    format!("{key}={value} \\\n")
                 };
             }
             if !first {
@@ -420,13 +420,13 @@ impl Instruction {
     fn write(&self, buf: &mut String) {
         match self {
             Instruction::From(from) => {
-                *buf += &format!("FROM {}\n", from);
+                *buf += &format!("FROM {from}\n");
             }
             Instruction::Run(command) => {
-                *buf += &format!("RUN {}\n", command);
+                *buf += &format!("RUN {command}\n");
             }
             Instruction::Copy(from, to) => {
-                *buf += &format!("COPY {} {}\n", from, to);
+                *buf += &format!("COPY {from} {to}\n");
             }
             Instruction::NewLine => {
                 while buf.ends_with("\n\n\n") {
