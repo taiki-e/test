@@ -1255,7 +1255,6 @@
     "linker": "arm-none-eabi-gcc",
     "llvm-target": "armv6k-none-eabihf",
     "os": "horizon",
-    "panic-strategy": "abort",
     "pre-link-args": {
       "gcc": [
         "-specs=3dsx.specs",
