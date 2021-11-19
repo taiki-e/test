@@ -1782,6 +1782,7 @@
     "emit-debug-gdb-scripts": false,
     "exe-suffix": ".js",
     "executables": true,
+    "generate-arange-section": false,
     "has-elf-tls": true,
     "is-builtin": true,
     "is-like-emscripten": true,
@@ -1829,7 +1830,8 @@
     "relocation-model": "static",
     "singlethread": true,
     "target-family": [
-      "unix"
+      "unix",
+      "wasm"
     ],
     "target-pointer-width": "32",
     "tls-model": "local-exec"
@@ -5175,6 +5177,7 @@
     "emit-debug-gdb-scripts": false,
     "exe-suffix": ".js",
     "executables": true,
+    "generate-arange-section": false,
     "has-elf-tls": true,
     "is-builtin": true,
     "is-like-emscripten": true,
@@ -5220,7 +5223,8 @@
     "relocation-model": "static",
     "singlethread": true,
     "target-family": [
-      "unix"
+      "unix",
+      "wasm"
     ],
     "target-pointer-width": "32",
     "tls-model": "local-exec"
@@ -5238,6 +5242,7 @@
     "emit-debug-gdb-scripts": false,
     "exe-suffix": ".wasm",
     "executables": true,
+    "generate-arange-section": false,
     "has-elf-tls": true,
     "is-builtin": true,
     "is-like-wasm": true,
@@ -5297,6 +5302,7 @@
     "emit-debug-gdb-scripts": false,
     "exe-suffix": ".wasm",
     "executables": true,
+    "generate-arange-section": false,
     "has-elf-tls": true,
     "is-builtin": true,
     "is-like-wasm": true,
@@ -5367,6 +5373,8 @@
     "emit-debug-gdb-scripts": false,
     "exe-suffix": ".wasm",
     "executables": true,
+    "features": "+bulk-memory,+mutable-globals,+sign-ext,+nontrapping-fptoint",
+    "generate-arange-section": false,
     "has-elf-tls": true,
     "is-builtin": true,
     "is-like-wasm": true,
@@ -5398,7 +5406,8 @@
         "--allow-undefined",
         "--fatal-warnings",
         "--no-demangle",
-        "--no-entry"
+        "--no-entry",
+        "-mwasm64"
       ]
     },
     "relocation-model": "static",
