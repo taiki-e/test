@@ -13,6 +13,7 @@
     unreachable_pub,
     unsafe_op_in_unsafe_fn
 )]
+#![warn(clippy::default_trait_access, clippy::undocumented_unsafe_blocks, clippy::wildcard_imports)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 use std::env;
@@ -86,7 +87,7 @@ pub mod process {
             self
         }
 
-        pub fn envs<I, K, V>(&mut self, vars: I) -> &mut Command
+        pub fn envs<I, K, V>(&mut self, vars: I) -> &mut Self
         where
             I: IntoIterator<Item = (K, V)>,
             K: AsRef<OsStr>,
@@ -96,32 +97,32 @@ pub mod process {
             self
         }
 
-        pub fn env_remove<K: AsRef<OsStr>>(&mut self, key: K) -> &mut Command {
+        pub fn env_remove<K: AsRef<OsStr>>(&mut self, key: K) -> &mut Self {
             self.0.env_remove(key.as_ref());
             self
         }
 
-        pub fn env_clear(&mut self) -> &mut Command {
+        pub fn env_clear(&mut self) -> &mut Self {
             self.0.env_clear();
             self
         }
 
-        pub fn current_dir<P: AsRef<Path>>(&mut self, dir: P) -> &mut Command {
+        pub fn current_dir<P: AsRef<Path>>(&mut self, dir: P) -> &mut Self {
             self.0.current_dir(dir.as_ref());
             self
         }
 
-        pub fn stdin<T: Into<Stdio>>(&mut self, cfg: T) -> &mut Command {
+        pub fn stdin<T: Into<Stdio>>(&mut self, cfg: T) -> &mut Self {
             self.0.stdin(cfg.into());
             self
         }
 
-        pub fn stdout<T: Into<Stdio>>(&mut self, cfg: T) -> &mut Command {
+        pub fn stdout<T: Into<Stdio>>(&mut self, cfg: T) -> &mut Self {
             self.0.stdout(cfg.into());
             self
         }
 
-        pub fn stderr<T: Into<Stdio>>(&mut self, cfg: T) -> &mut Command {
+        pub fn stderr<T: Into<Stdio>>(&mut self, cfg: T) -> &mut Self {
             self.0.stderr(cfg.into());
             self
         }
@@ -153,17 +154,17 @@ pub mod process {
 
     #[cfg(unix)]
     impl Command {
-        pub fn uid(&mut self, id: u32) -> &mut Command {
+        pub fn uid(&mut self, id: u32) -> &mut Self {
             self.0.uid(id as _);
             self
         }
 
-        pub fn gid(&mut self, id: u32) -> &mut Command {
+        pub fn gid(&mut self, id: u32) -> &mut Self {
             self.0.gid(id as _);
             self
         }
 
-        pub unsafe fn pre_exec<F>(&mut self, f: F) -> &mut Command
+        pub unsafe fn pre_exec<F>(&mut self, f: F) -> &mut Self
         where
             F: FnMut() -> io::Result<()> + Send + Sync + 'static,
         {
@@ -178,7 +179,7 @@ pub mod process {
             self.0.exec()
         }
 
-        pub fn arg0<S>(&mut self, arg: S) -> &mut Command
+        pub fn arg0<S>(&mut self, arg: S) -> &mut Self
         where
             S: AsRef<OsStr>,
         {
@@ -189,7 +190,7 @@ pub mod process {
 
     #[cfg(windows)]
     impl Command {
-        fn creation_flags(&mut self, flags: u32) -> &mut Command {
+        fn creation_flags(&mut self, flags: u32) -> &mut Self {
             self.0.creation_flags(flags);
             self
         }
