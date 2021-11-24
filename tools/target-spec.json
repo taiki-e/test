@@ -3638,6 +3638,7 @@
     "only-cdylib": true,
     "os": "cuda",
     "panic-strategy": "abort",
+    "supports-stack-protector": false,
     "target-pointer-width": "64",
     "vendor": "nvidia"
   },
