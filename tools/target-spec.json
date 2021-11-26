@@ -18,14 +18,15 @@
     "is-builtin": true,
     "is-like-osx": true,
     "link-env": [
-      "ZERO_AR_DATE=1"
+      "ZERO_AR_DATE=1",
+      "MACOSX_DEPLOYMENT_TARGET=11.0"
     ],
     "link-env-remove": [
       "IPHONEOS_DEPLOYMENT_TARGET"
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
-    "llvm-target": "aarch64-apple-macosx10.7.0",
+    "llvm-target": "arm64-apple-macosx11.0.0",
     "max-atomic-width": 128,
     "os": "macos",
     "pre-link-args": {
@@ -447,7 +448,6 @@
     "dynamic-linking": true,
     "env": "musl",
     "executables": true,
-    "features": "+outline-atomics",
     "has-elf-tls": true,
     "has-rpath": true,
     "is-builtin": true,
@@ -2199,7 +2199,8 @@
     "is-builtin": true,
     "is-like-osx": true,
     "link-env": [
-      "ZERO_AR_DATE=1"
+      "ZERO_AR_DATE=1",
+      "MACOSX_DEPLOYMENT_TARGET=10.7"
     ],
     "link-env-remove": [
       "IPHONEOS_DEPLOYMENT_TARGET"
@@ -5438,7 +5439,8 @@
     "is-builtin": true,
     "is-like-osx": true,
     "link-env": [
-      "ZERO_AR_DATE=1"
+      "ZERO_AR_DATE=1",
+      "MACOSX_DEPLOYMENT_TARGET=10.7"
     ],
     "link-env-remove": [
       "IPHONEOS_DEPLOYMENT_TARGET"
