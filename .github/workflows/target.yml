@@ -207,12 +207,12 @@ jobs:
           target: ${{ matrix.target }}
 
       # - run: |
-      #     sudo apt-get update
-      #     sudo apt-get install ${{ matrix.apt }}
+      #     sudo apt-get -o Dpkg::Use-Pty=0 update -qq
+      #     sudo apt-get -o Dpkg::Use-Pty=0 install ${{ matrix.apt }}
       #   if: matrix.apt != ''
 
       # - run: |
-      #     sudo apt-get install musl musl-dev musl-tools
+      #     sudo apt-get -o Dpkg::Use-Pty=0 install musl musl-dev musl-tools
       #   if: contains(matrix.target, 'musl')
 
       # - run: ci/install-emscripten.sh

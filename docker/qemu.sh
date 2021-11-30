@@ -22,18 +22,18 @@ QEMU_VERSION=6.1+dfsg-6
 #     # zlib1g-dev
 # )
 
-# apt-get update
+# apt-get -o Dpkg::Use-Pty=0 update -qq
 # new_deps=()
 # for dep in "${DEPS[@]}"; do
 #     if ! dpkg -L "${dep}" &>/dev/null; then
 #         new_deps+=("${dep}")
 #     fi
 # done
-# DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${new_deps[@]}"
+# DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Use-Pty=0 install -y --no-install-recommends "${new_deps[@]}"
 
 # curl -fsSL --retry 3 https://download.qemu.org/qemu-"${QEMU_VERSION}".tar.xz | tar xJf -
 
-# pushd "qemu-${QEMU_VERSION}"
+# pushd "qemu-${QEMU_VERSION}" >/dev/null
 
 # ./configure \
 #     --disable-capstone \
@@ -50,10 +50,10 @@ QEMU_VERSION=6.1+dfsg-6
 # make install
 # make clean
 
-# popd
+# popd >/dev/null
 
 # if ((${#new_deps[@]})); then
-#     apt-get purge -y --auto-remove "${new_deps[@]}"
+#     apt-get -o Dpkg::Use-Pty=0 purge -y --auto-remove "${new_deps[@]}"
 # fi
 
 dpkg_arch="$(dpkg --print-architecture)"

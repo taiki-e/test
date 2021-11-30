@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN apt-get -o Dpkg::Use-Pty=0 update -qq && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Use-Pty=0 install -y --no-install-recommends \
         bzip2 \
         ca-certificates \
         curl \

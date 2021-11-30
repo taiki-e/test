@@ -191,7 +191,7 @@ fn dockerfile(triple: &'static str) -> Result<Dockerfile> {
                         // dockerfile.env("QEMU_VERSION", "6.1+dfsg-5");
                         // dockerfile.run(formatdoc!(
                         //     "
-                        //     set -x && apt-get update && curl -fsSL --retry 3 \"http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{QEMU_VERSION}}_amd64.deb\" \\
+                        //     set -x && apt-get -o Dpkg::Use-Pty=0 update -qq && curl -fsSL --retry 3 \"http://ftp.debian.org/debian/pool/main/q/qemu/qemu-user-static_${{QEMU_VERSION}}_amd64.deb\" \\
                         //         | dpkg --fsys-tarfile - \\
                         //         | tar xvf - --wildcards ./usr/bin/qemu-{0}-static --strip-components=3 \\
                         //         && mv qemu-{0}-static /usr/bin/qemu-{0} \
@@ -372,7 +372,7 @@ impl Dockerfile {
                         .collect::<String>();
                     Instruction::Run(formatdoc!(
                         "
-                        apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \\
+                        apt-get -o Dpkg::Use-Pty=0 update -qq && DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Use-Pty=0 install -y --no-install-recommends \\
                                 {} \\
                             && rm -rf /var/lib/apt/lists/*
                         ",

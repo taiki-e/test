@@ -128,12 +128,12 @@ case "${target}" in
         set_env "CARGO_TARGET_${triple_upper}_RUNNER=wasmtime --enable-simd --enable-threads --"
 
         if [[ -n "${NO_RUN:-}" ]]; then
-            echo "skipped installation due to NO_RUN environment variable is set" >&2
+            echo >&2 "skipped installation due to NO_RUN environment variable is set"
             exit 0
         fi
 
-        sudo apt-get update
-        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends "${apt_deps[@]}"
+        sudo apt-get -o Dpkg::Use-Pty=0 update -qq
+        DEBIAN_FRONTEND=noninteractive sudo apt-get -o Dpkg::Use-Pty=0 install -y --no-install-recommends "${apt_deps[@]}"
 
         curl -fsSL --retry 3 "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux.tar.xz" | tar xJf -
         set_path "/wasmtime-v${WASMTIME_VERSION}-x86_64-linux"
@@ -143,10 +143,7 @@ case "${target}" in
         exit 0
         ;;
 
-    *)
-        echo "unrecognized target ${target}" >&2
-        exit 1
-        ;;
+    *) echo >&2 "unrecognized target '${target}'" && exit 1 ;;
 esac
 
 if [[ -n "${qemu_arch:-}" ]]; then
@@ -174,12 +171,12 @@ if [[ -n "${libc_arch:-}" ]]; then
 fi
 
 if [[ -n "${NO_RUN:-}" ]]; then
-    echo "skipped installation due to NO_RUN environment variable is set" >&2
+    echo >&2 "skipped installation due to NO_RUN environment variable is set"
     exit 0
 fi
 
-sudo apt-get update
-DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends "${apt_deps[@]}"
+sudo apt-get -o Dpkg::Use-Pty=0 update -qq
+DEBIAN_FRONTEND=noninteractive sudo apt-get -o Dpkg::Use-Pty=0 install -y --no-install-recommends "${apt_deps[@]}"
 
 if [[ -n "${qemu_arch:-}" ]]; then
     dpkg_arch="$(dpkg --print-architecture)"
