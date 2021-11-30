@@ -12,6 +12,7 @@ linux_task:
   setup_script:
     - rustup update nightly && rustup default nightly
     - grep -E -m 1 '^(flags|Features)' /proc/cpuinfo
+    - /lib/x86_64-linux-gnu/libc.so.6 || /lib/aarch64-linux-gnu/libc.so.6
   test_script:
     - cargo test --all --all-features
 
@@ -26,6 +27,7 @@ freebsd_task:
       curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
         | sh -s -- -y --profile minimal --default-toolchain nightly --component rustfmt,clippy,rust-src
     - grep -E 'Features.*=' /var/run/dmesg.boot
+    - freebsd-version
   test_script:
     - . $HOME/.cargo/env
     - cargo test --all --all-features
