@@ -2976,6 +2976,7 @@
     "crt-static-respected": true,
     "data-layout": "E-m:e-p:32:16:32-i8:8:8-i16:16:16-i32:16:32-n8:16:32-a:0:16-S16",
     "dynamic-linking": true,
+    "env": "gnu",
     "executables": true,
     "has-elf-tls": true,
     "has-rpath": true,
@@ -4413,6 +4414,29 @@
     "panic-strategy": "abort",
     "relocation-model": "static",
     "target-pointer-width": "32"
+  },
+  "riscv64gc-unknown-freebsd": {
+    "abi-return-struct-as-int": true,
+    "arch": "riscv64",
+    "code-model": "medium",
+    "cpu": "generic-rv64",
+    "data-layout": "e-m:e-p:64:64-i64:64-i128:128-n64-S128",
+    "dwarf-version": 2,
+    "dynamic-linking": true,
+    "executables": true,
+    "features": "+m,+a,+f,+d,+c",
+    "has-rpath": true,
+    "is-builtin": true,
+    "llvm-abiname": "lp64d",
+    "llvm-target": "riscv64-unknown-freebsd",
+    "max-atomic-width": 64,
+    "os": "freebsd",
+    "position-independent-executables": true,
+    "relro-level": "full",
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "64"
   },
   "riscv64gc-unknown-linux-gnu": {
     "arch": "riscv64",
