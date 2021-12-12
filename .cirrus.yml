@@ -24,7 +24,7 @@ freebsd_task:
   setup_script:
     - |
       pkg install -y curl
-      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+      curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs \
         | sh -s -- -y --profile minimal --default-toolchain nightly --component rustfmt,clippy,rust-src
     - grep -E 'Features.*=' /var/run/dmesg.boot
     - freebsd-version

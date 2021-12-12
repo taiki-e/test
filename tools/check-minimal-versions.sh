@@ -1,29 +1,28 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 # Check all public crates with minimal version dependencies.
 #
-# Usage:
-#    ./tools/check-minimal-versions.sh [+toolchain] [check|test] [options]
+# USAGE:
+#    ./tools/check-minimal-versions.sh [+toolchain] [check|test] [OPTIONS]
 #
-# Note:
+# NOTE:
 # - This script modifies Cargo.toml and Cargo.lock while running
 # - This script exits with 1 if there are any unstaged changes on Cargo.toml
-# - This script requires nightly toolchain and cargo-hack
+# - This script requires nightly toolchain and cargo-hack <https://github.com/taiki-e/cargo-hack>
 #
 # Refs: https://github.com/rust-lang/cargo/issues/5657
 
-set -euo pipefail
-IFS=$'\n\t'
+cd "$(cd "$(dirname "$0")" && pwd)"/..
 
 error() {
     if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
         echo "::error::$*"
     else
-        echo "error: $*" >&2
+        echo >&2 "error: $*"
     fi
 }
-
-cd "$(cd "$(dirname "$0")" && pwd)"/..
 
 # Decide Rust toolchain.
 # Nightly is used by default if the `CI` environment variable is unset.

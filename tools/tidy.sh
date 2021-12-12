@@ -1,14 +1,13 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 # Format all code.
 #
-# Usage:
-#    ./tools/fmt.sh
+# USAGE:
+#    ./tools/tidy.sh
 #
-# Note: This script requires rustfmt, shfmt, and prettier.
-
-set -euo pipefail
-IFS=$'\n\t'
+# NOTE: This script requires rustfmt, shfmt, and prettier.
 
 cd "$(cd "$(dirname "$0")" && pwd)"/..
 

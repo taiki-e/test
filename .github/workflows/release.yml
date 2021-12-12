@@ -77,7 +77,8 @@ jobs:
         with:
           toolchain: ${{ matrix.rust || 'nightly' }}
       - run: |
-          sudo apt-get update && sudo apt-get install -y \
+          sudo apt-get update -qq
+          sudo apt-get -o Dpkg::Use-Pty=0 install -y \
             gcc-arm-linux-gnueabi \
             gcc-arm-linux-gnueabihf \
             gcc-aarch64-linux-gnu

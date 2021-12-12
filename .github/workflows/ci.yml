@@ -111,29 +111,44 @@ jobs:
       - uses: taiki-e/github-actions/install-rust@main
         with:
           component: clippy,rustfmt
-      - name: Install prettier
-        run: sudo npm install -g prettier
+      - name: Install Prettier
+        run: npm install prettier
       - name: Install shfmt
-        run: ci/install-shfmt.sh
+        run: |
+          "${GOROOT_1_17_X64}"/bin/go install mvdan.cc/sh/v3/cmd/shfmt@latest
+          echo "${HOME}/go/bin" >>"${GITHUB_PATH}"
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get -o Dpkg::Use-Pty=0 remove -y shellcheck
+          tag="$(curl -fsSL --retry 10 https://api.github.com/repos/koalaman/shellcheck/releases/latest | jq -r '.tag_name')"
+          curl -fsSL --retry 10 "https://github.com/koalaman/shellcheck/releases/download/${tag}/shellcheck-${tag}.linux.x86_64.tar.xz" \
+            | tar xJf - --strip-components 1 -C /usr/local/bin "shellcheck-${tag}/shellcheck"
+          shellcheck --version
+      # - run: tools/tidy.sh
       - run: cargo clippy --all --all-features --all-targets
-      - run: make fmt
-        if: always()
-      - run: shellcheck **/*.sh
         if: always()
 
   version:
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-18.04
-          - ubuntu-20.04
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
-      - name: glibc
-        run: /lib/x86_64-linux-gnu/libc.so.6
       - name: docker
         run: docker --version
+      - name: glibc
+        run: |
+          set -x
+          # https://hub.docker.com/_/ubuntu
+          docker run --rm --init ubuntu:20.04 /lib/x86_64-linux-gnu/libc.so.6 # focal
+          docker run --rm --init ubuntu:18.04 /lib/x86_64-linux-gnu/libc.so.6 # bionic
+          docker run --rm --init ubuntu:16.04 /lib/x86_64-linux-gnu/libc.so.6 # xenial
+          docker run --rm --init ubuntu:14.04 /lib/x86_64-linux-gnu/libc.so.6 # trusty
+          # https://hub.docker.com/_/debian
+          docker run --rm --init debian:11 /lib/x86_64-linux-gnu/libc.so.6 # bullseye
+          docker run --rm --init debian:10 /lib/x86_64-linux-gnu/libc.so.6 # buster
+          docker run --rm --init debian:9 /lib/x86_64-linux-gnu/libc.so.6  # stretch
+          # https://hub.docker.com/_/centos
+          docker run --rm --init centos:8 rpm -q glibc
+          docker run --rm --init centos:7 rpm -q glibc
+          docker run --rm --init centos:6 rpm -q glibc
 
   # This job doesn't actually test anything, but they're used to tell bors the
   # build completed, as there is no practical way to detect when a workflow is
@@ -148,7 +163,7 @@ jobs:
       - test
       # - docs
       - codegen
-      - tidy
+      # - tidy
     runs-on: ubuntu-latest
     steps:
       - name: Mark the job as a success
@@ -172,7 +187,7 @@ jobs:
   #       run: |
   #         title="Cron Job Failed"
   #         issue_number=$(
-  #             curl -LsSf "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues" \
+  #             curl -fsSL --retry 10 "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues" \
   #                 | jq "map(select(.title == \"${title}\" and .user.login == \"github-actions[bot]\")) | .[0].number"
   #         )
   #         if [[ "${issue_number}" == "null" ]]; then
@@ -365,12 +380,12 @@ jobs:
   #         target: ${{ matrix.target }}
 
   #     - run: |
-  #         sudo apt-get update
-  #         sudo apt-get install ${{ matrix.apt }}
+  #         sudo apt-get update -qq
+  #         sudo apt-get -o Dpkg::Use-Pty=0 install ${{ matrix.apt }}
   #       if: matrix.apt != ''
 
   #     - run: |
-  #         sudo apt-get install musl musl-dev musl-tools
+  #         sudo apt-get -o Dpkg::Use-Pty=0 install musl musl-dev musl-tools
   #       if: contains(matrix.target, 'musl')
 
   #     - run: ci/install-emscripten.sh
