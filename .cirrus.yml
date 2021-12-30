@@ -14,7 +14,7 @@ linux_task:
     - grep -E -m 1 '^(flags|Features)' /proc/cpuinfo
     - /lib/x86_64-linux-gnu/libc.so.6 || /lib/aarch64-linux-gnu/libc.so.6
   test_script:
-    - cargo test --all --all-features
+    - cargo test --workspace --all-features
 
 freebsd_task:
   name: x86_64-unknown-freebsd
@@ -24,10 +24,10 @@ freebsd_task:
   setup_script:
     - |
       pkg install -y curl
-      curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs \
+      curl --proto '=https' --tlsv1.2 -fsSL --retry 10 --retry-connrefused https://sh.rustup.rs \
         | sh -s -- -y --profile minimal --default-toolchain nightly --component rustfmt,clippy,rust-src
     - grep -E 'Features.*=' /var/run/dmesg.boot
     - freebsd-version
   test_script:
     - . $HOME/.cargo/env
-    - cargo test --all --all-features
+    - cargo test --workspace --all-features

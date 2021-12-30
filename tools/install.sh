@@ -9,7 +9,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 package="${PACKAGE:?}"
-repository="${REPOSITORY:-"taiki-e/$package"}"
+repository="${REPOSITORY:-"taiki-e/${package}"}"
 target="${TARGET:-"$(rustc -Vv | grep host | sed 's/host: //')"}"
 outdir="${OUTDIR:-"${HOME}/.cargo/bin"}"
 

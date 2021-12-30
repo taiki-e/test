@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2046
 set -euo pipefail
 IFS=$'\n\t'
 
@@ -7,25 +8,62 @@ IFS=$'\n\t'
 # USAGE:
 #    ./tools/tidy.sh
 #
-# NOTE: This script requires rustfmt, shfmt, and prettier.
+# NOTE: This script requires the following tools:
+# - rustfmt
+# - shfmt
+# - prettier
+# - shellcheck
 
 cd "$(cd "$(dirname "$0")" && pwd)"/..
 
-# shellcheck disable=SC2046
-if [[ -z "${CI:-}" ]]; then
-    # `cargo fmt` cannot recognize modules defined inside macros, so run
-    # rustfmt directly.
-    # Refs: https://github.com/rust-lang/rustfmt/issues/4078
-    rustfmt $(git ls-files '*.rs')
-    shfmt -l -w $(git ls-files '*.sh')
-    if prettier --version &>/dev/null; then
-        prettier -l -w $(git ls-files '*.yml')
+x() {
+    local cmd="$1"
+    shift
+    if [[ -n "${verbose:-}" ]]; then
+        (
+            set -x
+            "${cmd}" "$@"
+        )
+    else
+        "${cmd}" "$@"
     fi
+}
+
+if [[ "${1:-}" == "-v" ]]; then
+    shift
+    verbose=1
+fi
+if [[ $# -gt 0 ]]; then
+    cat <<EOF
+USAGE:
+    $0 [-v]
+EOF
+    exit 1
+fi
+
+prettier=prettier
+if type -P npm &>/dev/null && type -P "$(npm bin)/prettier" &>/dev/null; then
+    prettier="$(npm bin)/prettier"
+fi
+
+# `cargo fmt` cannot recognize modules defined inside macros, so run
+# rustfmt directly.
+# Refs: https://github.com/rust-lang/rustfmt/issues/4078
+if type -P rustfmt &>/dev/null; then
+    x rustfmt $(git ls-files '*.rs')
+fi
+if type -P shfmt &>/dev/null; then
+    x shfmt -l -w $(git ls-files '*.sh')
 else
-    # `cargo fmt` cannot recognize modules defined inside macros, so run
-    # rustfmt directly.
-    # Refs: https://github.com/rust-lang/rustfmt/issues/4078
-    rustfmt --check $(git ls-files '*.rs')
-    shfmt -d $(git ls-files '*.sh')
-    prettier -c $(git ls-files '*.yml')
+    echo >&2 "WARNING: 'shfmt' is not installed"
+fi
+if type -P "${prettier}" &>/dev/null; then
+    x "${prettier}" -l -w $(git ls-files '*.yml')
+else
+    echo >&2 "WARNING: 'prettier' is not installed"
+fi
+if type -P shellcheck &>/dev/null; then
+    x shellcheck $(git ls-files '*.sh')
+else
+    echo >&2 "WARNING: 'shellcheck' is not installed"
 fi

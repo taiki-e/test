@@ -11,6 +11,6 @@ test:
 gen:
 	@tools/gen.sh
 
-.PHONY: fmt
-fmt:
-	@tools/fmt.sh
+.PHONY: tidy
+tidy:
+	@tools/tidy.sh

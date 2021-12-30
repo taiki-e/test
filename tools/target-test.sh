@@ -39,9 +39,9 @@ fi
 
 set -x
 
-$cargo build --lib --target "${target}" --manifest-path rust/lib-no-std/Cargo.toml
+${cargo} build --lib --target "${target}" --manifest-path rust/lib-no-std/Cargo.toml
 
-if $cargo build --lib --target "${target}" --manifest-path rust/lib/Cargo.toml; then
+if ${cargo} build --lib --target "${target}" --manifest-path rust/lib/Cargo.toml; then
     if [[ -n "${BUILD_STD_FAIL:-}" ]]; then
         error "${target}: marked as no-std, but build with std was successful"
         exit 1
@@ -55,7 +55,7 @@ else
     fi
 fi
 
-if $cargo build --bin rust-test-bin --target "${target}"; then
+if ${cargo} build --bin rust-test-bin --target "${target}"; then
     if [[ -n "${BUILD_BIN_FAIL:-}" ]]; then
         error "${target}: marked as bin-fail, but build was successful"
         exit 1
