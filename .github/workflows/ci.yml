@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - main
+      - dev
       - staging
       - v[0-9]+.[0-9]+
   schedule:
@@ -113,9 +114,9 @@ jobs:
       - uses: taiki-e/github-actions/install-rust@main
         with:
           component: clippy,rustfmt
-      - uses: taiki-e/github-actions/install@main
-        with:
-          tool: prettier,shellcheck,shfmt
+      - uses: taiki-e/install-action@shellcheck
+      - uses: taiki-e/install-action@shfmt
+      - run: npm install prettier
       # `cargo fmt` cannot recognize modules defined inside macros, so run
       # rustfmt directly.
       # Refs: https://github.com/rust-lang/rustfmt/issues/4078
