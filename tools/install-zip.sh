@@ -24,7 +24,7 @@ case "${OSTYPE}" in
         7z x cargo-hack.zip -o"${outdir}"
         ;;
     *)
-        error "unrecognized OSTYPE: ${OSTYPE}"
+        error "unrecognized OSTYPE '${OSTYPE}'"
         exit 1
         ;;
 esac
