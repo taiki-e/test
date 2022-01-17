@@ -1251,6 +1251,7 @@
     "is-builtin": true,
     "linker": "arm-none-eabi-gcc",
     "llvm-target": "armv6k-none-eabihf",
+    "no-default-libraries": false,
     "os": "horizon",
     "pre-link-args": {
       "gcc": [
