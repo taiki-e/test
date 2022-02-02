@@ -6232,6 +6232,7 @@
     "stack-probes": {
       "kind": "call"
     },
+    "static-position-independent-executables": true,
     "supported-sanitizers": [
       "address",
       "cfi",
