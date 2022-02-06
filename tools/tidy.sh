@@ -2,6 +2,7 @@
 # shellcheck disable=SC2046
 set -euo pipefail
 IFS=$'\n\t'
+cd "$(dirname "$0")"/..
 
 # Format all code.
 #
@@ -13,8 +14,6 @@ IFS=$'\n\t'
 # - shfmt
 # - prettier
 # - shellcheck
-
-cd "$(cd "$(dirname "$0")" && pwd)"/..
 
 x() {
     local cmd="$1"

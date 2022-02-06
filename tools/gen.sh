@@ -1,13 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 IFS=$'\n\t'
+cd "$(dirname "$0")"/..
 
 # Run code generators.
 #
 # USAGE:
 #    ./tools/gen.sh [options]
-
-cd "$(cd "$(dirname "$0")" && pwd)"/..
 
 set -x
 
