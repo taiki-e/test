@@ -278,11 +278,6 @@
     "max-atomic-width": 128,
     "os": "android",
     "position-independent-executables": true,
-    "pre-link-args": {
-      "gcc": [
-        "-Wl,--allow-multiple-definition"
-      ]
-    },
     "relro-level": "full",
     "supported-sanitizers": [
       "cfi",
@@ -809,11 +804,6 @@
     "max-atomic-width": 32,
     "os": "android",
     "position-independent-executables": true,
-    "pre-link-args": {
-      "gcc": [
-        "-Wl,--allow-multiple-definition"
-      ]
-    },
     "relro-level": "full",
     "target-family": [
       "unix"
@@ -1345,7 +1335,6 @@
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
-        "-Wl,--allow-multiple-definition",
         "-march=armv7-a"
       ]
     },
@@ -2289,11 +2278,6 @@
     "max-atomic-width": 64,
     "os": "android",
     "position-independent-executables": true,
-    "pre-link-args": {
-      "gcc": [
-        "-Wl,--allow-multiple-definition"
-      ]
-    },
     "relro-level": "full",
     "stack-probes": {
       "kind": "call"
@@ -5157,7 +5141,6 @@
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
-        "-Wl,--allow-multiple-definition",
         "-march=armv7-a"
       ]
     },
@@ -5883,7 +5866,6 @@
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
-        "-Wl,--allow-multiple-definition",
         "-m64"
       ]
     },
