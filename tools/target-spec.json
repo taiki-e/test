@@ -281,6 +281,7 @@
     "relro-level": "full",
     "supported-sanitizers": [
       "cfi",
+      "memtag",
       "hwaddress"
     ],
     "target-family": [
@@ -402,6 +403,7 @@
       "cfi",
       "leak",
       "memory",
+      "memtag",
       "thread",
       "hwaddress"
     ],
@@ -3165,7 +3167,7 @@
     "dynamic-linking": true,
     "env": "musl",
     "executables": true,
-    "features": "+mips64r2",
+    "features": "+mips64r2,+soft-float",
     "has-rpath": true,
     "has-thread-local": true,
     "is-builtin": true,
