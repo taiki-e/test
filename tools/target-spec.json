@@ -4504,7 +4504,7 @@
     "is-builtin": true,
     "linker": "riscv32-esp-elf-gcc",
     "llvm-target": "riscv32",
-    "max-atomic-width": 32,
+    "max-atomic-width": 64,
     "os": "espidf",
     "panic-strategy": "abort",
     "relocation-model": "static",
