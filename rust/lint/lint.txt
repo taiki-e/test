@@ -107,6 +107,7 @@ Lint checks provided by rustc:
                                         uncommon-codepoints  warn     detects uncommon Unicode codepoints in identifiers
                                     unconditional-recursion  warn     functions that cannot return without calling themselves
                                             unexpected-cfgs  warn     detects unexpected names and values in `#[cfg]` conditions
+                              unfulfilled-lint-expectations  warn     unfulfilled lint expectation
                                          uninhabited-static  warn     uninhabited static
                                               unknown-lints  warn     unrecognized lint attribute
                                       unnameable-test-items  warn     detects an item that cannot be named being marked as `#[test_case]`
