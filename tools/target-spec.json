@@ -280,6 +280,7 @@
     "position-independent-executables": true,
     "relro-level": "full",
     "supported-sanitizers": [
+      "address",
       "cfi",
       "memtag",
       "hwaddress"
@@ -807,6 +808,9 @@
     "os": "android",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-sanitizers": [
+      "address"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1341,6 +1345,9 @@
       ]
     },
     "relro-level": "full",
+    "supported-sanitizers": [
+      "address"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2284,6 +2291,9 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-sanitizers": [
+      "address"
+    ],
     "target-family": [
       "unix"
     ],
@@ -5875,6 +5885,9 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-sanitizers": [
+      "address"
+    ],
     "target-family": [
       "unix"
     ],
