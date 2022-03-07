@@ -61,6 +61,7 @@ Lint checks provided by rustc:
                                                   dead-code  warn     detect unused, unexported items
                                                  deprecated  warn     detects use of deprecated items
                         deprecated-cfg-attr-crate-type-name  warn     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
+                           deprecated-where-clause-location  warn     deprecated where clause location
                                   deref-into-dyn-supertrait  warn     `Deref` implementation usage with a supertrait trait object for output might be shadowed in the future
                                               deref-nullptr  warn     detects when an null pointer is dereferenced
                                                 drop-bounds  warn     bounds of the form `T: Drop` are most likely incorrect
