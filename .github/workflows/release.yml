@@ -26,7 +26,7 @@ jobs:
     if: github.repository_owner == 'taiki-e'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           persist-credentials: false
       - uses: hawkw/create-gh-release-action@eliza/prefix
@@ -73,7 +73,7 @@ jobs:
   #           rust: nightly-x86_64-gnu
   #   runs-on: ${{ matrix.os }}
   #   steps:
-  #     - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v3
   #       with:
   #         persist-credentials: false
   #     - uses: taiki-e/github-actions/install-rust@main

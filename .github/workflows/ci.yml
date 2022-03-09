@@ -20,6 +20,7 @@ env:
   CARGO_NET_RETRY: 10
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: full
+  RUSTDOCFLAGS: -D warnings
   RUSTFLAGS: -D warnings
   RUSTUP_MAX_RETRIES: 10
 
@@ -44,7 +45,7 @@ jobs:
           # - target: x86_64-unknown-linux-musl
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           persist-credentials: false
       - uses: taiki-e/github-actions/install-rust@main
@@ -68,13 +69,11 @@ jobs:
   # docs:
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v3
   #       with:
   #         persist-credentials: false
   #     - uses: taiki-e/github-actions/install-rust@main
   #     - run: cargo doc --workspace --all-features
-  #       env:
-  #         RUSTDOCFLAGS: -D warnings
   #     - uses: taiki-e/github-actions/deploy-gh-pages@main
   #       with:
   #         deploy_dir: target/doc
@@ -88,7 +87,7 @@ jobs:
       contents: write # TODO test
       pull-requests: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           persist-credentials: false
       - uses: taiki-e/github-actions/install-rust@main
@@ -113,7 +112,7 @@ jobs:
   tidy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           persist-credentials: false
       - uses: taiki-e/github-actions/install-rust@main
@@ -188,7 +187,7 @@ jobs:
   #     - shellcheck
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v3
   #       with:
   #         persist-credentials: false
   #     - id: issue_check
@@ -380,7 +379,7 @@ jobs:
 
   #   runs-on: ${{ matrix.os || 'ubuntu-latest' }}
   #   steps:
-  #     - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v3
   #       with:
   #         persist-credentials: false
   #     - uses: taiki-e/github-actions/install-rust@main
