@@ -156,6 +156,7 @@ Lint checks provided by rustc:
                       proc-macro-derive-resolution-fallback  deny     detects proc macro derives using inaccessible names from parent modules
                             pub-use-of-private-extern-crate  deny     detect public re-exports of private extern crates
                                               soft-unstable  deny     a feature gate that doesn't break dependent crates
+                                         test-unstable-lint  deny     this unstable lint is only for testing
                         text-direction-codepoint-in-comment  deny     invisible directionality-changing codepoints in comment
                         text-direction-codepoint-in-literal  deny     detect special Unicode codepoints that affect the visual representation of text on screen, changing the direction in which text flows
                                         unconditional-panic  deny     operation will cause a panic at runtime
