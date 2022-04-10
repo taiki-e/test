@@ -15,7 +15,9 @@ Lint checks provided by rustc:
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
+                                     fuzzy-provenance-casts  allow    a fuzzy integer to pointer cast is used
                                              keyword-idents  allow    detects edition keywords being used as an identifier
+                                     lossy-provenance-casts  allow    a lossy pointer to integer cast is used
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
                                                 missing-abi  allow    No declared ABI for extern declaration
