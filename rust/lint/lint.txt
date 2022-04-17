@@ -106,7 +106,6 @@ Lint checks provided by rustc:
                                              trivial-bounds  warn     these bounds don't depend on an type parameters
                                           type-alias-bounds  warn     bounds in type aliases are not enforced
                                    tyvar-behind-raw-pointer  warn     raw pointer to an inference variable
-                                       unaligned-references  warn     detects unaligned references to fields of packed structs
                                         uncommon-codepoints  warn     detects uncommon Unicode codepoints in identifiers
                                     unconditional-recursion  warn     functions that cannot return without calling themselves
                                             unexpected-cfgs  warn     detects unexpected names and values in `#[cfg]` conditions
@@ -161,6 +160,7 @@ Lint checks provided by rustc:
                                          test-unstable-lint  deny     this unstable lint is only for testing
                         text-direction-codepoint-in-comment  deny     invisible directionality-changing codepoints in comment
                         text-direction-codepoint-in-literal  deny     detect special Unicode codepoints that affect the visual representation of text on screen, changing the direction in which text flows
+                                       unaligned-references  deny     detects unaligned references to fields of packed structs
                                         unconditional-panic  deny     operation will cause a panic at runtime
                                         unknown-crate-types  deny     unknown crate type found in `#[crate_type]` directive
                                          useless-deprecated  deny     detects deprecation attributes with no effect
