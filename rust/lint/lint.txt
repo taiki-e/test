@@ -126,6 +126,7 @@ Lint checks provided by rustc:
                                              unused-imports  warn     imports that are never used
                                               unused-labels  warn     detects labels that are never used
                                               unused-macros  warn     detects macros that were not used
+                                         unused-macro-rules  warn     detects macro rules that were not used
                                             unused-must-use  warn     unused result of a type flagged as `#[must_use]`
                                                  unused-mut  warn     detect mut variables which don't need to be mutable
                                               unused-parens  warn     `if`, `match`, `while` and `return` do not need parentheses
@@ -175,7 +176,7 @@ Lint groups provided by rustc:
     rust-2018-compatibility  keyword-idents, anonymous-parameters, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
     rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prelude-collisions, rust-2021-prefixes-incompatible-syntax, array-into-iter, non-fmt-panics
-                     unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons
+                     unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons
 
 
 Lint tools like Clippy can provide additional lints and lint groups.
