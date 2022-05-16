@@ -44,6 +44,7 @@ Lint checks provided by rustc:
                                        unused-extern-crates  allow    extern crates that are never used
                                        unused-import-braces  allow    unnecessary braces around an imported item
                                            unused-lifetimes  allow    detects lifetime parameters that are never used
+                                         unused-macro-rules  allow    detects macro rules that were not used
                                       unused-qualifications  allow    detects unnecessarily qualified names
                                              unused-results  allow    unused result of an expression in a statement
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
@@ -126,7 +127,6 @@ Lint checks provided by rustc:
                                              unused-imports  warn     imports that are never used
                                               unused-labels  warn     detects labels that are never used
                                               unused-macros  warn     detects macros that were not used
-                                         unused-macro-rules  warn     detects macro rules that were not used
                                             unused-must-use  warn     unused result of a type flagged as `#[must_use]`
                                                  unused-mut  warn     detect mut variables which don't need to be mutable
                                               unused-parens  warn     `if`, `match`, `while` and `return` do not need parentheses
