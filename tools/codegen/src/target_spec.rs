@@ -77,8 +77,8 @@ fn target_spec_json(target: &str) -> Result<String> {
 //     };
 
 //     for (name, variants) in name.iter().zip(variants) {
-//         let name = format_ident!("{}", name);
-//         let variants = variants.iter().map(|v| format_ident!("{}", v));
+//         let name = format_ident!("{name}");
+//         let variants = variants.iter().map(|v| format_ident!("{v}"));
 //         out.extend(quote! {
 //             #attrs
 //             pub enum #name {
@@ -115,8 +115,7 @@ pub struct TargetSpec {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr)]
 #[allow(non_camel_case_types)]
 pub enum TargetArch {
-    // all target_arch:
-    // https://github.com/rust-lang/rust/blob/67365d64bcdfeae1334bf2ff49587c27d1c973f0/compiler/rustc_target/src/abi/call/mod.rs#L638-L685
+    // all target_arch: https://github.com/rust-lang/rust/blob/1.61.0/compiler/rustc_target/src/abi/call/mod.rs#L665-L717
     aarch64,
     amdgpu,
     arm,
