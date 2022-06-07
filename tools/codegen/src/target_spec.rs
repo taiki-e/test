@@ -197,6 +197,7 @@ pub enum TargetOs {
     vxworks,
     wasi,
     windows,
+    xous,
 }
 pub use TargetOs::*;
 
