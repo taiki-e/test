@@ -4540,6 +4540,22 @@
     "relocation-model": "static",
     "target-pointer-width": "32"
   },
+  "riscv32imac-unknown-xous-elf": {
+    "arch": "riscv32",
+    "cpu": "generic-rv32",
+    "data-layout": "e-m:e-p:32:32-i64:64-n32-S128",
+    "executables": true,
+    "features": "+m,+a,+c",
+    "is-builtin": true,
+    "linker": "rust-lld",
+    "linker-flavor": "ld.lld",
+    "llvm-target": "riscv32",
+    "max-atomic-width": 32,
+    "os": "xous",
+    "panic-strategy": "abort",
+    "relocation-model": "static",
+    "target-pointer-width": "32"
+  },
   "riscv32imc-esp-espidf": {
     "arch": "riscv32",
     "cpu": "generic-rv32",
