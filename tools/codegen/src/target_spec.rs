@@ -196,6 +196,7 @@ pub enum TargetOs {
     unknown,
     vxworks,
     wasi,
+    watchos,
     windows,
     xous,
 }
