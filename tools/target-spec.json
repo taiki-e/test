@@ -196,6 +196,44 @@
     "target-pointer-width": "64",
     "vendor": "apple"
   },
+  "aarch64-apple-watchos-sim": {
+    "abi": "sim",
+    "abi-return-struct-as-int": true,
+    "arch": "aarch64",
+    "archive-format": "darwin",
+    "bitcode-llvm-cmdline": "-triple\u0000arm64-apple-watchos5.0-simulator\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
+    "cpu": "apple-a12",
+    "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
+    "dll-suffix": ".dylib",
+    "dwarf-version": 2,
+    "eh-frame-header": false,
+    "emit-debug-gdb-scripts": false,
+    "executables": true,
+    "features": "+neon,+fp-armv8,+apple-a7",
+    "forces-embed-bitcode": true,
+    "frame-pointer": "non-leaf",
+    "function-sections": false,
+    "has-rpath": true,
+    "is-builtin": true,
+    "is-like-osx": true,
+    "link-env": [
+      "ZERO_AR_DATE=1"
+    ],
+    "link-env-remove": [
+      "MACOSX_DEPLOYMENT_TARGET"
+    ],
+    "linker-is-gnu": false,
+    "lld-flavor": "darwin",
+    "llvm-target": "arm64-apple-watchos5.0.0-simulator",
+    "max-atomic-width": 128,
+    "os": "watchos",
+    "split-debuginfo": "packed",
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "64",
+    "vendor": "apple"
+  },
   "aarch64-fuchsia": {
     "arch": "aarch64",
     "data-layout": "e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
@@ -1045,6 +1083,43 @@
     "target-mcount": "\u0001mcount",
     "target-pointer-width": "32"
   },
+  "arm64_32-apple-watchos": {
+    "abi-return-struct-as-int": true,
+    "arch": "aarch64",
+    "archive-format": "darwin",
+    "bitcode-llvm-cmdline": "-triple\u0000arm64_32-apple-watchos5.0.0\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
+    "cpu": "apple-s4",
+    "data-layout": "e-m:o-p:32:32-i64:64-i128:128-n32:64-S128",
+    "dll-suffix": ".dylib",
+    "dwarf-version": 2,
+    "eh-frame-header": false,
+    "emit-debug-gdb-scripts": false,
+    "executables": true,
+    "features": "+neon,+fp-armv8,+apple-a7",
+    "forces-embed-bitcode": true,
+    "frame-pointer": "always",
+    "function-sections": false,
+    "has-rpath": true,
+    "is-builtin": true,
+    "is-like-osx": true,
+    "link-env": [
+      "ZERO_AR_DATE=1"
+    ],
+    "link-env-remove": [
+      "MACOSX_DEPLOYMENT_TARGET"
+    ],
+    "linker-is-gnu": false,
+    "lld-flavor": "darwin",
+    "llvm-target": "arm64_32-apple-watchos",
+    "max-atomic-width": 64,
+    "os": "watchos",
+    "split-debuginfo": "packed",
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "32",
+    "vendor": "apple"
+  },
   "armebv7r-none-eabi": {
     "abi": "eabi",
     "arch": "arm",
@@ -1769,6 +1844,43 @@
     "panic-strategy": "abort",
     "relocation-model": "static",
     "target-pointer-width": "32"
+  },
+  "armv7k-apple-watchos": {
+    "abi-return-struct-as-int": true,
+    "arch": "arm",
+    "archive-format": "darwin",
+    "bitcode-llvm-cmdline": "-triple\u0000armv7k-apple-watchos3.0.0\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
+    "cpu": "cortex-a8",
+    "data-layout": "e-m:o-p:32:32-Fi8-i64:64-a:0:32-n32-S128",
+    "dll-suffix": ".dylib",
+    "dwarf-version": 2,
+    "eh-frame-header": false,
+    "emit-debug-gdb-scripts": false,
+    "executables": true,
+    "features": "+v7,+vfp4,+neon",
+    "forces-embed-bitcode": true,
+    "frame-pointer": "always",
+    "function-sections": false,
+    "has-rpath": true,
+    "is-builtin": true,
+    "is-like-osx": true,
+    "link-env": [
+      "ZERO_AR_DATE=1"
+    ],
+    "link-env-remove": [
+      "MACOSX_DEPLOYMENT_TARGET"
+    ],
+    "linker-is-gnu": false,
+    "lld-flavor": "darwin",
+    "llvm-target": "armv7k-apple-watchos",
+    "max-atomic-width": 64,
+    "os": "watchos",
+    "split-debuginfo": "packed",
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "32",
+    "vendor": "apple"
   },
   "armv7r-none-eabi": {
     "abi": "eabi",
@@ -5771,6 +5883,45 @@
     "llvm-target": "x86_64-apple-tvos",
     "max-atomic-width": 64,
     "os": "tvos",
+    "split-debuginfo": "packed",
+    "stack-probes": {
+      "kind": "call"
+    },
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "64",
+    "vendor": "apple"
+  },
+  "x86_64-apple-watchos-sim": {
+    "abi-return-struct-as-int": true,
+    "arch": "x86_64",
+    "archive-format": "darwin",
+    "bitcode-llvm-cmdline": "-triple\u0000x86_64-apple-watchos5.0-simulator\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
+    "cpu": "core2",
+    "data-layout": "e-m:o-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "dll-suffix": ".dylib",
+    "dwarf-version": 2,
+    "eh-frame-header": false,
+    "emit-debug-gdb-scripts": false,
+    "executables": true,
+    "forces-embed-bitcode": true,
+    "frame-pointer": "always",
+    "function-sections": false,
+    "has-rpath": true,
+    "is-builtin": true,
+    "is-like-osx": true,
+    "link-env": [
+      "ZERO_AR_DATE=1"
+    ],
+    "link-env-remove": [
+      "MACOSX_DEPLOYMENT_TARGET"
+    ],
+    "linker-is-gnu": false,
+    "lld-flavor": "darwin",
+    "llvm-target": "x86_64-apple-watchos5.0.0-simulator",
+    "max-atomic-width": 64,
+    "os": "watchos",
     "split-debuginfo": "packed",
     "stack-probes": {
       "kind": "call"
