@@ -1365,7 +1365,6 @@
     "exe-suffix": ".elf",
     "executables": true,
     "features": "+vfp2",
-    "has-thread-local": true,
     "is-builtin": true,
     "linker": "arm-none-eabi-gcc",
     "llvm-target": "armv6k-none-eabihf",
