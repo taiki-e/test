@@ -55,7 +55,6 @@ Lint checks provided by rustc:
                                          bare-trait-objects  warn     suggest using `dyn Trait` for trait objects
                                  bindings-with-variant-name  warn     detects pattern bindings with the same name as one of the matched variants
                                   break-with-label-and-loop  warn     `break` expression with label and unlabeled loop as value expression
-                                       cenum-impl-drop-cast  warn     a C-like enum implementing Drop is cast
                                clashing-extern-declarations  warn     detects when an extern fn has been declared with the same name but different types
                                        coherence-leak-check  warn     distinct impls distinguished only by the leak-check code
                                           confusable-idents  warn     detects visually confusable pairs between identifiers
@@ -137,6 +136,7 @@ Lint checks provided by rustc:
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
                                         arithmetic-overflow  deny     arithmetic operation overflows
+                                       cenum-impl-drop-cast  deny     a C-like enum implementing Drop is cast
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                                                   const-err  deny     constant evaluation encountered erroneous expression
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
