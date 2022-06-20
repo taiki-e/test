@@ -1978,8 +1978,9 @@
       "em": [
         "-sABORTING_MALLOC=0",
         "-Wl,--fatal-warnings",
-        "-s",
-        "WASM=0"
+        "-sWASM=0",
+        "--memory-init-file",
+        "0"
       ]
     },
     "pre-link-args": {
