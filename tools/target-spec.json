@@ -2001,7 +2001,6 @@
         "--no-demangle"
       ]
     },
-    "relocation-model": "static",
     "singlethread": true,
     "target-family": [
       "unix",
@@ -5529,7 +5528,6 @@
         "--no-demangle"
       ]
     },
-    "relocation-model": "static",
     "singlethread": true,
     "target-family": [
       "unix",
