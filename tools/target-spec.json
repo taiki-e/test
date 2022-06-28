@@ -248,6 +248,19 @@
     "os": "fuchsia",
     "position-independent-executables": true,
     "pre-link-args": {
+      "ld": [
+        "--build-id",
+        "--hash-style=gnu",
+        "-z",
+        "max-page-size=4096",
+        "-z",
+        "now",
+        "-z",
+        "rodynamic",
+        "-z",
+        "separate-loadable-segments",
+        "--pack-dyn-relocs=relr"
+      ],
       "ld.lld": [
         "--build-id",
         "--hash-style=gnu",
@@ -455,6 +468,11 @@
     "panic-strategy": "abort",
     "position-independent-executables": true,
     "pre-link-args": {
+      "ld": [
+        "--build-id",
+        "--hash-style=gnu",
+        "--Bstatic"
+      ],
       "ld.lld": [
         "--build-id",
         "--hash-style=gnu",
@@ -1982,25 +2000,6 @@
         "0"
       ]
     },
-    "pre-link-args": {
-      "gcc": [
-        "-Wl,-z",
-        "-Wl,stack-size=1048576",
-        "-Wl,--stack-first",
-        "-Wl,--allow-undefined",
-        "-Wl,--fatal-warnings",
-        "-Wl,--no-demangle",
-        "--export-dynamic"
-      ],
-      "wasm-ld": [
-        "-z",
-        "stack-size=1048576",
-        "--stack-first",
-        "--allow-undefined",
-        "--fatal-warnings",
-        "--no-demangle"
-      ]
-    },
     "singlethread": true,
     "target-family": [
       "unix",
@@ -2454,6 +2453,15 @@
         "-luser32",
         "-lkernel32"
       ],
+      "ld": [
+        "-lmsvcrt",
+        "-lmingwex",
+        "-lmingw32",
+        "-lgcc",
+        "-lmsvcrt",
+        "-luser32",
+        "-lkernel32"
+      ],
       "ld.lld": [
         "-lmsvcrt",
         "-lmingwex",
@@ -2468,12 +2476,19 @@
       "gcc": [
         "-lgcc_s"
       ],
+      "ld": [
+        "-lgcc_s"
+      ],
       "ld.lld": [
         "-lgcc_s"
       ]
     },
     "late-link-args-static": {
       "gcc": [
+        "-lgcc_eh",
+        "-l:libpthread.a"
+      ],
+      "ld": [
         "-lgcc_eh",
         "-l:libpthread.a"
       ],
@@ -2533,9 +2548,19 @@
         "-Wl,--disable-auto-image-base",
         "-Wl,--large-address-aware"
       ],
-      "ld.lld": [
+      "ld": [
+        "--dynamicbase",
+        "--disable-auto-image-base",
         "-m",
-        "i386pe"
+        "i386pe",
+        "--large-address-aware"
+      ],
+      "ld.lld": [
+        "--dynamicbase",
+        "--disable-auto-image-base",
+        "-m",
+        "i386pe",
+        "--large-address-aware"
       ]
     },
     "pre-link-objects": {
@@ -2939,6 +2964,16 @@
         "-lmingwex",
         "-lmingw32"
       ],
+      "ld": [
+        "-lwinstorecompat",
+        "-lruntimeobject",
+        "-lsynchronization",
+        "-lvcruntime140_app",
+        "-lucrt",
+        "-lwindowsapp",
+        "-lmingwex",
+        "-lmingw32"
+      ],
       "ld.lld": [
         "-lwinstorecompat",
         "-lruntimeobject",
@@ -3002,9 +3037,19 @@
         "-Wl,--disable-auto-image-base",
         "-Wl,--large-address-aware"
       ],
-      "ld.lld": [
+      "ld": [
+        "--dynamicbase",
+        "--disable-auto-image-base",
         "-m",
-        "i386pe"
+        "i386pe",
+        "--large-address-aware"
+      ],
+      "ld.lld": [
+        "--dynamicbase",
+        "--disable-auto-image-base",
+        "-m",
+        "i386pe",
+        "--large-address-aware"
       ]
     },
     "pre-link-objects": {
@@ -3604,6 +3649,10 @@
     "llvm-target": "mipsel-sony-psp",
     "os": "psp",
     "pre-link-args": {
+      "ld": [
+        "--emit-relocs",
+        "--nmagic"
+      ],
       "ld.lld": [
         "--emit-relocs",
         "--nmagic"
@@ -5509,25 +5558,6 @@
         "-Wl,--fatal-warnings"
       ]
     },
-    "pre-link-args": {
-      "gcc": [
-        "-Wl,-z",
-        "-Wl,stack-size=1048576",
-        "-Wl,--stack-first",
-        "-Wl,--allow-undefined",
-        "-Wl,--fatal-warnings",
-        "-Wl,--no-demangle",
-        "--export-dynamic"
-      ],
-      "wasm-ld": [
-        "-z",
-        "stack-size=1048576",
-        "--stack-first",
-        "--allow-undefined",
-        "--fatal-warnings",
-        "--no-demangle"
-      ]
-    },
     "singlethread": true,
     "target-family": [
       "unix",
@@ -5964,6 +5994,35 @@
     ],
     "position-independent-executables": true,
     "pre-link-args": {
+      "ld": [
+        "-e",
+        "elf_entry",
+        "-Bstatic",
+        "--gc-sections",
+        "-z",
+        "text",
+        "-z",
+        "norelro",
+        "--no-undefined",
+        "--error-unresolved-symbols",
+        "--no-undefined-version",
+        "-Bsymbolic",
+        "--export-dynamic",
+        "-u",
+        "__rust_abort",
+        "-u",
+        "__rust_c_alloc",
+        "-u",
+        "__rust_c_dealloc",
+        "-u",
+        "__rust_print_err",
+        "-u",
+        "__rust_rwlock_rdlock",
+        "-u",
+        "__rust_rwlock_unlock",
+        "-u",
+        "__rust_rwlock_wrlock"
+      ],
       "ld.lld": [
         "-e",
         "elf_entry",
@@ -6013,6 +6072,19 @@
     "os": "fuchsia",
     "position-independent-executables": true,
     "pre-link-args": {
+      "ld": [
+        "--build-id",
+        "--hash-style=gnu",
+        "-z",
+        "max-page-size=4096",
+        "-z",
+        "now",
+        "-z",
+        "rodynamic",
+        "-z",
+        "separate-loadable-segments",
+        "--pack-dyn-relocs=relr"
+      ],
       "ld.lld": [
         "--build-id",
         "--hash-style=gnu",
@@ -6146,6 +6218,15 @@
         "-luser32",
         "-lkernel32"
       ],
+      "ld": [
+        "-lmsvcrt",
+        "-lmingwex",
+        "-lmingw32",
+        "-lgcc",
+        "-lmsvcrt",
+        "-luser32",
+        "-lkernel32"
+      ],
       "ld.lld": [
         "-lmsvcrt",
         "-lmingwex",
@@ -6160,12 +6241,19 @@
       "gcc": [
         "-lgcc_s"
       ],
+      "ld": [
+        "-lgcc_s"
+      ],
       "ld.lld": [
         "-lgcc_s"
       ]
     },
     "late-link-args-static": {
       "gcc": [
+        "-lgcc_eh",
+        "-l:libpthread.a"
+      ],
+      "ld": [
         "-lgcc_eh",
         "-l:libpthread.a"
       ],
@@ -6226,9 +6314,19 @@
         "-m64",
         "-Wl,--high-entropy-va"
       ],
-      "ld.lld": [
+      "ld": [
+        "--dynamicbase",
+        "--disable-auto-image-base",
         "-m",
-        "i386pep"
+        "i386pep",
+        "--high-entropy-va"
+      ],
+      "ld.lld": [
+        "--dynamicbase",
+        "--disable-auto-image-base",
+        "-m",
+        "i386pep",
+        "--high-entropy-va"
       ]
     },
     "pre-link-objects": {
@@ -6504,6 +6602,11 @@
     "panic-strategy": "abort",
     "position-independent-executables": true,
     "pre-link-args": {
+      "ld": [
+        "--build-id",
+        "--hash-style=gnu",
+        "--Bstatic"
+      ],
       "ld.lld": [
         "--build-id",
         "--hash-style=gnu",
@@ -6950,6 +7053,16 @@
         "-lmingwex",
         "-lmingw32"
       ],
+      "ld": [
+        "-lwinstorecompat",
+        "-lruntimeobject",
+        "-lsynchronization",
+        "-lvcruntime140_app",
+        "-lucrt",
+        "-lwindowsapp",
+        "-lmingwex",
+        "-lmingw32"
+      ],
       "ld.lld": [
         "-lwinstorecompat",
         "-lruntimeobject",
@@ -7014,9 +7127,19 @@
         "-m64",
         "-Wl,--high-entropy-va"
       ],
-      "ld.lld": [
+      "ld": [
+        "--dynamicbase",
+        "--disable-auto-image-base",
         "-m",
-        "i386pep"
+        "i386pep",
+        "--high-entropy-va"
+      ],
+      "ld.lld": [
+        "--dynamicbase",
+        "--disable-auto-image-base",
+        "-m",
+        "i386pep",
+        "--high-entropy-va"
       ]
     },
     "pre-link-objects": {
