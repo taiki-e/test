@@ -143,10 +143,13 @@ pub enum TargetArch {
 }
 pub use TargetArch::*;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr)]
+#[derive(
+    Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr,
+)]
 #[allow(non_camel_case_types)]
 pub enum TargetEndian {
     big,
+    #[default]
     little,
 }
 
@@ -160,13 +163,9 @@ impl TargetEndian {
     }
 }
 
-impl Default for TargetEndian {
-    fn default() -> Self {
-        Self::little
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr)]
+#[derive(
+    Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr,
+)]
 #[allow(non_camel_case_types)]
 pub enum TargetOs {
     android,
@@ -185,6 +184,7 @@ pub enum TargetOs {
     linux,
     macos,
     netbsd,
+    #[default]
     none,
     openbsd,
     psp,
@@ -205,12 +205,6 @@ pub use TargetOs::*;
 impl TargetOs {
     fn is_none(&self) -> bool {
         matches!(self, Self::none)
-    }
-}
-
-impl Default for TargetOs {
-    fn default() -> Self {
-        Self::none
     }
 }
 
