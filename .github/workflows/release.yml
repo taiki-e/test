@@ -58,13 +58,15 @@ jobs:
       - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust || 'nightly' }}
-      - uses: taiki-e/upload-rust-binary-action@v1
+      - uses: taiki-e/upload-rust-binary-action@checksum
         with:
-          bin: rust-test-bin
+          bin: rust-test-bin,a
           target: ${{ matrix.target }}
+          archive: test-$target
+          checksum: sha256,sha512,sha1,md5
           tar: all
           zip: all
-          include: LICENSE-MIT,LICENSE-APACHE,CHANGELOG.md
+          # include: LICENSE-MIT,LICENSE-APACHE,CHANGELOG.md
           # leading_dir: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
