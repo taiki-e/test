@@ -135,27 +135,27 @@ jobs:
       - run: shellcheck $(git ls-files '*.sh')
         if: always()
 
-  version:
-    runs-on: ubuntu-latest
-    steps:
-      - name: docker
-        run: docker --version
-      - name: glibc
-        run: |
-          set -x
-          # https://hub.docker.com/_/ubuntu
-          docker run --rm --init ubuntu:20.04 /lib/x86_64-linux-gnu/libc.so.6 # focal
-          docker run --rm --init ubuntu:18.04 /lib/x86_64-linux-gnu/libc.so.6 # bionic
-          docker run --rm --init ubuntu:16.04 /lib/x86_64-linux-gnu/libc.so.6 # xenial
-          docker run --rm --init ubuntu:14.04 /lib/x86_64-linux-gnu/libc.so.6 # trusty
-          # https://hub.docker.com/_/debian
-          docker run --rm --init debian:11 /lib/x86_64-linux-gnu/libc.so.6 # bullseye
-          docker run --rm --init debian:10 /lib/x86_64-linux-gnu/libc.so.6 # buster
-          docker run --rm --init debian:9 /lib/x86_64-linux-gnu/libc.so.6  # stretch
-          # https://hub.docker.com/_/centos
-          docker run --rm --init centos:8 rpm -q glibc
-          docker run --rm --init centos:7 rpm -q glibc
-          docker run --rm --init centos:6 rpm -q glibc
+  # version:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: docker
+  #       run: docker --version
+  #     - name: glibc
+  #       run: |
+  #         set -x
+  #         # https://hub.docker.com/_/ubuntu
+  #         docker run --rm --init ubuntu:20.04 /lib/x86_64-linux-gnu/libc.so.6 # focal
+  #         docker run --rm --init ubuntu:18.04 /lib/x86_64-linux-gnu/libc.so.6 # bionic
+  #         docker run --rm --init ubuntu:16.04 /lib/x86_64-linux-gnu/libc.so.6 # xenial
+  #         docker run --rm --init ubuntu:14.04 /lib/x86_64-linux-gnu/libc.so.6 # trusty
+  #         # https://hub.docker.com/_/debian
+  #         docker run --rm --init debian:11 /lib/x86_64-linux-gnu/libc.so.6 # bullseye
+  #         docker run --rm --init debian:10 /lib/x86_64-linux-gnu/libc.so.6 # buster
+  #         docker run --rm --init debian:9 /lib/x86_64-linux-gnu/libc.so.6  # stretch
+  #         # https://hub.docker.com/_/centos
+  #         docker run --rm --init centos:8 rpm -q glibc
+  #         docker run --rm --init centos:7 rpm -q glibc
+  #         docker run --rm --init centos:6 rpm -q glibc
 
   # This job doesn't actually test anything, but they're used to tell bors the
   # build completed, as there is no practical way to detect when a workflow is
