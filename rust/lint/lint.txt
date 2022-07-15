@@ -87,6 +87,7 @@ Lint checks provided by rustc:
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
+                          named-arguments-used-positionally  warn     named arguments in format used positionally
                                 nontrivial-structural-match  warn     constant used in pattern of non-structural-match type and the constant's initializer expression contains values of non-structural-match types
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
                                              non-fmt-panics  warn     detect single-argument panic!() invocations in which the argument is not a format string
