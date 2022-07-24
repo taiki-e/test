@@ -326,6 +326,7 @@
       "address",
       "cfi",
       "memtag",
+      "shadow-call-stack",
       "hwaddress"
     ],
     "target-family": [
