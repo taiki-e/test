@@ -75,6 +75,20 @@
     "llvm-target": "arm64-apple-ios7.0.0",
     "max-atomic-width": 128,
     "os": "ios",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "arm64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -112,6 +126,20 @@
     "llvm-target": "arm64-apple-ios14.0-macabi",
     "max-atomic-width": 128,
     "os": "ios",
+    "pre-link-args": {
+      "gcc": [
+        "-target",
+        "arm64-apple-ios14.0-macabi"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "mac-catalyst",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -149,6 +177,20 @@
     "llvm-target": "arm64-apple-ios7.0.0-simulator",
     "max-atomic-width": 128,
     "os": "ios",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "arm64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "ios-simulator",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -184,6 +226,20 @@
     "llvm-target": "arm64-apple-tvos",
     "max-atomic-width": 128,
     "os": "tvos",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "arm64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "tvos",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -221,6 +277,20 @@
     "llvm-target": "arm64-apple-watchos5.0.0-simulator",
     "max-atomic-width": 128,
     "os": "watchos",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "arm64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "watchos-simulator",
+        "5.0",
+        "5.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -1117,6 +1187,20 @@
     "llvm-target": "arm64_32-apple-watchos",
     "max-atomic-width": 64,
     "os": "watchos",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "arm64_32"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "arm64_32",
+        "-platform_version",
+        "watchos",
+        "5.0",
+        "5.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -1407,6 +1491,20 @@
     "llvm-target": "armv7-apple-ios7.0.0",
     "max-atomic-width": 64,
     "os": "ios",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "armv7"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "armv7",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -1857,6 +1955,20 @@
     "llvm-target": "armv7k-apple-watchos",
     "max-atomic-width": 64,
     "os": "watchos",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "armv7k"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "armv7k",
+        "-platform_version",
+        "watchos",
+        "5.0",
+        "5.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -1922,6 +2034,20 @@
     "llvm-target": "armv7s-apple-ios",
     "max-atomic-width": 64,
     "os": "ios",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "armv7s"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "armv7s",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "target-family": [
       "unix"
@@ -2135,6 +2261,20 @@
     "llvm-target": "i386-apple-ios7.0.0-simulator",
     "max-atomic-width": 64,
     "os": "ios",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "i386"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "i386",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "stack-probes": {
       "kind": "call"
@@ -5701,6 +5841,20 @@
     "llvm-target": "x86_64-apple-ios7.0.0-simulator",
     "max-atomic-width": 64,
     "os": "ios",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "x86_64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "stack-probes": {
       "kind": "call"
@@ -5738,6 +5892,20 @@
     "llvm-target": "x86_64-apple-ios13.0-macabi",
     "max-atomic-width": 64,
     "os": "ios",
+    "pre-link-args": {
+      "gcc": [
+        "-target",
+        "x86_64-apple-ios13.0-macabi"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "mac-catalyst",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "stack-probes": {
       "kind": "call"
@@ -5774,6 +5942,20 @@
     "llvm-target": "x86_64-apple-tvos",
     "max-atomic-width": 64,
     "os": "tvos",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "x86_64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "tvos",
+        "7.0",
+        "7.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "stack-probes": {
       "kind": "call"
@@ -5812,6 +5994,20 @@
     "llvm-target": "x86_64-apple-watchos5.0.0-simulator",
     "max-atomic-width": 64,
     "os": "watchos",
+    "pre-link-args": {
+      "gcc": [
+        "-arch",
+        "x86_64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "watchos",
+        "5.0",
+        "5.0"
+      ]
+    },
     "split-debuginfo": "packed",
     "stack-probes": {
       "kind": "call"
