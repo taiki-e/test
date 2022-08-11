@@ -115,7 +115,7 @@ pub struct TargetSpec {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr)]
 #[allow(non_camel_case_types)]
 pub enum TargetArch {
-    // all target_arch: https://github.com/rust-lang/rust/blob/1.62.0/compiler/rustc_target/src/abi/call/mod.rs#L665-L723
+    // all target_arch: https://github.com/rust-lang/rust/blob/1.63.0/compiler/rustc_target/src/abi/call/mod.rs#L670-L728
     aarch64,
     amdgpu,
     arm,
