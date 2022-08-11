@@ -31,6 +31,14 @@
       "gcc": [
         "-arch",
         "arm64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "macos",
+        "11.0",
+        "11.0"
       ]
     },
     "split-debuginfo": "packed",
@@ -2476,7 +2484,17 @@
     "os": "macos",
     "pre-link-args": {
       "gcc": [
+        "-arch",
+        "i386",
         "-m32"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "i386",
+        "-platform_version",
+        "macos",
+        "10.7",
+        "10.7"
       ]
     },
     "split-debuginfo": "packed",
@@ -5793,9 +5811,17 @@
     "os": "macos",
     "pre-link-args": {
       "gcc": [
-        "-m64",
         "-arch",
-        "x86_64"
+        "x86_64",
+        "-m64"
+      ],
+      "ld64.lld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "macos",
+        "10.7",
+        "10.7"
       ]
     },
     "split-debuginfo": "packed",
