@@ -73,7 +73,7 @@ jobs:
   #       with:
   #         persist-credentials: false
   #     - uses: dtolnay/rust-toolchain@nightly
-  #     - run: cargo doc --workspace --all-features
+  #     - run: cargo doc --workspace --all-features --document-private-items
   #     - uses: taiki-e/github-actions/deploy-gh-pages@main
   #       with:
   #         deploy_dir: target/doc
@@ -121,6 +121,7 @@ jobs:
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
       - run: npm install prettier
+      - run: pip3 install yq
       # `cargo fmt` cannot recognize modules defined inside macros, so run
       # rustfmt directly.
       # Refs: https://github.com/rust-lang/rustfmt/issues/4078
@@ -133,6 +134,8 @@ jobs:
       - run: npx prettier -c $(git ls-files '*.yml')
         if: always()
       - run: shellcheck $(git ls-files '*.sh')
+        if: always()
+      - run: tools/check-workflow.sh
         if: always()
 
   # version:
@@ -157,20 +160,12 @@ jobs:
   #         docker run --rm --init centos:7 rpm -q glibc
   #         docker run --rm --init centos:6 rpm -q glibc
 
-  # This job doesn't actually test anything, but they're used to tell bors the
-  # build completed, as there is no practical way to detect when a workflow is
-  # successful listening to webhooks only.
-  #
   # ALL THE PREVIOUS JOBS NEEDS TO BE ADDED TO THE `needs` SECTION OF THIS JOB!
 
   ci-success:
     name: ci
     if: github.event_name == 'push' && success()
-    needs:
-      - test
-      # - docs
-      - codegen
-      # - tidy
+    needs: [test, codegen, tidy] # tidy:needs
     runs-on: ubuntu-latest
     steps:
       - name: Mark the job as a success
