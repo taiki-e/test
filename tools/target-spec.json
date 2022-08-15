@@ -2068,7 +2068,7 @@
   },
   "asmjs-unknown-emscripten": {
     "arch": "wasm32",
-    "crt-objects-fallback": "wasm",
+    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-f128:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
@@ -5564,7 +5564,7 @@
   },
   "wasm32-unknown-emscripten": {
     "arch": "wasm32",
-    "crt-objects-fallback": "wasm",
+    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-f128:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
@@ -5602,7 +5602,7 @@
   },
   "wasm32-unknown-unknown": {
     "arch": "wasm32",
-    "crt-objects-fallback": "wasm",
+    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-n32:64-S128-ni:1:10:20",
     "default-adjusted-cabi": "wasm",
     "default-hidden-visibility": true,
@@ -5659,7 +5659,7 @@
   },
   "wasm32-wasi": {
     "arch": "wasm32",
-    "crt-objects-fallback": "wasm",
+    "crt-objects-fallback": "true",
     "crt-static-allows-dylibs": true,
     "crt-static-default": true,
     "crt-static-respected": true,
@@ -5732,7 +5732,7 @@
   },
   "wasm64-unknown-unknown": {
     "arch": "wasm64",
-    "crt-objects-fallback": "wasm",
+    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:64:64-p10:8:8-p20:8:8-i64:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
