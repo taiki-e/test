@@ -457,7 +457,7 @@
     },
     "linker": "aarch64-w64-mingw32-clang",
     "llvm-target": "aarch64-pc-windows-gnu",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "no-default-libraries": false,
     "os": "windows",
     "pre-link-args": {
@@ -494,7 +494,7 @@
     "linker-is-gnu": false,
     "lld-flavor": "link",
     "llvm-target": "aarch64-pc-windows-msvc",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "no-default-libraries": false,
     "os": "windows",
     "pre-link-args": {
@@ -802,7 +802,7 @@
     "linker-is-gnu": false,
     "lld-flavor": "link",
     "llvm-target": "aarch64-unknown-windows",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "os": "uefi",
     "panic-strategy": "abort",
     "pre-link-args": {
@@ -847,7 +847,7 @@
     "linker-is-gnu": false,
     "lld-flavor": "link",
     "llvm-target": "aarch64-pc-windows-msvc",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "no-default-libraries": false,
     "os": "windows",
     "pre-link-args": {
@@ -1195,7 +1195,7 @@
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
     "llvm-target": "arm64_32-apple-watchos",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "os": "watchos",
     "pre-link-args": {
       "gcc": [
