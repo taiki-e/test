@@ -70,7 +70,7 @@ jobs:
           # checksum: sha256,sha512,sha1,md5
           tar: all
           zip: all
-          # include: LICENSE-MIT,LICENSE-APACHE,CHANGELOG.md
+          include: rust
           # leading_dir: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
