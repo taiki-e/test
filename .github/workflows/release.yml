@@ -47,9 +47,9 @@ jobs:
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu
-            os: ubuntu-18.04
+            os: ubuntu-latest
           - target: aarch64-unknown-linux-gnu
-            os: ubuntu-18.04
+            os: ubuntu-latest
           - target: x86_64-apple-darwin
             os: macos-latest
           - target: x86_64-pc-windows-msvc
@@ -62,7 +62,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: ${{ matrix.rust || 'nightly' }}
-      - uses: taiki-e/upload-rust-binary-action@main
+      - uses: taiki-e/upload-rust-binary-action@dev
         with:
           bin: rust-test-bin,a
           # target: ${{ matrix.target }}
