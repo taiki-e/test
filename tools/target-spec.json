@@ -5,6 +5,7 @@
     "archive-format": "darwin",
     "cpu": "apple-a14",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -47,6 +48,11 @@
       "cfi",
       "thread"
     ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -61,6 +67,7 @@
     "bitcode-llvm-cmdline": "-triple\u0000arm64-apple-ios11.0.0\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
     "cpu": "apple-a7",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -99,6 +106,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -113,6 +125,7 @@
     "bitcode-llvm-cmdline": "-triple\u0000arm64-apple-ios14.0-macabi\u0000-emit-obj\u0000-disable-llvm-passes\u0000-Os\u0000",
     "cpu": "apple-a12",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -151,6 +164,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -165,6 +183,7 @@
     "bitcode-llvm-cmdline": "-triple\u0000arm64-apple-ios14.0-simulator\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
     "cpu": "apple-a12",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -203,6 +222,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -215,6 +239,7 @@
     "archive-format": "darwin",
     "cpu": "apple-a7",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -253,6 +278,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -267,6 +297,7 @@
     "bitcode-llvm-cmdline": "-triple\u0000arm64-apple-watchos5.0-simulator\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
     "cpu": "apple-a12",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -305,6 +336,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -413,6 +449,11 @@
       "shadow-call-stack",
       "hwaddress"
     ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -484,6 +525,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:w-p:64:64-i32:32-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -514,6 +556,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
@@ -597,6 +642,11 @@
       "thread",
       "hwaddress"
     ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -619,6 +669,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -697,6 +752,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -829,6 +889,9 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-pointer-width": "64"
   },
   "aarch64-uwp-windows-msvc": {
@@ -838,6 +901,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:w-p:64:64-i32:32-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -871,6 +935,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
@@ -915,6 +982,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -938,6 +1010,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -964,6 +1041,11 @@
     "supported-sanitizers": [
       "address"
     ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -985,6 +1067,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1007,6 +1094,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1087,6 +1179,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1167,6 +1264,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1180,6 +1282,7 @@
     "bitcode-llvm-cmdline": "-triple\u0000arm64_32-apple-watchos5.0.0\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
     "cpu": "apple-s4",
     "data-layout": "e-m:o-p:32:32-i64:64-i128:128-n32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -1218,6 +1321,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1297,6 +1405,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1320,6 +1433,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1401,6 +1519,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1424,6 +1547,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1509,6 +1637,7 @@
     "archive-format": "darwin",
     "cpu": "cortex-a8",
     "data-layout": "e-m:o-p:32:32-Fi8-f64:32:64-v64:32:64-v128:32:128-a:0:32-n32-S32",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -1546,6 +1675,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1575,6 +1709,11 @@
     "relro-level": "full",
     "supported-sanitizers": [
       "address"
+    ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
     ],
     "target-family": [
       "unix"
@@ -1619,6 +1758,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1641,6 +1785,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1721,6 +1870,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1801,6 +1955,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1823,6 +1982,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1845,6 +2009,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -1974,6 +2143,7 @@
     "bitcode-llvm-cmdline": "-triple\u0000armv7k-apple-watchos3.0.0\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
     "cpu": "cortex-a8",
     "data-layout": "e-m:o-p:32:32-Fi8-i64:64-a:0:32-n32-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -2012,6 +2182,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2055,6 +2230,7 @@
     "archive-format": "darwin",
     "cpu": "cortex-a9",
     "data-layout": "e-m:o-p:32:32-Fi8-f64:32:64-v64:32:64-v128:32:128-a:0:32-n32-S32",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -2092,6 +2268,11 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2273,6 +2454,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2284,6 +2470,7 @@
     "archive-format": "darwin",
     "cpu": "yonah",
     "data-layout": "e-m:o-p:32:32-p270:32:32-p271:32:32-p272:64:64-f64:32:64-f80:128-n8:16:32-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -2323,6 +2510,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2336,6 +2528,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:x-p:32:32-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32-a:0:32-S32",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -2368,6 +2561,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
@@ -2397,6 +2593,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2485,6 +2686,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2496,6 +2702,7 @@
     "archive-format": "darwin",
     "cpu": "yonah",
     "data-layout": "e-m:o-p:32:32-p270:32:32-p271:32:32-p272:64:64-f64:32:64-f80:128-n8:16:32-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -2537,6 +2744,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2566,6 +2778,11 @@
     "supported-sanitizers": [
       "address"
     ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2578,6 +2795,7 @@
     "cpu": "pentium4",
     "crt-objects-fallback": "mingw",
     "data-layout": "e-m:x-p:32:32-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:32-n8:16:32-a:0:32-S32",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -2769,6 +2987,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:x-p:32:32-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32-a:0:32-S32",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -2801,6 +3020,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
@@ -2881,6 +3103,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -2969,6 +3196,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -3070,6 +3302,9 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-pointer-width": "32"
   },
   "i686-uwp-windows-gnu": {
@@ -3080,6 +3315,7 @@
     "cpu": "pentium4",
     "crt-objects-fallback": "mingw",
     "data-layout": "e-m:x-p:32:32-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:32-n8:16:32-a:0:32-S32",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -3251,6 +3487,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:x-p:32:32-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32-a:0:32-S32",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -3284,6 +3521,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
@@ -3336,6 +3576,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -3359,6 +3604,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -3439,6 +3689,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -3462,6 +3717,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -3543,6 +3803,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -3567,6 +3832,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -3649,6 +3919,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -3673,6 +3948,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -3754,6 +4034,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -3804,6 +4089,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -3883,6 +4173,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -3905,6 +4200,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -3942,6 +4242,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -3965,6 +4270,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -3988,6 +4298,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4012,6 +4327,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -4108,6 +4428,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4135,6 +4460,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4219,6 +4549,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4381,6 +4716,11 @@
       ]
     },
     "relro-level": "partial",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4466,6 +4806,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4548,6 +4893,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -4632,6 +4982,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -4656,6 +5011,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -4737,6 +5097,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -4884,6 +5249,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -4965,6 +5335,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -5022,6 +5397,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -5104,6 +5484,11 @@
     },
     "relro-level": "full",
     "static-position-independent-executables": true,
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -5130,6 +5515,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -5151,6 +5541,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -5282,6 +5677,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:w-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -5315,6 +5711,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
@@ -5328,6 +5727,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:w-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -5363,6 +5763,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
@@ -5439,6 +5842,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -5460,6 +5868,11 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -5539,6 +5952,11 @@
       ]
     },
     "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -5825,6 +6243,7 @@
     "archive-format": "darwin",
     "cpu": "core2",
     "data-layout": "e-m:o-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -5872,6 +6291,11 @@
       "leak",
       "thread"
     ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -5885,6 +6309,7 @@
     "archive-format": "darwin",
     "cpu": "core2",
     "data-layout": "e-m:o-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -5924,6 +6349,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -5937,6 +6367,7 @@
     "archive-format": "darwin",
     "cpu": "core2",
     "data-layout": "e-m:o-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -5976,6 +6407,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -5988,6 +6424,7 @@
     "archive-format": "darwin",
     "cpu": "core2",
     "data-layout": "e-m:o-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -6027,6 +6464,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -6040,6 +6482,7 @@
     "bitcode-llvm-cmdline": "-triple\u0000x86_64-apple-watchos5.0-simulator\u0000-emit-obj\u0000-disable-llvm-passes\u0000-target-abi\u0000darwinpcs\u0000-Os\u0000",
     "cpu": "core2",
     "data-layout": "e-m:o-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
     "dynamic-linking": true,
@@ -6080,6 +6523,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -6277,6 +6725,11 @@
     "supported-sanitizers": [
       "address"
     ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -6321,6 +6774,7 @@
     "cpu": "x86-64",
     "crt-objects-fallback": "mingw",
     "data-layout": "e-m:w-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -6557,6 +7011,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:w-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -6586,6 +7041,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
@@ -6821,6 +7279,11 @@
       "memory",
       "thread"
     ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -6850,6 +7313,11 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
     "target-family": [
       "unix"
     ],
@@ -6943,6 +7411,11 @@
       "leak",
       "memory",
       "thread"
+    ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
     ],
     "target-family": [
       "unix"
@@ -7128,6 +7601,9 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-pointer-width": "64"
   },
   "x86_64-uwp-windows-gnu": {
@@ -7138,6 +7614,7 @@
     "cpu": "x86-64",
     "crt-objects-fallback": "mingw",
     "data-layout": "e-m:w-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -7309,6 +7786,7 @@
     "crt-static-allows-dylibs": true,
     "crt-static-respected": true,
     "data-layout": "e-m:w-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
     "dynamic-linking": true,
@@ -7342,6 +7820,9 @@
     "split-debuginfo": "packed",
     "staticlib-prefix": "",
     "staticlib-suffix": ".lib",
+    "supported-split-debuginfo": [
+      "packed"
+    ],
     "target-family": [
       "windows"
     ],
