@@ -64,7 +64,6 @@ Lint checks provided by rustc:
                                         const-item-mutation  warn     detects attempts to mutate a `const` item
                                                   dead-code  warn     detect unused, unexported items
                                                  deprecated  warn     detects use of deprecated items
-                        deprecated-cfg-attr-crate-type-name  warn     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
                            deprecated-where-clause-location  warn     deprecated where clause location
                                   deref-into-dyn-supertrait  warn     `Deref` implementation usage with a supertrait trait object for output might be shadowed in the future
                                               deref-nullptr  warn     detects when an null pointer is dereferenced
@@ -144,6 +143,7 @@ Lint checks provided by rustc:
                                        cenum-impl-drop-cast  deny     a C-like enum implementing Drop is cast
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                                                   const-err  deny     constant evaluation encountered erroneous expression
+                        deprecated-cfg-attr-crate-type-name  deny     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
                                  ill-formed-attribute-input  deny     ill-formed attribute inputs that were previously accepted and used in practice
                                          incomplete-include  deny     trailing content in included file
