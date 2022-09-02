@@ -885,6 +885,7 @@
         "/machine:arm64"
       ]
     },
+    "relocation-model": "static",
     "singlethread": true,
     "split-debuginfo": "packed",
     "stack-probes": {
@@ -2342,6 +2343,7 @@
         "-mmcu=atmega328"
       ]
     },
+    "relocation-model": "static",
     "target-c-int-width": "16",
     "target-pointer-width": "16"
   },
@@ -3299,6 +3301,7 @@
         "/subsystem:efi_application"
       ]
     },
+    "relocation-model": "static",
     "singlethread": true,
     "split-debuginfo": "packed",
     "stack-probes": {
@@ -7295,6 +7298,7 @@
     "max-atomic-width": 64,
     "os": "l4re",
     "panic-strategy": "abort",
+    "relocation-model": "static",
     "target-family": [
       "unix"
     ],
@@ -7649,6 +7653,7 @@
         "/subsystem:efi_application"
       ]
     },
+    "relocation-model": "static",
     "singlethread": true,
     "split-debuginfo": "packed",
     "stack-probes": {
