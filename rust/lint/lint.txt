@@ -100,7 +100,7 @@ Lint checks provided by rustc:
                                           private-in-public  warn     detect private items in public interfaces not caught by the old implementation
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
-                   repr-transparent-external-private-fields  warn     tranparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
+                   repr-transparent-external-private-fields  warn     transparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
                        semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
                                             stable-features  warn     stable features found in `#[feature]` directive
                                 suspicious-auto-trait-impls  warn     the rules governing auto traits will change in the future
