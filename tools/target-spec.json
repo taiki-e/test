@@ -7292,7 +7292,7 @@
     "env": "uclibc",
     "is-builtin": true,
     "linker": "l4-bender",
-    "linker-flavor": "l4-bender",
+    "linker-flavor": "ld",
     "linker-is-gnu": false,
     "llvm-target": "x86_64-unknown-l4re-uclibc",
     "max-atomic-width": 64,
