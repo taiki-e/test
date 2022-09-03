@@ -18,6 +18,7 @@ Lint checks provided by rustc:
                                            ffi-unwind-calls  allow    call to foreign functions or function pointers with FFI-unwind ABI
                                      fuzzy-provenance-casts  allow    a fuzzy integer to pointer cast is used
                                              keyword-idents  allow    detects edition keywords being used as an identifier
+                                        let-underscore-drop  allow    non-binding let on a type that implements `Drop`
                                      lossy-provenance-casts  allow    a lossy pointer to integer cast is used
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
@@ -102,6 +103,7 @@ Lint checks provided by rustc:
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
                    repr-transparent-external-private-fields  warn     transparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
                        semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
+                                        special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
                                 suspicious-auto-trait-impls  warn     the rules governing auto traits will change in the future
                                    temporary-cstring-as-ptr  warn     detects getting the inner pointer of a temporary `CString`
@@ -150,6 +152,7 @@ Lint checks provided by rustc:
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
+                                        let-underscore-lock  deny     non-binding let on a synchronization lock
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
                                  missing-fragment-specifier  deny     detects missing fragment specifiers in unused `macro_rules!` patterns
                                          mutable-transmutes  deny     transmuting &T to &mut T is undefined behavior, even if the reference is unused
@@ -177,6 +180,7 @@ Lint groups provided by rustc:
                        ----  ---------
                    warnings  all lints that are set to issue warnings
         future-incompatible  forbidden-lint-groups, illegal-floating-point-literal-pattern, private-in-public, pub-use-of-private-extern-crate, invalid-type-param-default, const-err, unaligned-references, patterns-in-fns-without-body, missing-fragment-specifier, late-bound-lifetime-arguments, order-dependent-trait-objects, coherence-leak-check, unstable-name-collisions, where-clauses-object-safety, proc-macro-derive-resolution-fallback, macro-expanded-macro-exports-accessed-by-absolute-paths, ill-formed-attribute-input, conflicting-repr-hints, ambiguous-associated-items, indirect-structural-match, pointer-structural-match, nontrivial-structural-match, soft-unstable, unstable-syntax-pre-expansion, cenum-impl-drop-cast, const-evaluatable-unchecked, uninhabited-static, invalid-doc-attributes, semicolon-in-expressions-from-macros, legacy-derive-helpers, proc-macro-back-compat, unsupported-calling-conventions, deref-into-dyn-supertrait, deprecated-cfg-attr-crate-type-name, suspicious-auto-trait-impls, repr-transparent-external-private-fields
+             let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
     rust-2018-compatibility  keyword-idents, anonymous-parameters, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
