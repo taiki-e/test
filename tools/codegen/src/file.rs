@@ -15,7 +15,7 @@ pub fn write_json(path: impl AsRef<Path>, value: &impl Serialize) -> Result<()> 
     let path = path.as_ref();
     let mut out = serde_json::to_vec_pretty(value)?;
     out.push(b'\n'); // insert_final_newline
-    if path.is_file() && fs::read(&path)? == out {
+    if path.is_file() && fs::read(path)? == out {
         return Ok(());
     }
     fs::write(path, out)?;
