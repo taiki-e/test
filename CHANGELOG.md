@@ -14,11 +14,11 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 0.0.3
 
-## 0.0.2
+## 0.0.2+metadata_invalid
 
 0.0.2
 
-## 0.0.1
+## 0.0.1-pre_invalid
 
 0.0.1
 
