@@ -885,7 +885,6 @@
         "/machine:arm64"
       ]
     },
-    "relocation-model": "static",
     "singlethread": true,
     "split-debuginfo": "packed",
     "stack-probes": {
@@ -3301,7 +3300,6 @@
         "/subsystem:efi_application"
       ]
     },
-    "relocation-model": "static",
     "singlethread": true,
     "split-debuginfo": "packed",
     "stack-probes": {
@@ -7653,7 +7651,6 @@
         "/subsystem:efi_application"
       ]
     },
-    "relocation-model": "static",
     "singlethread": true,
     "split-debuginfo": "packed",
     "stack-probes": {
