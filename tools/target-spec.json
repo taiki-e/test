@@ -1333,6 +1333,34 @@
     "target-pointer-width": "32",
     "vendor": "apple"
   },
+  "armeb-unknown-linux-gnueabi": {
+    "abi": "eabi",
+    "arch": "arm",
+    "crt-static-respected": true,
+    "data-layout": "E-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+    "dynamic-linking": true,
+    "env": "gnu",
+    "features": "+strict-align,+v8,+crc",
+    "has-rpath": true,
+    "has-thread-local": true,
+    "is-builtin": true,
+    "llvm-target": "armeb-unknown-linux-gnueabi",
+    "max-atomic-width": 64,
+    "os": "linux",
+    "position-independent-executables": true,
+    "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
+    "target-endian": "big",
+    "target-family": [
+      "unix"
+    ],
+    "target-mcount": "\u0001__gnu_mcount_nc",
+    "target-pointer-width": "32"
+  },
   "armebv7r-none-eabi": {
     "abi": "eabi",
     "arch": "arm",
