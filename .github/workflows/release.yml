@@ -66,9 +66,9 @@ jobs:
       - uses: taiki-e/upload-rust-binary-action@dev
         with:
           bin: rust-test-bin,a
-          # target: ${{ matrix.target }}
+          target: ${{ matrix.target }}
           archive: test-$target
-          # checksum: sha256,sha512,sha1,md5
+          checksum: sha256,sha512,sha1,md5
           tar: all
           zip: all
           include: rust
