@@ -437,6 +437,7 @@
     "features": "+neon,+fp-armv8",
     "has-rpath": true,
     "is-builtin": true,
+    "is-like-android": true,
     "llvm-target": "aarch64-linux-android",
     "max-atomic-width": 128,
     "os": "android",
@@ -1034,6 +1035,7 @@
     "features": "+strict-align,+v5te",
     "has-rpath": true,
     "is-builtin": true,
+    "is-like-android": true,
     "llvm-target": "arm-linux-androideabi",
     "max-atomic-width": 32,
     "os": "android",
@@ -1749,6 +1751,7 @@
     "features": "+v7,+thumb-mode,+thumb2,+vfp3,-d32,-neon",
     "has-rpath": true,
     "is-builtin": true,
+    "is-like-android": true,
     "llvm-target": "armv7-none-linux-android",
     "max-atomic-width": 64,
     "os": "android",
@@ -2646,6 +2649,9 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-sanitizers": [
+      "address"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -2820,6 +2826,7 @@
     "features": "+mmx,+sse,+sse2,+sse3,+ssse3",
     "has-rpath": true,
     "is-builtin": true,
+    "is-like-android": true,
     "llvm-target": "i686-linux-android",
     "max-atomic-width": 64,
     "os": "android",
@@ -3156,6 +3163,9 @@
     "stack-probes": {
       "kind": "call"
     },
+    "supported-sanitizers": [
+      "address"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -5959,6 +5969,7 @@
     "features": "+v7,+thumb-mode,+thumb2,+vfp3,+neon",
     "has-rpath": true,
     "is-builtin": true,
+    "is-like-android": true,
     "llvm-target": "armv7-none-linux-android",
     "max-atomic-width": 64,
     "os": "android",
@@ -5969,6 +5980,9 @@
       ]
     },
     "relro-level": "full",
+    "supported-sanitizers": [
+      "address"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -6836,6 +6850,7 @@
     "features": "+mmx,+sse,+sse2,+sse3,+ssse3,+sse4.1,+sse4.2,+popcnt",
     "has-rpath": true,
     "is-builtin": true,
+    "is-like-android": true,
     "llvm-target": "x86_64-linux-android",
     "max-atomic-width": 64,
     "os": "android",
