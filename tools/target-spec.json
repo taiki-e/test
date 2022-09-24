@@ -4779,7 +4779,7 @@
         "-m64"
       ]
     },
-    "relro-level": "partial",
+    "relro-level": "full",
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
