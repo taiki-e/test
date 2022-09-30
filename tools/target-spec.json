@@ -4466,6 +4466,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4492,6 +4495,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -4524,6 +4530,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -4613,6 +4622,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -4643,6 +4655,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4665,6 +4680,9 @@
     "os": "openbsd",
     "position-independent-executables": true,
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4693,6 +4711,9 @@
         "-m32",
         "--secure-plt"
       ]
+    },
+    "stack-probes": {
+      "kind": "inline"
     },
     "target-endian": "big",
     "target-family": [
@@ -4726,6 +4747,9 @@
         "--secure-plt"
       ]
     },
+    "stack-probes": {
+      "kind": "inline"
+    },
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4753,6 +4777,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4780,6 +4807,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -4870,6 +4900,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -4902,6 +4935,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4931,6 +4967,9 @@
         "-m64"
       ]
     },
+    "stack-probes": {
+      "kind": "inline"
+    },
     "target-endian": "big",
     "target-family": [
       "unix"
@@ -4958,6 +4997,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "target-family": [
       "unix"
     ],
@@ -4984,6 +5026,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -5073,6 +5118,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -5511,6 +5559,9 @@
     "os": "linux",
     "position-independent-executables": true,
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -5597,6 +5648,9 @@
       ]
     },
     "relro-level": "full",
+    "stack-probes": {
+      "kind": "inline"
+    },
     "static-position-independent-executables": true,
     "supported-split-debuginfo": [
       "packed",
