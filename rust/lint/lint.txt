@@ -96,6 +96,7 @@ Lint checks provided by rustc:
                                              non-snake-case  warn     variables, methods, functions, lifetime parameters and modules should have snake case names
                                      non-upper-case-globals  warn     static constants should have uppercase identifiers
                                     no-mangle-generic-items  warn     generic items must be mangled
+                               opaque-hidden-inferred-bound  warn     detects the use of nested `impl Trait` types in associated type bounds that are not general enough
                                 overlapping-range-endpoints  warn     detects range patterns with overlapping endpoints
                                             path-statements  warn     path statements with no effect
                                           private-in-public  warn     detect private items in public interfaces not caught by the old implementation
