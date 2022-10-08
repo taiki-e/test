@@ -33,6 +33,14 @@
         "-arch",
         "arm64"
       ],
+      "ld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "macos",
+        "11.0",
+        "11.0"
+      ],
       "ld64.lld": [
         "-arch",
         "arm64",
@@ -96,6 +104,14 @@
         "-arch",
         "arm64"
       ],
+      "ld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
+      ],
       "ld64.lld": [
         "-arch",
         "arm64",
@@ -153,6 +169,14 @@
       "gcc": [
         "-target",
         "arm64-apple-ios14.0-macabi"
+      ],
+      "ld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "mac-catalyst",
+        "7.0",
+        "7.0"
       ],
       "ld64.lld": [
         "-arch",
@@ -212,6 +236,14 @@
         "-arch",
         "arm64"
       ],
+      "ld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "ios-simulator",
+        "7.0",
+        "7.0"
+      ],
       "ld64.lld": [
         "-arch",
         "arm64",
@@ -267,6 +299,14 @@
       "gcc": [
         "-arch",
         "arm64"
+      ],
+      "ld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "tvos",
+        "7.0",
+        "7.0"
       ],
       "ld64.lld": [
         "-arch",
@@ -325,6 +365,14 @@
       "gcc": [
         "-arch",
         "arm64"
+      ],
+      "ld": [
+        "-arch",
+        "arm64",
+        "-platform_version",
+        "watchos-simulator",
+        "5.0",
+        "5.0"
       ],
       "ld64.lld": [
         "-arch",
@@ -1314,6 +1362,14 @@
         "-arch",
         "arm64_32"
       ],
+      "ld": [
+        "-arch",
+        "arm64_32",
+        "-platform_version",
+        "watchos",
+        "5.0",
+        "5.0"
+      ],
       "ld64.lld": [
         "-arch",
         "arm64_32",
@@ -1718,6 +1774,14 @@
       "gcc": [
         "-arch",
         "armv7"
+      ],
+      "ld": [
+        "-arch",
+        "armv7",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
       ],
       "ld64.lld": [
         "-arch",
@@ -2227,6 +2291,14 @@
         "-arch",
         "armv7k"
       ],
+      "ld": [
+        "-arch",
+        "armv7k",
+        "-platform_version",
+        "watchos",
+        "5.0",
+        "5.0"
+      ],
       "ld64.lld": [
         "-arch",
         "armv7k",
@@ -2313,6 +2385,14 @@
         "-arch",
         "armv7s"
       ],
+      "ld": [
+        "-arch",
+        "armv7s",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
+      ],
       "ld64.lld": [
         "-arch",
         "armv7s",
@@ -2352,7 +2432,6 @@
     "limit-rdylib-exports": false,
     "linker-flavor": "em",
     "linker-is-gnu": false,
-    "lld-flavor": "wasm",
     "llvm-target": "wasm32-unknown-emscripten",
     "max-atomic-width": 64,
     "no-default-libraries": false,
@@ -2407,6 +2486,7 @@
     "dynamic-linking": true,
     "is-builtin": true,
     "linker-flavor": "bpf-linker",
+    "linker-is-gnu": false,
     "llvm-target": "bpfeb",
     "max-atomic-width": 64,
     "merge-functions": "disabled",
@@ -2425,6 +2505,7 @@
     "dynamic-linking": true,
     "is-builtin": true,
     "linker-flavor": "bpf-linker",
+    "linker-is-gnu": false,
     "llvm-target": "bpfel",
     "max-atomic-width": 64,
     "merge-functions": "disabled",
@@ -2552,6 +2633,14 @@
       "gcc": [
         "-arch",
         "i386"
+      ],
+      "ld": [
+        "-arch",
+        "i386",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
       ],
       "ld64.lld": [
         "-arch",
@@ -2804,6 +2893,14 @@
         "-arch",
         "i386",
         "-m32"
+      ],
+      "ld": [
+        "-arch",
+        "i386",
+        "-platform_version",
+        "macos",
+        "10.7",
+        "10.7"
       ],
       "ld64.lld": [
         "-arch",
@@ -6286,7 +6383,6 @@
     "limit-rdylib-exports": false,
     "linker-flavor": "em",
     "linker-is-gnu": false,
-    "lld-flavor": "wasm",
     "llvm-target": "wasm32-unknown-emscripten",
     "max-atomic-width": 64,
     "no-default-libraries": false,
@@ -6527,6 +6623,14 @@
         "x86_64",
         "-m64"
       ],
+      "ld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "macos",
+        "10.7",
+        "10.7"
+      ],
       "ld64.lld": [
         "-arch",
         "x86_64",
@@ -6596,6 +6700,14 @@
         "-arch",
         "x86_64"
       ],
+      "ld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "ios",
+        "7.0",
+        "7.0"
+      ],
       "ld64.lld": [
         "-arch",
         "x86_64",
@@ -6659,6 +6771,14 @@
         "-target",
         "x86_64-apple-ios13.0-macabi"
       ],
+      "ld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "mac-catalyst",
+        "7.0",
+        "7.0"
+      ],
       "ld64.lld": [
         "-arch",
         "x86_64",
@@ -6720,6 +6840,14 @@
       "gcc": [
         "-arch",
         "x86_64"
+      ],
+      "ld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "tvos",
+        "7.0",
+        "7.0"
       ],
       "ld64.lld": [
         "-arch",
@@ -6784,6 +6912,14 @@
       "gcc": [
         "-arch",
         "x86_64"
+      ],
+      "ld": [
+        "-arch",
+        "x86_64",
+        "-platform_version",
+        "watchos",
+        "5.0",
+        "5.0"
       ],
       "ld64.lld": [
         "-arch",
