@@ -5,7 +5,6 @@
     clippy::trivially_copy_pass_by_ref,
     clippy::type_complexity
 )]
-#![feature(map_first_last)]
 
 mod file;
 mod target_spec;
