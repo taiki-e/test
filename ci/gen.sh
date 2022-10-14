@@ -25,5 +25,5 @@ if ! git diff --exit-code -- rust/lint; then
 fi
 
 if [[ "${failed}" == "1" ]]; then
-    echo "::set-output name=success::false"
+    echo "success=false" >>"${GITHUB_OUTPUT}"
 fi
