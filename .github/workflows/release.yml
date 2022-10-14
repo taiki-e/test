@@ -30,6 +30,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: taiki-e/create-gh-release-action@main
+        id: create-gh-release
         with:
           # prefix: test
           changelog: CHANGELOG.md
@@ -37,6 +38,9 @@ jobs:
           # branch: 'main|v[0-9]+\.[0-9]+'
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          echo ${{ steps.create-gh-release.outputs.computed-prefix }}
+          echo ${{ steps.create-gh-release.outputs.version }}
 
   upload-assets:
     name: ${{ matrix.target }}
@@ -63,7 +67,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: ${{ matrix.rust || 'nightly' }}
-      - uses: taiki-e/upload-rust-binary-action@dev
+      - uses: taiki-e/upload-rust-binary-action@main
         with:
           bin: rust-test-bin,a
           target: ${{ matrix.target }}
