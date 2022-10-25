@@ -44,7 +44,7 @@ fn gen_target_spec() -> Result<()> {
 
 // creates structured spec map
 fn target_spec_map() -> Result<BTreeMap<String, TargetSpec>> {
-    Ok(serde_json::from_slice(&fs::read(&root_dir().join("tools/target-spec.json"))?)?)
+    Ok(serde_json::from_slice(&fs::read(root_dir().join("tools/target-spec.json"))?)?)
 }
 
 /// Return a list of all built-in targets.
