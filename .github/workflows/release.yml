@@ -81,3 +81,4 @@ jobs:
           # leading_dir: true
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          manifest_path: rust/bin/Cargo.toml
