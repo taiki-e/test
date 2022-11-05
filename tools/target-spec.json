@@ -6689,6 +6689,7 @@
     "vendor": "apple"
   },
   "x86_64-apple-ios": {
+    "abi": "sim",
     "abi-return-struct-as-int": true,
     "arch": "x86_64",
     "archive-format": "darwin",
@@ -6725,7 +6726,7 @@
         "-arch",
         "x86_64",
         "-platform_version",
-        "ios",
+        "ios-simulator",
         "7.0",
         "7.0"
       ],
@@ -6733,7 +6734,7 @@
         "-arch",
         "x86_64",
         "-platform_version",
-        "ios",
+        "ios-simulator",
         "7.0",
         "7.0"
       ]
@@ -6830,6 +6831,7 @@
     "vendor": "apple"
   },
   "x86_64-apple-tvos": {
+    "abi": "sim",
     "abi-return-struct-as-int": true,
     "arch": "x86_64",
     "archive-format": "darwin",
@@ -6866,7 +6868,7 @@
         "-arch",
         "x86_64",
         "-platform_version",
-        "tvos",
+        "tvos-simulator",
         "7.0",
         "7.0"
       ],
@@ -6874,7 +6876,7 @@
         "-arch",
         "x86_64",
         "-platform_version",
-        "tvos",
+        "tvos-simulator",
         "7.0",
         "7.0"
       ]
@@ -6900,6 +6902,7 @@
     "vendor": "apple"
   },
   "x86_64-apple-watchos-sim": {
+    "abi": "sim",
     "abi-return-struct-as-int": true,
     "arch": "x86_64",
     "archive-format": "darwin",
@@ -6938,7 +6941,7 @@
         "-arch",
         "x86_64",
         "-platform_version",
-        "watchos",
+        "watchos-simulator",
         "5.0",
         "5.0"
       ],
@@ -6946,7 +6949,7 @@
         "-arch",
         "x86_64",
         "-platform_version",
-        "watchos",
+        "watchos-simulator",
         "5.0",
         "5.0"
       ]
