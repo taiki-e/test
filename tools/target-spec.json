@@ -863,6 +863,31 @@
     "relocation-model": "static",
     "target-pointer-width": "64"
   },
+  "aarch64-unknown-nto-qnx7.1.0": {
+    "arch": "aarch64",
+    "crt-static-respected": true,
+    "data-layout": "e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
+    "dynamic-linking": true,
+    "env": "nto71",
+    "has-rpath": true,
+    "is-builtin": true,
+    "linker": "qcc",
+    "llvm-target": "aarch64-unknown-unknown",
+    "max-atomic-width": 128,
+    "os": "nto",
+    "position-independent-executables": true,
+    "pre-link-args": {
+      "gcc": [
+        "-Vgcc_ntoaarch64le_cxx"
+      ]
+    },
+    "relro-level": "full",
+    "static-position-independent-executables": true,
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "64"
+  },
   "aarch64-unknown-openbsd": {
     "abi-return-struct-as-int": true,
     "arch": "aarch64",
@@ -1338,7 +1363,6 @@
     "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
-    "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
     "features": "+neon,+fp-armv8,+apple-a7",
@@ -1359,6 +1383,7 @@
     "llvm-target": "arm64_32-apple-watchos",
     "max-atomic-width": 128,
     "os": "watchos",
+    "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
         "-arch",
@@ -2267,7 +2292,6 @@
     "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
-    "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
     "features": "+v7,+vfp4,+neon",
@@ -2288,6 +2312,7 @@
     "llvm-target": "armv7k-apple-watchos",
     "max-atomic-width": 64,
     "os": "watchos",
+    "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
         "-arch",
@@ -2418,7 +2443,6 @@
   },
   "asmjs-unknown-emscripten": {
     "arch": "wasm32",
-    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-f128:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
@@ -6391,7 +6415,6 @@
   },
   "wasm32-unknown-emscripten": {
     "arch": "wasm32",
-    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-f128:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
@@ -6428,7 +6451,6 @@
   },
   "wasm32-unknown-unknown": {
     "arch": "wasm32",
-    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-n32:64-S128-ni:1:10:20",
     "default-adjusted-cabi": "wasm",
     "default-hidden-visibility": true,
@@ -6558,7 +6580,6 @@
   },
   "wasm64-unknown-unknown": {
     "arch": "wasm64",
-    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:64:64-p10:8:8-p20:8:8-i64:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
@@ -7185,6 +7206,32 @@
       "unpacked",
       "off"
     ],
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "64"
+  },
+  "x86_64-pc-nto-qnx7.1.0": {
+    "arch": "x86_64",
+    "cpu": "x86-64",
+    "crt-static-respected": true,
+    "data-layout": "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+    "dynamic-linking": true,
+    "env": "nto71",
+    "has-rpath": true,
+    "is-builtin": true,
+    "linker": "qcc",
+    "llvm-target": "x86_64-pc-unknown",
+    "max-atomic-width": 64,
+    "os": "nto",
+    "position-independent-executables": true,
+    "pre-link-args": {
+      "gcc": [
+        "-Vgcc_ntox86_64_cxx"
+      ]
+    },
+    "relro-level": "full",
+    "static-position-independent-executables": true,
     "target-family": [
       "unix"
     ],

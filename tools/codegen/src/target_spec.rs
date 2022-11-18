@@ -186,6 +186,7 @@ pub enum TargetOs {
     netbsd,
     #[default]
     none,
+    nto,
     openbsd,
     psp,
     redox,
