@@ -168,6 +168,7 @@ impl TargetEndian {
 )]
 #[allow(non_camel_case_types)]
 pub enum TargetOs {
+    aix,
     android,
     cuda,
     dragonfly,

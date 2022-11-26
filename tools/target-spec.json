@@ -4963,6 +4963,52 @@
     "target-pointer-width": "32",
     "vendor": "wrs"
   },
+  "powerpc64-ibm-aix": {
+    "abi": "vec-extabi",
+    "arch": "powerpc64",
+    "archive-format": "aix_big",
+    "code-model": "small",
+    "cpu": "pwr7",
+    "crt-static-respected": true,
+    "data-layout": "E-m:a-i64:64-n32:64-S128-v256:256:256-v512:512:512",
+    "default-dwarf-version": 3,
+    "dll-suffix": ".a",
+    "dynamic-linking": true,
+    "eh-frame-header": false,
+    "has-thread-local": true,
+    "is-builtin": true,
+    "is-like-aix": true,
+    "linker": "ld",
+    "linker-flavor": "ld",
+    "linker-is-gnu": false,
+    "llvm-target": "powerpc64-ibm-aix",
+    "max-atomic-width": 64,
+    "os": "aix",
+    "pre-link-args": {
+      "ld": [
+        "-b64",
+        "-bpT:0x100000000",
+        "-bpD:0x110000000",
+        "-bcdtors:all:0:s"
+      ]
+    },
+    "pre-link-objects": {
+      "dynamic-nopic-exe": [
+        "/usr/lib/crt0_64.o",
+        "/usr/lib/crti_64.o"
+      ],
+      "dynamic-pic-exe": [
+        "/usr/lib/crt0_64.o",
+        "/usr/lib/crti_64.o"
+      ]
+    },
+    "target-endian": "big",
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "64",
+    "vendor": "ibm"
+  },
   "powerpc64-unknown-freebsd": {
     "abi-return-struct-as-int": true,
     "arch": "powerpc64",
