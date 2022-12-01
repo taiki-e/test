@@ -119,7 +119,6 @@ jobs:
           components: clippy,rustfmt
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
-      - run: npm install prettier
       - run: pip3 install yq
       # `cargo fmt` cannot recognize modules defined inside macros, so run
       # rustfmt directly.
@@ -128,13 +127,7 @@ jobs:
         if: always()
       - run: cargo clippy --workspace --all-features --all-targets
         if: always()
-      - run: shfmt -d $(git ls-files '*.sh')
-        if: always()
-      - run: npx prettier -c $(git ls-files '*.yml')
-        if: always()
-      - run: shellcheck $(git ls-files '*.sh')
-        if: always()
-      - run: tools/check-workflow.sh
+      - run: tools/tidy.sh
         if: always()
 
   # version:
@@ -164,6 +157,7 @@ jobs:
   ci-success:
     name: ci
     if: github.event_name == 'push' && success()
+    # prettier-ignore
     needs: [test, codegen, tidy] # tidy:needs
     runs-on: ubuntu-latest
     steps:
