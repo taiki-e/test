@@ -863,7 +863,7 @@
     "relocation-model": "static",
     "target-pointer-width": "64"
   },
-  "aarch64-unknown-nto-qnx7.1.0": {
+  "aarch64-unknown-nto-qnx710": {
     "arch": "aarch64",
     "crt-static-respected": true,
     "data-layout": "e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
@@ -7257,7 +7257,7 @@
     ],
     "target-pointer-width": "64"
   },
-  "x86_64-pc-nto-qnx7.1.0": {
+  "x86_64-pc-nto-qnx710": {
     "arch": "x86_64",
     "cpu": "x86-64",
     "crt-static-respected": true,
