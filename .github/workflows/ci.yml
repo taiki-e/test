@@ -29,6 +29,9 @@ defaults:
     shell: bash
 
 jobs:
+  tidy:
+    uses: taiki-e/workflows/.github/workflows/tidy-rust.yml@main
+
   test:
     strategy:
       fail-fast: false
@@ -48,9 +51,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
-      - uses: dtolnay/rust-toolchain@v1
-        with:
-          toolchain: ${{ matrix.rust || 'nightly' }}
+      - name: Install Rust
+        run: rustup toolchain add ${{ matrix.rust || 'nightly' }} --no-self-update && rustup default ${{ matrix.rust || 'nightly' }}
       - run: make test
       # - run: tools/install.sh
       #   env:
@@ -66,20 +68,6 @@ jobs:
       # - run: cargo hack build --workspace
       #   if: matrix.target != 'x86_64-pc-windows-gnu'
 
-  # docs:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         persist-credentials: false
-  #     - uses: dtolnay/rust-toolchain@nightly
-  #     - run: cargo doc --workspace --all-features --document-private-items
-  #     - uses: taiki-e/github-actions/deploy-gh-pages@main
-  #       with:
-  #         deploy_dir: target/doc
-  #         token: ${{ secrets.GITHUB_TOKEN }}
-  #       if: github.event_name == 'push' && github.event.ref == 'refs/heads/main' && github.repository_owner == 'taiki-e'
-
   codegen:
     runs-on: ubuntu-latest
     permissions:
@@ -89,7 +77,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
-      - uses: dtolnay/rust-toolchain@nightly
+      - name: Install Rust
+        run: rustup toolchain add nightly --no-self-update && rustup default nightly
       - run: make gen
       - run: git add -N . && git diff --exit-code
         if: github.repository_owner != 'taiki-e' || github.event_name != 'schedule' && !(github.event_name == 'push' && github.ref == 'refs/heads/main')
@@ -107,28 +96,6 @@ jobs:
             [2]: https://github.com/peter-evans/create-pull-request/blob/HEAD/docs/concepts-guidelines.md#workarounds-to-trigger-further-workflow-runs
           branch: gen
         if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main') && steps.diff.outputs.success == 'false'
-
-  tidy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-      - uses: dtolnay/rust-toolchain@nightly
-        with:
-          components: clippy,rustfmt
-      - uses: taiki-e/install-action@shellcheck
-      - uses: taiki-e/install-action@shfmt
-      - run: pip3 install yq
-      # `cargo fmt` cannot recognize modules defined inside macros, so run
-      # rustfmt directly.
-      # Refs: https://github.com/rust-lang/rustfmt/issues/4078
-      - run: rustfmt --check $(git ls-files '*.rs')
-        if: always()
-      - run: cargo clippy --workspace --all-features --all-targets
-        if: always()
-      - run: tools/tidy.sh
-        if: always()
 
   # version:
   #   runs-on: ubuntu-latest
@@ -158,7 +125,7 @@ jobs:
     name: ci
     if: github.event_name == 'push' && success()
     # prettier-ignore
-    needs: [test, codegen, tidy] # tidy:needs
+    needs: [tidy, test, codegen] # tidy:needs
     runs-on: ubuntu-latest
     steps:
       - name: Mark the job as a success
