@@ -7,3 +7,6 @@ members = [
     "rust/lint",
     "tools/codegen",
 ]
+
+[profile.release]
+strip = true
