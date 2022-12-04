@@ -14,18 +14,18 @@ freebsd_test_task:
   freebsd_instance:
     image: freebsd-12-3-release-amd64
   setup_script:
-    - pkg install -y unzip curl moreutils
+    - pkg install -y unzip curl
     - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --profile=minimal --default-toolchain nightly -y
     - . $HOME/.cargo/env
     - rustup target add i686-unknown-freebsd
   test_script:
     - . $HOME/.cargo/env
     - set -ex
-    - curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-x86_64-unknown-freebsd.tar.gz | tar xzf - && ./cargo-hack hack check --workspace 2>&1 | ts -i '%.s  '; rm -f ./cargo-hack
+    - curl -LsSf https://github.com/taiki-e/cargo-hack/releases/latest/download/cargo-hack-x86_64-unknown-freebsd.tar.gz | tar xzf - && time ./cargo-hack hack check --workspace; rm -f ./cargo-hack
     # - unzip fixtures/i686-unknown-freebsd-ubuntu-18.04.zip && chmod +x ./rust-test1 && ./rust-test1; rm -f ./rust-test1
     # - unzip fixtures/i686-unknown-freebsd-ubuntu-20.04.zip && chmod +x ./rust-test1 && ./rust-test1; rm -f ./rust-test1
     # - unzip fixtures/i686-unknown-freebsd-ubuntu-22.04.zip && chmod +x ./rust-test1 && ./rust-test1; rm -f ./rust-test1
     # - unzip fixtures/x86_64-unknown-freebsd-ubuntu-18.04.zip && chmod +x ./rust-test1 && ./rust-test1; rm -f ./rust-test1
     # - unzip fixtures/x86_64-unknown-freebsd-ubuntu-20.04.zip && chmod +x ./rust-test1 && ./rust-test1; rm -f ./rust-test1
     # - unzip fixtures/x86_64-unknown-freebsd-ubuntu-22.04.zip && chmod +x ./rust-test1 && ./rust-test1; rm -f ./rust-test1
-    - unzip fixtures/x86_64-unknown-freebsd.zip && chmod +x ./cargo-hack && ./cargo-hack hack check --workspace 2>&1 | ts -i '%.s  '; rm -f ./cargo-hack
+    - unzip fixtures/x86_64-unknown-freebsd.zip && chmod +x ./cargo-hack && time ./cargo-hack hack check --workspace; rm -f ./cargo-hack
