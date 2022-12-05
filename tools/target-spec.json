@@ -21,7 +21,6 @@
       "ZERO_AR_DATE=1"
     ],
     "link-env-remove": [
-      "MACOSX_DEPLOYMENT_TARGET",
       "IPHONEOS_DEPLOYMENT_TARGET"
     ],
     "linker-is-gnu": false,
@@ -2907,7 +2906,6 @@
       "ZERO_AR_DATE=1"
     ],
     "link-env-remove": [
-      "MACOSX_DEPLOYMENT_TARGET",
       "IPHONEOS_DEPLOYMENT_TARGET"
     ],
     "linker-is-gnu": false,
@@ -6701,7 +6699,6 @@
       "ZERO_AR_DATE=1"
     ],
     "link-env-remove": [
-      "MACOSX_DEPLOYMENT_TARGET",
       "IPHONEOS_DEPLOYMENT_TARGET"
     ],
     "linker-is-gnu": false,
