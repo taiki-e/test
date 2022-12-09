@@ -2,6 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# shellcheck disable=SC2154
+trap 's=$?; echo >&2 "$0: Error on line "${LINENO}": ${BASH_COMMAND}"; exit ${s}' ERR
+
 # Install cargo-hack.
 #
 # Note: This script only intends to use in the CI environment.
