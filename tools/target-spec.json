@@ -6527,8 +6527,7 @@
         "-Wl,--fatal-warnings",
         "-Wl,--no-demangle",
         "--target=wasm32-unknown-unknown",
-        "-Wl,--no-entry",
-        "-Wl,--export-dynamic"
+        "-Wl,--no-entry"
       ],
       "wasm-ld": [
         "-z",
@@ -6537,8 +6536,7 @@
         "--allow-undefined",
         "--fatal-warnings",
         "--no-demangle",
-        "--no-entry",
-        "--export-dynamic"
+        "--no-entry"
       ]
     },
     "relocation-model": "static",
