@@ -845,6 +845,9 @@
     "max-atomic-width": 128,
     "panic-strategy": "abort",
     "relocation-model": "static",
+    "supported-sanitizers": [
+      "kcfi"
+    ],
     "target-pointer-width": "64"
   },
   "aarch64-unknown-none-softfloat": {
@@ -6560,6 +6563,7 @@
     "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
+    "entry-name": "__main_void",
     "exe-suffix": ".wasm",
     "generate-arange-section": false,
     "has-thread-local": true,
@@ -8077,6 +8081,9 @@
       ]
     },
     "static-position-independent-executables": true,
+    "supported-sanitizers": [
+      "kcfi"
+    ],
     "target-pointer-width": "64"
   },
   "x86_64-unknown-openbsd": {
