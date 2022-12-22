@@ -12,9 +12,14 @@ pub fn root_dir() -> PathBuf {
 }
 
 pub fn write_json(path: impl AsRef<Path>, value: &impl Serialize) -> Result<()> {
-    let path = path.as_ref();
     let mut out = serde_json::to_vec_pretty(value)?;
     out.push(b'\n'); // insert_final_newline
+    write(path.as_ref(), out)
+}
+
+pub fn write(path: impl AsRef<Path>, out: impl AsRef<[u8]>) -> Result<()> {
+    let path = path.as_ref();
+    let out = out.as_ref();
     if path.is_file() && fs::read(path)? == out {
         return Ok(());
     }

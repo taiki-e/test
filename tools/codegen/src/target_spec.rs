@@ -23,20 +23,27 @@ pub static TARGET_TIER: Lazy<TargetTier> = Lazy::new(|| target_tier().unwrap());
 
 // creates a full list of target spec
 fn gen_target_spec() -> Result<()> {
-    let mut map = BTreeMap::new();
+    let mut cfgs = Vec::new();
+    let mut target_spec_map = BTreeMap::new();
     // let mut target_os = BTreeSet::new();
     for triple in target_list()? {
-        let text = target_spec_json(&triple)?;
-        let value: serde_json::Value = serde_json::from_str(&text)?;
+        cfgs.append(&mut format!("{triple}:\n").into_bytes());
+        let cfg_list = cfg_list(&triple)?;
+        cfgs.extend(cfg_list.replace("debug_assertions\n", "").replace("\\\\", "\\").into_bytes());
+        cfgs.push(b'\n');
+        cfgs.push(b'\n');
+        let target_spec = target_spec_json(&triple)?;
+        let target_spec: serde_json::Value = serde_json::from_str(&target_spec)?;
         // if let Some(v) = value.get("os") {
         //     let v = v.as_str().unwrap();
         //     if !target_os.contains(v) {
         //         target_os.insert(v.to_owned());
         //     }
         // }
-        map.insert(triple, value);
+        target_spec_map.insert(triple, target_spec);
     }
-    write_json(root_dir().join("tools/target-spec.json"), &map)?;
+    write(root_dir().join("tools/cfg"), &cfgs)?;
+    write_json(root_dir().join("tools/target-spec.json"), &target_spec_map)?;
     // target_os.insert("none".into());
     // gen_enums(["TargetOs"], [&target_os])?;
     Ok(())
@@ -60,6 +67,10 @@ fn target_list() -> Result<Vec<String>> {
 fn target_spec_json(target: &str) -> Result<String> {
     Ok(cmd!("rustc", "--print", "target-spec-json", "-Z", "unstable-options", "--target", &target)
         .read()?)
+}
+
+fn cfg_list(target: &str) -> Result<String> {
+    Ok(cmd!("rustc", "--print", "cfg", "--target", &target).read()?)
 }
 
 // fn gen_enums<const N: usize>(name: [&str; N], variants: [&BTreeSet<String>; N]) -> Result<()> {
