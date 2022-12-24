@@ -53,6 +53,9 @@ jobs:
           persist-credentials: false
       - name: Install Rust
         run: rustup toolchain add ${{ matrix.rust || 'nightly' }} --no-self-update && rustup default ${{ matrix.rust || 'nightly' }}
+      - uses: taiki-e/install-action@main
+        with:
+          tool: cargo-hack@0.5
       - run: make test
       # - run: tools/install.sh
       #   env:
