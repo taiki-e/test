@@ -8,5 +8,5 @@ members = [
     "tools/codegen",
 ]
 
-[profile.release]
-strip = true
+# [profile.release]
+# strip = true
