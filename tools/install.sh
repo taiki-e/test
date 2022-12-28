@@ -12,7 +12,7 @@ trap 's=$?; echo >&2 "$0: Error on line "${LINENO}": ${BASH_COMMAND}"; exit ${s}
 
 package="${PACKAGE:?}"
 repository="${REPOSITORY:-"taiki-e/${package}"}"
-target="${TARGET:-"$(rustc -Vv | grep host | sed 's/host: //')"}"
+target="${TARGET:-"$(rustc -Vv | grep 'host: ' | sed 's/host: //')"}"
 outdir="${OUTDIR:-"${HOME}/.cargo/bin"}"
 
 set -x

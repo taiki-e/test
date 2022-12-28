@@ -24,7 +24,7 @@ warn() {
 script_dir="$(cd "$(dirname "$0")" && pwd)"
 cd "${script_dir}"/..
 
-host=$(rustc -Vv | grep host | sed 's/host: //')
+host=$(rustc -Vv | grep 'host: ' | sed 's/host: //')
 target="${1:-"${host}"}"
 cargo="cargo"
 if [[ "${host}" != "${target}" ]]; then
