@@ -207,6 +207,7 @@ pub enum TargetOs {
     tvos,
     uefi,
     unknown,
+    vita,
     vxworks,
     wasi,
     watchos,

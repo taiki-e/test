@@ -1868,6 +1868,33 @@
     ],
     "target-pointer-width": "32"
   },
+  "armv7-sony-vita-newlibeabihf": {
+    "abi": "eabihf",
+    "arch": "arm",
+    "cpu": "cortex-a9",
+    "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+    "env": "newlib",
+    "exe-suffix": ".elf",
+    "features": "+v7,+neon",
+    "is-builtin": true,
+    "linker": "arm-vita-eabi-gcc",
+    "llvm-target": "armv7a-vita-newlibeabihf",
+    "max-atomic-width": 32,
+    "no-default-libraries": false,
+    "os": "vita",
+    "panic-strategy": "abort",
+    "pre-link-args": {
+      "gcc": [
+        "-Wl,-q"
+      ]
+    },
+    "relocation-model": "static",
+    "target-family": [
+      "unix"
+    ],
+    "target-pointer-width": "32",
+    "vendor": "sony"
+  },
   "armv7-unknown-freebsd": {
     "abi": "eabihf",
     "abi-return-struct-as-int": true,
