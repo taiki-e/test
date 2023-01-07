@@ -4,7 +4,7 @@ use anyhow::Result;
 use fs_err as fs;
 use serde::Serialize;
 
-pub fn root_dir() -> PathBuf {
+pub fn workspace_root() -> PathBuf {
     let mut dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     dir.pop(); // codegen
     dir.pop(); // tools

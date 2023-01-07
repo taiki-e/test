@@ -42,8 +42,8 @@ fn gen_target_spec() -> Result<()> {
         // }
         target_spec_map.insert(triple, target_spec);
     }
-    write(root_dir().join("tools/cfg"), &cfgs)?;
-    write_json(root_dir().join("tools/target-spec.json"), &target_spec_map)?;
+    write(workspace_root().join("tools/cfg"), &cfgs)?;
+    write_json(workspace_root().join("tools/target-spec.json"), &target_spec_map)?;
     // target_os.insert("none".into());
     // gen_enums(["TargetOs"], [&target_os])?;
     Ok(())
@@ -51,7 +51,7 @@ fn gen_target_spec() -> Result<()> {
 
 // creates structured spec map
 fn target_spec_map() -> Result<BTreeMap<String, TargetSpec>> {
-    Ok(serde_json::from_slice(&fs::read(root_dir().join("tools/target-spec.json"))?)?)
+    Ok(serde_json::from_slice(&fs::read(workspace_root().join("tools/target-spec.json"))?)?)
 }
 
 /// Return a list of all built-in targets.
@@ -98,7 +98,7 @@ fn cfg_list(target: &str) -> Result<String> {
 //         });
 //     }
 
-//     let outdir = &root_dir().join("tools/codegen/src/gen");
+//     let outdir = &workspace_root().join("tools/codegen/src/gen");
 //     fs::create_dir_all(outdir)?;
 //     write(outdir.join("target_spec.rs"), out)?;
 //     Ok(())
@@ -239,5 +239,5 @@ pub struct TargetTier {
 }
 
 fn target_tier() -> Result<TargetTier> {
-    Ok(serde_json::from_slice(&fs::read(root_dir().join("tools/target-tier.json"))?)?)
+    Ok(serde_json::from_slice(&fs::read(workspace_root().join("tools/target-tier.json"))?)?)
 }
