@@ -58,11 +58,11 @@ jobs:
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-latest
           - target: x86_64-apple-darwin
-            os: macos-latest
+            os: macos-11
           - target: aarch64-apple-darwin
-            os: macos-latest
+            os: macos-11
           - target: universal-apple-darwin
-            os: macos-latest
+            os: macos-11
           - target: x86_64-pc-windows-msvc
             os: windows-latest
     runs-on: ${{ matrix.os }}
