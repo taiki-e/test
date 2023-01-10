@@ -58,11 +58,11 @@ jobs:
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-latest
           - target: x86_64-apple-darwin
-            os: macos-11
+            os: macos-latest
           - target: aarch64-apple-darwin
-            os: macos-11
+            os: macos-latest
           - target: universal-apple-darwin
-            os: macos-11
+            os: macos-latest
           - target: x86_64-pc-windows-msvc
             os: windows-latest
     runs-on: ${{ matrix.os }}
@@ -75,7 +75,7 @@ jobs:
       - uses: taiki-e/install-action@cross
       - uses: taiki-e/upload-rust-binary-action@dev
         with:
-          bin: rust-test-bin,a
+          bin: rust-test-bin
           target: ${{ matrix.target }}
           archive: test-$target
           checksum: sha256,sha512,sha1,md5
