@@ -47,6 +47,7 @@ jobs:
           #   os: windows-latest
           # - target: x86_64-unknown-linux-musl
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
         with:
@@ -73,6 +74,7 @@ jobs:
 
   codegen:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     permissions:
       contents: write # TODO test
       pull-requests: write
@@ -108,6 +110,7 @@ jobs:
     # prettier-ignore
     needs: [tidy, test, codegen] # tidy:needs
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - name: Mark the job as a success
         run: exit 0
