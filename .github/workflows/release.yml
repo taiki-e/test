@@ -88,6 +88,6 @@ jobs:
           # leading_dir: true
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          pgp_public_key: ${{ secrets.PGP_PUBLIC_KEY }}
+          pgp_public_key: .github/public-key.asc
           pgp_private_key: ${{ secrets.PGP_PRIVATE_KEY }}
           pgp_passphrase: ${{ secrets.PGP_PASSPHRASE }}
