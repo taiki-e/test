@@ -77,7 +77,6 @@ Lint checks provided by rustc:
                                    for-loops-over-fallibles  warn     for-looping over an `Option` or a `Result`, which is more clearly expressed as an `if let`
                                    function-item-references  warn     suggest casting to a function pointer when attempting to take references to function items
                      illegal-floating-point-literal-pattern  warn     floating-point literals cannot be used in patterns
-                                  implied-bounds-entailment  warn     impl method assumes more implied bounds than its corresponding trait method
                                             improper-ctypes  warn     proper use of libc types in foreign modules
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
@@ -151,6 +150,7 @@ Lint checks provided by rustc:
                         deprecated-cfg-attr-crate-type-name  deny     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
                                  ill-formed-attribute-input  deny     ill-formed attribute inputs that were previously accepted and used in practice
+                                  implied-bounds-entailment  deny     impl method assumes more implied bounds than its corresponding trait method
                                          incomplete-include  deny     trailing content in included file
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
