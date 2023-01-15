@@ -58,19 +58,6 @@ jobs:
         with:
           tool: wasmtime@4.0.0
       - run: make test
-      # - run: tools/install.sh
-      #   env:
-      #     PACKAGE: rust-test-bin
-      #     REPOSITORY: taiki-e/test
-      #     TARGET: ${{ matrix.target }}
-      # - run: rust-test-bin
-      # - run: tools/install.sh
-      #   env:
-      #     PACKAGE: cargo-hack
-      #     TARGET: ${{ matrix.target }}
-      #   if: matrix.target != 'x86_64-pc-windows-gnu'
-      # - run: cargo hack build --workspace
-      #   if: matrix.target != 'x86_64-pc-windows-gnu'
 
   codegen:
     runs-on: ubuntu-latest
