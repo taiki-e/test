@@ -48,6 +48,7 @@ debian_versions=(9 10 11 sid)
 # | 3.13    | 2022-11-01 | 1.2.2  |
 # | 3.12    | 2022-05-01 | 1.1.24 |
 alpine_versions=(3.12 3.13 3.14 3.15 3.16 3.17 edge)
+# https://docs.fedoraproject.org/en-US/releases
 # https://hub.docker.com/_/fedora
 # https://endoflife.date/fedora
 # | version | EoL        | glibc |
