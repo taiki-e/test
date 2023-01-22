@@ -56,7 +56,6 @@ Lint checks provided by rustc:
                                            asm-sub-register  warn     using only a subset of a register for inline asm inputs
                                               bad-asm-style  warn     incorrect use of inline assembly
                                          bare-trait-objects  warn     suggest using `dyn Trait` for trait objects
-                                 bindings-with-variant-name  warn     detects pattern bindings with the same name as one of the matched variants
                                   break-with-label-and-loop  warn     `break` expression with label and unlabeled loop as value expression
                                clashing-extern-declarations  warn     detects when an extern fn has been declared with the same name but different types
                                        coherence-leak-check  warn     distinct impls distinguished only by the leak-check code
@@ -145,6 +144,7 @@ Lint checks provided by rustc:
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
                                         arithmetic-overflow  deny     arithmetic operation overflows
+                                 bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
                                        cenum-impl-drop-cast  deny     a C-like enum implementing Drop is cast
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                         deprecated-cfg-attr-crate-type-name  deny     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
