@@ -5906,6 +5906,12 @@
     "stack-probes": {
       "kind": "inline"
     },
+    "supported-sanitizers": [
+      "address",
+      "leak",
+      "memory",
+      "thread"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -5996,6 +6002,12 @@
       "kind": "inline"
     },
     "static-position-independent-executables": true,
+    "supported-sanitizers": [
+      "address",
+      "leak",
+      "memory",
+      "thread"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
