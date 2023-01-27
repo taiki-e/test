@@ -80,7 +80,7 @@ fn cfg_list(target: &str) -> Result<String> {
 //     };
 //     let attrs = quote! {
 //         #[derive(
-//             Debug, Clone, Copy, PartialEq, Eq,
+//             Debug, Clone, Copy, PartialEq,
 //             Serialize, Deserialize,
 //             Display, IntoStaticStr,
 //         )]
@@ -123,10 +123,10 @@ pub struct TargetSpec {
     pub target_pointer_width: String,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize, Display, IntoStaticStr)]
 #[allow(non_camel_case_types)]
 pub enum TargetArch {
-    // all target_arch: https://github.com/rust-lang/rust/blob/1.63.0/compiler/rustc_target/src/abi/call/mod.rs#L670-L728
+    // all target_arch: https://github.com/rust-lang/rust/blob/1.67.0/compiler/rustc_target/src/abi/call/mod.rs#L668-L735
     aarch64,
     amdgpu,
     arm,
@@ -134,6 +134,7 @@ pub enum TargetArch {
     avr,
     bpf,
     hexagon,
+    loongarch64,
     m68k,
     mips,
     mips64,
@@ -155,7 +156,7 @@ pub enum TargetArch {
 pub use TargetArch::*;
 
 #[derive(
-    Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr,
+    Debug, Clone, Copy, Default, PartialEq, Serialize, Deserialize, Display, IntoStaticStr,
 )]
 #[allow(non_camel_case_types)]
 pub enum TargetEndian {
@@ -175,7 +176,7 @@ impl TargetEndian {
 }
 
 #[derive(
-    Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, Display, IntoStaticStr,
+    Debug, Clone, Copy, Default, PartialEq, Serialize, Deserialize, Display, IntoStaticStr,
 )]
 #[allow(non_camel_case_types)]
 pub enum TargetOs {
