@@ -138,7 +138,7 @@
     "abi-return-struct-as-int": true,
     "arch": "aarch64",
     "archive-format": "darwin",
-    "bitcode-llvm-cmdline": "-triple\u0000arm64-apple-ios14.0-macabi\u0000-emit-obj\u0000-disable-llvm-passes\u0000-Os\u0000",
+    "bitcode-llvm-cmdline": "-triple\u0000arm64-apple-ios-macabi\u0000-emit-obj\u0000-disable-llvm-passes\u0000-Os\u0000",
     "cpu": "apple-a12",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
     "debuginfo-kind": "dwarf-dsym",
@@ -162,13 +162,13 @@
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
-    "llvm-target": "arm64-apple-ios14.0-macabi",
+    "llvm-target": "arm64-apple-ios-macabi",
     "max-atomic-width": 128,
     "os": "ios",
     "pre-link-args": {
       "gcc": [
         "-target",
-        "arm64-apple-ios14.0-macabi"
+        "arm64-apple-ios-macabi"
       ],
       "ld": [
         "-arch",
@@ -6961,13 +6961,13 @@
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
-    "llvm-target": "x86_64-apple-ios13.0-macabi",
+    "llvm-target": "x86_64-apple-ios-macabi",
     "max-atomic-width": 64,
     "os": "ios",
     "pre-link-args": {
       "gcc": [
         "-target",
-        "x86_64-apple-ios13.0-macabi"
+        "x86_64-apple-ios-macabi"
       ],
       "ld": [
         "-arch",
