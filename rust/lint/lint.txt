@@ -58,7 +58,7 @@ Lint checks provided by rustc:
                                               bad-asm-style  warn     incorrect use of inline assembly
                                          bare-trait-objects  warn     suggest using `dyn Trait` for trait objects
                                   break-with-label-and-loop  warn     `break` expression with label and unlabeled loop as value expression
-                    byte-slice-in-packed-struct-with-derive  warn     `[u8]` slice used in a packed struct with `derive`
+                    byte-slice-in-packed-struct-with-derive  warn     `[u8]` or `str` used in a packed struct with `derive`
                                clashing-extern-declarations  warn     detects when an extern fn has been declared with the same name but different types
                                        coherence-leak-check  warn     distinct impls distinguished only by the leak-check code
                                           confusable-idents  warn     detects visually confusable pairs between identifiers
