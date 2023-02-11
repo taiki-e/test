@@ -504,6 +504,7 @@
       "unpacked",
       "off"
     ],
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
@@ -762,6 +763,7 @@
       "unpacked",
       "off"
     ],
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
@@ -872,6 +874,7 @@
       "unpacked",
       "off"
     ],
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
@@ -7357,6 +7360,7 @@
       "unpacked",
       "off"
     ],
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
@@ -7806,6 +7810,7 @@
       "memory",
       "thread"
     ],
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
@@ -8046,6 +8051,7 @@
       "unpacked",
       "off"
     ],
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
@@ -8189,6 +8195,7 @@
       "unpacked",
       "off"
     ],
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
@@ -8228,6 +8235,7 @@
       "memory",
       "thread"
     ],
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
@@ -8292,6 +8300,7 @@
         0
       ]
     },
+    "supports-xray": true,
     "target-family": [
       "unix"
     ],
