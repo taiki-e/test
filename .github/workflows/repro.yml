@@ -1,0 +1,54 @@
+name: Repro
+
+permissions:
+  contents: read
+
+on:
+  push:
+
+env:
+  CARGO_INCREMENTAL: 0
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  nightly-2023-02-17:
+    runs-on: windows-latest
+    steps:
+      - run: |
+          set -ex
+          TOOLCHAIN=nightly-2023-02-17
+          rustup toolchain add $TOOLCHAIN --no-self-update --component rust-src
+          rustup default $TOOLCHAIN
+          rustc -vV
+          cargo new --lib repro
+          cd repro
+          RUSTFLAGS='-Z randomize-layout' cargo -Z build-std test --release --target x86_64-pc-windows-msvc
+
+  nightly-2022-12-22:
+    runs-on: windows-latest
+    steps:
+      - run: |
+          set -ex
+          TOOLCHAIN=nightly-2022-12-22
+          rustup toolchain add $TOOLCHAIN --no-self-update --component rust-src
+          rustup default $TOOLCHAIN
+          rustc -vV
+          cargo new --lib repro
+          cd repro
+          RUSTFLAGS='-Z randomize-layout' cargo -Z build-std test --release --target x86_64-pc-windows-msvc
+
+  nightly-2022-12-23:
+    runs-on: windows-latest
+    steps:
+      - run: |
+          set -ex
+          TOOLCHAIN=nightly-2022-12-23
+          rustup toolchain add $TOOLCHAIN --no-self-update --component rust-src
+          rustup default $TOOLCHAIN
+          rustc -vV
+          cargo new --lib repro
+          cd repro
+          RUSTFLAGS='-Z randomize-layout' cargo -Z build-std test --release --target x86_64-pc-windows-msvc
