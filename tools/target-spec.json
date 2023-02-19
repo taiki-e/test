@@ -122,6 +122,10 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-sanitizers": [
+      "address",
+      "thread"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -254,6 +258,10 @@
       ]
     },
     "split-debuginfo": "packed",
+    "supported-sanitizers": [
+      "address",
+      "thread"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -920,7 +928,8 @@
     "panic-strategy": "abort",
     "relocation-model": "static",
     "supported-sanitizers": [
-      "kcfi"
+      "kcfi",
+      "kernel-address"
     ],
     "target-pointer-width": "64"
   },
@@ -5862,6 +5871,9 @@
     "max-atomic-width": 64,
     "panic-strategy": "abort",
     "relocation-model": "static",
+    "supported-sanitizers": [
+      "kernel-address"
+    ],
     "target-pointer-width": "64"
   },
   "riscv64gc-unknown-openbsd": {
@@ -5902,6 +5914,9 @@
     "max-atomic-width": 64,
     "panic-strategy": "abort",
     "relocation-model": "static",
+    "supported-sanitizers": [
+      "kernel-address"
+    ],
     "target-pointer-width": "64"
   },
   "s390x-unknown-linux-gnu": {
@@ -6940,6 +6955,10 @@
         0
       ]
     },
+    "supported-sanitizers": [
+      "address",
+      "thread"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
@@ -8281,7 +8300,8 @@
     },
     "static-position-independent-executables": true,
     "supported-sanitizers": [
-      "kcfi"
+      "kcfi",
+      "kernel-address"
     ],
     "target-pointer-width": "64"
   },
