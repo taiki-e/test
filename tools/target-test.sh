@@ -9,7 +9,7 @@ bail() {
     if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
         echo "::error::$*"
     else
-        echo "error: $*" >&2
+        echo >&2 "error: $*"
     fi
     exit 1
 }
@@ -17,7 +17,7 @@ warn() {
     if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
         echo "::warning::$*"
     else
-        echo "warning: $*" >&2
+        echo >&2 "warning: $*"
     fi
 }
 
