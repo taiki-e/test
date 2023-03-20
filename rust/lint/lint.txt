@@ -142,6 +142,7 @@ Lint checks provided by rustc:
                                               unused-parens  warn     `if`, `match`, `while` and `return` do not need parentheses
                                               unused-unsafe  warn     unnecessary use of an `unsafe` block
                                            unused-variables  warn     detect variables which are not used in any way
+                                 useless-anonymous-reexport  warn     useless anonymous re-export
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                 where-clauses-object-safety  warn     checks the object safety of where clauses
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
