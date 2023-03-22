@@ -39,7 +39,7 @@ jobs:
         with:
           # prefix: test
           changelog: CHANGELOG.md
-          allow-missing-changelog: false
+          # allow-missing-changelog: true
           # title: $prefix $version
           # branch: 'main|v[0-9]+\.[0-9]+'
           ref: ${{ github.ref }}
