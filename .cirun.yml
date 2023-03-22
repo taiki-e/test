@@ -1,0 +1,48 @@
+# Cirun configuration
+# https://docs.cirun.io/reference/yaml
+
+runners:
+  - name: nvptx-runner
+    cloud: aws
+    region: eu-west-1 # ?
+    instance_type: g4dn.xlarge
+    # # Amazon AMI: Deep Learning AMI GPU CUDA 11.2.1 (Ubuntu 20.04) 20210625
+    # # for eu-west-1
+    # machine_image: ami-07b138161bedd526d
+    # Deep Learning AMI GPU CUDA 11.4.3 (Ubuntu 20.04) 20230310
+    machine_image: ami-0b6199e218ad466f6
+    preemptible: true
+    count: 1
+    labels:
+      - nvptx-runner
+  # - name: amdgpu-runner
+  #   cloud: aws
+  #   region: eu-west-1
+  #   instance_type: g4ad.xlarge
+  #   # Amazon AMI: Deep Learning AMI ?
+  #   # for eu-west-1
+  #   machine_image: ?
+  #   preemptible: true
+  #   count: 1
+  #   labels:
+  #     - amdgpu-runner
+
+# us-east-1
+# GPU DLAMI
+# https://docs.aws.amazon.com/dlami/latest/devguide/appendix-ami-release-notes.html
+# CUDA 11.4
+#   arm系の最新版
+#   Deep Learning AMI Graviton GPU CUDA 11.4.2 (Ubuntu 20.04) 20211119
+#   ami-02c9aba5b22a6388a
+#   18.04の最新版
+#   Deep Learning AMI GPU CUDA 11.4.3 (Ubuntu 20.04) 20221212
+#   ami-020fda97b222b0bb8
+#   Deep Learning AMI GPU CUDA 11.4.3 (Ubuntu 18.04) 20221212
+#   ami-0ed7f8c97dd0ff997
+#   20.04の最新版
+#   Deep Learning AMI GPU CUDA 11.4.3 (Ubuntu 20.04) 20230310
+#   ami-00122ae0bdaa8ae4d
+# CUDA 11.5
+#   20.04の最新版
+#   Deep Learning AMI GPU CUDA 11.5.2 (Ubuntu 20.04) 20230309
+#   ami-019c23d7ca70f04eb

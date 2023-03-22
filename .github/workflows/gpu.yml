@@ -1,0 +1,43 @@
+name: GPU
+
+permissions:
+  contents: read
+
+# on:
+#   push:
+#     branches:
+#       - gpu
+
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_NET_GIT_FETCH_WITH_CLI: true
+  CARGO_NET_RETRY: 10
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  # RUSTDOCFLAGS: -D warnings
+  # RUSTFLAGS: -D warnings
+  RUSTUP_MAX_RETRIES: 10
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  gpu:
+    runs-on: gpu-runner
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: taiki-e/portable-atomic
+          ref: nvptx
+          path: portable-atomic
+          persist-credentials: false
+      - name: Install Rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --component rust-src
+      - run: tools/nvptx-test.sh
+        working-directory: portable-atomic
