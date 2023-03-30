@@ -545,6 +545,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
@@ -590,6 +591,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
@@ -894,6 +896,99 @@
     "target-mcount": "\u0001_mcount",
     "target-pointer-width": "64"
   },
+  "aarch64-unknown-linux-ohos": {
+    "arch": "aarch64",
+    "crt-objects-fallback": "musl",
+    "crt-static-respected": true,
+    "data-layout": "e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
+    "dynamic-linking": true,
+    "env": "ohos",
+    "features": "+reserve-x18",
+    "force-emulated-tls": true,
+    "has-rpath": true,
+    "has-thread-local": true,
+    "is-builtin": true,
+    "llvm-target": "aarch64-unknown-linux-musl",
+    "max-atomic-width": 128,
+    "os": "linux",
+    "position-independent-executables": true,
+    "post-link-objects-fallback": {
+      "dynamic-dylib": [
+        "crtendS.o",
+        "crtn.o"
+      ],
+      "dynamic-nopic-exe": [
+        "crtend.o",
+        "crtn.o"
+      ],
+      "dynamic-pic-exe": [
+        "crtendS.o",
+        "crtn.o"
+      ],
+      "static-dylib": [
+        "crtendS.o",
+        "crtn.o"
+      ],
+      "static-nopic-exe": [
+        "crtend.o",
+        "crtn.o"
+      ],
+      "static-pic-exe": [
+        "crtendS.o",
+        "crtn.o"
+      ]
+    },
+    "pre-link-objects-fallback": {
+      "dynamic-dylib": [
+        "crti.o",
+        "crtbeginS.o"
+      ],
+      "dynamic-nopic-exe": [
+        "crt1.o",
+        "crti.o",
+        "crtbegin.o"
+      ],
+      "dynamic-pic-exe": [
+        "Scrt1.o",
+        "crti.o",
+        "crtbeginS.o"
+      ],
+      "static-dylib": [
+        "crti.o",
+        "crtbeginS.o"
+      ],
+      "static-nopic-exe": [
+        "crt1.o",
+        "crti.o",
+        "crtbegin.o"
+      ],
+      "static-pic-exe": [
+        "rcrt1.o",
+        "crti.o",
+        "crtbeginS.o"
+      ]
+    },
+    "relro-level": "full",
+    "supported-sanitizers": [
+      "address",
+      "cfi",
+      "leak",
+      "memory",
+      "memtag",
+      "thread",
+      "hwaddress"
+    ],
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
+    "target-family": [
+      "unix"
+    ],
+    "target-mcount": "\u0001_mcount",
+    "target-pointer-width": "64"
+  },
   "aarch64-unknown-netbsd": {
     "arch": "aarch64",
     "data-layout": "e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
@@ -1022,6 +1117,7 @@
     "data-layout": "e-m:w-p:64:64-i32:32-i64:64-i128:128-n32:64-S128",
     "debuginfo-kind": "pdb",
     "disable-redzone": true,
+    "dll-tls-export": false,
     "emit-debug-gdb-scripts": false,
     "exe-suffix": ".efi",
     "features": "+v8a",
@@ -1070,6 +1166,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
@@ -2231,6 +2328,91 @@
     "target-mcount": "\u0001mcount",
     "target-pointer-width": "32"
   },
+  "armv7-unknown-linux-ohos": {
+    "abi": "eabi",
+    "arch": "arm",
+    "crt-objects-fallback": "musl",
+    "crt-static-respected": true,
+    "data-layout": "e-m:e-p:32:32-Fi8-i64:64-v128:64:128-a:0:32-n32-S64",
+    "dynamic-linking": true,
+    "env": "ohos",
+    "features": "+v7,+thumb2,+soft-float,-neon",
+    "force-emulated-tls": true,
+    "has-rpath": true,
+    "has-thread-local": true,
+    "is-builtin": true,
+    "llvm-target": "armv7-unknown-linux-gnueabi",
+    "max-atomic-width": 64,
+    "os": "linux",
+    "position-independent-executables": true,
+    "post-link-objects-fallback": {
+      "dynamic-dylib": [
+        "crtendS.o",
+        "crtn.o"
+      ],
+      "dynamic-nopic-exe": [
+        "crtend.o",
+        "crtn.o"
+      ],
+      "dynamic-pic-exe": [
+        "crtendS.o",
+        "crtn.o"
+      ],
+      "static-dylib": [
+        "crtendS.o",
+        "crtn.o"
+      ],
+      "static-nopic-exe": [
+        "crtend.o",
+        "crtn.o"
+      ],
+      "static-pic-exe": [
+        "crtendS.o",
+        "crtn.o"
+      ]
+    },
+    "pre-link-objects-fallback": {
+      "dynamic-dylib": [
+        "crti.o",
+        "crtbeginS.o"
+      ],
+      "dynamic-nopic-exe": [
+        "crt1.o",
+        "crti.o",
+        "crtbegin.o"
+      ],
+      "dynamic-pic-exe": [
+        "Scrt1.o",
+        "crti.o",
+        "crtbeginS.o"
+      ],
+      "static-dylib": [
+        "crti.o",
+        "crtbeginS.o"
+      ],
+      "static-nopic-exe": [
+        "crt1.o",
+        "crti.o",
+        "crtbegin.o"
+      ],
+      "static-pic-exe": [
+        "rcrt1.o",
+        "crti.o",
+        "crtbeginS.o"
+      ]
+    },
+    "relro-level": "full",
+    "supported-split-debuginfo": [
+      "packed",
+      "unpacked",
+      "off"
+    ],
+    "target-family": [
+      "unix"
+    ],
+    "target-mcount": "\u0001mcount",
+    "target-pointer-width": "32"
+  },
   "armv7-unknown-linux-uclibceabi": {
     "abi": "eabi",
     "arch": "arm",
@@ -2562,6 +2744,7 @@
   },
   "asmjs-unknown-emscripten": {
     "arch": "wasm32",
+    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-f128:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
@@ -2828,6 +3011,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
@@ -3127,6 +3311,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
@@ -3319,6 +3504,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
@@ -3634,6 +3820,7 @@
     "data-layout": "e-m:x-p:32:32-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:32-n8:16:32-a:0:32-S32",
     "debuginfo-kind": "pdb",
     "disable-redzone": true,
+    "dll-tls-export": false,
     "emit-debug-gdb-scripts": false,
     "exe-suffix": ".efi",
     "features": "-mmx,-sse,+soft-float",
@@ -3681,6 +3868,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
@@ -3853,6 +4041,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
@@ -6326,6 +6515,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
@@ -6376,6 +6566,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
@@ -6665,6 +6856,7 @@
   },
   "wasm32-unknown-emscripten": {
     "arch": "wasm32",
+    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-f128:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
@@ -6701,6 +6893,7 @@
   },
   "wasm32-unknown-unknown": {
     "arch": "wasm32",
+    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:32:32-p10:8:8-p20:8:8-i64:64-n32:64-S128-ni:1:10:20",
     "default-adjusted-cabi": "wasm",
     "default-hidden-visibility": true,
@@ -6829,6 +7022,7 @@
   },
   "wasm64-unknown-unknown": {
     "arch": "wasm64",
+    "crt-objects-fallback": "true",
     "data-layout": "e-m:e-p:64:64-p10:8:8-p20:8:8-i64:64-n32:64-S128-ni:1:10:20",
     "default-hidden-visibility": true,
     "dll-prefix": "",
@@ -7537,6 +7731,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
@@ -7729,6 +7924,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
@@ -7775,6 +7971,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
@@ -8447,6 +8644,7 @@
     "data-layout": "e-m:w-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
     "debuginfo-kind": "pdb",
     "disable-redzone": true,
+    "dll-tls-export": false,
     "emit-debug-gdb-scripts": false,
     "exe-suffix": ".efi",
     "features": "-mmx,-sse,+soft-float",
@@ -8494,6 +8692,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "eh-frame-header": false,
     "emit-debug-gdb-scripts": false,
@@ -8666,6 +8865,7 @@
     "debuginfo-kind": "pdb",
     "dll-prefix": "",
     "dll-suffix": ".dll",
+    "dll-tls-export": false,
     "dynamic-linking": true,
     "emit-debug-gdb-scripts": false,
     "env": "msvc",
