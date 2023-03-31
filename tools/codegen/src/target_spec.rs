@@ -1,10 +1,9 @@
 // #[path = "gen/target_spec.rs"]
 // mod gen;
 
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, sync::OnceLock};
 
 use duct::cmd;
-use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use strum::{Display, IntoStaticStr};
 
@@ -16,10 +15,10 @@ pub fn gen() -> Result<()> {
     Ok(())
 }
 
-pub static TARGET_SPEC: Lazy<BTreeMap<String, TargetSpec>> =
-    Lazy::new(|| target_spec_map().unwrap());
-
-pub static TARGET_TIER: Lazy<TargetTier> = Lazy::new(|| target_tier().unwrap());
+pub fn target_spec() -> &'static BTreeMap<String, TargetSpec> {
+    static TARGET_SPEC: OnceLock<BTreeMap<String, TargetSpec>> = OnceLock::new();
+    TARGET_SPEC.get_or_init(|| target_spec_map().unwrap())
+}
 
 // creates a full list of target spec
 fn gen_target_spec() -> Result<()> {
@@ -239,6 +238,6 @@ pub struct TargetTier {
     pub tier3: Vec<String>,
 }
 
-fn target_tier() -> Result<TargetTier> {
+pub fn target_tier() -> Result<TargetTier> {
     Ok(serde_json::from_slice(&fs::read(workspace_root().join("tools/target-tier.json"))?)?)
 }

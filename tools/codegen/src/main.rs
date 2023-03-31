@@ -11,14 +11,13 @@ mod target_spec;
 
 use anyhow::Result;
 use fs_err as fs;
-use once_cell::sync::Lazy;
 
 use crate::file::*;
 
 fn main() -> Result<()> {
     target_spec::gen()?;
-    Lazy::force(&target_spec::TARGET_SPEC);
-    Lazy::force(&target_spec::TARGET_TIER);
+    target_spec::target_spec();
+    target_spec::target_tier()?;
 
     Ok(())
 }
