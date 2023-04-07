@@ -724,7 +724,6 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="linux"
 target_pointer_width="64"
-target_thread_local
 target_vendor="unknown"
 unix
 
@@ -2008,7 +2007,6 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="linux"
 target_pointer_width="32"
-target_thread_local
 target_vendor="unknown"
 unix
 
