@@ -13,6 +13,8 @@ trap 's=$?; echo >&2 "$0: Error on line "${LINENO}": ${BASH_COMMAND}"; exit ${s}
 
 set -x
 
+./tools/target_spec.sh
+
 cargo run --manifest-path tools/codegen/Cargo.toml -- "$@"
 
 cargo run --manifest-path rust/lint/Cargo.toml

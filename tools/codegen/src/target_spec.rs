@@ -1,14 +1,13 @@
-// #[path = "gen/target_spec.rs"]
-// mod gen;
-
 use std::{collections::BTreeMap, sync::OnceLock};
 
 use duct::cmd;
 use serde::{Deserialize, Serialize};
-use strum::{Display, IntoStaticStr};
 
-// use self::gen::*;
 use super::*;
+
+#[path = "gen/target_spec.rs"]
+mod gen;
+pub use gen::*;
 
 pub fn gen() -> Result<()> {
     gen_target_spec()?;
@@ -24,7 +23,6 @@ pub fn target_spec() -> &'static BTreeMap<String, TargetSpec> {
 fn gen_target_spec() -> Result<()> {
     let mut cfgs = Vec::new();
     let mut target_spec_map = BTreeMap::new();
-    // let mut target_os = BTreeSet::new();
     for triple in target_list()? {
         cfgs.append(&mut format!("{triple}:\n").into_bytes());
         let cfg_list = cfg_list(&triple)?;
@@ -33,18 +31,10 @@ fn gen_target_spec() -> Result<()> {
         cfgs.push(b'\n');
         let target_spec = target_spec_json(&triple)?;
         let target_spec: serde_json::Value = serde_json::from_str(&target_spec)?;
-        // if let Some(v) = value.get("os") {
-        //     let v = v.as_str().unwrap();
-        //     if !target_os.contains(v) {
-        //         target_os.insert(v.to_owned());
-        //     }
-        // }
         target_spec_map.insert(triple, target_spec);
     }
     write(workspace_root().join("tools/cfg"), &cfgs)?;
     write_json(workspace_root().join("tools/target-spec.json"), &target_spec_map)?;
-    // target_os.insert("none".into());
-    // gen_enums(["TargetOs"], [&target_os])?;
     Ok(())
 }
 
@@ -72,45 +62,14 @@ fn cfg_list(target: &str) -> Result<String> {
     Ok(cmd!("rustc", "--print", "cfg", "--target", &target).read()?)
 }
 
-// fn gen_enums<const N: usize>(name: [&str; N], variants: [&BTreeSet<String>; N]) -> Result<()> {
-//     let mut out = quote! {
-//         use serde::{Serialize, Deserialize};
-//         use strum::{Display, IntoStaticStr};
-//     };
-//     let attrs = quote! {
-//         #[derive(
-//             Debug, Clone, Copy, PartialEq,
-//             Serialize, Deserialize,
-//             Display, IntoStaticStr,
-//         )]
-//         #[allow(non_camel_case_types)]
-//     };
-
-//     for (name, variants) in name.iter().zip(variants) {
-//         let name = format_ident!("{name}");
-//         let variants = variants.iter().map(|v| format_ident!("{v}"));
-//         out.extend(quote! {
-//             #attrs
-//             pub enum #name {
-//                 #(#variants,)*
-//             }
-//         });
-//     }
-
-//     let outdir = &workspace_root().join("tools/codegen/src/gen");
-//     fs::create_dir_all(outdir)?;
-//     write(outdir.join("target_spec.rs"), out)?;
-//     Ok(())
-// }
-
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct TargetSpec {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub abi: Option<String>,
     pub arch: TargetArch,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub env: Option<String>,
+    #[serde(default, skip_serializing_if = "TargetEnv::is_none")]
+    pub env: TargetEnv,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub features: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -120,106 +79,6 @@ pub struct TargetSpec {
     #[serde(default, skip_serializing_if = "TargetEndian::is_little")]
     pub target_endian: TargetEndian,
     pub target_pointer_width: String,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize, Display, IntoStaticStr)]
-#[allow(non_camel_case_types)]
-pub enum TargetArch {
-    // all target_arch: https://github.com/rust-lang/rust/blob/1.68.0/compiler/rustc_target/src/abi/call/mod.rs#L663
-    aarch64,
-    amdgpu,
-    arm,
-    asmjs,
-    avr,
-    bpf,
-    hexagon,
-    loongarch64,
-    m68k,
-    mips,
-    mips64,
-    msp430,
-    nvptx,
-    nvptx64,
-    powerpc,
-    powerpc64,
-    riscv32,
-    riscv64,
-    s390x,
-    sparc,
-    sparc64,
-    wasm32,
-    wasm64,
-    x86_64,
-    x86,
-}
-pub use TargetArch::*;
-
-#[derive(
-    Debug, Clone, Copy, Default, PartialEq, Serialize, Deserialize, Display, IntoStaticStr,
-)]
-#[allow(non_camel_case_types)]
-pub enum TargetEndian {
-    big,
-    #[default]
-    little,
-}
-
-impl TargetEndian {
-    pub fn as_str(self) -> &'static str {
-        self.into()
-    }
-
-    fn is_little(&self) -> bool {
-        matches!(self, Self::little)
-    }
-}
-
-#[derive(
-    Debug, Clone, Copy, Default, PartialEq, Serialize, Deserialize, Display, IntoStaticStr,
-)]
-#[allow(non_camel_case_types)]
-pub enum TargetOs {
-    aix,
-    android,
-    cuda,
-    dragonfly,
-    emscripten,
-    espidf,
-    freebsd,
-    fuchsia,
-    haiku,
-    hermit,
-    horizon,
-    illumos,
-    ios,
-    l4re,
-    linux,
-    macos,
-    netbsd,
-    #[default]
-    none,
-    nto,
-    openbsd,
-    psp,
-    redox,
-    solaris,
-    solid_asp3,
-    tvos,
-    uefi,
-    unknown,
-    vita,
-    vxworks,
-    wasi,
-    watchos,
-    windows,
-    xous,
-}
-pub use TargetOs::*;
-
-impl TargetOs {
-    fn is_none(&self) -> bool {
-        matches!(self, Self::none)
-    }
 }
 
 // https://doc.rust-lang.org/nightly/rustc/target-tier-policy.html
