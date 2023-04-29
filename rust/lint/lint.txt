@@ -85,6 +85,7 @@ Lint checks provided by rustc:
                                   indirect-structural-match  warn     constant used in pattern contains value of non-structural-match type in a field or a variant
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[no_sanitize(...)]`
                                      invalid-doc-attributes  warn     detects invalid `#[doc(...)]` attributes
+                             invalid-macro-export-arguments  warn     "invalid_parameter" isn't a valid argument for `#[macro_export]`
                                               invalid-value  warn     an invalid value is being created (such as a null reference)
                                    irrefutable-let-patterns  warn     detects irrefutable patterns in `if let` and `while let` statements
                                           large-assignments  warn     detects large moves or copies
@@ -117,6 +118,7 @@ Lint checks provided by rustc:
                                    tyvar-behind-raw-pointer  warn     raw pointer to an inference variable
                                         uncommon-codepoints  warn     detects uncommon Unicode codepoints in identifiers
                                     unconditional-recursion  warn     functions that cannot return without calling themselves
+                               undefined-naked-function-abi  warn     undefined naked function ABI
                                             unexpected-cfgs  warn     detects unexpected names and values in `#[cfg]` conditions
                               unfulfilled-lint-expectations  warn     unfulfilled lint expectation
                               ungated-async-fn-track-caller  warn     enabling track_caller on an async fn is a no-op unless the closure_track_caller feature is enabled
@@ -157,6 +159,7 @@ Lint checks provided by rustc:
                                   implied-bounds-entailment  deny     impl method assumes more implied bounds than its corresponding trait method
                                          incomplete-include  deny     trailing content in included file
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
+                                          invalid-alignment  deny     raw pointers must be aligned before dereferencing
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
@@ -185,12 +188,12 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  deref-into-dyn-supertrait, forbidden-lint-groups, illegal-floating-point-literal-pattern, private-in-public, pub-use-of-private-extern-crate, invalid-type-param-default, patterns-in-fns-without-body, missing-fragment-specifier, late-bound-lifetime-arguments, order-dependent-trait-objects, coherence-leak-check, unstable-name-collisions, where-clauses-object-safety, proc-macro-derive-resolution-fallback, macro-expanded-macro-exports-accessed-by-absolute-paths, ill-formed-attribute-input, conflicting-repr-hints, ambiguous-associated-items, indirect-structural-match, pointer-structural-match, nontrivial-structural-match, soft-unstable, unstable-syntax-pre-expansion, cenum-impl-drop-cast, const-evaluatable-unchecked, uninhabited-static, invalid-doc-attributes, semicolon-in-expressions-from-macros, legacy-derive-helpers, proc-macro-back-compat, unsupported-calling-conventions, deprecated-cfg-attr-crate-type-name, suspicious-auto-trait-impls, repr-transparent-external-private-fields, implied-bounds-entailment, byte-slice-in-packed-struct-with-derive
+        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, forbidden-lint-groups, ill-formed-attribute-input, illegal-floating-point-literal-pattern, implied-bounds-entailment, indirect-structural-match, invalid-alignment, invalid-doc-attributes, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, nontrivial-structural-match, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, private-in-public, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, suspicious-auto-trait-impls, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, where-clauses-object-safety
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
-    rust-2018-compatibility  keyword-idents, anonymous-parameters, tyvar-behind-raw-pointer, absolute-paths-not-starting-with-crate
+    rust-2018-compatibility  keyword-idents, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
-    rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prelude-collisions, rust-2021-prefixes-incompatible-syntax, array-into-iter, non-fmt-panics
+    rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions, array-into-iter, non-fmt-panics
                      unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
