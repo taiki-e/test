@@ -112,6 +112,7 @@ Lint checks provided by rustc:
                                         special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
                                 suspicious-auto-trait-impls  warn     the rules governing auto traits will change in the future
+                                   suspicious-double-ref-op  warn     suspicious call of trait method on `&&T`
                                    temporary-cstring-as-ptr  warn     detects getting the inner pointer of a temporary `CString`
                                              trivial-bounds  warn     these bounds don't depend on an type parameters
                                           type-alias-bounds  warn     bounds in type aliases are not enforced
