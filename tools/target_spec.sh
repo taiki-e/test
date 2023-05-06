@@ -19,8 +19,8 @@ mkdir -p "$(dirname "${file}")"
 
 target_arch=(
     # Architectures that do not included in builtin targets.
-    # See also https://github.com/rust-lang/rust/blob/1.68.0/compiler/rustc_target/src/abi/call/mod.rs#L663
-    # and https://github.com/rust-lang/rust/blob/540a50df0fb23127edf0b35b0e497748e24bba1a/src/bootstrap/lib.rs#L132.
+    # See also https://github.com/rust-lang/rust/blob/1.69.0/compiler/rustc_target/src/abi/call/mod.rs#L663
+    # and https://github.com/rust-lang/rust/blob/1.69.0/src/bootstrap/lib.rs#L130.
     amdgpu
     asmjs
     nvptx
@@ -30,7 +30,7 @@ target_arch=(
 target_os=()
 target_env=(
     # Environments that do not included in builtin targets.
-    # See also https://github.com/rust-lang/rust/blob/540a50df0fb23127edf0b35b0e497748e24bba1a/src/bootstrap/lib.rs#L130.
+    # See also https://github.com/rust-lang/rust/blob/1.69.0/src/bootstrap/lib.rs#L128.
     libnx
 )
 for target in $(rustc --print target-list); do
