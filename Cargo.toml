@@ -10,3 +10,7 @@ members = [
 
 # [profile.release]
 # strip = true
+
+[profile.dist]
+inherits = "release"
+strip = true
