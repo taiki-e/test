@@ -49,7 +49,7 @@ jobs:
           echo ${{ steps.create-gh-release.outputs.computed-prefix }}
           echo ${{ steps.create-gh-release.outputs.version }}
 
-  upload-assets:
+  upload-assets1:
     name: ${{ matrix.target }}
     if: github.repository_owner == 'taiki-e'
     needs:
@@ -94,7 +94,6 @@ jobs:
           # leading_dir: true
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          profile: test
           # pgp_public_key: .github/public-key.asc
           # pgp_private_key: ${{ secrets.PGP_PRIVATE_KEY }}
           # pgp_passphrase: ${{ secrets.PGP_PASSPHRASE }}
