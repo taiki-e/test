@@ -94,7 +94,7 @@ jobs:
           # leading_dir: true
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          profile: bench
+          profile: test
           # pgp_public_key: .github/public-key.asc
           # pgp_private_key: ${{ secrets.PGP_PRIVATE_KEY }}
           # pgp_passphrase: ${{ secrets.PGP_PASSPHRASE }}
