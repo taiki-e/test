@@ -71,11 +71,15 @@ Lint checks provided by rustc:
                                   deref-into-dyn-supertrait  warn     `Deref` implementation usage with a supertrait trait object for output might be shadowed in the future
                                               deref-nullptr  warn     detects when an null pointer is dereferenced
                                                 drop-bounds  warn     bounds of the form `T: Drop` are most likely incorrect
+                                                  drop-copy  warn     calls to `std::mem::drop` with a value that implements Copy
+                                                   drop-ref  warn     calls to `std::mem::drop` with a reference instead of an owned value
                                  duplicate-macro-attributes  warn     duplicated attribute
                                                    dyn-drop  warn     trait objects of the form `dyn Drop` are useless
                           ellipsis-inclusive-range-patterns  warn     `...` range patterns are deprecated
                               exported-private-dependencies  warn     public interface leaks type from a private dependency
                                       forbidden-lint-groups  warn     applying forbid to lint-groups
+                                                forget-copy  warn     calls to `std::mem::forget` with a value that implements Copy
+                                                 forget-ref  warn     calls to `std::mem::forget` with a reference instead of an owned value
                                    for-loops-over-fallibles  warn     for-looping over an `Option` or a `Result`, which is more clearly expressed as an `if let`
                                    function-item-references  warn     suggest casting to a function pointer when attempting to take references to function items
                      illegal-floating-point-literal-pattern  warn     floating-point literals cannot be used in patterns
