@@ -3,7 +3,7 @@
     "abi-return-struct-as-int": true,
     "arch": "aarch64",
     "archive-format": "darwin",
-    "cpu": "apple-a14",
+    "cpu": "apple-m1",
     "data-layout": "e-m:o-i64:64-i128:128-n32:64-S128",
     "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
@@ -884,6 +884,13 @@
       ]
     },
     "relro-level": "full",
+    "supported-sanitizers": [
+      "address",
+      "cfi",
+      "leak",
+      "memory",
+      "thread"
+    ],
     "supported-split-debuginfo": [
       "packed",
       "unpacked",
