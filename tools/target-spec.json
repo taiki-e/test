@@ -166,13 +166,13 @@
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
-    "llvm-target": "arm64-apple-ios-macabi",
+    "llvm-target": "arm64-apple-ios14.0-macabi",
     "max-atomic-width": 128,
     "os": "ios",
     "pre-link-args": {
       "gcc": [
         "-target",
-        "arm64-apple-ios-macabi"
+        "arm64-apple-ios14.0-macabi"
       ],
       "ld": [
         "-arch",
@@ -7322,13 +7322,13 @@
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
-    "llvm-target": "x86_64-apple-ios-macabi",
+    "llvm-target": "x86_64-apple-ios14.0-macabi",
     "max-atomic-width": 64,
     "os": "ios",
     "pre-link-args": {
       "gcc": [
         "-target",
-        "x86_64-apple-ios-macabi"
+        "x86_64-apple-ios14.0-macabi"
       ],
       "ld": [
         "-arch",
