@@ -8405,7 +8405,8 @@
       "cfi",
       "leak",
       "memory",
-      "thread"
+      "thread",
+      "safestack"
     ],
     "supported-split-debuginfo": [
       "packed",
