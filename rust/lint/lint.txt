@@ -82,6 +82,7 @@ Lint checks provided by rustc:
                                       forgetting-references  warn     calls to `std::mem::forget` with a reference instead of an owned value
                                    for-loops-over-fallibles  warn     for-looping over an `Option` or a `Result`, which is more clearly expressed as an `if let`
                                    function-item-references  warn     suggest casting to a function pointer when attempting to take references to function items
+                                      hidden-glob-reexports  warn     name introduced by a private item shadows a name introduced by a public glob re-export
                      illegal-floating-point-literal-pattern  warn     floating-point literals cannot be used in patterns
                                             improper-ctypes  warn     proper use of libc types in foreign modules
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
