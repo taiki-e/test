@@ -7779,7 +7779,8 @@
     },
     "supported-sanitizers": [
       "address",
-      "cfi"
+      "cfi",
+      "thread"
     ],
     "target-family": [
       "unix"
@@ -8345,7 +8346,8 @@
     },
     "supported-sanitizers": [
       "address",
-      "cfi"
+      "cfi",
+      "thread"
     ],
     "target-family": [
       "unix"
