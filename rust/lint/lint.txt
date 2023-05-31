@@ -90,6 +90,7 @@ Lint checks provided by rustc:
                                   indirect-structural-match  warn     constant used in pattern contains value of non-structural-match type in a field or a variant
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[no_sanitize(...)]`
                                      invalid-doc-attributes  warn     detects invalid `#[doc(...)]` attributes
+                                          invalid-from-utf8  warn     using a non UTF-8 literal in `std::str::from_utf8`
                              invalid-macro-export-arguments  warn     "invalid_parameter" isn't a valid argument for `#[macro_export]`
                                               invalid-value  warn     an invalid value is being created (such as a null reference)
                                    irrefutable-let-patterns  warn     detects irrefutable patterns in `if let` and `while let` statements
@@ -167,6 +168,7 @@ Lint checks provided by rustc:
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
                                           invalid-alignment  deny     raw pointers must be aligned before dereferencing
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
+                                invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
