@@ -158,6 +158,7 @@ Lint checks provided by rustc:
                                  ambiguous-associated-items  deny     ambiguous associated items
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
+                                            cast-ref-to-mut  deny     casts of `&T` to `&mut T` without interior mutability
                                        cenum-impl-drop-cast  deny     a C-like enum implementing Drop is cast
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                         deprecated-cfg-attr-crate-type-name  deny     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
@@ -171,6 +172,7 @@ Lint checks provided by rustc:
                                 invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
+                                    long-running-const-eval  deny     detects long const eval operations
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
                                  missing-fragment-specifier  deny     detects missing fragment specifiers in unused `macro_rules!` patterns
                                          mutable-transmutes  deny     transmuting &T to &mut T is undefined behavior, even if the reference is unused
