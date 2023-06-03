@@ -7248,7 +7248,7 @@
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
     "llvm-target": "x86_64-apple-ios7.0.0-simulator",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "os": "ios",
     "pre-link-args": {
       "gcc": [
@@ -7323,7 +7323,7 @@
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
     "llvm-target": "x86_64-apple-ios14.0-macabi",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "os": "ios",
     "pre-link-args": {
       "gcc": [
@@ -7394,7 +7394,7 @@
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
     "llvm-target": "x86_64-apple-tvos",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "os": "tvos",
     "pre-link-args": {
       "gcc": [
@@ -7467,7 +7467,7 @@
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
     "llvm-target": "x86_64-apple-watchos5.0.0-simulator",
-    "max-atomic-width": 64,
+    "max-atomic-width": 128,
     "os": "watchos",
     "pre-link-args": {
       "gcc": [
