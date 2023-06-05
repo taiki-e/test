@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 # shellcheck disable=SC2207
 set -euo pipefail
 IFS=$'\n\t'
 cd "$(dirname "$0")"/..
 
 # shellcheck disable=SC2154
-trap 's=$?; echo >&2 "$0: Error on line "${LINENO}": ${BASH_COMMAND}"; exit ${s}' ERR
+trap 's=$?; echo >&2 "$0: error on line "${LINENO}": ${BASH_COMMAND}"; exit ${s}' ERR
 
 # Generates types used by codegen.
 #
@@ -19,8 +20,8 @@ mkdir -p "$(dirname "${file}")"
 
 target_arch=(
     # Architectures that do not included in builtin targets.
-    # See also https://github.com/rust-lang/rust/blob/1.69.0/compiler/rustc_target/src/abi/call/mod.rs#L663
-    # and https://github.com/rust-lang/rust/blob/1.69.0/src/bootstrap/lib.rs#L130.
+    # See also https://github.com/rust-lang/rust/blob/1.70.0/compiler/rustc_target/src/abi/call/mod.rs#L663
+    # and https://github.com/rust-lang/rust/blob/1.70.0/src/bootstrap/lib.rs#L134.
     amdgpu
     asmjs
     nvptx
@@ -30,7 +31,7 @@ target_arch=(
 target_os=()
 target_env=(
     # Environments that do not included in builtin targets.
-    # See also https://github.com/rust-lang/rust/blob/1.69.0/src/bootstrap/lib.rs#L128.
+    # See also https://github.com/rust-lang/rust/blob/1.70.0/src/bootstrap/lib.rs#L131.
     libnx
 )
 for target in $(rustc --print target-list); do
