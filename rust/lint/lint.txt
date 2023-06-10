@@ -40,7 +40,7 @@ Lint checks provided by rustc:
                                               trivial-casts  allow    detects trivial casts which could be removed
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
                                             unreachable-pub  allow    `pub` items not reachable from crate root
-                                                unsafe-code  allow    usage of `unsafe` code
+                                                unsafe-code  allow    usage of `unsafe` code and other potentially unsound constructs
                                      unsafe-op-in-unsafe-fn  allow    unsafe operations in unsafe functions without an explicit unsafe block are deprecated
                                           unstable-features  allow    enabling unstable features (deprecated. do not use)
                                   unused-crate-dependencies  allow    crate dependencies that are never used
@@ -189,6 +189,7 @@ Lint checks provided by rustc:
                         text-direction-codepoint-in-comment  deny     invisible directionality-changing codepoints in comment
                         text-direction-codepoint-in-literal  deny     detect special Unicode codepoints that affect the visual representation of text on screen, changing the direction in which text flows
                                         unconditional-panic  deny     operation will cause a panic at runtime
+                                   undropped-manually-drops  deny     calls to `std::mem::drop` with `std::mem::ManuallyDrop` instead of it's inner value
                                         unknown-crate-types  deny     unknown crate type found in `#[crate_type]` directive
                                          useless-deprecated  deny     detects deprecation attributes with no effect
 
