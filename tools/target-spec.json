@@ -4196,8 +4196,7 @@
     "llvm-target": "loongarch64-unknown-none",
     "max-atomic-width": 64,
     "panic-strategy": "abort",
-    "position-independent-executables": true,
-    "static-position-independent-executables": true,
+    "relocation-model": "static",
     "target-pointer-width": "64"
   },
   "loongarch64-unknown-none-softfloat": {
@@ -4209,11 +4208,10 @@
     "is-builtin": true,
     "linker-flavor": "ld",
     "llvm-abiname": "lp64s",
-    "llvm-target": "loongarch64-unknown-none-softfloat",
+    "llvm-target": "loongarch64-unknown-none",
     "max-atomic-width": 64,
     "panic-strategy": "abort",
-    "position-independent-executables": true,
-    "static-position-independent-executables": true,
+    "relocation-model": "static",
     "target-pointer-width": "64"
   },
   "m68k-unknown-linux-gnu": {
