@@ -32,6 +32,8 @@ Lint checks provided by rustc:
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
                                            noop-method-call  allow    detects the use of well-known noop methods
                                    pointer-structural-match  allow    pointers are not structural-match
+                                             private-bounds  allow    private type in secondary interface of an item
+                                         private-interfaces  allow    private type in primary interface of an item
                     rust-2021-incompatible-closure-captures  allow    detects closures affected by Rust 2021 changes
                          rust-2021-incompatible-or-patterns  allow    detects usage of old versions of or-patterns
                      rust-2021-prefixes-incompatible-syntax  allow    identifiers that will be parsed as a prefix in Rust 2021
@@ -39,6 +41,7 @@ Lint checks provided by rustc:
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
                                               trivial-casts  allow    detects trivial casts which could be removed
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
+                                           unnameable-types  allow    effective visibility of a type is larger than the area in which it can be named
                                             unreachable-pub  allow    `pub` items not reachable from crate root
                                                 unsafe-code  allow    usage of `unsafe` code and other potentially unsound constructs
                                      unsafe-op-in-unsafe-fn  allow    unsafe operations in unsafe functions without an explicit unsafe block are deprecated
