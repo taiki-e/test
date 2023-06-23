@@ -21,7 +21,8 @@
       "ZERO_AR_DATE=1"
     ],
     "link-env-remove": [
-      "IPHONEOS_DEPLOYMENT_TARGET"
+      "IPHONEOS_DEPLOYMENT_TARGET",
+      "TVOS_DEPLOYMENT_TARGET"
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
@@ -300,7 +301,7 @@
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
-    "llvm-target": "arm64-apple-tvos",
+    "llvm-target": "arm64-apple-tvos7.0.0",
     "max-atomic-width": 128,
     "os": "tvos",
     "pre-link-args": {
@@ -3252,7 +3253,8 @@
       "ZERO_AR_DATE=1"
     ],
     "link-env-remove": [
-      "IPHONEOS_DEPLOYMENT_TARGET"
+      "IPHONEOS_DEPLOYMENT_TARGET",
+      "TVOS_DEPLOYMENT_TARGET"
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
@@ -7215,7 +7217,8 @@
       "ZERO_AR_DATE=1"
     ],
     "link-env-remove": [
-      "IPHONEOS_DEPLOYMENT_TARGET"
+      "IPHONEOS_DEPLOYMENT_TARGET",
+      "TVOS_DEPLOYMENT_TARGET"
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
@@ -7424,7 +7427,7 @@
     "arch": "x86_64",
     "archive-format": "darwin",
     "cpu": "core2",
-    "data-layout": "e-m:o-i64:64-f80:128-n8:16:32:64-S128",
+    "data-layout": "e-m:o-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
     "debuginfo-kind": "dwarf-dsym",
     "default-dwarf-version": 2,
     "dll-suffix": ".dylib",
@@ -7444,7 +7447,7 @@
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
-    "llvm-target": "x86_64-apple-tvos",
+    "llvm-target": "x86_64-apple-tvos7.0.0-simulator",
     "max-atomic-width": 128,
     "os": "tvos",
     "pre-link-args": {
@@ -9087,7 +9090,8 @@
       "ZERO_AR_DATE=1"
     ],
     "link-env-remove": [
-      "IPHONEOS_DEPLOYMENT_TARGET"
+      "IPHONEOS_DEPLOYMENT_TARGET",
+      "TVOS_DEPLOYMENT_TARGET"
     ],
     "linker-is-gnu": false,
     "lld-flavor": "darwin",
