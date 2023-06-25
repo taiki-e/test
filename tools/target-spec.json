@@ -7597,6 +7597,7 @@
       "TEXT_BASE",
       "TEXT_SIZE"
     ],
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "ld": [
@@ -7674,6 +7675,7 @@
     "llvm-target": "x86_64-unknown-fuchsia",
     "max-atomic-width": 64,
     "os": "fuchsia",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "ld": [
@@ -7749,6 +7751,7 @@
     "llvm-target": "x86_64-linux-android",
     "max-atomic-width": 64,
     "os": "android",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -7791,6 +7794,7 @@
     "llvm-target": "x86_64-pc-unknown",
     "max-atomic-width": 64,
     "os": "nto",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -7818,6 +7822,7 @@
     "llvm-target": "x86_64-pc-solaris",
     "max-atomic-width": 64,
     "os": "solaris",
+    "plt-by-default": false,
     "pre-link-args": {
       "gcc": [
         "-m64"
@@ -7919,6 +7924,7 @@
     "llvm-target": "x86_64-pc-windows-gnu",
     "max-atomic-width": 64,
     "os": "windows",
+    "plt-by-default": false,
     "post-link-objects": {
       "dynamic-dylib": [
         "rsend.o"
@@ -8068,6 +8074,7 @@
     "max-atomic-width": 64,
     "no-default-libraries": false,
     "os": "windows",
+    "plt-by-default": false,
     "pre-link-args": {
       "gcc": [
         "-nolibc",
@@ -8108,6 +8115,7 @@
     "max-atomic-width": 64,
     "no-default-libraries": false,
     "os": "windows",
+    "plt-by-default": false,
     "pre-link-args": {
       "lld-link": [
         "/NOLOGO"
@@ -8143,6 +8151,7 @@
     "llvm-target": "x86_64-pc-solaris",
     "max-atomic-width": 64,
     "os": "solaris",
+    "plt-by-default": false,
     "pre-link-args": {
       "gcc": [
         "-m64"
@@ -8173,6 +8182,7 @@
     "llvm-target": "x86_64-unknown-dragonfly",
     "max-atomic-width": 64,
     "os": "dragonfly",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -8205,6 +8215,7 @@
     "llvm-target": "x86_64-unknown-freebsd",
     "max-atomic-width": 64,
     "os": "freebsd",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -8244,6 +8255,7 @@
     "llvm-target": "x86_64-unknown-fuchsia",
     "max-atomic-width": 64,
     "os": "fuchsia",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "ld": [
@@ -8313,6 +8325,7 @@
     "llvm-target": "x86_64-unknown-haiku",
     "max-atomic-width": 64,
     "os": "haiku",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -8346,6 +8359,7 @@
     "max-atomic-width": 64,
     "os": "hermit",
     "panic-strategy": "abort",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "ld": [
@@ -8392,6 +8406,7 @@
     "llvm-target": "x86_64-pc-solaris",
     "max-atomic-width": 64,
     "os": "illumos",
+    "plt-by-default": false,
     "pre-link-args": {
       "gcc": [
         "-m64",
@@ -8421,6 +8436,7 @@
     "max-atomic-width": 64,
     "os": "l4re",
     "panic-strategy": "abort",
+    "plt-by-default": false,
     "relocation-model": "static",
     "target-family": [
       "unix"
@@ -8440,6 +8456,7 @@
     "llvm-target": "x86_64-unknown-linux-gnu",
     "max-atomic-width": 64,
     "os": "linux",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -8487,7 +8504,6 @@
     "is-builtin": true,
     "llvm-target": "x86_64-unknown-linux-gnux32",
     "max-atomic-width": 64,
-    "needs-plt": true,
     "os": "linux",
     "position-independent-executables": true,
     "pre-link-args": {
@@ -8529,6 +8545,7 @@
     "llvm-target": "x86_64-unknown-linux-musl",
     "max-atomic-width": 64,
     "os": "linux",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "post-link-objects-fallback": {
       "dynamic-dylib": [
@@ -8631,6 +8648,7 @@
     "max-atomic-width": 64,
     "no-default-libraries": false,
     "os": "netbsd",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -8674,6 +8692,7 @@
     "llvm-target": "x86_64-unknown-none-elf",
     "max-atomic-width": 64,
     "panic-strategy": "abort",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "relro-level": "full",
     "stack-probes": {
@@ -8704,6 +8723,7 @@
     "llvm-target": "x86_64-unknown-openbsd",
     "max-atomic-width": 64,
     "os": "openbsd",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -8739,6 +8759,7 @@
     "llvm-target": "x86_64-unknown-redox",
     "max-atomic-width": 64,
     "os": "redox",
+    "plt-by-default": false,
     "position-independent-executables": true,
     "pre-link-args": {
       "gcc": [
@@ -8782,6 +8803,7 @@
     "max-atomic-width": 64,
     "os": "uefi",
     "panic-strategy": "abort",
+    "plt-by-default": false,
     "pre-link-args": {
       "lld-link": [
         "/NOLOGO",
@@ -8861,6 +8883,7 @@
     "llvm-target": "x86_64-pc-windows-gnu",
     "max-atomic-width": 64,
     "os": "windows",
+    "plt-by-default": false,
     "post-link-objects": {
       "dynamic-dylib": [
         "rsend.o"
@@ -9004,6 +9027,7 @@
     "max-atomic-width": 64,
     "no-default-libraries": false,
     "os": "windows",
+    "plt-by-default": false,
     "pre-link-args": {
       "lld-link": [
         "/NOLOGO",
@@ -9047,6 +9071,7 @@
     "llvm-target": "x86_64-unknown-linux-gnu",
     "max-atomic-width": 64,
     "os": "vxworks",
+    "plt-by-default": false,
     "pre-link-args": {
       "gcc": [
         "-m64"
