@@ -34,8 +34,8 @@ target_env=(
     # See also https://github.com/rust-lang/rust/blob/1.70.0/src/bootstrap/lib.rs#L131.
     libnx
 )
-for target in $(rustc --print target-list); do
-    target_spec=$(rustc --print target-spec-json -Z unstable-options --target "${target}")
+rustc -Z unstable-options --print all-target-specs-json >tools/target-spec.json
+for target_spec in $(jq <tools/target-spec.json -c '. | to_entries | .[].value'); do
     target_arch+=("$(jq <<<"${target_spec}" -r '.arch')")
     os=$(jq <<<"${target_spec}" -r '.os')
     if [[ "${os}" == "null" ]]; then

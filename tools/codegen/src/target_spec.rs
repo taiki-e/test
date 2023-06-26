@@ -22,19 +22,14 @@ pub fn target_spec() -> &'static BTreeMap<String, TargetSpec> {
 // creates a full list of target spec
 fn gen_target_spec() -> Result<()> {
     let mut cfgs = Vec::new();
-    let mut target_spec_map = BTreeMap::new();
     for triple in target_list()? {
         cfgs.append(&mut format!("{triple}:\n").into_bytes());
         let cfg_list = cfg_list(&triple)?;
         cfgs.extend(cfg_list.replace("debug_assertions\n", "").replace("\\\\", "\\").into_bytes());
         cfgs.push(b'\n');
         cfgs.push(b'\n');
-        let target_spec = target_spec_json(&triple)?;
-        let target_spec: serde_json::Value = serde_json::from_str(&target_spec)?;
-        target_spec_map.insert(triple, target_spec);
     }
     write(workspace_root().join("tools/cfg"), &cfgs)?;
-    write_json(workspace_root().join("tools/target-spec.json"), &target_spec_map)?;
     Ok(())
 }
 
@@ -45,17 +40,12 @@ fn target_spec_map() -> Result<BTreeMap<String, TargetSpec>> {
 
 /// Return a list of all built-in targets.
 fn target_list() -> Result<Vec<String>> {
-    Ok(cmd!("rustc", "--print", "target-list",)
+    Ok(cmd!("rustc", "--print", "target-list")
         .read()?
         .split('\n')
         .filter(|s| !s.is_empty())
         .map(str::to_owned)
         .collect())
-}
-
-fn target_spec_json(target: &str) -> Result<String> {
-    Ok(cmd!("rustc", "--print", "target-spec-json", "-Z", "unstable-options", "--target", &target)
-        .read()?)
 }
 
 fn cfg_list(target: &str) -> Result<String> {
