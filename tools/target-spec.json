@@ -1294,6 +1294,27 @@
     "target-mcount": "\u0001_mcount",
     "target-pointer-width": "32"
   },
+  "aarch64_be-unknown-netbsd": {
+    "arch": "aarch64",
+    "data-layout": "E-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
+    "default-dwarf-version": 2,
+    "dynamic-linking": true,
+    "has-rpath": true,
+    "is-builtin": true,
+    "llvm-target": "aarch64_be-unknown-netbsd",
+    "max-atomic-width": 128,
+    "no-default-libraries": false,
+    "os": "netbsd",
+    "position-independent-executables": true,
+    "relro-level": "full",
+    "target-endian": "big",
+    "target-family": [
+      "unix"
+    ],
+    "target-mcount": "__mcount",
+    "target-pointer-width": "64",
+    "use-ctors-section": true
+  },
   "arm-linux-androideabi": {
     "abi": "eabi",
     "arch": "arm",
