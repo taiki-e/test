@@ -143,6 +143,7 @@ Lint checks provided by rustc:
                             unsupported-calling-conventions  warn     use of unsupported calling convention
                                           unused-allocation  warn     detects unnecessary allocations that can be eliminated
                                          unused-assignments  warn     detect assignments that will never be read
+                              unused-associated-type-bounds  warn     detects unused `Foo = Bar` bounds in `dyn Trait<Foo = Bar>`
                                           unused-attributes  warn     detects attributes that were not used by the compiler
                                               unused-braces  warn     unnecessary braces around an expression
                                          unused-comparisons  warn     comparisons made useless by limits of the types involved
