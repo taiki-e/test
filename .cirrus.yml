@@ -1,0 +1,71 @@
+only_if: $CIRRUS_TAG == '' && ($CIRRUS_PR != '' || $CIRRUS_BRANCH == 'blob')
+auto_cancellation: $CIRRUS_BRANCH != 'master'
+env:
+  CARGO_INCREMENTAL: '0'
+  CARGO_NET_RETRY: '10'
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: '1'
+  RUSTDOCFLAGS: -D warnings
+  RUSTFLAGS: -D warnings
+  RUSTUP_MAX_RETRIES: '10'
+
+# freebsd_task:
+#   name: test ($TARGET)
+#   freebsd_instance:
+#     image_family: freebsd-12-4
+#   matrix:
+#     - env:
+#         TARGET: x86_64-unknown-freebsd
+#     - env:
+#         TARGET: i686-unknown-freebsd
+#   setup_script:
+#     - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable --target $TARGET
+#   test_script:
+#     -
+
+netbsd_task:
+  name: test ($TARGET)
+  compute_engine_instance:
+    image_project: pg-ci-images
+    # https://github.com/anarazel/pg-vm-images/blob/main/packer/netbsd.pkrvars.hcl
+    image: family/pg-ci-netbsd-vanilla-9-3
+    platform: netbsd
+  env:
+    TARGET: x86_64-unknown-netbsd
+  setup_script:
+    - uname -a
+    # - pkgin update
+    # - pkgin -y install compat80
+    # - export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/pkg/bin:/usr/pkg/sbin
+    # - PKG_PATH="http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/$(uname -p)/$(uname -r|cut -f "1 2" -d.)/All/"
+    # - export PKG_PATH
+    # - pkg_add pkgin
+    # - pkgin update
+    # - pkgin upgrade -y
+    # - pkgin -y install gcc
+  #   - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+  test_script:
+    - unzip x86_64-unknown-netbsd-ubuntu-22.04.zip
+    - chmod +x rust-test1
+    - ./rust-test1
+    - rm rust-test1
+    - unzip x86_64-unknown-netbsd-ubuntu-20.04.zip
+    - chmod +x rust-test1
+    - ./rust-test1
+    - rm rust-test1
+
+# openbsd_task:
+#   name: test ($TARGET)
+#   compute_engine_instance:
+#     image_project: pg-ci-images
+#     # https://github.com/anarazel/pg-vm-images/blob/main/packer/openbsd.pkrvars.hcl
+#     image: family/pg-ci-openbsd-vanilla-7-2
+#     platform: openbsd
+#   env:
+#     TARGET: x86_64-unknown-openbsd
+#   setup_script:
+#     - uname -a
+#     # OpenBSD is tier 3 target, so install rust from package manager instead of rustup
+#     - pkg_add unzip-6.0p16 # rust
+#   test_script:
+#     -
