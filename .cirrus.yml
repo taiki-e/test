@@ -1,4 +1,4 @@
-only_if: $CIRRUS_TAG == '' && ($CIRRUS_PR != '' || $CIRRUS_BRANCH == 'blob' || $CIRRUS_BRANCH == 'blob2')
+only_if: $CIRRUS_TAG == '' && ($CIRRUS_PR != '' || $CIRRUS_BRANCH == 'blob')
 auto_cancellation: $CIRRUS_BRANCH != 'master'
 env:
   CARGO_INCREMENTAL: '0'
@@ -22,8 +22,8 @@ x86_64_linux_task:
   test_script:
     - set -ex
     - unzip x86_64-unknown-linux-musl.zip
-    - chmod +x cargo-llvm-cov
-    - ./cargo-llvm-cov llvm-cov test --all --text
+    - chmod +x cargo-hack
+    - ./cargo-hack hack build --all
 
 # aarch64_linux_task:
 #   name: test ($TARGET)
@@ -38,8 +38,8 @@ x86_64_linux_task:
 #   test_script:
 #     - set -ex
 #     - unzip aarch64-unknown-linux-musl.zip
-#     - chmod +x cargo-llvm-cov
-#     - ./cargo-llvm-cov llvm-cov test --all --text
+#     - chmod +x cargo-hack
+#     - ./cargo-hack hack build --all
 
 # aarch64_macos_task:
 #   name: test ($TARGET)
