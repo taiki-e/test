@@ -9,6 +9,53 @@ env:
   RUSTFLAGS: -D warnings
   RUSTUP_MAX_RETRIES: '10'
 
+x86_64_linux_task:
+  name: test ($TARGET)
+  env:
+    TARGET: x86_64-unknown-linux-gnu
+  container:
+    image: rust:latest
+  setup_script:
+    - set -ex
+    - uname -a
+    - lscpu
+  test_script:
+    - set -ex
+    - unzip x86_64-unknown-linux-musl.zip
+    - chmod +x cargo-hack
+    - ./cargo-hack hack build --all
+
+aarch64_linux_task:
+  name: test ($TARGET)
+  env:
+    TARGET: aarch64-unknown-linux-gnu
+  arm_container:
+    image: rust:latest
+  setup_script:
+    - set -ex
+    - uname -a
+    - lscpu
+  test_script:
+    - set -ex
+    - unzip aarch64-unknown-linux-musl.zip
+    - chmod +x cargo-hack
+    - ./cargo-hack hack build --all
+
+# aarch64_macos_task:
+#   name: test ($TARGET)
+#   env:
+#     TARGET: aarch64-apple-darwin
+#   macos_instance:
+#     image: ghcr.io/cirruslabs/macos-ventura-xcode:latest
+#   setup_script:
+#     - set -ex
+#     - sysctl hw.optional machdep.cpu
+#     - brew install moreutils
+#     - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly
+#   test_script:
+#     - . $HOME/.cargo/env
+#     - set -ex
+
 # freebsd_task:
 #   name: test ($TARGET)
 #   freebsd_instance:
@@ -23,36 +70,36 @@ env:
 #   test_script:
 #     -
 
-netbsd_task:
-  name: test ($TARGET)
-  compute_engine_instance:
-    image_project: pg-ci-images
-    # https://github.com/anarazel/pg-vm-images/blob/main/packer/netbsd.pkrvars.hcl
-    image: family/pg-ci-netbsd-vanilla-9-3
-    platform: netbsd
-  env:
-    TARGET: x86_64-unknown-netbsd
-  setup_script:
-    - uname -a
-    # - pkgin update
-    # - pkgin -y install compat80
-    # - export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/pkg/bin:/usr/pkg/sbin
-    # - PKG_PATH="http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/$(uname -p)/$(uname -r|cut -f "1 2" -d.)/All/"
-    # - export PKG_PATH
-    # - pkg_add pkgin
-    # - pkgin update
-    # - pkgin upgrade -y
-    # - pkgin -y install gcc
-  #   - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
-  test_script:
-    - unzip x86_64-unknown-netbsd-ubuntu-22.04.zip
-    - chmod +x rust-test1
-    - ./rust-test1
-    - rm rust-test1
-    - unzip x86_64-unknown-netbsd-ubuntu-20.04.zip
-    - chmod +x rust-test1
-    - ./rust-test1
-    - rm rust-test1
+# netbsd_task:
+#   name: test ($TARGET)
+#   compute_engine_instance:
+#     image_project: pg-ci-images
+#     # https://github.com/anarazel/pg-vm-images/blob/main/packer/netbsd.pkrvars.hcl
+#     image: family/pg-ci-netbsd-vanilla-9-3
+#     platform: netbsd
+#   env:
+#     TARGET: x86_64-unknown-netbsd
+#   setup_script:
+#     - uname -a
+#     # - pkgin update
+#     # - pkgin -y install compat80
+#     # - export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/pkg/bin:/usr/pkg/sbin
+#     # - PKG_PATH="http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/$(uname -p)/$(uname -r|cut -f "1 2" -d.)/All/"
+#     # - export PKG_PATH
+#     # - pkg_add pkgin
+#     # - pkgin update
+#     # - pkgin upgrade -y
+#     # - pkgin -y install gcc
+#   #   - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
+#   test_script:
+#     - unzip x86_64-unknown-netbsd-ubuntu-22.04.zip
+#     - chmod +x rust-test1
+#     - ./rust-test1
+#     - rm rust-test1
+#     - unzip x86_64-unknown-netbsd-ubuntu-20.04.zip
+#     - chmod +x rust-test1
+#     - ./rust-test1
+#     - rm rust-test1
 
 # openbsd_task:
 #   name: test ($TARGET)
