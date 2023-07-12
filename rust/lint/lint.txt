@@ -90,6 +90,7 @@ Lint checks provided by rustc:
                                             improper-ctypes  warn     proper use of libc types in foreign modules
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
+                                   incorrect-fn-null-checks  warn     incorrect checking of null function pointer
                                   indirect-structural-match  warn     constant used in pattern contains value of non-structural-match type in a field or a variant
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[no_sanitize(...)]`
                                      invalid-doc-attributes  warn     detects invalid `#[doc(...)]` attributes
