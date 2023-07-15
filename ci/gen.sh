@@ -25,7 +25,7 @@ cargo run --manifest-path tools/codegen/Cargo.toml
 git add -N tools
 if ! git diff --exit-code -- tools; then
     git add tools
-    git commit -m "Update target-spec-json"
+    git commit -m "Update target-spec"
     failed=1
 fi
 

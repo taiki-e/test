@@ -10,14 +10,11 @@ mod file;
 mod target_spec;
 
 use anyhow::Result;
-use fs_err as fs;
 
 use crate::file::*;
 
 fn main() -> Result<()> {
     target_spec::gen()?;
-    target_spec::target_spec();
-    target_spec::target_tier()?;
 
     Ok(())
 }
