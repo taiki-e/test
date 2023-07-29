@@ -122,7 +122,7 @@ Lint checks provided by rustc:
                        semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
                                         special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
-                                suspicious-auto-trait-impls  warn     the rules governing auto traits will change in the future
+                                suspicious-auto-trait-impls  warn     the rules governing auto traits have recently changed resulting in potential breakage
                                    suspicious-double-ref-op  warn     suspicious call of trait method on `&&T`
                                    temporary-cstring-as-ptr  warn     detects getting the inner pointer of a temporary `CString`
                                              trivial-bounds  warn     these bounds don't depend on an type parameters
@@ -135,6 +135,7 @@ Lint checks provided by rustc:
                               unfulfilled-lint-expectations  warn     unfulfilled lint expectation
                               ungated-async-fn-track-caller  warn     enabling track_caller on an async fn is a no-op unless the closure_track_caller feature is enabled
                                          uninhabited-static  warn     uninhabited static
+                              unknown-diagnostic-attributes  warn     unrecognized diagnostic attribute
                                               unknown-lints  warn     unrecognized lint attribute
                                       unnameable-test-items  warn     detects an item that cannot be named being marked as `#[test_case]`
                                            unreachable-code  warn     detects unreachable code paths
