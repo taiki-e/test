@@ -17,6 +17,7 @@ Lint checks provided by rustc:
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
                                            ffi-unwind-calls  allow    call to foreign functions or function pointers with FFI-unwind ABI
                                      fuzzy-provenance-casts  allow    a fuzzy integer to pointer cast is used
+                                  invalid-reference-casting  allow    casts of `&T` to `&mut T` without interior mutability
                                              keyword-idents  allow    detects edition keywords being used as an identifier
                                         let-underscore-drop  allow    non-binding let on a type that implements `Drop`
                                      lossy-provenance-casts  allow    a lossy pointer to integer cast is used
@@ -30,7 +31,6 @@ Lint checks provided by rustc:
                                            must-not-suspend  allow    use of a `#[must_not_suspend]` value across a yield point
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
-                                           noop-method-call  allow    detects the use of well-known noop methods
                                    pointer-structural-match  allow    pointers are not structural-match
                                              private-bounds  allow    private type in secondary interface of an item
                                          private-interfaces  allow    private type in primary interface of an item
@@ -55,6 +55,7 @@ Lint checks provided by rustc:
                                              unused-results  allow    unused result of an expression in a statement
                                  unused-tuple-struct-fields  allow    detects tuple struct fields that are never read
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
+                                     ambiguous-glob-imports  warn     detects certain glob imports that require reporting an ambiguity error
                                    ambiguous-glob-reexports  warn     ambiguous glob re-exports
                                        anonymous-parameters  warn     detects anonymous parameters
                                             array-into-iter  warn     detects calling `into_iter` on arrays in Rust 2015 and 2018
@@ -111,6 +112,7 @@ Lint checks provided by rustc:
                                non-shorthand-field-patterns  warn     using `Struct { x: x }` instead of `Struct { x }` in a pattern
                                              non-snake-case  warn     variables, methods, functions, lifetime parameters and modules should have snake case names
                                      non-upper-case-globals  warn     static constants should have uppercase identifiers
+                                           noop-method-call  warn     detects the use of well-known noop methods
                                     no-mangle-generic-items  warn     generic items must be mangled
                                opaque-hidden-inferred-bound  warn     detects the use of nested `impl Trait` types in associated type bounds that are not general enough
                                 overlapping-range-endpoints  warn     detects range patterns with overlapping endpoints
@@ -165,7 +167,6 @@ Lint checks provided by rustc:
                                  ambiguous-associated-items  deny     ambiguous associated items
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
-                                            cast-ref-to-mut  deny     casts of `&T` to `&mut T` without interior mutability
                                        cenum-impl-drop-cast  deny     a C-like enum implementing Drop is cast
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                         deprecated-cfg-attr-crate-type-name  deny     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
@@ -206,7 +207,7 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, forbidden-lint-groups, ill-formed-attribute-input, illegal-floating-point-literal-pattern, implied-bounds-entailment, indirect-structural-match, invalid-alignment, invalid-doc-attributes, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, nontrivial-structural-match, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, private-in-public, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, suspicious-auto-trait-impls, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, where-clauses-object-safety
+        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, forbidden-lint-groups, ill-formed-attribute-input, illegal-floating-point-literal-pattern, implied-bounds-entailment, indirect-structural-match, invalid-alignment, invalid-doc-attributes, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, nontrivial-structural-match, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, private-in-public, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, suspicious-auto-trait-impls, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, where-clauses-object-safety
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
     rust-2018-compatibility  keyword-idents, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
