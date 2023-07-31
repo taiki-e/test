@@ -58,9 +58,6 @@ jobs:
           persist-credentials: false
       - name: Install Rust
         run: rustup toolchain add ${{ matrix.rust || 'nightly' }} --no-self-update && rustup default ${{ matrix.rust || 'nightly' }}
-      - uses: taiki-e/install-action@v2
-        with:
-          tool: wasmtime@4.0.0
       - run: make test
 
   codegen:
