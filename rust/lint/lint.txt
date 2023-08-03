@@ -17,7 +17,6 @@ Lint checks provided by rustc:
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
                                            ffi-unwind-calls  allow    call to foreign functions or function pointers with FFI-unwind ABI
                                      fuzzy-provenance-casts  allow    a fuzzy integer to pointer cast is used
-                                  invalid-reference-casting  allow    casts of `&T` to `&mut T` without interior mutability
                                              keyword-idents  allow    detects edition keywords being used as an identifier
                                         let-underscore-drop  allow    non-binding let on a type that implements `Drop`
                                      lossy-provenance-casts  allow    a lossy pointer to integer cast is used
@@ -178,6 +177,7 @@ Lint checks provided by rustc:
                                           invalid-alignment  deny     raw pointers must be aligned before dereferencing
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
                                 invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
+                                  invalid-reference-casting  deny     casts of `&T` to `&mut T` without interior mutability
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
                                     long-running-const-eval  deny     detects long const eval operations
