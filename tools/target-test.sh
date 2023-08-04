@@ -31,7 +31,7 @@ cargo="cargo"
 if [[ "${host}" != "${target}" ]]; then
     case "${target}" in
         # https://github.com/cross-rs/cross#supported-targets
-        *windows-msvc | *windows-gnu | *darwin | *fuchsia | *redox) ;;
+        *-windows-msvc* | *-windows-gnu* | *-darwin* | *-fuchsia* | *-redox*) ;;
         *)
             cargo="cross"
             cargo install cross
