@@ -174,6 +174,7 @@ Lint checks provided by rustc:
                                   implied-bounds-entailment  deny     impl method assumes more implied bounds than its corresponding trait method
                                          incomplete-include  deny     trailing content in included file
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
+                                          internal-features  deny     internal features are not supposed to be used
                                           invalid-alignment  deny     raw pointers must be aligned before dereferencing
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
                                 invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
