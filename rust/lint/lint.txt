@@ -133,7 +133,7 @@ Lint checks provided by rustc:
                                undefined-naked-function-abi  warn     undefined naked function ABI
                                             unexpected-cfgs  warn     detects unexpected names and values in `#[cfg]` conditions
                               unfulfilled-lint-expectations  warn     unfulfilled lint expectation
-                              ungated-async-fn-track-caller  warn     enabling track_caller on an async fn is a no-op unless the closure_track_caller feature is enabled
+                              ungated-async-fn-track-caller  warn     enabling track_caller on an async fn is a no-op unless the async_fn_track_caller feature is enabled
                                          uninhabited-static  warn     uninhabited static
                               unknown-diagnostic-attributes  warn     unrecognized diagnostic attribute
                                               unknown-lints  warn     unrecognized lint attribute
