@@ -22,7 +22,7 @@ warn() {
     fi
 }
 
-script_dir="$(cd "$(dirname "$0")" && pwd)"
+script_dir=$(cd "$(dirname "$0")" && pwd)
 cd "${script_dir}"/..
 
 host=$(rustc -Vv | grep 'host: ' | sed 's/host: //')
