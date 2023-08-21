@@ -1,6 +1,7 @@
 aarch64-apple-darwin:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -67,6 +68,7 @@ unix
 aarch64-apple-ios:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -104,6 +106,7 @@ unix
 aarch64-apple-ios-macabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="macabi"
 target_arch="aarch64"
 target_endian="little"
@@ -158,6 +161,7 @@ unix
 aarch64-apple-ios-sim:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="sim"
 target_arch="aarch64"
 target_endian="little"
@@ -212,6 +216,7 @@ unix
 aarch64-apple-tvos:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -249,6 +254,7 @@ unix
 aarch64-apple-watchos-sim:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="sim"
 target_arch="aarch64"
 target_endian="little"
@@ -303,6 +309,7 @@ unix
 aarch64-fuchsia:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -338,6 +345,7 @@ unix
 aarch64-kmc-solid_asp3:
 overflow_checks
 panic="unwind"
+relocation_model="static"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -371,6 +379,7 @@ target_vendor="kmc"
 aarch64-linux-android:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -405,6 +414,7 @@ unix
 aarch64-nintendo-switch-freestanding:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -437,6 +447,7 @@ target_vendor="unknown"
 aarch64-pc-windows-gnullvm:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="llvm"
 target_arch="aarch64"
 target_endian="little"
@@ -472,6 +483,7 @@ windows
 aarch64-pc-windows-msvc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -507,6 +519,7 @@ windows
 aarch64-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -541,6 +554,7 @@ unix
 aarch64-unknown-fuchsia:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -576,6 +590,7 @@ unix
 aarch64-unknown-hermit:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -609,6 +624,7 @@ target_vendor="unknown"
 aarch64-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -644,6 +660,7 @@ unix
 aarch64-unknown-linux-gnu_ilp32:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="ilp32"
 target_arch="aarch64"
 target_endian="little"
@@ -679,6 +696,7 @@ unix
 aarch64-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -715,6 +733,7 @@ unix
 aarch64-unknown-linux-ohos:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -749,6 +768,7 @@ unix
 aarch64-unknown-netbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -783,6 +803,7 @@ unix
 aarch64-unknown-none:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -815,6 +836,7 @@ target_vendor="unknown"
 aarch64-unknown-none-softfloat:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="softfloat"
 target_arch="aarch64"
 target_endian="little"
@@ -846,6 +868,7 @@ target_vendor="unknown"
 aarch64-unknown-nto-qnx710:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -880,6 +903,7 @@ unix
 aarch64-unknown-openbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -914,6 +938,7 @@ unix
 aarch64-unknown-redox:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -950,6 +975,7 @@ unix
 aarch64-unknown-teeos:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -982,6 +1008,7 @@ target_vendor="unknown"
 aarch64-unknown-uefi:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -1014,6 +1041,7 @@ target_vendor="unknown"
 aarch64-uwp-windows-msvc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="uwp"
 target_arch="aarch64"
 target_endian="little"
@@ -1049,6 +1077,7 @@ windows
 aarch64-wrs-vxworks:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -1085,6 +1114,7 @@ unix
 aarch64_be-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="big"
@@ -1120,6 +1150,7 @@ unix
 aarch64_be-unknown-linux-gnu_ilp32:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="ilp32"
 target_arch="aarch64"
 target_endian="big"
@@ -1155,6 +1186,7 @@ unix
 aarch64_be-unknown-netbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="big"
@@ -1189,6 +1221,7 @@ unix
 arm-linux-androideabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1217,6 +1250,7 @@ unix
 arm-unknown-linux-gnueabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1250,6 +1284,7 @@ unix
 arm-unknown-linux-gnueabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -1284,6 +1319,7 @@ unix
 arm-unknown-linux-musleabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1318,6 +1354,7 @@ unix
 arm-unknown-linux-musleabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -1353,6 +1390,7 @@ unix
 arm64_32-apple-watchos:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="aarch64"
 target_endian="little"
@@ -1407,6 +1445,7 @@ unix
 armeb-unknown-linux-gnueabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="big"
@@ -1446,6 +1485,7 @@ unix
 armebv7r-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="big"
@@ -1482,6 +1522,7 @@ target_vendor="unknown"
 armebv7r-none-eabihf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="big"
@@ -1519,6 +1560,7 @@ target_vendor="unknown"
 armv4t-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1539,6 +1581,7 @@ target_vendor="unknown"
 armv4t-unknown-linux-gnueabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1567,6 +1610,7 @@ unix
 armv5te-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1588,6 +1632,7 @@ target_vendor="unknown"
 armv5te-unknown-linux-gnueabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1617,6 +1662,7 @@ unix
 armv5te-unknown-linux-musleabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1647,6 +1693,7 @@ unix
 armv5te-unknown-linux-uclibceabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1676,6 +1723,7 @@ unix
 armv6-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -1710,6 +1758,7 @@ unix
 armv6-unknown-netbsd-eabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -1744,6 +1793,7 @@ unix
 armv6k-nintendo-3ds:
 overflow_checks
 panic="unwind"
+relocation_model="static"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -1776,6 +1826,7 @@ unix
 armv7-apple-ios:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="arm"
 target_endian="little"
@@ -1818,6 +1869,7 @@ unix
 armv7-linux-androideabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1858,6 +1910,7 @@ unix
 armv7-sony-vita-newlibeabihf:
 overflow_checks
 panic="unwind"
+relocation_model="static"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -1902,6 +1955,7 @@ unix
 armv7-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -1941,6 +1995,7 @@ unix
 armv7-unknown-linux-gnueabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -1983,6 +2038,7 @@ unix
 armv7-unknown-linux-gnueabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -2023,6 +2079,7 @@ unix
 armv7-unknown-linux-musleabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -2066,6 +2123,7 @@ unix
 armv7-unknown-linux-musleabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -2107,6 +2165,7 @@ unix
 armv7-unknown-linux-ohos:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -2148,6 +2207,7 @@ unix
 armv7-unknown-linux-uclibceabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -2190,6 +2250,7 @@ unix
 armv7-unknown-linux-uclibceabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -2230,6 +2291,7 @@ unix
 armv7-unknown-netbsd-eabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -2269,6 +2331,7 @@ unix
 armv7-wrs-vxworks-eabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -2310,6 +2373,7 @@ unix
 armv7a-kmc-solid_asp3-eabi:
 overflow_checks
 panic="unwind"
+relocation_model="static"
 target_abi=""
 target_arch="arm"
 target_endian="little"
@@ -2350,6 +2414,7 @@ target_vendor="kmc"
 armv7a-kmc-solid_asp3-eabihf:
 overflow_checks
 panic="unwind"
+relocation_model="static"
 target_abi=""
 target_arch="arm"
 target_endian="little"
@@ -2388,6 +2453,7 @@ target_vendor="kmc"
 armv7a-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -2427,6 +2493,7 @@ target_vendor="unknown"
 armv7a-none-eabihf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -2464,6 +2531,7 @@ target_vendor="unknown"
 armv7k-apple-watchos:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="arm"
 target_endian="little"
@@ -2508,6 +2576,7 @@ unix
 armv7r-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -2544,6 +2613,7 @@ target_vendor="unknown"
 armv7r-none-eabihf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -2581,6 +2651,7 @@ target_vendor="unknown"
 armv7s-apple-ios:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="arm"
 target_endian="little"
@@ -2624,6 +2695,7 @@ unix
 asmjs-unknown-emscripten:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="wasm32"
 target_endian="little"
@@ -2658,6 +2730,7 @@ unix
 avr-unknown-gnu-atmega328:
 overflow_checks
 panic="unwind"
+relocation_model="static"
 target_abi=""
 target_arch="avr"
 target_endian="little"
@@ -2674,6 +2747,7 @@ target_vendor="unknown"
 bpfeb-unknown-none:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="bpf"
 target_endian="big"
@@ -2690,6 +2764,7 @@ target_vendor="unknown"
 bpfel-unknown-none:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="bpf"
 target_endian="little"
@@ -2706,6 +2781,7 @@ target_vendor="unknown"
 csky-unknown-linux-gnuabiv2:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="abiv2"
 target_arch="csky"
 target_endian="little"
@@ -2751,6 +2827,7 @@ unix
 hexagon-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="hexagon"
 target_endian="little"
@@ -2781,6 +2858,7 @@ unix
 i386-apple-ios:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -2814,6 +2892,7 @@ unix
 i586-pc-nto-qnx700:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -2846,6 +2925,7 @@ unix
 i586-pc-windows-msvc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -2876,6 +2956,7 @@ windows
 i586-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -2906,6 +2987,7 @@ unix
 i586-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -2937,6 +3019,7 @@ unix
 i686-apple-darwin:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -2971,6 +3054,7 @@ unix
 i686-linux-android:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3004,6 +3088,7 @@ unix
 i686-pc-windows-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3037,6 +3122,7 @@ windows
 i686-pc-windows-msvc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3070,6 +3156,7 @@ windows
 i686-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3102,6 +3189,7 @@ unix
 i686-unknown-haiku:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3134,6 +3222,7 @@ unix
 i686-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3167,6 +3256,7 @@ unix
 i686-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3201,6 +3291,7 @@ unix
 i686-unknown-netbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3233,6 +3324,7 @@ unix
 i686-unknown-openbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3265,6 +3357,7 @@ unix
 i686-unknown-uefi:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3294,6 +3387,7 @@ target_vendor="unknown"
 i686-uwp-windows-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="uwp"
 target_arch="x86"
 target_endian="little"
@@ -3327,6 +3421,7 @@ windows
 i686-uwp-windows-msvc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="uwp"
 target_arch="x86"
 target_endian="little"
@@ -3361,6 +3456,7 @@ windows
 i686-wrs-vxworks:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86"
 target_endian="little"
@@ -3395,6 +3491,7 @@ unix
 loongarch64-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="loongarch64"
 target_endian="little"
@@ -3426,6 +3523,7 @@ unix
 loongarch64-unknown-none:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="loongarch64"
 target_endian="little"
@@ -3454,6 +3552,7 @@ target_vendor="unknown"
 loongarch64-unknown-none-softfloat:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="softfloat"
 target_arch="loongarch64"
 target_endian="little"
@@ -3482,6 +3581,7 @@ target_vendor="unknown"
 m68k-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="m68k"
 target_endian="big"
@@ -3508,6 +3608,7 @@ unix
 mips-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="mips"
 target_endian="big"
@@ -3536,6 +3637,7 @@ unix
 mips-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="mips"
 target_endian="big"
@@ -3564,6 +3666,7 @@ unix
 mips-unknown-linux-uclibc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="mips"
 target_endian="big"
@@ -3592,6 +3695,7 @@ unix
 mips64-openwrt-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="abi64"
 target_arch="mips64"
 target_endian="big"
@@ -3624,6 +3728,7 @@ unix
 mips64-unknown-linux-gnuabi64:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="abi64"
 target_arch="mips64"
 target_endian="big"
@@ -3656,6 +3761,7 @@ unix
 mips64-unknown-linux-muslabi64:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="abi64"
 target_arch="mips64"
 target_endian="big"
@@ -3689,6 +3795,7 @@ unix
 mips64el-unknown-linux-gnuabi64:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="abi64"
 target_arch="mips64"
 target_endian="little"
@@ -3721,6 +3828,7 @@ unix
 mips64el-unknown-linux-muslabi64:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="abi64"
 target_arch="mips64"
 target_endian="little"
@@ -3754,6 +3862,7 @@ unix
 mipsel-sony-psp:
 overflow_checks
 panic="unwind"
+relocation_model="static"
 target_abi=""
 target_arch="mips"
 target_endian="little"
@@ -3779,6 +3888,7 @@ target_vendor="sony"
 mipsel-sony-psx:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="mips"
 target_endian="little"
@@ -3790,6 +3900,7 @@ target_vendor="sony"
 mipsel-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="mips"
 target_endian="little"
@@ -3818,6 +3929,7 @@ unix
 mipsel-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="mips"
 target_endian="little"
@@ -3846,6 +3958,7 @@ unix
 mipsel-unknown-linux-uclibc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="mips"
 target_endian="little"
@@ -3874,6 +3987,7 @@ unix
 mipsel-unknown-none:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="mips"
 target_endian="little"
@@ -3899,6 +4013,7 @@ target_vendor="unknown"
 mipsisa32r6-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="mips32r6"
 target_endian="big"
@@ -3928,6 +4043,7 @@ unix
 mipsisa32r6el-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="mips32r6"
 target_endian="little"
@@ -3957,6 +4073,7 @@ unix
 mipsisa64r6-unknown-linux-gnuabi64:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="abi64"
 target_arch="mips64r6"
 target_endian="big"
@@ -3989,6 +4106,7 @@ unix
 mipsisa64r6el-unknown-linux-gnuabi64:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="abi64"
 target_arch="mips64r6"
 target_endian="little"
@@ -4021,6 +4139,7 @@ unix
 msp430-none-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="msp430"
 target_endian="little"
@@ -4032,6 +4151,7 @@ target_vendor="unknown"
 nvptx64-nvidia-cuda:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="nvptx64"
 target_endian="little"
@@ -4060,6 +4180,7 @@ target_vendor="nvidia"
 powerpc-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc"
 target_endian="big"
@@ -4087,6 +4208,7 @@ unix
 powerpc-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc"
 target_endian="big"
@@ -4115,6 +4237,7 @@ unix
 powerpc-unknown-linux-gnuspe:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="spe"
 target_arch="powerpc"
 target_endian="big"
@@ -4143,6 +4266,7 @@ unix
 powerpc-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc"
 target_endian="big"
@@ -4172,6 +4296,7 @@ unix
 powerpc-unknown-netbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc"
 target_endian="big"
@@ -4199,6 +4324,7 @@ unix
 powerpc-unknown-openbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc"
 target_endian="big"
@@ -4226,6 +4352,7 @@ unix
 powerpc-wrs-vxworks:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc"
 target_endian="big"
@@ -4255,6 +4382,7 @@ unix
 powerpc-wrs-vxworks-spe:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="spe"
 target_arch="powerpc"
 target_endian="big"
@@ -4284,6 +4412,7 @@ unix
 powerpc64-ibm-aix:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="vec-extabi"
 target_arch="powerpc64"
 target_endian="big"
@@ -4317,6 +4446,7 @@ unix
 powerpc64-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc64"
 target_endian="big"
@@ -4348,6 +4478,7 @@ unix
 powerpc64-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc64"
 target_endian="big"
@@ -4380,6 +4511,7 @@ unix
 powerpc64-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc64"
 target_endian="big"
@@ -4413,6 +4545,7 @@ unix
 powerpc64-unknown-openbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc64"
 target_endian="big"
@@ -4444,6 +4577,7 @@ unix
 powerpc64-wrs-vxworks:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc64"
 target_endian="big"
@@ -4477,6 +4611,7 @@ unix
 powerpc64le-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc64"
 target_endian="little"
@@ -4511,6 +4646,7 @@ unix
 powerpc64le-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc64"
 target_endian="little"
@@ -4546,6 +4682,7 @@ unix
 powerpc64le-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="powerpc64"
 target_endian="little"
@@ -4582,6 +4719,7 @@ unix
 riscv32gc-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4615,6 +4753,7 @@ unix
 riscv32gc-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4649,6 +4788,7 @@ unix
 riscv32i-unknown-none-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4660,6 +4800,7 @@ target_vendor="unknown"
 riscv32im-unknown-none-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4672,6 +4813,7 @@ target_vendor="unknown"
 riscv32imac-esp-espidf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4705,6 +4847,7 @@ unix
 riscv32imac-unknown-none-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4733,6 +4876,7 @@ target_vendor="unknown"
 riscv32imac-unknown-xous-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4761,6 +4905,7 @@ target_vendor="unknown"
 riscv32imc-esp-espidf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4793,6 +4938,7 @@ unix
 riscv32imc-unknown-none-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv32"
 target_endian="little"
@@ -4806,6 +4952,7 @@ target_vendor="unknown"
 riscv64-linux-android:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -4841,6 +4988,7 @@ unix
 riscv64gc-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -4876,6 +5024,7 @@ unix
 riscv64gc-unknown-fuchsia:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -4912,6 +5061,7 @@ unix
 riscv64gc-unknown-hermit:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -4946,6 +5096,7 @@ target_vendor="unknown"
 riscv64gc-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -4982,6 +5133,7 @@ unix
 riscv64gc-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -5019,6 +5171,7 @@ unix
 riscv64gc-unknown-netbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -5054,6 +5207,7 @@ unix
 riscv64gc-unknown-none-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -5087,6 +5241,7 @@ target_vendor="unknown"
 riscv64gc-unknown-openbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -5122,6 +5277,7 @@ unix
 riscv64imac-unknown-none-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="riscv64"
 target_endian="little"
@@ -5153,6 +5309,7 @@ target_vendor="unknown"
 s390x-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="s390x"
 target_endian="big"
@@ -5184,6 +5341,7 @@ unix
 s390x-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="s390x"
 target_endian="big"
@@ -5216,6 +5374,7 @@ unix
 sparc-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="sparc"
 target_endian="big"
@@ -5244,6 +5403,7 @@ unix
 sparc-unknown-none-elf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="elf"
 target_arch="sparc"
 target_endian="big"
@@ -5269,6 +5429,7 @@ target_vendor="unknown"
 sparc64-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="sparc64"
 target_endian="big"
@@ -5300,6 +5461,7 @@ unix
 sparc64-unknown-netbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="sparc64"
 target_endian="big"
@@ -5330,6 +5492,7 @@ unix
 sparc64-unknown-openbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="sparc64"
 target_endian="big"
@@ -5360,6 +5523,7 @@ unix
 sparcv9-sun-solaris:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="sparc64"
 target_endian="big"
@@ -5390,6 +5554,7 @@ unix
 thumbv4t-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -5411,6 +5576,7 @@ target_vendor="unknown"
 thumbv5te-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -5433,6 +5599,7 @@ target_vendor="unknown"
 thumbv6m-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -5457,6 +5624,7 @@ target_vendor="unknown"
 thumbv7a-pc-windows-msvc:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="arm"
 target_endian="little"
@@ -5501,6 +5669,7 @@ windows
 thumbv7a-uwp-windows-msvc:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi="uwp"
 target_arch="arm"
 target_endian="little"
@@ -5545,6 +5714,7 @@ windows
 thumbv7em-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -5579,6 +5749,7 @@ target_vendor="unknown"
 thumbv7em-none-eabihf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -5613,6 +5784,7 @@ target_vendor="unknown"
 thumbv7m-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -5646,6 +5818,7 @@ target_vendor="unknown"
 thumbv7neon-linux-androideabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -5689,6 +5862,7 @@ unix
 thumbv7neon-unknown-linux-gnueabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -5733,6 +5907,7 @@ unix
 thumbv7neon-unknown-linux-musleabihf:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -5778,6 +5953,7 @@ unix
 thumbv8m.base-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -5807,6 +5983,7 @@ target_vendor="unknown"
 thumbv8m.main-none-eabi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabi"
 target_arch="arm"
 target_endian="little"
@@ -5840,6 +6017,7 @@ target_vendor="unknown"
 thumbv8m.main-none-eabihf:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi="eabihf"
 target_arch="arm"
 target_endian="little"
@@ -5873,6 +6051,7 @@ target_vendor="unknown"
 wasm32-unknown-emscripten:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="wasm32"
 target_endian="little"
@@ -5907,6 +6086,7 @@ unix
 wasm32-unknown-unknown:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="wasm32"
 target_endian="little"
@@ -5939,6 +6119,7 @@ target_vendor="unknown"
 wasm32-wasi:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="wasm32"
 target_endian="little"
@@ -5972,6 +6153,7 @@ target_vendor="unknown"
 wasm32-wasi-preview1-threads:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="wasm32"
 target_endian="little"
@@ -6007,6 +6189,7 @@ target_vendor="unknown"
 wasm64-unknown-unknown:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="wasm64"
 target_endian="little"
@@ -6041,6 +6224,7 @@ target_vendor="unknown"
 x86_64-apple-darwin:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6080,6 +6264,7 @@ unix
 x86_64-apple-ios:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="sim"
 target_arch="x86_64"
 target_endian="little"
@@ -6118,6 +6303,7 @@ unix
 x86_64-apple-ios-macabi:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="macabi"
 target_arch="x86_64"
 target_endian="little"
@@ -6156,6 +6342,7 @@ unix
 x86_64-apple-tvos:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="sim"
 target_arch="x86_64"
 target_endian="little"
@@ -6194,6 +6381,7 @@ unix
 x86_64-apple-watchos-sim:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="sim"
 target_arch="x86_64"
 target_endian="little"
@@ -6232,6 +6420,7 @@ unix
 x86_64-fortanix-unknown-sgx:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="fortanix"
 target_arch="x86_64"
 target_endian="little"
@@ -6265,6 +6454,7 @@ target_vendor="fortanix"
 x86_64-fuchsia:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6299,6 +6489,7 @@ unix
 x86_64-linux-android:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6336,6 +6527,7 @@ unix
 x86_64-pc-nto-qnx710:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6369,6 +6561,7 @@ unix
 x86_64-pc-solaris:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6402,6 +6595,7 @@ unix
 x86_64-pc-windows-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6435,6 +6629,7 @@ windows
 x86_64-pc-windows-gnullvm:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="llvm"
 target_arch="x86_64"
 target_endian="little"
@@ -6469,6 +6664,7 @@ windows
 x86_64-pc-windows-msvc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6503,6 +6699,7 @@ windows
 x86_64-sun-solaris:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6536,6 +6733,7 @@ unix
 x86_64-unikraft-linux-musl:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6570,6 +6768,7 @@ unix
 x86_64-unknown-dragonfly:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6603,6 +6802,7 @@ unix
 x86_64-unknown-freebsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6636,6 +6836,7 @@ unix
 x86_64-unknown-fuchsia:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6670,6 +6871,7 @@ unix
 x86_64-unknown-haiku:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6703,6 +6905,7 @@ unix
 x86_64-unknown-hermit:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6737,6 +6940,7 @@ target_vendor="unknown"
 x86_64-unknown-illumos:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6770,6 +6974,7 @@ unix
 x86_64-unknown-l4re-uclibc:
 overflow_checks
 panic="abort"
+relocation_model="static"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6803,6 +7008,7 @@ unix
 x86_64-unknown-linux-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6837,6 +7043,7 @@ unix
 x86_64-unknown-linux-gnux32:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="x32"
 target_arch="x86_64"
 target_endian="little"
@@ -6870,6 +7077,7 @@ unix
 x86_64-unknown-linux-musl:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6905,6 +7113,7 @@ unix
 x86_64-unknown-linux-ohos:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6938,6 +7147,7 @@ unix
 x86_64-unknown-netbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -6971,6 +7181,7 @@ unix
 x86_64-unknown-none:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -7000,6 +7211,7 @@ target_vendor="unknown"
 x86_64-unknown-openbsd:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -7033,6 +7245,7 @@ unix
 x86_64-unknown-redox:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -7068,6 +7281,7 @@ unix
 x86_64-unknown-uefi:
 overflow_checks
 panic="abort"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -7097,6 +7311,7 @@ target_vendor="unknown"
 x86_64-uwp-windows-gnu:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="uwp"
 target_arch="x86_64"
 target_endian="little"
@@ -7130,6 +7345,7 @@ windows
 x86_64-uwp-windows-msvc:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi="uwp"
 target_arch="x86_64"
 target_endian="little"
@@ -7164,6 +7380,7 @@ windows
 x86_64-wrs-vxworks:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
@@ -7199,6 +7416,7 @@ unix
 x86_64h-apple-darwin:
 overflow_checks
 panic="unwind"
+relocation_model="pic"
 target_abi=""
 target_arch="x86_64"
 target_endian="little"
