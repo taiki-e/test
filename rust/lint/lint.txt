@@ -31,8 +31,6 @@ Lint checks provided by rustc:
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
                                    pointer-structural-match  allow    pointers are not structural-match
-                                             private-bounds  allow    private type in secondary interface of an item
-                                         private-interfaces  allow    private type in primary interface of an item
                     rust-2021-incompatible-closure-captures  allow    detects closures affected by Rust 2021 changes
                          rust-2021-incompatible-or-patterns  allow    detects usage of old versions of or-patterns
                      rust-2021-prefixes-incompatible-syntax  allow    identifiers that will be parsed as a prefix in Rust 2021
@@ -118,7 +116,8 @@ Lint checks provided by rustc:
                                opaque-hidden-inferred-bound  warn     detects the use of nested `impl Trait` types in associated type bounds that are not general enough
                                 overlapping-range-endpoints  warn     detects range patterns with overlapping endpoints
                                             path-statements  warn     path statements with no effect
-                                          private-in-public  warn     detect private items in public interfaces not caught by the old implementation
+                                             private-bounds  warn     private type in secondary interface of an item
+                                         private-interfaces  warn     private type in primary interface of an item
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
                    repr-transparent-external-private-fields  warn     transparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
@@ -210,7 +209,7 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, coinductive-overlap-in-coherence, conflicting-repr-hints, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, illegal-floating-point-literal-pattern, implied-bounds-entailment, indirect-structural-match, invalid-alignment, invalid-doc-attributes, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, nontrivial-structural-match, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, private-in-public, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, suspicious-auto-trait-impls, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, where-clauses-object-safety
+        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, coinductive-overlap-in-coherence, conflicting-repr-hints, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, illegal-floating-point-literal-pattern, implied-bounds-entailment, indirect-structural-match, invalid-alignment, invalid-doc-attributes, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, nontrivial-structural-match, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, suspicious-auto-trait-impls, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, where-clauses-object-safety
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
     rust-2018-compatibility  keyword-idents, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
