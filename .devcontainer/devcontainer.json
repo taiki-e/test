@@ -9,13 +9,15 @@
   "settings": {
     "files.watcherExclude": {
       "**/target/**": true,
+      "**/tmp/**": true,
     },
   },
   "extensions": [
     "editorconfig.editorconfig",
-    "tamasfe.even-better-toml",
-    // "rust-lang.rust-analyzer",
+    "rust-lang.rust-analyzer",
     "serayuzgur.crates",
+    "streetsidesoftware.code-spell-checker",
+    "tamasfe.even-better-toml",
     "vadimcn.vscode-lldb",
   ],
 }
