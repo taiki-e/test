@@ -119,6 +119,7 @@ Lint checks provided by rustc:
                                              private-bounds  warn     private type in secondary interface of an item
                                          private-interfaces  warn     private type in primary interface of an item
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
+                                        refining-impl-trait  warn     impl trait in impl method signature does not match trait method signature
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
                    repr-transparent-external-private-fields  warn     transparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
                        semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
