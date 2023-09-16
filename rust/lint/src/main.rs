@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
 use std::{env, fs, path::Path, process::Command, str};
 
 fn main() {

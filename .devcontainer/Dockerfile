@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+
 # https://github.com/devcontainers/images/tree/HEAD/src/rust
 FROM mcr.microsoft.com/devcontainers/rust:bookworm
 
