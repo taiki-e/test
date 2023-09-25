@@ -100,6 +100,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="ios"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -155,6 +156,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="ios"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -210,6 +212,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="ios"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -248,6 +251,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="tvos"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -303,6 +307,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="watchos"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -1439,6 +1444,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="watchos"
 target_pointer_width="32"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -1821,49 +1827,6 @@ target_os="horizon"
 target_pointer_width="32"
 target_thread_local
 target_vendor="nintendo"
-unix
-
-armv7-apple-ios:
-overflow_checks
-panic="unwind"
-relocation_model="pic"
-target_abi=""
-target_arch="arm"
-target_endian="little"
-target_env=""
-target_family="unix"
-target_feature="aclass"
-target_feature="d32"
-target_feature="dsp"
-target_feature="neon"
-target_feature="thumb2"
-target_feature="trustzone"
-target_feature="v5te"
-target_feature="v6"
-target_feature="v6k"
-target_feature="v6t2"
-target_feature="v7"
-target_feature="vfp2"
-target_feature="vfp3"
-target_has_atomic
-target_has_atomic="16"
-target_has_atomic="32"
-target_has_atomic="64"
-target_has_atomic="8"
-target_has_atomic="ptr"
-target_has_atomic_equal_alignment="16"
-target_has_atomic_equal_alignment="32"
-target_has_atomic_equal_alignment="8"
-target_has_atomic_equal_alignment="ptr"
-target_has_atomic_load_store
-target_has_atomic_load_store="16"
-target_has_atomic_load_store="32"
-target_has_atomic_load_store="64"
-target_has_atomic_load_store="8"
-target_has_atomic_load_store="ptr"
-target_os="ios"
-target_pointer_width="32"
-target_vendor="apple"
 unix
 
 armv7-linux-androideabi:
@@ -2570,6 +2533,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="watchos"
 target_pointer_width="32"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -2662,7 +2626,6 @@ target_feature="d32"
 target_feature="dsp"
 target_feature="neon"
 target_feature="thumb2"
-target_feature="trustzone"
 target_feature="v5te"
 target_feature="v6"
 target_feature="v6k"
@@ -2689,6 +2652,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="ios"
 target_pointer_width="32"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -2864,10 +2828,13 @@ target_arch="x86"
 target_endian="little"
 target_env=""
 target_family="unix"
+target_feature="cmpxchg16b"
 target_feature="fxsr"
 target_feature="sse"
 target_feature="sse2"
 target_feature="sse3"
+target_feature="sse4.1"
+target_feature="ssse3"
 target_has_atomic
 target_has_atomic="16"
 target_has_atomic="32"
@@ -2886,6 +2853,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="ios"
 target_pointer_width="32"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -3025,10 +2993,13 @@ target_arch="x86"
 target_endian="little"
 target_env=""
 target_family="unix"
+target_feature="cmpxchg16b"
 target_feature="fxsr"
 target_feature="sse"
 target_feature="sse2"
 target_feature="sse3"
+target_feature="sse4.1"
+target_feature="ssse3"
 target_has_atomic
 target_has_atomic="16"
 target_has_atomic="32"
@@ -6301,6 +6272,7 @@ target_feature="fxsr"
 target_feature="sse"
 target_feature="sse2"
 target_feature="sse3"
+target_feature="sse4.1"
 target_feature="ssse3"
 target_has_atomic
 target_has_atomic="128"
@@ -6341,6 +6313,7 @@ target_feature="fxsr"
 target_feature="sse"
 target_feature="sse2"
 target_feature="sse3"
+target_feature="sse4.1"
 target_feature="ssse3"
 target_has_atomic
 target_has_atomic="128"
@@ -6363,6 +6336,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="ios"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -6380,6 +6354,7 @@ target_feature="fxsr"
 target_feature="sse"
 target_feature="sse2"
 target_feature="sse3"
+target_feature="sse4.1"
 target_feature="ssse3"
 target_has_atomic
 target_has_atomic="128"
@@ -6402,6 +6377,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="ios"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -6419,6 +6395,7 @@ target_feature="fxsr"
 target_feature="sse"
 target_feature="sse2"
 target_feature="sse3"
+target_feature="sse4.1"
 target_feature="ssse3"
 target_has_atomic
 target_has_atomic="128"
@@ -6441,6 +6418,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="tvos"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
@@ -6458,6 +6436,7 @@ target_feature="fxsr"
 target_feature="sse"
 target_feature="sse2"
 target_feature="sse3"
+target_feature="sse4.1"
 target_feature="ssse3"
 target_has_atomic
 target_has_atomic="128"
@@ -6480,6 +6459,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="watchos"
 target_pointer_width="64"
+target_thread_local
 target_vendor="apple"
 unix
 
