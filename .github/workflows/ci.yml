@@ -95,11 +95,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        target:
+          - armv5te-unknown-linux-gnueabi
+          # - arm-unknown-linux-gnueabi
+          # - armv7-unknown-linux-gnueabi
         os:
-          - buildjet-2vcpu-ubuntu-2204
-          - buildjet-2vcpu-ubuntu-2204-arm
+          # - buildjet-2vcpu-ubuntu-2204
+          # - buildjet-2vcpu-ubuntu-2204-arm
+          - buildjet-4vcpu-ubuntu-2204-arm
     runs-on: ${{ matrix.os }}
+    container: rust
     timeout-minutes: 10
     steps:
       - run: uname -a
       - run: lscpu
+      - run: git clone --depth 1 -b t https://github.com/taiki-e/portable-atomic.git
+      - run: rustup toolchain add nightly --no-self-update --component rust-src --target "${{ matrix.target }}" && rustup default nightly
+      - run: |
+          set -eEuxo pipefail
+          dpkg --add-architecture armel
+          apt-get -o Acquire::Retries=10 -qq update
+          apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends gcc-arm-linux-gnueabi libc6-dev-armel-cross libc6:armel
+      - run: |
+          set -eEuxo pipefail
+          # cargo bench --target "${{ matrix.target }}" --manifest-path bench/Cargo.toml
+          ./tools/test.sh --target "${{ matrix.target }}" --tests -- stress
+        env:
+          CARGO_TARGET_ARMV5TE_UNKNOWN_LINUX_GNUEABI_LINKER: arm-linux-gnueabi-gcc
+          CARGO_TARGET_ARM_UNKNOWN_LINUX_GNUEABI_LINKER: arm-linux-gnueabi-gcc
+          CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABI_LINKER: arm-linux-gnueabi-gcc
+        working-directory: portable-atomic
