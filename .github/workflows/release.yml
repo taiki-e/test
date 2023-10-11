@@ -49,11 +49,10 @@ jobs:
           echo ${{ steps.create-gh-release.outputs.computed-prefix }}
           echo ${{ steps.create-gh-release.outputs.version }}
 
-  upload-assets1:
+  upload-assets:
     name: ${{ matrix.target }}
     if: github.repository_owner == 'taiki-e'
-    needs:
-      - create-release
+    needs: create-release
     strategy:
       fail-fast: false
       matrix:
