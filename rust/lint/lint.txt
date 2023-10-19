@@ -64,7 +64,6 @@ Lint checks provided by rustc:
                     byte-slice-in-packed-struct-with-derive  warn     `[u8]` or `str` used in a packed struct with `derive`
                                clashing-extern-declarations  warn     detects when an extern fn has been declared with the same name but different types
                                        coherence-leak-check  warn     distinct impls distinguished only by the leak-check code
-                           coinductive-overlap-in-coherence  warn     impls that are not considered to overlap may be considered to overlap in the future
                                           confusable-idents  warn     detects visually confusable pairs between identifiers
                                 const-evaluatable-unchecked  warn     detects a generic constant is used in a type without a emitting a warning
                                         const-item-mutation  warn     detects attempts to mutate a `const` item
@@ -172,6 +171,7 @@ Lint checks provided by rustc:
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
                                        cenum-impl-drop-cast  deny     a C-like enum implementing Drop is cast
+                           coinductive-overlap-in-coherence  deny     impls that are not considered to overlap may be considered to overlap in the future
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                         deprecated-cfg-attr-crate-type-name  deny     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
