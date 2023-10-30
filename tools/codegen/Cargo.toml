@@ -8,3 +8,6 @@ publish = false
 anyhow = "1"
 duct = "0.13"
 fs-err = "2"
+
+[lints]
+workspace = true

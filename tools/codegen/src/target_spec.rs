@@ -4,7 +4,7 @@ use duct::cmd;
 
 use super::*;
 
-pub fn gen() -> Result<()> {
+pub(crate) fn gen() -> Result<()> {
     gen_target_cfg()?;
     Ok(())
 }

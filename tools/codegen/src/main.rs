@@ -1,12 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-#![warn(rust_2018_idioms, single_use_lifetimes)]
-#![allow(
-    clippy::single_match,
-    clippy::too_many_arguments,
-    clippy::trivially_copy_pass_by_ref,
-    clippy::type_complexity
-)]
+#![allow(clippy::trivially_copy_pass_by_ref, clippy::wildcard_imports)]
 
 mod file;
 mod target_spec;
