@@ -220,4 +220,4 @@ Lint groups provided by rustc:
                      unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
-Lint tools like Clippy can provide additional lints and lint groups.
+Lint tools like Clippy can load additional lints and lint groups.
