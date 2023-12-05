@@ -11,7 +11,7 @@ pub(crate) fn gen() -> Result<()> {
 
 // creates a full list of target cfg
 fn gen_target_cfg() -> Result<()> {
-    let mut cfgs = Vec::new();
+    let mut cfgs = vec![];
     for triple in target_list()? {
         cfgs.append(&mut format!("{triple}:\n").into_bytes());
         let cfg_list = cfg_list(&triple)?;
