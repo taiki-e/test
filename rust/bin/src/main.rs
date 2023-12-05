@@ -5,6 +5,6 @@ fn main() {
     println!("macos");
     #[cfg(target_os = "linux")]
     println!("linux");
-    #[cfg(windows)]
+    #[cfg(target_os = "windows")]
     println!("windows");
 }
