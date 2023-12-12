@@ -54,6 +54,7 @@ Lint checks provided by rustc:
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
                                      ambiguous-glob-imports  warn     detects certain glob imports that require reporting an ambiguity error
                                    ambiguous-glob-reexports  warn     ambiguous glob re-exports
+                         ambiguous-wide-pointer-comparisons  warn     detects ambiguous wide pointer comparisons
                                        anonymous-parameters  warn     detects anonymous parameters
                                             array-into-iter  warn     detects calling `into_iter` on arrays in Rust 2015 and 2018
                                            asm-sub-register  warn     using only a subset of a register for inline asm inputs
