@@ -2,8 +2,5 @@
 name = "check_lint_list"
 edition = "2021"
 
-[dependencies]
-anyhow = "1"
-
 [lints]
 workspace = true
