@@ -50,7 +50,6 @@ Lint checks provided by rustc:
                                          unused-macro-rules  allow    detects macro rules that were not used
                                       unused-qualifications  allow    detects unnecessarily qualified names
                                              unused-results  allow    unused result of an expression in a statement
-                                 unused-tuple-struct-fields  allow    detects tuple struct fields that are never read
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
                                      ambiguous-glob-imports  warn     detects certain glob imports that require reporting an ambiguity error
                                    ambiguous-glob-reexports  warn     ambiguous glob re-exports
