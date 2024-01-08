@@ -31,9 +31,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+      - uses: taiki-e/github-actions/checkout@main
       - uses: taiki-e/create-gh-release-action@main
         id: create-gh-release
         with:
@@ -75,9 +73,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+      - uses: taiki-e/github-actions/checkout@main
       - name: Install Rust
         run: rustup update stable --no-self-update
       - uses: taiki-e/install-action@cross

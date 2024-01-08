@@ -53,9 +53,7 @@ jobs:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+      - uses: taiki-e/github-actions/checkout@main
       - name: Install Rust
         run: rustup toolchain add ${{ matrix.rust || 'nightly' }} --no-self-update && rustup default ${{ matrix.rust || 'nightly' }}
       - run: make test
@@ -67,9 +65,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+      - uses: taiki-e/github-actions/checkout@main
       - name: Install Rust
         run: rustup toolchain add nightly --no-self-update && rustup default nightly
       - run: make gen
