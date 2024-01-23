@@ -42,7 +42,7 @@ Lint checks provided by rustc:
                                             unreachable-pub  allow    `pub` items not reachable from crate root
                                                 unsafe-code  allow    usage of `unsafe` code and other potentially unsound constructs
                                      unsafe-op-in-unsafe-fn  allow    unsafe operations in unsafe functions without an explicit unsafe block are deprecated
-                                          unstable-features  allow    enabling unstable features (deprecated. do not use)
+                                          unstable-features  allow    enabling unstable features
                                   unused-crate-dependencies  allow    crate dependencies that are never used
                                        unused-extern-crates  allow    extern crates that are never used
                                        unused-import-braces  allow    unnecessary braces around an imported item
@@ -218,7 +218,7 @@ Lint groups provided by rustc:
     rust-2018-compatibility  keyword-idents, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
     rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions, array-into-iter, non-fmt-panics
-    rust-2024-compatibility  static-mut-ref
+    rust-2024-compatibility  static-mut-ref, unsafe-op-in-unsafe-fn
                      unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
