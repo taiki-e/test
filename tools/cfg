@@ -648,6 +648,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -932,6 +933,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -1350,6 +1352,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -2011,6 +2014,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -2046,6 +2050,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -2205,6 +2210,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -2541,6 +2547,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -3317,6 +3324,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -3525,6 +3533,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -3691,6 +3700,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -4433,6 +4443,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -4654,6 +4665,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -4770,6 +4782,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="32"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -4924,6 +4937,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -5092,6 +5106,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -5257,6 +5272,36 @@ target_has_atomic_load_store="ptr"
 target_os="none"
 target_pointer_width="32"
 target_vendor="unknown"
+
+riscv32im-risc0-zkvm-elf:
+overflow_checks
+panic="abort"
+relocation_model="static"
+target_abi=""
+target_arch="riscv32"
+target_endian="little"
+target_env=""
+target_feature="m"
+target_has_atomic
+target_has_atomic="16"
+target_has_atomic="32"
+target_has_atomic="64"
+target_has_atomic="8"
+target_has_atomic="ptr"
+target_has_atomic_equal_alignment="16"
+target_has_atomic_equal_alignment="32"
+target_has_atomic_equal_alignment="64"
+target_has_atomic_equal_alignment="8"
+target_has_atomic_equal_alignment="ptr"
+target_has_atomic_load_store
+target_has_atomic_load_store="16"
+target_has_atomic_load_store="32"
+target_has_atomic_load_store="64"
+target_has_atomic_load_store="8"
+target_has_atomic_load_store="ptr"
+target_os="zkvm"
+target_pointer_width="32"
+target_vendor="risc0"
 
 riscv32im-unknown-none-elf:
 overflow_checks
@@ -5557,6 +5602,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -5740,6 +5786,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -6025,6 +6072,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -7315,6 +7363,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="dragonfly"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -7349,6 +7398,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="freebsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
@@ -7694,6 +7744,7 @@ target_has_atomic_load_store="8"
 target_has_atomic_load_store="ptr"
 target_os="netbsd"
 target_pointer_width="64"
+target_thread_local
 target_vendor="unknown"
 unix
 
