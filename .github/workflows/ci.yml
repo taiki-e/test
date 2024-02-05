@@ -58,7 +58,7 @@ jobs:
         run: rustup toolchain add ${{ matrix.rust || 'nightly' }} --no-self-update && rustup default ${{ matrix.rust || 'nightly' }}
       - run: make test
       - name: Install cargo-llvm-cov and nextest
-        uses: taiki-e/install-action@v1
+        uses: taiki-e/install-action@v2
         with:
           tool: cargo-llvm-cov,nextest
 
