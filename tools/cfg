@@ -3176,7 +3176,7 @@ i386-apple-ios:
 overflow_checks
 panic="unwind"
 relocation_model="pic"
-target_abi=""
+target_abi="sim"
 target_arch="x86"
 target_endian="little"
 target_env=""
