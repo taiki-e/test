@@ -92,7 +92,6 @@ Lint checks provided by rustc:
                                   indirect-structural-match  warn     constant used in pattern contains value of non-structural-match type in a field or a variant
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[no_sanitize(...)]`
                                           internal-features  warn     internal features are not supposed to be used
-                                     invalid-doc-attributes  warn     detects invalid `#[doc(...)]` attributes
                                           invalid-from-utf8  warn     using a non UTF-8 literal in `std::str::from_utf8`
                              invalid-macro-export-arguments  warn     "invalid_parameter" isn't a valid argument for `#[macro_export]`
                                     invalid-nan-comparisons  warn     detects invalid floating point NaN comparisons
@@ -178,6 +177,7 @@ Lint checks provided by rustc:
                                          incomplete-include  deny     trailing content in included file
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
+                                     invalid-doc-attributes  deny     detects invalid `#[doc(...)]` attributes
                                 invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
                                   invalid-reference-casting  deny     casts of `&T` to `&mut T` without interior mutability
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
@@ -209,7 +209,7 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, indirect-structural-match, invalid-doc-attributes, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, where-clauses-object-safety, writes-through-immutable-pointer
+        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, indirect-structural-match, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, where-clauses-object-safety, writes-through-immutable-pointer
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
     rust-2018-compatibility  keyword-idents, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
