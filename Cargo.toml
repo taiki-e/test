@@ -5,7 +5,6 @@ members = [
     "rust/lib",
     "rust/lib-no-std",
     "rust/lint",
-    "tools/codegen",
 ]
 
 # This table is shared by projects under github.com/taiki-e.

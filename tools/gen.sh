@@ -14,6 +14,4 @@ trap 's=$?; echo >&2 "$0: error on line "${LINENO}": ${BASH_COMMAND}"; exit ${s}
 
 set -x
 
-cargo run --manifest-path tools/codegen/Cargo.toml -- "$@"
-
 cargo run --manifest-path rust/lint/Cargo.toml

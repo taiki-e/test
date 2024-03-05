@@ -47,9 +47,5 @@
       "dictionaries": ["rust"]
     }
   ],
-  "ignorePaths": [
-    ".devcontainer/devcontainer.json",
-    "rust/lint/lint.txt",
-    "tools/cfg"
-  ]
+  "ignorePaths": [".devcontainer/devcontainer.json", "rust/lint/lint.txt"]
 }
