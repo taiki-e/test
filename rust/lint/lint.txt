@@ -30,6 +30,7 @@ Lint checks provided by rustc:
                                            must-not-suspend  allow    use of a `#[must_not_suspend]` value across a yield point
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
+                                      non-local-definitions  allow    checks for non-local definitions
                     rust-2021-incompatible-closure-captures  allow    detects closures affected by Rust 2021 changes
                          rust-2021-incompatible-or-patterns  allow    detects usage of old versions of or-patterns
                      rust-2021-prefixes-incompatible-syntax  allow    identifiers that will be parsed as a prefix in Rust 2021
@@ -105,7 +106,6 @@ Lint checks provided by rustc:
                           named-arguments-used-positionally  warn     named arguments in format used positionally
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
                                              non-fmt-panics  warn     detect single-argument panic!() invocations in which the argument is not a format string
-                                      non-local-definitions  warn     checks for non-local definitions
                                non-shorthand-field-patterns  warn     using `Struct { x: x }` instead of `Struct { x }` in a pattern
                                              non-snake-case  warn     variables, methods, functions, lifetime parameters and modules should have snake case names
                                      non-upper-case-globals  warn     static constants should have uppercase identifiers
