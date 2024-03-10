@@ -105,6 +105,7 @@ Lint checks provided by rustc:
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                           named-arguments-used-positionally  warn     named arguments in format used positionally
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
+                             non-contiguous-range-endpoints  warn     detects off-by-one errors with exclusive range patterns
                                              non-fmt-panics  warn     detect single-argument panic!() invocations in which the argument is not a format string
                                non-shorthand-field-patterns  warn     using `Struct { x: x }` instead of `Struct { x }` in a pattern
                                              non-snake-case  warn     variables, methods, functions, lifetime parameters and modules should have snake case names
