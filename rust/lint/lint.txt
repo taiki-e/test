@@ -120,7 +120,8 @@ Lint checks provided by rustc:
                                              private-bounds  warn     private type in secondary interface of an item
                                          private-interfaces  warn     private type in primary interface of an item
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
-                                        refining-impl-trait  warn     impl trait in impl method signature does not match trait method signature
+                               refining-impl-trait-internal  warn     impl trait in impl method signature does not match trait method signature
+                              refining-impl-trait-reachable  warn     impl trait in impl method signature does not match trait method signature
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
                    repr-transparent-external-private-fields  warn     transparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
                        semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
@@ -165,6 +166,7 @@ Lint checks provided by rustc:
                                            unused-variables  warn     detect variables which are not used in any way
                                     useless-ptr-null-checks  warn     useless checking of non-null-typed pointer
                                                    warnings  warn     mass-change the level for lints which produce warnings
+                                                 wasm-c-abi  warn     detects dependencies that are incompatible with the Wasm C ABI
                                 where-clauses-object-safety  warn     checks the object safety of where clauses
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                            writes-through-immutable-pointer  warn     shared references are immutable, and pointers derived from them must not be written to
@@ -211,9 +213,10 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, indirect-structural-match, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, where-clauses-object-safety, writes-through-immutable-pointer
+        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, indirect-structural-match, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, semicolon-in-expressions-from-macros, soft-unstable, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, wasm-c-abi, where-clauses-object-safety, writes-through-immutable-pointer
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
+        refining-impl-trait  refining-impl-trait-reachable, refining-impl-trait-internal
     rust-2018-compatibility  keyword-idents, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
     rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions, array-into-iter, non-fmt-panics
