@@ -13,6 +13,7 @@ Lint checks provided by rustc:
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
                                                box-pointers  allow    use of owned (Box type) heap memory
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
+                                  dereferencing-mut-binding  allow    detects `mut x` bindings that change the type of `x`
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
                                            ffi-unwind-calls  allow    call to foreign functions or function pointers with FFI-unwind ABI
