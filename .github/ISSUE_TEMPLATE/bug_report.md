@@ -22,7 +22,7 @@ Instead, this happened: *explanation*
 
 ### Meta
 
-`rustc --version --verbose`:
+`rustc -vV`:
 
 ```text
 <version>
