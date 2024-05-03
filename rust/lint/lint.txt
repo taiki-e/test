@@ -107,6 +107,7 @@ Lint checks provided by rustc:
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                           named-arguments-used-positionally  warn     named arguments in format used positionally
+                    never-type-fallback-flowing-into-unsafe  warn     never type fallback affecting unsafe function calls
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
                              non-contiguous-range-endpoints  warn     detects off-by-one errors with exclusive range patterns
                                              non-fmt-panics  warn     detect single-argument panic!() invocations in which the argument is not a format string
