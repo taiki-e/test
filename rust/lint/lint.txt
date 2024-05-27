@@ -96,7 +96,6 @@ Lint checks provided by rustc:
                                             improper-ctypes  warn     proper use of libc types in foreign modules
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
-                                  indirect-structural-match  warn     constant used in pattern contains value of non-structural-match type in a field or a variant
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[no_sanitize(...)]`
                                           internal-features  warn     internal features are not supposed to be used
                                           invalid-from-utf8  warn     using a non UTF-8 literal in `std::str::from_utf8`
@@ -123,7 +122,6 @@ Lint checks provided by rustc:
                                opaque-hidden-inferred-bound  warn     detects the use of nested `impl Trait` types in associated type bounds that are not general enough
                                 overlapping-range-endpoints  warn     detects range patterns with overlapping endpoints
                                             path-statements  warn     path statements with no effect
-                                   pointer-structural-match  warn     pointers are not structural-match
                                              private-bounds  warn     private type in secondary interface of an item
                                          private-interfaces  warn     private type in primary interface of an item
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
@@ -222,7 +220,7 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, indirect-structural-match, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, never-type-fallback-flowing-into-unsafe, order-dependent-trait-objects, patterns-in-fns-without-body, pointer-structural-match, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, wasm-c-abi, where-clauses-object-safety, writes-through-immutable-pointer
+        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, never-type-fallback-flowing-into-unsafe, order-dependent-trait-objects, patterns-in-fns-without-body, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, wasm-c-abi, where-clauses-object-safety, writes-through-immutable-pointer
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
