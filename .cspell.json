@@ -44,7 +44,7 @@
   "languageSettings": [
     {
       "languageId": ["*"],
-      "dictionaries": ["rust"]
+      "dictionaries": ["bash", "rust"]
     }
   ],
   "ignorePaths": [".devcontainer/devcontainer.json", "rust/lint/lint.txt"]
