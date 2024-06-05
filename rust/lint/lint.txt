@@ -175,7 +175,6 @@ Lint checks provided by rustc:
                                     useless-ptr-null-checks  warn     useless checking of non-null-typed pointer
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                                  wasm-c-abi  warn     detects dependencies that are incompatible with the Wasm C ABI
-                                where-clauses-object-safety  warn     checks the object safety of where clauses
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                            writes-through-immutable-pointer  warn     shared references are immutable, and pointers derived from them must not be written to
                                  ambiguous-associated-items  deny     ambiguous associated items
@@ -203,7 +202,6 @@ Lint checks provided by rustc:
                               order-dependent-trait-objects  deny     trait-object types were treated as different depending on marker-trait order
                                        overflowing-literals  deny     literal out of range for its type
                                patterns-in-fns-without-body  deny     patterns in functions without body were erroneously allowed
-                                     proc-macro-back-compat  deny     detects usage of old versions of certain proc-macro crates
                       proc-macro-derive-resolution-fallback  deny     detects proc macro derives using inaccessible names from parent modules
                             pub-use-of-private-extern-crate  deny     detect public re-exports of private extern crates
                                               soft-unstable  deny     a feature gate that doesn't break dependent crates
@@ -221,7 +219,7 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, never-type-fallback-flowing-into-unsafe, order-dependent-trait-objects, patterns-in-fns-without-body, proc-macro-back-compat, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, wasm-c-abi, where-clauses-object-safety, writes-through-immutable-pointer
+        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, never-type-fallback-flowing-into-unsafe, order-dependent-trait-objects, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, wasm-c-abi, writes-through-immutable-pointer
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
