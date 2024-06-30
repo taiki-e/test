@@ -1,1 +1,1 @@
-comm -23 <(git ls-files | sort) <(git ls-files --deleted | sort)
+comm -23 <(git ls-files | LC_ALL=C sort) <(git ls-files --deleted | LC_ALL=C sort)

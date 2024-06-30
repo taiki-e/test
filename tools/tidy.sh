@@ -12,12 +12,13 @@ trap 's=$?; echo >&2 "$0: error on line "${LINENO}": ${BASH_COMMAND}"; exit ${s}
 #    ./tools/tidy.sh
 #
 # Note: This script requires the following tools:
+# - git
 # - shfmt
 # - shellcheck
-# - npm
+# - npm (node 18+)
 # - jq
-# - python 3
-# - rustup (if Rust code exists)
+# - python 3.6+
+# - cargo, rustfmt (if Rust code exists)
 # - clang-format (if C/C++ code exists)
 #
 # This script is shared with other repositories, so there may also be
@@ -44,7 +45,13 @@ check_install() {
     for tool in "$@"; do
         if ! type -P "${tool}" &>/dev/null; then
             if [[ "${tool}" == "python3" ]]; then
-                if type -P python &>/dev/null; then
+                for p in '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' ''; do
+                    if type -P "python${p}" &>/dev/null; then
+                        tool=''
+                        break
+                    fi
+                done
+                if [[ -z "${tool}" ]]; then
                     continue
                 fi
             fi
@@ -65,7 +72,7 @@ error() {
     should_fail=1
 }
 ls_files() {
-    comm -23 <(git ls-files "$@" | sort) <(git ls-files --deleted "$@" | sort)
+    comm -23 <(git ls-files "$@" | LC_ALL=C sort) <(git ls-files --deleted "$@" | LC_ALL=C sort)
 }
 venv() {
     local bin="$1"
@@ -74,9 +81,12 @@ venv() {
 }
 venv_install_yq() {
     local py_suffix=''
-    if type -P python3 &>/dev/null; then
-        py_suffix=3
-    fi
+    for p in '3' '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' ''; do
+        if type -P "python${p}" &>/dev/null; then
+            py_suffix=${p}
+            break
+        fi
+    done
     exe=''
     venv_bin=.venv/bin
     case "$(uname -s)" in
@@ -89,7 +99,7 @@ venv_install_yq() {
         "python${py_suffix}" -m venv .venv
     fi
     if [[ ! -e "${venv_bin}/yq${exe}" ]]; then
-        info "installing yq to ./.venv using pip"
+        info "installing yq to ./.venv using pip${py_suffix}"
         venv "pip${py_suffix}" install yq
     fi
 }
@@ -102,28 +112,30 @@ EOF
     exit 1
 fi
 
+check_install git
+
 # Rust (if exists)
 if [[ -n "$(ls_files '*.rs')" ]]; then
     info "checking Rust code style"
     check_install cargo jq python3
     check_config .rustfmt.toml
-    if check_install rustup; then
-        # `cargo fmt` cannot recognize files not included in the current workspace and modules
-        # defined inside macros, so run rustfmt directly.
-        # We need to use nightly rustfmt because we use the unstable formatting options of rustfmt.
-        rustc_version=$(rustc -vV | grep '^release:' | cut -d' ' -f2)
-        if [[ "${rustc_version}" == *"nightly"* ]] || [[ "${rustc_version}" == *"dev"* ]]; then
+    # `cargo fmt` cannot recognize files not included in the current workspace and modules
+    # defined inside macros, so run rustfmt directly.
+    # We need to use nightly rustfmt because we use the unstable formatting options of rustfmt.
+    rustc_version=$(rustc -vV | grep -E '^release:' | cut -d' ' -f2)
+    if [[ "${rustc_version}" == *"nightly"* ]] || [[ "${rustc_version}" == *"dev"* ]] || ! type -P rustup &>/dev/null; then
+        if type -P rustup &>/dev/null; then
             rustup component add rustfmt &>/dev/null
-            info "running \`rustfmt \$(git ls-files '*.rs')\`"
-            rustfmt $(ls_files '*.rs')
-        else
-            rustup component add rustfmt --toolchain nightly &>/dev/null
-            info "running \`rustfmt +nightly \$(git ls-files '*.rs')\`"
-            rustfmt +nightly $(ls_files '*.rs')
         fi
-        check_diff $(ls_files '*.rs')
+        info "running \`rustfmt \$(git ls-files '*.rs')\`"
+        rustfmt $(ls_files '*.rs')
+    else
+        rustup component add rustfmt --toolchain nightly &>/dev/null || true
+        info "running \`rustfmt +nightly \$(git ls-files '*.rs')\`"
+        rustfmt +nightly $(ls_files '*.rs')
     fi
-    cast_without_turbofish=$(grep -n -E '\.cast\(\)' $(ls_files '*.rs') || true)
+    check_diff $(ls_files '*.rs')
+    cast_without_turbofish=$(grep -En '\.cast\(\)' $(ls_files '*.rs') || true)
     if [[ -n "${cast_without_turbofish}" ]]; then
         error "please replace \`.cast()\` with \`.cast::<type_name>()\`:"
         echo "${cast_without_turbofish}"
@@ -131,7 +143,7 @@ if [[ -n "$(ls_files '*.rs')" ]]; then
     # Sync readme and crate-level doc.
     first=1
     for readme in $(ls_files '*README.md'); do
-        if ! grep -q '^<!-- tidy:crate-doc:start -->' "${readme}"; then
+        if ! grep -Eq '^<!-- tidy:crate-doc:start -->' "${readme}"; then
             continue
         fi
         lib="$(dirname "${readme}")/src/lib.rs"
@@ -139,16 +151,16 @@ if [[ -n "$(ls_files '*.rs')" ]]; then
             first=''
             info "checking readme and crate-level doc are synchronized"
         fi
-        if ! grep -q '^<!-- tidy:crate-doc:end -->' "${readme}"; then
+        if ! grep -Eq '^<!-- tidy:crate-doc:end -->' "${readme}"; then
             bail "missing '<!-- tidy:crate-doc:end -->' comment in ${readme}"
         fi
-        if ! grep -q '^<!-- tidy:crate-doc:start -->' "${lib}"; then
+        if ! grep -Eq '^<!-- tidy:crate-doc:start -->' "${lib}"; then
             bail "missing '<!-- tidy:crate-doc:start -->' comment in ${lib}"
         fi
-        if ! grep -q '^<!-- tidy:crate-doc:end -->' "${lib}"; then
+        if ! grep -Eq '^<!-- tidy:crate-doc:end -->' "${lib}"; then
             bail "missing '<!-- tidy:crate-doc:end -->' comment in ${lib}"
         fi
-        new=$(tr <"${readme}" '\n' '\a' | grep -o '<!-- tidy:crate-doc:start -->.*<!-- tidy:crate-doc:end -->' | sed 's/\&/\\\&/g; s/\\/\\\\/g')
+        new=$(tr <"${readme}" '\n' '\a' | grep -Eo '<!-- tidy:crate-doc:start -->.*<!-- tidy:crate-doc:end -->' | sed -E 's/\&/\\\&/g; s/\\/\\\\/g')
         new=$(tr <"${lib}" '\n' '\a' | awk -v new="${new}" 'gsub("<!-- tidy:crate-doc:start -->.*<!-- tidy:crate-doc:end -->",new)' | tr '\a' '\n')
         echo "${new}" >"${lib}"
         check_diff "${lib}"
@@ -159,10 +171,10 @@ if [[ -n "$(ls_files '*.rs')" ]]; then
     metadata=$(cargo metadata --format-version=1 --no-deps)
     has_public_crate=''
     venv_install_yq
-    for id in $(jq <<<"${metadata}" '.workspace_members[]'); do
-        pkg=$(jq <<<"${metadata}" ".packages[] | select(.id == ${id})")
-        publish=$(jq <<<"${pkg}" -r '.publish')
-        manifest_path=$(jq <<<"${pkg}" -r '.manifest_path')
+    for id in $(jq '.workspace_members[]' <<<"${metadata}"); do
+        pkg=$(jq ".packages[] | select(.id == ${id})" <<<"${metadata}")
+        publish=$(jq -r '.publish' <<<"${pkg}")
+        manifest_path=$(jq -r '.manifest_path' <<<"${pkg}")
         if [[ "$(venv tomlq -c '.lints' "${manifest_path}")" == "null" ]]; then
             error "no [lints] table in ${manifest_path} please add '[lints]' with 'workspace = true'"
         fi
@@ -176,19 +188,19 @@ if [[ -n "$(ls_files '*.rs')" ]]; then
         info "checking public crates don't contain executables and binaries"
         if [[ -f Cargo.toml ]]; then
             root_manifest=$(cargo locate-project --message-format=plain --manifest-path Cargo.toml)
-            root_pkg=$(jq <<<"${metadata}" ".packages[] | select(.manifest_path == \"${root_manifest}\")")
+            root_pkg=$(jq ".packages[] | select(.manifest_path == \"${root_manifest}\")" <<<"${metadata}")
             if [[ -n "${root_pkg}" ]]; then
-                publish=$(jq <<<"${root_pkg}" -r '.publish')
+                publish=$(jq -r '.publish' <<<"${root_pkg}")
                 # Publishing is unrestricted if null, and forbidden if an empty array.
                 if [[ "${publish}" != "[]" ]]; then
                     exclude=$(venv tomlq -r '.package.exclude[]' Cargo.toml)
-                    if ! grep <<<"${exclude}" -Eq '^/\.\*$'; then
+                    if ! grep -Eq '^/\.\*$' <<<"${exclude}"; then
                         error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/.*\""
                     fi
-                    if [[ -e tools ]] && ! grep <<<"${exclude}" -Eq '^/tools$'; then
+                    if [[ -e tools ]] && ! grep -Eq '^/tools$' <<<"${exclude}"; then
                         error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/tools\" if it exists"
                     fi
-                    if [[ -e target-specs ]] && ! grep <<<"${exclude}" -Eq '^/target-specs$'; then
+                    if [[ -e target-specs ]] && ! grep -Eq '^/target-specs$' <<<"${exclude}"; then
                         error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/target-specs\" if it exists"
                     fi
                 fi
@@ -209,7 +221,7 @@ if [[ -n "$(ls_files '*.rs')" ]]; then
             fi
             # Use diff instead of file because file treats an empty file as a binary
             # https://unix.stackexchange.com/questions/275516/is-there-a-convenient-way-to-classify-files-as-binary-or-text#answer-402870
-            if (diff .gitattributes "${p}" || true) | grep -q '^Binary file'; then
+            if (diff .gitattributes "${p}" || true) | grep -Eq '^Binary file'; then
                 binaries+="${p}"$'\n'
             fi
         done
@@ -266,7 +278,7 @@ if [[ -n "$(ls_files '*.yml' '*.yaml' '*.js' '*.json')" ]]; then
                     *) error "${workflow}: only 'contents: read' and weaker permissions are allowed at top level; if you want to use stronger permissions, please set job-level permissions" ;;
                 esac
                 # Make sure the 'needs' section is not out of date.
-                if grep -q '# tidy:needs' "${workflow}" && ! grep -Eq '# *needs: \[' "${workflow}"; then
+                if grep -Eq '# tidy:needs' "${workflow}" && ! grep -Eq '# *needs: \[' "${workflow}"; then
                     # shellcheck disable=SC2207
                     jobs_actual=($(venv yq '.jobs' "${workflow}" | jq -r 'keys_unsorted[]'))
                     unset 'jobs_actual[${#jobs_actual[@]}-1]'
@@ -274,7 +286,7 @@ if [[ -n "$(ls_files '*.yml' '*.yaml' '*.js' '*.json')" ]]; then
                     jobs_expected=($(venv yq -r '.jobs."ci-success".needs[]' "${workflow}"))
                     if [[ "${jobs_actual[*]}" != "${jobs_expected[*]+"${jobs_expected[*]}"}" ]]; then
                         printf -v jobs '%s, ' "${jobs_actual[@]}"
-                        sed -i "s/needs: \[.*\] # tidy:needs/needs: [${jobs%, }] # tidy:needs/" "${workflow}"
+                        sed -Ei "s/needs: \[.*\] # tidy:needs/needs: [${jobs%, }] # tidy:needs/" "${workflow}"
                         check_diff "${workflow}"
                         error "${workflow}: please update 'needs' section in 'ci-success' job"
                     fi
@@ -283,13 +295,13 @@ if [[ -n "$(ls_files '*.yml' '*.yaml' '*.js' '*.json')" ]]; then
         fi
     fi
 fi
-if [[ -n "$(ls_files '*.yaml' | (grep -v .markdownlint-cli2.yaml || true))" ]]; then
+if [[ -n "$(ls_files '*.yaml' | (grep -E -v .markdownlint-cli2.yaml || true))" ]]; then
     error "please use '.yml' instead of '.yaml' for consistency"
-    ls_files '*.yaml' | (grep -v .markdownlint-cli2.yaml || true)
+    ls_files '*.yaml' | (grep -E -v .markdownlint-cli2.yaml || true)
 fi
 
 # TOML (if exists)
-if [[ -n "$(ls_files '*.toml' | (grep -v .taplo.toml || true))" ]]; then
+if [[ -n "$(ls_files '*.toml' | (grep -E -v .taplo.toml || true))" ]]; then
     info "checking TOML style"
     check_config .taplo.toml
     if check_install npm; then
@@ -365,7 +377,7 @@ if [[ -f tools/.tidy-check-license-headers ]]; then
         header_found=''
         for pre in "${prefix[@]}"; do
             # TODO: check that the license is valid as SPDX and is allowed in this project.
-            if [[ "$(grep -E -n "${pre}SPDX-License-Identifier: " "${p}")" == "${line}:${pre}SPDX-License-Identifier: "* ]]; then
+            if [[ "$(grep -En "${pre}SPDX-License-Identifier: " "${p}")" == "${line}:${pre}SPDX-License-Identifier: "* ]]; then
                 header_found=1
                 break
             fi
@@ -397,22 +409,22 @@ if [[ -f .cspell.json ]]; then
                     continue
                 fi
                 metadata=$(cargo metadata --format-version=1 --no-deps --manifest-path "${manifest_path}")
-                for id in $(jq <<<"${metadata}" '.workspace_members[]'); do
-                    dependencies+="$(jq <<<"${metadata}" ".packages[] | select(.id == ${id})" | jq -r '.dependencies[].name')"$'\n'
+                for id in $(jq '.workspace_members[]' <<<"${metadata}"); do
+                    dependencies+="$(jq ".packages[] | select(.id == ${id})" <<<"${metadata}" | jq -r '.dependencies[].name')"$'\n'
                 done
             done
             # shellcheck disable=SC2001
-            dependencies=$(sed <<<"${dependencies}" 's/[0-9_-]/\n/g' | LC_ALL=C sort -f -u)
+            dependencies=$(sed -E 's/[0-9_-]/\n/g' <<<"${dependencies}" | LC_ALL=C sort -f -u)
         fi
         config_old=$(<.cspell.json)
-        config_new=$(grep <<<"${config_old}" -v '^ *//' | jq 'del(.dictionaries[] | select(index("organization-dictionary") | not))' | jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))')
+        config_new=$(grep -E -v '^ *//' <<<"${config_old}" | jq 'del(.dictionaries[] | select(index("organization-dictionary") | not))' | jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))')
         trap -- 'echo "${config_old}" >.cspell.json; echo >&2 "$0: trapped SIGINT"; exit 1' SIGINT
         echo "${config_new}" >.cspell.json
         dependencies_words=''
         if [[ -n "${has_rust}" ]]; then
-            dependencies_words=$(npx <<<"${dependencies}" -y cspell stdin --no-progress --no-summary --words-only --unique || true)
+            dependencies_words=$(npx -y cspell stdin --no-progress --no-summary --words-only --unique <<<"${dependencies}" || true)
         fi
-        all_words=$(npx -y cspell --no-progress --no-summary --words-only --unique $(ls_files | (grep -v "${project_dictionary//\./\\.}" || true)) || true)
+        all_words=$(npx -y cspell --no-progress --no-summary --words-only --unique $(ls_files | (grep -E -v "${project_dictionary//\./\\.}" || true)) || true)
         echo "${config_old}" >.cspell.json
         trap - SIGINT
         cat >.github/.cspell/rust-dependencies.txt <<EOF
@@ -437,7 +449,7 @@ EOF
             if [[ "${dictionary}" == "${project_dictionary}" ]]; then
                 continue
             fi
-            dup=$(sed '/^$/d' "${project_dictionary}" "${dictionary}" | LC_ALL=C sort -f | uniq -d -i | (grep -v '//.*' || true))
+            dup=$(sed -E '/^$|^\/\//d' "${project_dictionary}" "${dictionary}" | LC_ALL=C sort -f | LC_ALL=C uniq -d -i)
             if [[ -n "${dup}" ]]; then
                 error "duplicated words in dictionaries; please remove the following words from ${project_dictionary}"
                 echo "======================================="
@@ -448,8 +460,8 @@ EOF
 
         # Make sure the project-specific dictionary does not contain unused words.
         unused=''
-        for word in $(grep -v '//.*' "${project_dictionary}" || true); do
-            if ! grep <<<"${all_words}" -Eq -i "^${word}$"; then
+        for word in $(grep -E -v '^//.*' "${project_dictionary}" || true); do
+            if ! grep -Eq -i "^${word}$" <<<"${all_words}"; then
                 unused+="${word}"$'\n'
             fi
         done
