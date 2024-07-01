@@ -8,7 +8,7 @@ on:
   push:
     branches:
       - main
-      - dev
+      - dev*
       - v[0-9]+.[0-9]+
   schedule:
     - cron: '0 2 * * *'
@@ -33,30 +33,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # tidy:
-  #   uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
+  tidy:
+    uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
 
-  # test:
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #         - target: x86_64-unknown-linux-gnu
-  #         - target: x86_64-apple-darwin
-  #           os: macos-latest
-  #         - target: x86_64-pc-windows-msvc
-  #           os: windows-latest
-  #         # - target: x86_64-pc-windows-gnu
-  #         #   rust: nightly-x86_64-gnu
-  #         #   os: windows-latest
-  #         # - target: x86_64-unknown-linux-musl
-  #   runs-on: ${{ matrix.os || 'ubuntu-latest' }}
-  #   timeout-minutes: 60
-  #   steps:
-  #     - uses: taiki-e/checkout-action@v1
-  #     - name: Install Rust
-  #       run: rustup toolchain add ${{ matrix.rust || 'nightly' }} --no-self-update && rustup default ${{ matrix.rust || 'nightly' }}
-  #     - run: make test
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+          - target: x86_64-apple-darwin
+            os: macos-latest
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+          # - target: x86_64-pc-windows-gnu
+          #   rust: nightly-x86_64-gnu
+          #   os: windows-latest
+          # - target: x86_64-unknown-linux-musl
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - name: Install Rust
+        run: rustup toolchain add "${{ matrix.rust || 'nightly' }}" --no-self-update && rustup default "${{ matrix.rust || 'nightly' }}"
+      - run: make test
 
   test-tidy:
     strategy:
@@ -85,23 +85,11 @@ jobs:
         run: rustup toolchain add nightly --no-self-update && rustup default nightly
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
-      - run: type -P bash
-      - run: bash --version
-      - run: shfmt --version
-      - run: shellcheck --version
-      - run: node --version
-      - run: npm --version
-      - run: jq --version
-      - run: python3 --version
-      - run: rustup --version
-      - run: rustc -vV
-      - run: clang-format --version
+      - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
       - run: brew install bash
         if: startsWith(matrix.os, 'macos')
-      - run: type -P bash
-        if: startsWith(matrix.os, 'macos')
-      - run: bash --version
+      - run: tools/ci/tidy-show-deps.sh
         if: startsWith(matrix.os, 'macos')
       - run: tools/tidy.sh
         if: startsWith(matrix.os, 'macos')
@@ -158,24 +146,14 @@ jobs:
         run: |
           set -eEuxo pipefail
           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
-          echo "$HOME/.cargo/bin" >>"${GITHUB_PATH}"
+          echo "${HOME}/.cargo/bin" >>"${GITHUB_PATH}"
       - uses: actions/setup-node@v4
         with:
           node-version: 18
         if: (!startsWith(matrix.container, 'alpine'))
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
-      - run: type -P bash
-      - run: bash --version
-      - run: shfmt --version
-      - run: shellcheck --version
-      - run: node --version
-      - run: npm --version
-      - run: jq --version
-      - run: python3 --version
-      - run: rustup --version
-      - run: rustc -vV
-      - run: clang-format --version
+      - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
   test-tidy-bsd:
     strategy:
@@ -206,60 +184,135 @@ jobs:
           run: |
             set -eEuxo pipefail
             case "$(uname -s)" in
-              FreeBSD) sudo pkg install -y git shfmt hs-ShellCheck npm jq python3 llvm ;;
-              NetBSD) sudo pkgin -y install mozilla-rootcerts-openssl git shfmt shellcheck nodejs jq clang ;;
-              # OpenBSD targets are tier 3 targets, so install rust from package manager instead of rustup.
-              OpenBSD) sudo pkg_add git shfmt shellcheck node jq python3 clang-tools-extra rust rust-rustfmt ;;
+              FreeBSD) sudo pkg install -y git jq shfmt hs-ShellCheck npm python3 llvm ;;
+              NetBSD) sudo pkgin -y install mozilla-rootcerts-openssl git jq shfmt shellcheck nodejs clang ;;
+              # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+              OpenBSD) sudo pkg_add git jq shfmt shellcheck node python3 rust rust-rustfmt clang-tools-extra ;;
             esac
             case "$(uname -s)" in
               FreeBSD | NetBSD)
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly
-                . "${HOME}/.cargo/env"
+                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+                export PATH="${HOME}/.cargo/bin:${PATH}"
                 ;;
             esac
-            type -P bash
-            bash --version
-            shfmt --version
-            shellcheck --version
-            node --version
-            npm --version
-            jq --version
-            case "$(uname -s)" in
-              NetBSD) python3.11 --version ;;
-              *) python3 --version ;;
-            esac
-            case "$(uname -s)" in
-              FreeBSD | NetBSD) rustup --version ;;
-            esac
-            rustc -vV
-            case "$(uname -s)" in
-              FreeBSD | NetBSD) clang-format --version ;;
-            esac
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
+  test-tidy-dragonflybsd:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: vmactions/dragonflybsd-vm@v1
+        with:
+          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+          usesh: true
+          copyback: false
+          # prepare: |
+          run: |
+            set -ex
+            pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
+            # DragonFlyBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+            pkg install -y bash git jq shfmt hs-ShellCheck npm python3 rust llvm
+            git config --global --add safe.directory "$(pwd)"
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
+  test-tidy-omnios:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: vmactions/omnios-vm@v1
+        with:
+          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+          usesh: true
+          copyback: false
+          # prepare: |
+          run: |
+            set -ex
+            pkg install bash git jq node-20 python-312 clang-18
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2023Q4-x86_64.tar.gz
+            tar xzpf bootstrap.tar.gz -C /
+            export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
+            pkgin -y install shfmt shellcheck
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+            export PATH="${HOME}/.cargo/bin:${PATH}"
+            git config --global --add safe.directory "$(pwd)"
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
+  test-tidy-solaris:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: vmactions/solaris-vm@v1
+        with:
+          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+          usesh: true
+          copyback: false
+          # prepare: |
+          run: |
+            set -ex
+            pkg install bash tree gnu-grep gnu-sed git jq pkg://solaris/runtime/python-35 clang gnu-binutils gnu-make gcc-48 # library/gmp
+            # TODO: shellcheck rustc cargo
+            # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
+            # cargo from pkg install fails due to dependency resolution error.
+            # pkg://solaris/developer/golang from pkg install is too old (1.7) to build shfmt.
+            go_bootstrap=go1.4.3
+            # last version that can be built with one bootstrap: https://go.dev/doc/install/source
+            go=go1.19.13
+            mkdir -p "${HOME}/go/${go_bootstrap}" "${HOME}/go/${go}"
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go_bootstrap}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go_bootstrap}"
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go}"
+            (cd "${HOME}/go/${go_bootstrap}"/src && PATH="/usr/gnu/bin:${PATH}" ./make.bash --no-banner)
+            "${HOME}/go/${go_bootstrap}/bin/go" version
+            (cd "${HOME}/go/${go}"/src && PATH="/usr/gnu/bin:${PATH}" GOROOT_BOOTSTRAP="${HOME}/go/${go_bootstrap}" ./make.bash --no-banner)
+            rm -rf "${HOME}/go/${go_bootstrap}"
+            export PATH="${HOME}/go/${go}/bin:${PATH}"
+            go version
+            export GOPATH="${HOME}/go"
+            export PATH="${GOPATH}/bin:${PATH}"
+            # 3.8 dropped support for Go 1.19 and 1.20.
+            go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
+            # nodejs from pkg install is node 16.
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://raw.githubusercontent.com/hokaccha/nodebrew/HEAD/nodebrew | perl - setup
+            # https://github.com/hokaccha/nodebrew/pull/51
+            (cd "${HOME}/.nodebrew" && curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://github.com/satokaz/nodebrew/blob/6addfbe0fa4332fa0a7dba26d7fbe709ec786826/nodebrew)
+            export PATH="${HOME}/.nodebrew/current/bin:${PATH}"
+            bash -c 'nodebrew install v20.15.0 && nodebrew use v20.15.0'
+            # TODO: CA issue probably due to https://github.com/vmactions/solaris-vm/issues/38.
+            #       Workaround from https://stackoverflow.com/questions/25981703/pip-install-fails-with-connection-error-ssl-certificate-verify-failed-certi.
+            echo '[global]' >>/etc/pip.conf
+            echo 'trusted-host = pypi.python.org' >>/etc/pip.conf
+            echo '               pypi.org' >>/etc/pip.conf
+            echo '               files.pythonhosted.org' >>/etc/pip.conf
+            # TODO: rm dep
+            export PATH="/usr/gnu/bin:${PATH}"
+            tools/ci/tidy-show-deps.sh
             tools/tidy.sh
 
-  # codegen:
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 60
-  #   permissions:
-  #     contents: write
-  #     pull-requests: write
-  #   steps:
-  #     - uses: taiki-e/checkout-action@v1
-  #     - name: Install Rust
-  #       run: rustup toolchain add nightly --no-self-update && rustup default nightly
-  #     - run: make gen
-  #     - id: diff
-  #       run: tools/ci/gen.sh
-  #       if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main')
-  #     - uses: peter-evans/create-pull-request@v6
-  #       with:
-  #         title: Update generated code
-  #         body: |
-  #           Auto-generated by [create-pull-request][1]
-  #           [Please close and immediately reopen this pull request to run CI.][2]
+  codegen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - name: Install Rust
+        run: rustup toolchain add nightly --no-self-update && rustup default nightly
+      - run: make gen
+      - id: diff
+        run: tools/ci/gen.sh
+        if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main')
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          title: Update generated code
+          body: |
+            Auto-generated by [create-pull-request][1]
+            [Please close and immediately reopen this pull request to run CI.][2]
 
-  #           [1]: https://github.com/peter-evans/create-pull-request
-  #           [2]: https://github.com/peter-evans/create-pull-request/blob/HEAD/docs/concepts-guidelines.md#workarounds-to-trigger-further-workflow-runs
-  #         branch: gen
-  #       if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main') && steps.diff.outputs.success == 'false'
-  #     - run: git add -N . && git diff --exit-code
+            [1]: https://github.com/peter-evans/create-pull-request
+            [2]: https://github.com/peter-evans/create-pull-request/blob/HEAD/docs/concepts-guidelines.md#workarounds-to-trigger-further-workflow-runs
+          branch: gen
+        if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main') && steps.diff.outputs.success == 'false'
+      - run: git add -N . && git diff --exit-code

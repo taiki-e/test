@@ -1,7 +1,17 @@
 almalinux
 Aschedule
+copyback
 devcontainer
 devcontainers
+GOPATH
+GOROOT
+gtar
 microdnf
+mvdan
+nodebrew
+pypi
+pythonhosted
 rootcerts
+usesh
+xzpf
 zigbuild

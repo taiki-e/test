@@ -13,11 +13,11 @@ trap 's=$?; echo >&2 "$0: error on line "${LINENO}": ${BASH_COMMAND}"; exit ${s}
 #
 # Note: This script requires the following tools:
 # - git
+# - jq
 # - shfmt
 # - shellcheck
 # - npm (node 18+)
-# - jq
-# - python 3.6+
+# - python 3.5+
 # - cargo, rustfmt (if Rust code exists)
 # - clang-format (if C/C++ code exists)
 #
@@ -45,7 +45,7 @@ check_install() {
     for tool in "$@"; do
         if ! type -P "${tool}" &>/dev/null; then
             if [[ "${tool}" == "python3" ]]; then
-                for p in '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' ''; do
+                for p in '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' '3.5' ''; do
                     if type -P "python${p}" &>/dev/null; then
                         tool=''
                         break
@@ -60,9 +60,6 @@ check_install() {
         fi
     done
 }
-info() {
-    echo >&2 "info: $*"
-}
 error() {
     if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
         echo "::error::$*"
@@ -70,6 +67,16 @@ error() {
         echo >&2 "error: $*"
     fi
     should_fail=1
+}
+warn() {
+    if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+        echo "::warning::$*"
+    else
+        echo >&2 "warning: $*"
+    fi
+}
+info() {
+    echo >&2 "info: $*"
 }
 ls_files() {
     comm -23 <(git ls-files "$@" | LC_ALL=C sort) <(git ls-files --deleted "$@" | LC_ALL=C sort)
@@ -80,8 +87,8 @@ venv() {
     "${venv_bin}/${bin}${exe}" "$@"
 }
 venv_install_yq() {
-    local py_suffix=''
-    for p in '3' '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' ''; do
+    py_suffix=''
+    for p in '3' '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' '3.5' ''; do
         if type -P "python${p}" &>/dev/null; then
             py_suffix=${p}
             break
@@ -117,125 +124,126 @@ check_install git
 # Rust (if exists)
 if [[ -n "$(ls_files '*.rs')" ]]; then
     info "checking Rust code style"
-    check_install cargo jq python3
     check_config .rustfmt.toml
-    # `cargo fmt` cannot recognize files not included in the current workspace and modules
-    # defined inside macros, so run rustfmt directly.
-    # We need to use nightly rustfmt because we use the unstable formatting options of rustfmt.
-    rustc_version=$(rustc -vV | grep -E '^release:' | cut -d' ' -f2)
-    if [[ "${rustc_version}" == *"nightly"* ]] || [[ "${rustc_version}" == *"dev"* ]] || ! type -P rustup &>/dev/null; then
-        if type -P rustup &>/dev/null; then
-            rustup component add rustfmt &>/dev/null
+    if check_install cargo jq python3; then
+        # `cargo fmt` cannot recognize files not included in the current workspace and modules
+        # defined inside macros, so run rustfmt directly.
+        # We need to use nightly rustfmt because we use the unstable formatting options of rustfmt.
+        rustc_version=$(rustc -vV | grep -E '^release:' | cut -d' ' -f2)
+        if [[ "${rustc_version}" == *"nightly"* ]] || [[ "${rustc_version}" == *"dev"* ]] || ! type -P rustup &>/dev/null; then
+            if type -P rustup &>/dev/null; then
+                rustup component add rustfmt &>/dev/null
+            fi
+            info "running \`rustfmt \$(git ls-files '*.rs')\`"
+            rustfmt $(ls_files '*.rs')
+        else
+            rustup component add rustfmt --toolchain nightly &>/dev/null || true
+            info "running \`rustfmt +nightly \$(git ls-files '*.rs')\`"
+            rustfmt +nightly $(ls_files '*.rs')
         fi
-        info "running \`rustfmt \$(git ls-files '*.rs')\`"
-        rustfmt $(ls_files '*.rs')
-    else
-        rustup component add rustfmt --toolchain nightly &>/dev/null || true
-        info "running \`rustfmt +nightly \$(git ls-files '*.rs')\`"
-        rustfmt +nightly $(ls_files '*.rs')
-    fi
-    check_diff $(ls_files '*.rs')
-    cast_without_turbofish=$(grep -En '\.cast\(\)' $(ls_files '*.rs') || true)
-    if [[ -n "${cast_without_turbofish}" ]]; then
-        error "please replace \`.cast()\` with \`.cast::<type_name>()\`:"
-        echo "${cast_without_turbofish}"
-    fi
-    # Sync readme and crate-level doc.
-    first=1
-    for readme in $(ls_files '*README.md'); do
-        if ! grep -Eq '^<!-- tidy:crate-doc:start -->' "${readme}"; then
-            continue
+        check_diff $(ls_files '*.rs')
+        cast_without_turbofish=$(grep -En '\.cast\(\)' $(ls_files '*.rs') || true)
+        if [[ -n "${cast_without_turbofish}" ]]; then
+            error "please replace \`.cast()\` with \`.cast::<type_name>()\`:"
+            echo "${cast_without_turbofish}"
         fi
-        lib="$(dirname "${readme}")/src/lib.rs"
-        if [[ -n "${first}" ]]; then
-            first=''
-            info "checking readme and crate-level doc are synchronized"
-        fi
-        if ! grep -Eq '^<!-- tidy:crate-doc:end -->' "${readme}"; then
-            bail "missing '<!-- tidy:crate-doc:end -->' comment in ${readme}"
-        fi
-        if ! grep -Eq '^<!-- tidy:crate-doc:start -->' "${lib}"; then
-            bail "missing '<!-- tidy:crate-doc:start -->' comment in ${lib}"
-        fi
-        if ! grep -Eq '^<!-- tidy:crate-doc:end -->' "${lib}"; then
-            bail "missing '<!-- tidy:crate-doc:end -->' comment in ${lib}"
-        fi
-        new=$(tr <"${readme}" '\n' '\a' | grep -Eo '<!-- tidy:crate-doc:start -->.*<!-- tidy:crate-doc:end -->' | sed -E 's/\&/\\\&/g; s/\\/\\\\/g')
-        new=$(tr <"${lib}" '\n' '\a' | awk -v new="${new}" 'gsub("<!-- tidy:crate-doc:start -->.*<!-- tidy:crate-doc:end -->",new)' | tr '\a' '\n')
-        echo "${new}" >"${lib}"
-        check_diff "${lib}"
-    done
-    # Make sure that public Rust crates don't contain executables and binaries.
-    executables=''
-    binaries=''
-    metadata=$(cargo metadata --format-version=1 --no-deps)
-    has_public_crate=''
-    venv_install_yq
-    for id in $(jq '.workspace_members[]' <<<"${metadata}"); do
-        pkg=$(jq ".packages[] | select(.id == ${id})" <<<"${metadata}")
-        publish=$(jq -r '.publish' <<<"${pkg}")
-        manifest_path=$(jq -r '.manifest_path' <<<"${pkg}")
-        if [[ "$(venv tomlq -c '.lints' "${manifest_path}")" == "null" ]]; then
-            error "no [lints] table in ${manifest_path} please add '[lints]' with 'workspace = true'"
-        fi
-        # Publishing is unrestricted if null, and forbidden if an empty array.
-        if [[ "${publish}" == "[]" ]]; then
-            continue
-        fi
-        has_public_crate=1
-    done
-    if [[ -n "${has_public_crate}" ]]; then
-        info "checking public crates don't contain executables and binaries"
-        if [[ -f Cargo.toml ]]; then
-            root_manifest=$(cargo locate-project --message-format=plain --manifest-path Cargo.toml)
-            root_pkg=$(jq ".packages[] | select(.manifest_path == \"${root_manifest}\")" <<<"${metadata}")
-            if [[ -n "${root_pkg}" ]]; then
-                publish=$(jq -r '.publish' <<<"${root_pkg}")
-                # Publishing is unrestricted if null, and forbidden if an empty array.
-                if [[ "${publish}" != "[]" ]]; then
-                    exclude=$(venv tomlq -r '.package.exclude[]' Cargo.toml)
-                    if ! grep -Eq '^/\.\*$' <<<"${exclude}"; then
-                        error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/.*\""
-                    fi
-                    if [[ -e tools ]] && ! grep -Eq '^/tools$' <<<"${exclude}"; then
-                        error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/tools\" if it exists"
-                    fi
-                    if [[ -e target-specs ]] && ! grep -Eq '^/target-specs$' <<<"${exclude}"; then
-                        error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/target-specs\" if it exists"
+        # Sync readme and crate-level doc.
+        first=1
+        for readme in $(ls_files '*README.md'); do
+            if ! grep -Eq '^<!-- tidy:crate-doc:start -->' "${readme}"; then
+                continue
+            fi
+            lib="$(dirname "${readme}")/src/lib.rs"
+            if [[ -n "${first}" ]]; then
+                first=''
+                info "checking readme and crate-level doc are synchronized"
+            fi
+            if ! grep -Eq '^<!-- tidy:crate-doc:end -->' "${readme}"; then
+                bail "missing '<!-- tidy:crate-doc:end -->' comment in ${readme}"
+            fi
+            if ! grep -Eq '^<!-- tidy:crate-doc:start -->' "${lib}"; then
+                bail "missing '<!-- tidy:crate-doc:start -->' comment in ${lib}"
+            fi
+            if ! grep -Eq '^<!-- tidy:crate-doc:end -->' "${lib}"; then
+                bail "missing '<!-- tidy:crate-doc:end -->' comment in ${lib}"
+            fi
+            new=$(tr <"${readme}" '\n' '\a' | grep -Eo '<!-- tidy:crate-doc:start -->.*<!-- tidy:crate-doc:end -->' | sed -E 's/\&/\\\&/g; s/\\/\\\\/g')
+            new=$(tr <"${lib}" '\n' '\a' | awk -v new="${new}" 'gsub("<!-- tidy:crate-doc:start -->.*<!-- tidy:crate-doc:end -->",new)' | tr '\a' '\n')
+            echo "${new}" >"${lib}"
+            check_diff "${lib}"
+        done
+        # Make sure that public Rust crates don't contain executables and binaries.
+        executables=''
+        binaries=''
+        metadata=$(cargo metadata --format-version=1 --no-deps)
+        has_public_crate=''
+        venv_install_yq
+        for id in $(jq '.workspace_members[]' <<<"${metadata}"); do
+            pkg=$(jq ".packages[] | select(.id == ${id})" <<<"${metadata}")
+            publish=$(jq -r '.publish' <<<"${pkg}")
+            manifest_path=$(jq -r '.manifest_path' <<<"${pkg}")
+            if [[ "$(venv tomlq -c '.lints' "${manifest_path}")" == "null" ]]; then
+                error "no [lints] table in ${manifest_path} please add '[lints]' with 'workspace = true'"
+            fi
+            # Publishing is unrestricted if null, and forbidden if an empty array.
+            if [[ "${publish}" == "[]" ]]; then
+                continue
+            fi
+            has_public_crate=1
+        done
+        if [[ -n "${has_public_crate}" ]]; then
+            info "checking public crates don't contain executables and binaries"
+            if [[ -f Cargo.toml ]]; then
+                root_manifest=$(cargo locate-project --message-format=plain --manifest-path Cargo.toml)
+                root_pkg=$(jq ".packages[] | select(.manifest_path == \"${root_manifest}\")" <<<"${metadata}")
+                if [[ -n "${root_pkg}" ]]; then
+                    publish=$(jq -r '.publish' <<<"${root_pkg}")
+                    # Publishing is unrestricted if null, and forbidden if an empty array.
+                    if [[ "${publish}" != "[]" ]]; then
+                        exclude=$(venv tomlq -r '.package.exclude[]' Cargo.toml)
+                        if ! grep -Eq '^/\.\*$' <<<"${exclude}"; then
+                            error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/.*\""
+                        fi
+                        if [[ -e tools ]] && ! grep -Eq '^/tools$' <<<"${exclude}"; then
+                            error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/tools\" if it exists"
+                        fi
+                        if [[ -e target-specs ]] && ! grep -Eq '^/target-specs$' <<<"${exclude}"; then
+                            error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/target-specs\" if it exists"
+                        fi
                     fi
                 fi
             fi
-        fi
-        for p in $(ls_files); do
-            # Skip directories.
-            if [[ -d "${p}" ]]; then
-                continue
+            for p in $(ls_files); do
+                # Skip directories.
+                if [[ -d "${p}" ]]; then
+                    continue
+                fi
+                # Top-level hidden files/directories and tools/* are excluded from crates.io (ensured by the above check).
+                # TODO: fully respect exclude field in Cargo.toml.
+                case "${p}" in
+                    .* | tools/* | target-specs/*) continue ;;
+                esac
+                if [[ -x "${p}" ]]; then
+                    executables+="${p}"$'\n'
+                fi
+                # Use diff instead of file because file treats an empty file as a binary
+                # https://unix.stackexchange.com/questions/275516/is-there-a-convenient-way-to-classify-files-as-binary-or-text#answer-402870
+                if (diff .gitattributes "${p}" || true) | grep -Eq '^Binary file'; then
+                    binaries+="${p}"$'\n'
+                fi
+            done
+            if [[ -n "${executables}" ]]; then
+                error "file-permissions-check failed: executables are only allowed to be present in directories that are excluded from crates.io"
+                echo "======================================="
+                echo -n "${executables}"
+                echo "======================================="
             fi
-            # Top-level hidden files/directories and tools/* are excluded from crates.io (ensured by the above check).
-            # TODO: fully respect exclude field in Cargo.toml.
-            case "${p}" in
-                .* | tools/* | target-specs/*) continue ;;
-            esac
-            if [[ -x "${p}" ]]; then
-                executables+="${p}"$'\n'
+            if [[ -n "${binaries}" ]]; then
+                error "file-permissions-check failed: binaries are only allowed to be present in directories that are excluded from crates.io"
+                echo "======================================="
+                echo -n "${binaries}"
+                echo "======================================="
             fi
-            # Use diff instead of file because file treats an empty file as a binary
-            # https://unix.stackexchange.com/questions/275516/is-there-a-convenient-way-to-classify-files-as-binary-or-text#answer-402870
-            if (diff .gitattributes "${p}" || true) | grep -Eq '^Binary file'; then
-                binaries+="${p}"$'\n'
-            fi
-        done
-        if [[ -n "${executables}" ]]; then
-            error "file-permissions-check failed: executables are only allowed to be present in directories that are excluded from crates.io"
-            echo "======================================="
-            echo -n "${executables}"
-            echo "======================================="
-        fi
-        if [[ -n "${binaries}" ]]; then
-            error "file-permissions-check failed: binaries are only allowed to be present in directories that are excluded from crates.io"
-            echo "======================================="
-            echo -n "${binaries}"
-            echo "======================================="
         fi
     fi
 elif [[ -e .rustfmt.toml ]]; then
@@ -295,13 +303,13 @@ if [[ -n "$(ls_files '*.yml' '*.yaml' '*.js' '*.json')" ]]; then
         fi
     fi
 fi
-if [[ -n "$(ls_files '*.yaml' | (grep -E -v .markdownlint-cli2.yaml || true))" ]]; then
+if [[ -n "$(ls_files '*.yaml' | (grep -E -v '\.markdownlint-cli2\.yaml' || true))" ]]; then
     error "please use '.yml' instead of '.yaml' for consistency"
-    ls_files '*.yaml' | (grep -E -v .markdownlint-cli2.yaml || true)
+    ls_files '*.yaml' | (grep -E -v '\.markdownlint-cli2\.yaml' || true)
 fi
 
 # TOML (if exists)
-if [[ -n "$(ls_files '*.toml' | (grep -E -v .taplo.toml || true))" ]]; then
+if [[ -n "$(ls_files '*.toml' | (grep -E -v '\.taplo\.toml' || true))" ]]; then
     info "checking TOML style"
     check_config .taplo.toml
     if check_install npm; then
@@ -331,6 +339,20 @@ fi
 
 # Shell scripts
 info "checking Shell scripts"
+files=()
+for f in $(ls_files '*.sh'); do
+    if grep -Eq '(^|\(| )(grep|sed) -E' "${f}"; then
+        files+=("${f}")
+    fi
+done
+res=$(grep -En '(^|\(| )(grep|sed) ([^-]|-[^E])' "${files[@]}" | (grep -E -v '^[^ ]+: *#' || true) | LC_ALL=C sort || true)
+if [[ -n "${res}" ]]; then
+    error "error: please always use ERE (-E flag) for grep/sed for code consistency within a file"
+    # error "for grep/sed, we recommend always using ERE (-E flag) which is used as default in most regex libraries:"
+    echo "======================================="
+    echo "${res}"
+    echo "======================================="
+fi
 if check_install shfmt; then
     check_config .editorconfig
     info "running \`shfmt -l -w \$(git ls-files '*.sh')\`"
@@ -348,6 +370,82 @@ if check_install shellcheck; then
         info "running \`shellcheck -e SC2148,SC2154,SC2250 \$(git ls-files '*Dockerfile')\`"
         if ! shellcheck -e SC2148,SC2154,SC2250 $(ls_files '*Dockerfile'); then
             should_fail=1
+        fi
+    fi
+    # Check scripts in other files.
+    # TODO: action.yml, .cirrus.yml
+    if [[ -d .github/workflows ]]; then
+        info "running \`shellcheck -e SC2086,SC2129\` for scripts in .github/workflows/*.yml"
+        if check_install jq python3; then
+            venv_install_yq
+            for workflow in .github/workflows/*.yml; do
+                default_shell=$(venv yq -r -c '.defaults.run.shell' "${workflow}")
+                if [[ "${default_shell}" == "null" ]]; then
+                    bail "default shell must be set in ${workflow}"
+                fi
+                for job in $(venv yq -c '.jobs | to_entries | .[]' "${workflow}"); do
+                    dir="tmp/tidy/shell/${workflow//\//_}"
+                    name=$(jq -r '.key' <<<"${job}")
+                    job=$(jq -r '.value' <<<"${job}")
+                    n=1
+                    if [[ "$(jq -r '.steps' <<<"${job}")" == "null" ]]; then
+                        continue # caller of reusable workflow
+                    fi
+                    job_default_shell=$(venv yq -r -c '.defaults.run.shell' <<<"${job}")
+                    if [[ "${job_default_shell}" == "null" ]]; then
+                        job_default_shell="${default_shell}"
+                    fi
+                    for step in $(jq -c '.steps[]' <<<"${job}"); do
+                        run=$(jq -r '.run' <<<"${step}")
+                        prepare=null
+                        if [[ "${run}" != "null" ]]; then
+                            shell=$(jq -r '.shell' <<<"${step}")
+                            if [[ "${shell}" == "null" ]]; then
+                                shell="${job_default_shell}"
+                            fi
+                        else
+                            run=$(jq -r '.with.run' <<<"${step}")
+                            if [[ "${run}" == "null" ]]; then
+                                ((n++))
+                                continue
+                            fi
+                            prepare=$(jq -r '.with.prepare' <<<"${step}")
+                            shell=$(jq -r '.with.shell' <<<"${step}")
+                            if [[ "${shell}" == "null" ]]; then
+                                shell='sh'
+                            fi
+                        fi
+                        case "${shell}" in
+                            sh* | bash*) ;;
+                            *) continue ;;
+                        esac
+                        mkdir -p "${dir}"
+                        emit_and_shellcheck() {
+                            local text=$1
+                            local path=$2
+                            if [[ "${text}" == "null" ]]; then
+                                return
+                            fi
+                            echo "#!/usr/bin/env ${shell}"$'\n'"${text}" >"${path}"
+                            # Use python because sed doesn't support .*?.
+                            "python${py_suffix}" <<EOF
+import re
+with open('${path}', 'r') as f:
+    text = f.read()
+text = re.sub(r"\\\${{.*?}}", "\${__GHA_SYNTAX__}", text)
+with open('${path}', "w") as f:
+    f.write(text)
+EOF
+                            if ! shellcheck -e "SC2086,SC2129" "${path}"; then
+                                should_fail=1
+                            fi
+                        }
+                        emit_and_shellcheck "${run}" "${dir}/${name//\//_}__step${n}__run.sh"
+                        emit_and_shellcheck "${prepare}" "${dir}/${name//\//_}__step${n}__prepare.sh"
+                        ((n++))
+                    done
+                done
+            done
         fi
     fi
 fi
@@ -377,7 +475,7 @@ if [[ -f tools/.tidy-check-license-headers ]]; then
         header_found=''
         for pre in "${prefix[@]}"; do
             # TODO: check that the license is valid as SPDX and is allowed in this project.
-            if [[ "$(grep -En "${pre}SPDX-License-Identifier: " "${p}")" == "${line}:${pre}SPDX-License-Identifier: "* ]]; then
+            if [[ "$(grep -En "${pre//\*/\\*}SPDX-License-Identifier: " "${p}")" == "${line}:${pre}SPDX-License-Identifier: "* ]]; then
                 header_found=1
                 break
             fi
@@ -398,7 +496,9 @@ fi
 if [[ -f .cspell.json ]]; then
     info "spell checking"
     project_dictionary=.github/.cspell/project-dictionary.txt
-    if check_install npm jq python3; then
+    if [[ "$(uname -s)" == "SunOS" ]] && [[ "$(/usr/bin/uname -o)" == "illumos" ]]; then
+        warn "this check is skipped on illumos due to upstream bug (dictionaries are not loaded correctly)"
+    elif check_install npm jq python3; then
         has_rust=''
         if [[ -n "$(ls_files '*Cargo.toml')" ]]; then
             venv_install_yq
@@ -435,7 +535,7 @@ EOF
             echo $'\n'"${dependencies_words}" >>.github/.cspell/rust-dependencies.txt
         fi
         check_diff .github/.cspell/rust-dependencies.txt
-        if ! grep -Eq "^\.github/\.cspell/rust-dependencies.txt linguist-generated" .gitattributes; then
+        if ! grep -Eq '^\.github/\.cspell/rust-dependencies.txt linguist-generated' .gitattributes; then
             error "you may want to mark .github/.cspell/rust-dependencies.txt linguist-generated"
         fi
 
@@ -449,7 +549,11 @@ EOF
             if [[ "${dictionary}" == "${project_dictionary}" ]]; then
                 continue
             fi
-            dup=$(sed -E '/^$|^\/\//d' "${project_dictionary}" "${dictionary}" | LC_ALL=C sort -f | LC_ALL=C uniq -d -i)
+            case "$(uname -s)" in
+                # NetBSD uniq doesn't support -i flag.
+                NetBSD) dup=$(sed -E -e '/^$/d' -e '/^\/\//d' "${project_dictionary}" "${dictionary}" | LC_ALL=C sort -f | tr '[:upper:]' '[:lower:]' | uniq -d) ;;
+                *) dup=$(sed -E -e '/^$/d' -e '/^\/\//d' "${project_dictionary}" "${dictionary}" | LC_ALL=C sort -f | LC_ALL=C uniq -d -i) ;;
+            esac
             if [[ -n "${dup}" ]]; then
                 error "duplicated words in dictionaries; please remove the following words from ${project_dictionary}"
                 echo "======================================="
