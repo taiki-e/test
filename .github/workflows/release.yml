@@ -21,7 +21,7 @@ env:
 
 defaults:
   run:
-    shell: bash
+    shell: bash --noprofile --norc -CeEuxo pipefail {0}
 
 jobs:
   create-release:
@@ -44,8 +44,8 @@ jobs:
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo ${{ steps.create-gh-release.outputs.computed-prefix }}
-          echo ${{ steps.create-gh-release.outputs.version }}
+          echo "${{ steps.create-gh-release.outputs.computed-prefix }}"
+          echo "${{ steps.create-gh-release.outputs.version }}"
 
   upload-assets:
     name: ${{ matrix.target }}

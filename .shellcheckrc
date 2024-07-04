@@ -5,6 +5,7 @@
 # https://github.com/koalaman/shellcheck/wiki/Optional
 # https://google.github.io/styleguide/shellguide.html
 
+# https://github.com/koalaman/shellcheck/wiki/SC2244
 enable=avoid-nullary-conditions
 
 # https://github.com/koalaman/shellcheck/wiki/SC2248
