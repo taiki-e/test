@@ -11,7 +11,6 @@ Lint checks provided by rustc:
                                                        name  default  meaning
                                                        ----  -------  -------
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
-                                               box-pointers  allow    use of owned (Box type) heap memory
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
                                             deprecated-safe  allow    detects unsafe functions being used as safe functions
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
@@ -124,6 +123,7 @@ Lint checks provided by rustc:
                                            noop-method-call  warn     detects the use of well-known noop methods
                                     no-mangle-generic-items  warn     generic items must be mangled
                                opaque-hidden-inferred-bound  warn     detects the use of nested `impl Trait` types in associated type bounds that are not general enough
+                                   out-of-scope-macro-calls  warn     detects out of scope calls to `macro_rules` in key-value attributes
                                 overlapping-range-endpoints  warn     detects range patterns with overlapping endpoints
                                             path-statements  warn     path statements with no effect
                                              private-bounds  warn     private type in secondary interface of an item
@@ -222,7 +222,7 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
-        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, dependency-on-unit-never-type-fallback, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, never-type-fallback-flowing-into-unsafe, order-dependent-trait-objects, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, wasm-c-abi, writes-through-immutable-pointer
+        future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, dependency-on-unit-never-type-fallback, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, never-type-fallback-flowing-into-unsafe, order-dependent-trait-objects, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, wasm-c-abi, writes-through-immutable-pointer
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
