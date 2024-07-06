@@ -26,7 +26,7 @@ env:
 
 defaults:
   run:
-    shell: bash
+    shell: bash --noprofile --norc -CeEuxo pipefail {0}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -55,29 +55,44 @@ jobs:
     steps:
       - uses: taiki-e/checkout-action@v1
       - name: Install Rust
-        run: rustup toolchain add ${{ matrix.rust || 'nightly' }} --no-self-update && rustup default ${{ matrix.rust || 'nightly' }}
+        run: rustup toolchain add "${{ matrix.rust || 'nightly' }}" --no-self-update && rustup default "${{ matrix.rust || 'nightly' }}"
       - run: make test
 
   test-tidy:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-20.04
-          - ubuntu-22.04
-          - ubuntu-24.04
-          - macos-12
-          - macos-13
-          - macos-14
+        include:
+          # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
+          - os: ubuntu-20.04
+          - os: ubuntu-22.04
+          - os: ubuntu-24.04
+          - os: macos-12
+          - os: macos-13
+          - os: macos-14
           # Error: [WinError 2] The system cannot find the file specified
           # tools/tidy.sh: error on line 89: "python${py_suffix}" -m venv .venv
-          # - windows-2019
-          # jq: error: syntax error, unexpected INVALID_CHARACTER, expecting ';' or ')' (Windows cmd shell quoting issues?) at <top-level>, line 1:
-          # .packages[] | select(.id == "path+file:///D:/a/test/test/rust/bin#rust-test-bin@0.0.0"
-          # tools/tidy.sh: error on line 163: jq ".packages[] | select(.id == ${id})" <<< "${metadata}"
-          # - windows-2022
+          # - os: windows-2019
+          # - os: windows-2019
+          #   bash: msys64
+          # - os: windows-2019
+          #   bash: cygwin
+          - os: windows-2022
+          - os: windows-2022
+            bash: msys64
+          - os: windows-2022
+            bash: cygwin
     runs-on: ${{ matrix.os }}
     steps:
+      - run: |
+          printf 'C:\msys64\mingw32\bin\n' >>"${GITHUB_PATH}"
+          printf 'C:\msys64\usr\bin\n' >>"${GITHUB_PATH}"
+        if: matrix.bash == 'msys64'
+      - run: |
+          choco install --no-progress --requirechecksums cygwin
+          printf 'C:\tools\cygwin\bin\n' >>"${GITHUB_PATH}"
+          printf 'C:\tools\cygwin\usr\bin\n' >>"${GITHUB_PATH}"
+        if: matrix.bash == 'cygwin'
       - uses: taiki-e/checkout-action@v1
       - run: brew install clang-format
         if: startsWith(matrix.os, 'macos')
@@ -85,22 +100,11 @@ jobs:
         run: rustup toolchain add nightly --no-self-update && rustup default nightly
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
-      - run: type -P bash
-      - run: bash --version
-      - run: shfmt --version
-      - run: shellcheck --version
-      - run: node --version
-      - run: npm --version
-      - run: jq --version
-      - run: python3 --version
-      - run: rustup --version
-      - run: clang-format --version
+      - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
       - run: brew install bash
         if: startsWith(matrix.os, 'macos')
-      - run: type -P bash
-        if: startsWith(matrix.os, 'macos')
-      - run: bash --version
+      - run: tools/ci/tidy-show-deps.sh
         if: startsWith(matrix.os, 'macos')
       - run: tools/tidy.sh
         if: startsWith(matrix.os, 'macos')
@@ -109,14 +113,12 @@ jobs:
       fail-fast: false
       matrix:
         container:
-          # https://github.com/actions/runner/issues/2906
-          # - ubuntu:18.04 # glibc 2.27
+          # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
+          - ubuntu:18.04 # glibc 2.27
           - ubuntu:20.04 # glibc 2.31
           - ubuntu:22.04 # glibc 2.35
           - ubuntu:24.04 # glibc 2.39
-          # jq: error (at <stdin>:44): Invalid path expression near attempt to access element 0 of [0]
-          # tools/tidy.sh: error on line 408: jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))'
-          # - debian:10-slim # glibc 2.28
+          - debian:10-slim # glibc 2.28
           - debian:11-slim # glibc 2.31
           - debian:12-slim # glibc 2.36
           - fedora:latest # glibc 2.38 (as of fedora 39)
@@ -124,8 +126,11 @@ jobs:
           - almalinux:8-minimal # glibc 2.28
           - almalinux:9 # glibc 2.34
           - almalinux:9-minimal # glibc 2.34
-          # https://github.com/actions/runner/issues/2906
-          # - centos:7 # glibc 2.17
+          # - centos:6 # glibc 2.12 # rustc/nodejs requires glibc 2.17
+          - centos:7 # glibc 2.17
+          # - opensuse/leap:latest # glibc 2.31 (as of leap 15.5)
+          # - opensuse/tumbleweed:latest # glibc 2.39 (as of 2024-04-18)
+          # - archlinux:latest # glibc 2.38 (as of 2024-04-18)
           - alpine:latest # musl 1.2.4 (as of alpine 3.19)
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -133,48 +138,190 @@ jobs:
     steps:
       - name: Install requirements (ubuntu/debian)
         run: |
-          set -eEuxo pipefail
           apt-get -o Acquire::Retries=10 -qq update
-          apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl clang-format python3-venv
+          apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl xz-utils clang-format python3-venv
+          case "${{ matrix.container }}" in
+            # ubuntu 18.04 and debian 10's jq is 1.5
+            # jq: error (at <stdin>:44): Invalid path expression near attempt to access element 0 of [0]
+            # tools/tidy.sh: error on line 408: jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))'
+            ubuntu:18.04* | debian:10*)
+              curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o /usr/local/bin/jq https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64
+              chmod +x /usr/local/bin/jq
+              ;;
+          esac
         if: startsWith(matrix.container, 'ubuntu') || startsWith(matrix.container, 'debian')
       - name: Install requirements (fedora/almalinux/centos)
         run: |
-          set -eEuxo pipefail
           if type -P dnf &>/dev/null; then
             dnf install -y clang-tools-extra python3
           elif type -P microdnf &>/dev/null; then
-            microdnf install -y clang-tools-extra python3
+            microdnf install -y tar xz clang-tools-extra python3
           else
-            yum install -y clang-tools-extra python3
+            # https://github.com/rust-lang/rust/pull/126352
+            sed -i /etc/yum.repos.d/*.repo -e 's!^mirrorlist!#mirrorlist!' \
+              -e 's!^#baseurl=http://mirror.centos.org/!baseurl=https://vault.centos.org/!'
+            sed -i 's/enabled=1/enabled=0/' /etc/yum/pluginconf.d/fastestmirror.conf
+            yum install -y xz clang python3
+            if [[ "${{ matrix.container }}" == "centos:6"* ]]; then
+              # CentOS 6's git (1.7.1) has no --local/--no-recurse-submodules.
+              # And even if we don't pass those flags, that version of git will not work
+              # anyway due to of "fatal: Couldn't find remote ref" error.
+              yum install -y openssh-clients perl perl-Error perl-TermReadKey rsync
+              rpm -i \
+                https://vault.ius.io/el6/x86_64/packages/p/perl-Git18-1.8.5.5-4.ius.el6.noarch.rpm \
+                https://vault.ius.io/el6/x86_64/packages/g/git18-1.8.5.5-4.ius.el6.x86_64.rpm
+            fi
           fi
         if: startsWith(matrix.container, 'fedora') || startsWith(matrix.container, 'almalinux') || startsWith(matrix.container, 'centos')
       - name: Install requirements (alpine)
-        run: apk --no-cache add bash ca-certificates curl clang-extra-tools npm python3
+        run: apk --no-cache add ca-certificates curl clang-extra-tools npm python3
         shell: sh
         if: startsWith(matrix.container, 'alpine')
       - uses: taiki-e/checkout-action@v1
       - name: Install Rust
         run: |
-          set -eEuxo pipefail
           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
-          echo "$HOME/.cargo/bin" >>"${GITHUB_PATH}"
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
+          echo "${HOME}/.cargo/bin" >>"${GITHUB_PATH}"
+      - name: Install node 18
+        run: |
+          mkdir -p /node18
+          curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://unofficial-builds.nodejs.org/download/release/v18.20.3/node-v18.20.3-linux-x64-glibc-217.tar.xz | tar xJf - --strip-components 1 -C /node18
+          echo "/node18/bin" >>"${GITHUB_PATH}"
         if: (!startsWith(matrix.container, 'alpine'))
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
-      - run: type -P bash
-      - run: bash --version
-      - run: shfmt --version
-      - run: shellcheck --version
-      - run: node --version
-      - run: npm --version
-      - run: jq --version
-      - run: python3 --version
-      - run: rustup --version
-      - run: clang-format --version
+      - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
+  test-tidy-bsd:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: freebsd
+            version: '13.3'
+          - os: freebsd
+            version: '14.1'
+          - os: netbsd
+            version: '9.4'
+          - os: netbsd
+            version: '10.0'
+          - os: openbsd
+            version: '7.5'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: taiki-e/cross-platform-actions-action@master
+        with:
+          environment_variables: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+          operating_system: ${{ matrix.os }}
+          version: ${{ matrix.version }}
+          shell: bash
+          sync_files: runner-to-vm
+          run: |
+            set -CeEuxo pipefail
+            case "$(uname -s)" in
+              FreeBSD) sudo pkg install -y git jq npm python3 shfmt hs-ShellCheck llvm ;;
+              NetBSD) sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs shfmt shellcheck clang ;;
+              # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+              OpenBSD) sudo pkg_add git jq node python3 shfmt shellcheck rust rust-rustfmt clang-tools-extra ;;
+            esac
+            case "$(uname -s)" in
+              FreeBSD | NetBSD)
+                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+                export PATH="${HOME}/.cargo/bin:${PATH}"
+                ;;
+            esac
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
+  test-tidy-dragonfly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: vmactions/dragonflybsd-vm@v1
+        with:
+          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+          usesh: true
+          copyback: false
+          run: |
+            # DragonFly BSD sh's -E means -o emacs
+            # shellcheck disable=SC3040
+            set -Ceuxo pipefail
+            pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
+            # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+            pkg install -y bash git jq npm python3 shfmt hs-ShellCheck rust llvm
+            git config --global --add safe.directory "$(pwd)"
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
+  test-tidy-omnios:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: vmactions/omnios-vm@v1
+        with:
+          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+          usesh: true
+          copyback: false
+          run: |
+            # illumos sh has no -E
+            # shellcheck disable=SC3040
+            set -Ceuxo pipefail
+            pkg install git jq node-20 python-312 clang-18
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2023Q4-x86_64.tar.gz
+            tar xzpf bootstrap.tar.gz -C /
+            export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
+            pkgin -y install shfmt shellcheck
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+            export PATH="${HOME}/.cargo/bin:${PATH}"
+            git config --global --add safe.directory "$(pwd)"
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
+  test-tidy-solaris:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: vmactions/solaris-vm@v1
+        with:
+          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+          usesh: true
+          copyback: false
+          run: |
+            # Solaris sh has no -C/-E/-o pipefail
+            set -eux
+            pkg install git jq pkg://solaris/runtime/python-35 clang gnu-make
+            # TODO: nodejs shellcheck rustc cargo
+            # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
+            # developer/rust/cargo from pkg install fails to install due to dependency resolution error.
+            # runtime/nodejs from pkg install is node 16.
+            # developer/golang from pkg install is too old (1.7) to build shfmt.
+            go_bootstrap=go1.4.3
+            # last version that can be built with one bootstrap: https://go.dev/doc/install/source
+            go=go1.19.13
+            mkdir -p "${HOME}/go/${go_bootstrap}" "${HOME}/go/${go}"
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go_bootstrap}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go_bootstrap}"
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go}"
+            (cd "${HOME}/go/${go_bootstrap}"/src && PATH="/usr/gnu/bin:${PATH}" ./make.bash --no-banner)
+            "${HOME}/go/${go_bootstrap}/bin/go" version
+            (cd "${HOME}/go/${go}"/src && PATH="/usr/gnu/bin:${PATH}" GOROOT_BOOTSTRAP="${HOME}/go/${go_bootstrap}" ./make.bash --no-banner)
+            rm -rf "${HOME}/go/${go_bootstrap}"
+            export PATH="${HOME}/go/${go}/bin:${PATH}"
+            go version
+            export GOPATH="${HOME}/go"
+            export PATH="${GOPATH}/bin:${PATH}"
+            # Use 3.7 because 3.8 dropped support for Go 1.19 and 1.20.
+            go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
+            # TODO: CA issue probably due to https://github.com/vmactions/solaris-vm/issues/38.
+            #       Workaround from https://stackoverflow.com/questions/25981703/pip-install-fails-with-connection-error-ssl-certificate-verify-failed-certi.
+            echo '[global]' >>/etc/pip.conf
+            echo 'trusted-host = pypi.python.org' >>/etc/pip.conf
+            echo '               pypi.org' >>/etc/pip.conf
+            echo '               files.pythonhosted.org' >>/etc/pip.conf
+            pkg uninstall gnu-make
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
 
   codegen:
     runs-on: ubuntu-latest
