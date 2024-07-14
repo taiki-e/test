@@ -11,6 +11,7 @@ Lint checks provided by rustc:
                                                        name  default  meaning
                                                        ----  -------  -------
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
+                              closure-returning-async-block  allow    closure that returns `async {}` could be rewritten as an async closure
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
                                             deprecated-safe  allow    detects unsafe functions being used as safe functions
                        edition-2024-expr-fragment-specifier  allow    The `expr` fragment specifier will accept more expressions in the 2024 edition. To keep the existing behavior, use the `expr_2021` fragment specifier.
@@ -183,6 +184,7 @@ Lint checks provided by rustc:
                            writes-through-immutable-pointer  warn     shared references are immutable, and pointers derived from them must not be written to
                                  ambiguous-associated-items  deny     ambiguous associated items
                                         arithmetic-overflow  deny     arithmetic operation overflows
+                                          binary-asm-labels  deny     labels in inline assembly containing only 0 or 1 digits
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
                                        cenum-impl-drop-cast  deny     a C-like enum implementing Drop is cast
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
