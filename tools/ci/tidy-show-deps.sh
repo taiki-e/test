@@ -4,7 +4,7 @@ set -CeEuo pipefail
 IFS=$'\n\t'
 trap -- 's=$?; printf >&2 "%s\n" "${0#./}:${LINENO}: \`${BASH_COMMAND}\` exit with ${s}"; exit ${s}' ERR
 trap -- 'printf >&2 "%s\n" "${0#./}: trapped SIGINT"; exit 1' SIGINT
-cd "$(dirname -- "$0")"/../..
+cd -- "$(dirname -- "$0")"/../..
 
 bail() {
     if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
@@ -43,9 +43,9 @@ esac
 set -x
 
 /usr/bin/uname -o || true
-ls /usr/xpg4/bin || true
-ls /usr/xpg6/bin || true
-ls /usr/xpg7/bin || true
+ls -- /usr/xpg4/bin || true
+ls -- /usr/xpg6/bin || true
+ls -- /usr/xpg7/bin || true
 type -P bash
 type -P sed
 type -P grep

@@ -15,6 +15,7 @@ pluginconf
 pypi
 pythonhosted
 rootcerts
+Traceback
 usesh
 xzpf
 zigbuild

@@ -5,7 +5,7 @@ set -CeEuo pipefail
 IFS=$'\n\t'
 trap -- 's=$?; printf >&2 "%s\n" "${0#./}:${LINENO}: \`${BASH_COMMAND}\` exit with ${s}"; exit ${s}' ERR
 trap -- 'printf >&2 "%s\n" "${0#./}: trapped SIGINT"; exit 1' SIGINT
-cd "$(dirname "$0")"/..
+cd -- "$(dirname -- "$0")"/..
 
 # USAGE:
 #    ./tools/tidy.sh
@@ -14,7 +14,7 @@ cd "$(dirname "$0")"/..
 # - git
 # - jq 1.6+
 # - npm (node 18+)
-# - python 3.5+
+# - python 3.6+
 # - shfmt
 # - shellcheck
 # - cargo, rustfmt (if Rust code exists)
@@ -44,7 +44,7 @@ check_install() {
     for tool in "$@"; do
         if ! type -P "${tool}" &>/dev/null; then
             if [[ "${tool}" == "python3" ]]; then
-                for p in '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' '3.5' ''; do
+                for p in '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' ''; do
                     if type -P "python${p}" &>/dev/null; then
                         tool=''
                         break
@@ -82,7 +82,7 @@ sed_rhs_escape() {
 }
 venv_install_yq() {
     py_suffix=''
-    for p in '3' '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' '3.5' ''; do
+    for p in '3' '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' ''; do
         if type -P "python${p}" &>/dev/null; then
             py_suffix=${p}
             break
@@ -211,7 +211,7 @@ if [[ -n "$(ls_files '*.rs')" ]]; then
             if ! grep -Eq '^<!-- tidy:crate-doc:start -->' "${readme}"; then
                 continue
             fi
-            lib="$(dirname "${readme}")/src/lib.rs"
+            lib="$(dirname -- "${readme}")/src/lib.rs"
             if [[ -n "${first}" ]]; then
                 first=''
                 info "checking readme and crate-level doc are synchronized"
@@ -370,15 +370,15 @@ if [[ -n "$(ls_files "${prettier_ext[@]}")" ]]; then
         fi
     fi
 fi
-if [[ -n "$(ls_files '*.yaml' | { grep -F -v '.markdownlint-cli2.yaml' || true; })" ]]; then
+if [[ -n "$(ls_files '*.yaml' | { grep -Fv '.markdownlint-cli2.yaml' || true; })" ]]; then
     error "please use '.yml' instead of '.yaml' for consistency"
     printf '=======================================\n'
-    ls_files '*.yaml' | { grep -F -v '.markdownlint-cli2.yaml' || true; }
+    ls_files '*.yaml' | { grep -Fv '.markdownlint-cli2.yaml' || true; }
     printf '=======================================\n'
 fi
 
 # TOML (if exists)
-if [[ -n "$(ls_files '*.toml' | { grep -F -v '.taplo.toml' || true; })" ]]; then
+if [[ -n "$(ls_files '*.toml' | { grep -Fv '.taplo.toml' || true; })" ]]; then
     info "checking TOML style"
     check_config .taplo.toml
     if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm &>/dev/null; then
@@ -416,22 +416,98 @@ fi
 info "checking Shell scripts"
 shell_files=()
 docker_files=()
+bash_files=()
 grep_ere_files=()
 sed_ere_files=()
 for p in $(ls_files '*.sh' '*Dockerfile*'); do
     case "${p##*/}" in
-        *.sh) shell_files+=("${p}") ;;
-        *Dockerfile*) docker_files+=("${p}") ;;
+        *.sh)
+            shell_files+=("${p}")
+            if [[ "$(head -1 "${p}")" =~ ^#!/.*bash ]]; then
+                bash_files+=("${p}")
+            fi
+            ;;
+        *Dockerfile*)
+            docker_files+=("${p}")
+            bash_files+=("${p}") # TODO
+            ;;
     esac
-    if grep -Eq '(^|[^0-9A-Za-z\.-])(grep) -E[^\)]' "${p}"; then
+    if grep -Eq '(^|[^0-9A-Za-z\.-])(grep) -[A-Za-z]*E[^\)]' "${p}"; then
         grep_ere_files+=("${p}")
     fi
-    if grep -Eq '(^|[^0-9A-Za-z\.-])(sed) -E[^\)]' "${p}"; then
+    if grep -Eq '(^|[^0-9A-Za-z\.-])(sed) -[A-Za-z]*E[^\)]' "${p}"; then
         sed_ere_files+=("${p}")
     fi
 done
+# TODO: .cirrus.yml
+workflows=()
+actions=()
+if [[ -d .github/workflows ]]; then
+    for p in .github/workflows/*.yml; do
+        workflows+=("${p}")
+        bash_files+=("${p}") # TODO
+    done
+fi
+if [[ -n "$(ls_files '*action.yml')" ]]; then
+    for p in $(ls_files '*action.yml'); do
+        if [[ "${p##*/}" == "action.yml" ]]; then
+            actions+=("${p}")
+            if grep -Fq 'shell: bash' "${p}"; then
+                bash_files+=("${p}")
+            fi
+        fi
+    done
+fi
+# correctness
+res=$({ grep -En '(\[\[ .* ]]|(^|[^\$])\(\(.*\)\))( +#| *$)' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+if [[ -n "${res}" ]]; then
+    error "bare [[ ]] and (( )) may not work as intended: see https://github.com/koalaman/shellcheck/issues/2360 for more"
+    printf '=======================================\n'
+    printf '%s\n' "${res}"
+    printf '=======================================\n'
+fi
+# TODO: chmod|chown
+res=$({ grep -En '(^|[^0-9A-Za-z\.-])(basename|cat|cd|cp|dirname|ln|ls|mkdir|mv|pushd|rm|rmdir|tee|touch)( -[0-9A-Za-z]+)* [^<>\|-]' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+if [[ -n "${res}" ]]; then
+    error "use -- before path(s): see https://github.com/koalaman/shellcheck/issues/2707 / https://github.com/koalaman/shellcheck/issues/2612 / https://github.com/koalaman/shellcheck/issues/2305 / https://github.com/koalaman/shellcheck/issues/2157 / https://github.com/koalaman/shellcheck/issues/2121 / https://github.com/koalaman/shellcheck/issues/314 for more"
+    printf '=======================================\n'
+    printf '%s\n' "${res}"
+    printf '=======================================\n'
+fi
+res=$({ grep -En '(^|[^0-9A-Za-z\.-])(LINES|RANDOM|PWD)=' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+if [[ -n "${res}" ]]; then
+    error "do not modify these built-in bash variables: see https://github.com/koalaman/shellcheck/issues/2160 / https://github.com/koalaman/shellcheck/issues/2559 for more"
+    printf '=======================================\n'
+    printf '%s\n' "${res}"
+    printf '=======================================\n'
+fi
+# perf
+res=$({ grep -En '(^|[^\\])\$\((cat) ' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+if [[ -n "${res}" ]]; then
+    error "use faster \`\$(<file)\` instead of \$(cat -- file): see https://github.com/koalaman/shellcheck/issues/2493 for more"
+    printf '=======================================\n'
+    printf '%s\n' "${res}"
+    printf '=======================================\n'
+fi
+res=$({ grep -En '(^|[^0-9A-Za-z\.-])(which|command -[vV]) ' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+if [[ -n "${res}" ]]; then
+    error "use faster \`type -P\` instead of \`which\`/\`command -v\`: see https://github.com/koalaman/shellcheck/issues/1162 for more"
+    printf '=======================================\n'
+    printf '%s\n' "${res}"
+    printf '=======================================\n'
+fi
+res=$({ grep -En '(^|[^0-9A-Za-z\.-])(echo|printf )[^;)]* \|[^\|]' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+if [[ -n "${res}" ]]; then
+    error "use faster \`<<<...\` instead of \`echo ...\`: see https://github.com/koalaman/shellcheck/issues/2593 for more"
+    printf '=======================================\n'
+    printf '%s\n' "${res}"
+    printf '=======================================\n'
+fi
+# style
 if [[ ${#grep_ere_files[@]} -gt 0 ]]; then
-    res=$({ grep -En '(^|[^0-9A-Za-z\.-])(grep) ([^-]|-[^EFP-]|--[^hv])' "${grep_ere_files[@]}" || true; } | { grep -E -v '^[^ ]+: *#' || true; } | LC_ALL=C sort)
+    # We intentionally do not check for occurrences in any other order (e.g., -iE, -i -E) here.
+    # This enforces the style and makes it easier to search.
+    res=$({ grep -En '(^|[^0-9A-Za-z\.-])(grep) ([^-]|-[^EFP-]|--[^hv])' "${grep_ere_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
     if [[ -n "${res}" ]]; then
         error "please always use ERE (grep -E) instead of BRE for code consistency within a file"
         printf '=======================================\n'
@@ -440,7 +516,7 @@ if [[ ${#grep_ere_files[@]} -gt 0 ]]; then
     fi
 fi
 if [[ ${#sed_ere_files[@]} -gt 0 ]]; then
-    res=$({ grep -En '(^|[^0-9A-Za-z\.-])(sed) ([^-]|-[^E-]|--[^hv])' "${sed_ere_files[@]}" || true; } | { grep -E -v '^[^ ]+: *#' || true; } | LC_ALL=C sort)
+    res=$({ grep -En '(^|[^0-9A-Za-z\.-])(sed) ([^-]|-[^E-]|--[^hv])' "${sed_ere_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
     if [[ -n "${res}" ]]; then
         error "please always use ERE (sed -E) instead of BRE for code consistency within a file"
         printf '=======================================\n'
@@ -465,29 +541,14 @@ elif check_install shellcheck; then
     if [[ ${#docker_files[@]} -gt 0 ]]; then
         # SC2154 doesn't seem to work on dockerfile.
         # SC2250 may not correct on dockerfile because $v and ${v} is sometime different: https://github.com/moby/moby/issues/42863
-        info "running \`shellcheck -e SC2154,SC2250 \$(git ls-files '*Dockerfile*')\`"
-        if ! shellcheck --shell bash -e SC2154,SC2250 "${docker_files[@]}"; then
+        info "running \`shellcheck --shell bash --exclude SC2154,SC2250 \$(git ls-files '*Dockerfile*')\`"
+        if ! shellcheck --shell bash --exclude SC2154,SC2250 "${docker_files[@]}"; then
             should_fail=1
         fi
     fi
     # Check scripts in other files.
-    # TODO: .cirrus.yml
-    workflows=()
-    actions=()
-    if [[ -d .github/workflows ]]; then
-        for workflow in .github/workflows/*.yml; do
-            workflows+=("${workflow}")
-        done
-    fi
-    if [[ -n "$(ls_files '*action.yml')" ]]; then
-        for action in $(ls_files '*action.yml'); do
-            if [[ "${action##*/}" == "action.yml" ]]; then
-                actions+=("${action}")
-            fi
-        done
-    fi
     if [[ ${#workflows[@]} -gt 0 ]] || [[ ${#actions[@]} -gt 0 ]]; then
-        info "running \`shellcheck -e SC2086,SC2096,SC2129\` for scripts in .github/workflows/*.yml and **/action.yml"
+        info "running \`shellcheck --exclude SC2086,SC2096,SC2129\` for scripts in .github/workflows/*.yml and **/action.yml"
         if [[ "${ostype}" == "windows" ]]; then
             # No such file or directory: '/proc/N/fd/N'
             warn "this check is skipped on Windows due to upstream bug (failed to found fd created by <())"
@@ -495,16 +556,20 @@ elif check_install shellcheck; then
             warn "this check is skipped on DragonFly BSD due to upstream bug (hang)"
         elif check_install jq python3; then
             venv_install_yq
-            emit_and_shellcheck() {
+            shellcheck_for_gha() {
                 local text=$1
                 local shell=$2
                 local display_path=$3
                 if [[ "${text}" == "null" ]]; then
                     return
                 fi
+                case "${shell}" in
+                    bash* | sh*) ;;
+                    *) return ;;
+                esac
                 # Use python because sed doesn't support .*?.
                 text=$(
-                    "python${py_suffix}" - <(printf '#!/usr/bin/env %s\n%s' "${shell%' {0}'}" "${text}") <<EOF
+                    "python${py_suffix}" - <(printf '%s\n%s' "#!/usr/bin/env ${shell%' {0}'}" "${text}") <<EOF
 import re
 import sys
 with open(sys.argv[1], 'r') as f:
@@ -516,7 +581,11 @@ EOF
                 case "${ostype}" in
                     windows) text=${text//\r/} ;;
                 esac
-                if ! shellcheck -e SC2086,SC2096,SC2129 <(printf '%s\n' "${text}") | sed "s/\/dev\/fd\/[0-9][0-9]*/$(sed_rhs_escape "${display_path}")"/g; then
+                color=auto
+                if [[ -t 1 ]] || [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+                    color=always
+                fi
+                if ! shellcheck --color="${color}" --exclude SC2086,SC2096,SC2129 <(printf '%s\n' "${text}") | sed "s/\/dev\/fd\/[0-9][0-9]*/$(sed_rhs_escape "${display_path}")/g"; then
                     should_fail=1
                 fi
             }
@@ -530,10 +599,10 @@ EOF
                 for job in $(yq -c '.jobs | to_entries | .[]' "${workflow}"); do
                     name=$(jq -r '.key' <<<"${job}")
                     job=$(jq -r '.value' <<<"${job}")
-                    n=0
                     if [[ "$(jq -r '.steps' <<<"${job}")" == "null" ]]; then
                         continue # caller of reusable workflow
                     fi
+                    n=0
                     job_default_shell=$(yq -r -c '.defaults.run.shell' <<<"${job}")
                     if [[ "${job_default_shell}" == "null" ]]; then
                         job_default_shell="${default_shell}"
@@ -562,12 +631,8 @@ EOF
                                 fi
                             fi
                         fi
-                        case "${shell}" in
-                            bash* | sh*) ;;
-                            *) continue ;;
-                        esac
-                        emit_and_shellcheck "${run}" "${shell}" "${workflow} ${name}.steps[${n}].run"
-                        emit_and_shellcheck "${prepare}" 'sh' "${workflow} ${name}.steps[${n}].run"
+                        shellcheck_for_gha "${run}" "${shell}" "${workflow} ${name}.steps[${n}].run"
+                        shellcheck_for_gha "${prepare}" 'sh' "${workflow} ${name}.steps[${n}].run"
                         _=$((n++))
                     done
                 done
@@ -598,12 +663,8 @@ EOF
                             fi
                         fi
                     fi
-                    case "${shell}" in
-                        bash* | sh*) ;;
-                        *) continue ;;
-                    esac
-                    emit_and_shellcheck "${run}" "${shell}" "${action} steps[${n}].run"
-                    emit_and_shellcheck "${prepare}" 'sh' "${action} steps[${n}].run"
+                    shellcheck_for_gha "${run}" "${shell}" "${action} steps[${n}].run"
+                    shellcheck_for_gha "${prepare}" 'sh' "${action} steps[${n}].run"
                     _=$((n++))
                 done
             done
@@ -676,18 +737,17 @@ if [[ -f .cspell.json ]]; then
                     dependencies+="$(jq ".packages[] | select(.id == \"${id}\")" <<<"${metadata}" | jq -r '.dependencies[].name')"$'\n'
                 done
             done
-            # shellcheck disable=SC2001
             dependencies=$(LC_ALL=C sort -f -u <<<"${dependencies//[0-9_-]/$'\n'}")
         fi
         config_old=$(<.cspell.json)
-        config_new=$(grep -E -v '^ *//' <<<"${config_old}" | jq 'del(.dictionaries[] | select(index("organization-dictionary") | not))' | jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))')
+        config_new=$(grep -Ev '^ *//' <<<"${config_old}" | jq 'del(.dictionaries[] | select(index("organization-dictionary") | not))' | jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))')
         trap -- 'printf "%s\n" "${config_old}" >|.cspell.json; printf >&2 "%s\n" "${0#./}: trapped SIGINT"; exit 1' SIGINT
         printf '%s\n' "${config_new}" >|.cspell.json
         dependencies_words=''
         if [[ -n "${has_rust}" ]]; then
             dependencies_words=$(npx -y cspell stdin --no-progress --no-summary --words-only --unique <<<"${dependencies}" || true)
         fi
-        all_words=$(npx -y cspell --no-progress --no-summary --words-only --unique $(ls_files | { grep -F -v "${project_dictionary}" || true; }) || true)
+        all_words=$(npx -y cspell --no-progress --no-summary --words-only --unique $(ls_files | { grep -Fv "${project_dictionary}" || true; }) || true)
         printf '%s\n' "${config_old}" >|.cspell.json
         trap -- 'printf >&2 "%s\n" "${0#./}: trapped SIGINT"; exit 1' SIGINT
         cat >|.github/.cspell/rust-dependencies.txt <<EOF
@@ -695,7 +755,7 @@ if [[ -f .cspell.json ]]; then
 // It is not intended for manual editing.
 EOF
         if [[ -n "${dependencies_words}" ]]; then
-            printf '\n%s\n' "${dependencies_words}" | LC_ALL=C sort -f >>.github/.cspell/rust-dependencies.txt
+            LC_ALL=C sort -f >>.github/.cspell/rust-dependencies.txt <<<"${dependencies_words}"$'\n'
         fi
         check_diff .github/.cspell/rust-dependencies.txt
         if ! grep -Fq '.github/.cspell/rust-dependencies.txt linguist-generated' .gitattributes; then
@@ -727,8 +787,8 @@ EOF
 
         # Make sure the project-specific dictionary does not contain unused words.
         unused=''
-        for word in $(grep -E -v '^//.*' "${project_dictionary}" || true); do
-            if ! grep -Eq -i "^${word}$" <<<"${all_words}"; then
+        for word in $(grep -Ev '^//.*' "${project_dictionary}" || true); do
+            if ! grep -Eqi "^${word}$" <<<"${all_words}"; then
                 unused+="${word}"$'\n'
             fi
         done
