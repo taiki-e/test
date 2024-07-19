@@ -214,6 +214,8 @@ jobs:
       matrix:
         include:
           - os: freebsd
+            version: '12.4'
+          - os: freebsd
             version: '13.3'
           - os: freebsd
             version: '14.1'
@@ -237,7 +239,14 @@ jobs:
           run: |
             set -CeEuxo pipefail
             case "$(uname -s)" in
-              FreeBSD) sudo pkg install -y git jq npm python3 shfmt hs-ShellCheck llvm ;;
+              FreeBSD)
+                if grep -Eq '^VERSION_ID="12\.' /etc/os-release; then
+                  sudo mkdir -p -- /usr/local/etc/pkg/repos
+                  sudo cp -p -- /etc/pkg/FreeBSD.conf /usr/local/etc/pkg/repos
+                  sudo sed -i '' 's|http://pkg.FreeBSD.org/|https://mirrors.lavabit.com/freebsd-archive/|g' /usr/local/etc/pkg/repos/FreeBSD.conf
+                fi
+                sudo pkg install -y git jq npm python3 shfmt hs-ShellCheck llvm
+                ;;
               NetBSD) sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs shfmt shellcheck clang ;;
               # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
               OpenBSD) sudo pkg_add git jq node python3 shfmt shellcheck rust rust-rustfmt clang-tools-extra ;;
