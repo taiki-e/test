@@ -13,7 +13,7 @@ Lint checks provided by rustc:
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
                               closure-returning-async-block  allow    closure that returns `async {}` could be rewritten as an async closure
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
-                                            deprecated-safe  allow    detects unsafe functions being used as safe functions
+                                       deprecated-safe-2024  allow    detects unsafe functions being used as safe functions
                        edition-2024-expr-fragment-specifier  allow    The `expr` fragment specifier will accept more expressions in the 2024 edition. To keep the existing behavior, use the `expr_2021` fragment specifier.
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
@@ -226,6 +226,7 @@ Lint groups provided by rustc:
                        name  sub-lints
                        ----  ---------
                    warnings  all lints that are set to issue warnings
+            deprecated-safe  deprecated-safe-2024
         future-incompatible  deref-into-dyn-supertrait, ambiguous-associated-items, ambiguous-glob-imports, byte-slice-in-packed-struct-with-derive, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-eval-mutable-ptr-in-final-value, const-evaluatable-unchecked, dependency-on-unit-never-type-fallback, deprecated-cfg-attr-crate-type-name, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, never-type-fallback-flowing-into-unsafe, order-dependent-trait-objects, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, ptr-cast-add-auto-to-object, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, wasm-c-abi, writes-through-immutable-pointer
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
@@ -234,7 +235,7 @@ Lint groups provided by rustc:
     rust-2018-compatibility  keyword-idents-2018, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
     rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions, array-into-iter, non-fmt-panics
-    rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, deprecated-safe, missing-unsafe-on-extern, static-mut-refs, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn, boxed-slice-into-iter
+    rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, deprecated-safe-2024, missing-unsafe-on-extern, static-mut-refs, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn, boxed-slice-into-iter
                      unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
