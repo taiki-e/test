@@ -42,6 +42,7 @@ Lint checks provided by rustc:
                      rust-2021-prefixes-incompatible-syntax  allow    identifiers that will be parsed as a prefix in Rust 2021
                                rust-2021-prelude-collisions  allow    detects the usage of trait methods which are ambiguous with traits added to the prelude in future editions
                                  rust-2024-incompatible-pat  allow    detects patterns whose meaning will change in Rust 2024
+                               rust-2024-prelude-collisions  allow    detects the usage of trait methods which are ambiguous with traits added to the prelude in future editions
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
                                               trivial-casts  allow    detects trivial casts which could be removed
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
@@ -183,6 +184,7 @@ Lint checks provided by rustc:
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                            writes-through-immutable-pointer  warn     shared references are immutable, and pointers derived from them must not be written to
                                  ambiguous-associated-items  deny     ambiguous associated items
+                                ambiguous-negative-literals  deny     ambiguous negative literals operations
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                           binary-asm-labels  deny     labels in inline assembly containing only 0 or 1 digits
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
@@ -235,7 +237,7 @@ Lint groups provided by rustc:
     rust-2018-compatibility  keyword-idents-2018, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
     rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions, array-into-iter, non-fmt-panics
-    rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, deprecated-safe-2024, missing-unsafe-on-extern, static-mut-refs, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn, boxed-slice-into-iter
+    rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, deprecated-safe-2024, missing-unsafe-on-extern, rust-2024-prelude-collisions, static-mut-refs, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn, boxed-slice-into-iter
                      unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
