@@ -11,6 +11,7 @@ Lint checks provided by rustc:
                                                        name  default  meaning
                                                        ----  -------  -------
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
+                                ambiguous-negative-literals  allow    ambiguous negative literals operations
                               closure-returning-async-block  allow    closure that returns `async {}` could be rewritten as an async closure
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
                                        deprecated-safe-2024  allow    detects unsafe functions being used as safe functions
@@ -36,6 +37,7 @@ Lint checks provided by rustc:
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
                                       non-local-definitions  allow    checks for non-local definitions
+                                          redundant-imports  allow    imports that are redundant due to being imported already
                                         redundant-lifetimes  allow    detects lifetime parameters that are redundant because they are equal to some other named lifetime
                     rust-2021-incompatible-closure-captures  allow    detects closures affected by Rust 2021 changes
                          rust-2021-incompatible-or-patterns  allow    detects usage of old versions of or-patterns
@@ -184,7 +186,6 @@ Lint checks provided by rustc:
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                            writes-through-immutable-pointer  warn     shared references are immutable, and pointers derived from them must not be written to
                                  ambiguous-associated-items  deny     ambiguous associated items
-                                ambiguous-negative-literals  deny     ambiguous negative literals operations
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                           binary-asm-labels  deny     labels in inline assembly containing only 0 or 1 digits
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
