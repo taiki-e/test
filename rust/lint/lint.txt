@@ -193,6 +193,7 @@ Lint checks provided by rustc:
                         deprecated-cfg-attr-crate-type-name  deny     detects usage of `#![cfg_attr(..., crate_type/crate_name = "...")]`
                     elided-lifetimes-in-associated-constant  deny     elided lifetimes cannot be used in associated constants in impls
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
+                             explicit-builtin-cfgs-in-flags  deny     detects builtin cfgs set via the `--cfg`
                                  ill-formed-attribute-input  deny     ill-formed attribute inputs that were previously accepted and used in practice
                                          incomplete-include  deny     trailing content in included file
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
