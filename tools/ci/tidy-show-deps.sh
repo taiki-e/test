@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 set -CeEuo pipefail
 IFS=$'\n\t'
-trap -- 's=$?; printf >&2 "%s\n" "${0#./}:${LINENO}: \`${BASH_COMMAND}\` exit with ${s}"; exit ${s}' ERR
-trap -- 'printf >&2 "%s\n" "${0#./}: trapped SIGINT"; exit 1' SIGINT
+trap -- 's=$?; printf >&2 "%s\n" "${0##*/}:${LINENO}: \`${BASH_COMMAND}\` exit with ${s}"; exit ${s}' ERR
+trap -- 'printf >&2 "%s\n" "${0##*/}: trapped SIGINT"; exit 1' SIGINT
 cd -- "$(dirname -- "$0")"/../..
 
 bail() {
@@ -78,10 +78,7 @@ case "${ostype}" in
         node --version
         ;;
 esac
-case "${ostype}" in
-    netbsd) python3.11 --version ;;
-    *) python3 --version ;;
-esac
+python3 --version
 case "${ostype}" in
     solaris) ;; # TODO
     *)
@@ -98,5 +95,5 @@ esac
 case "${ostype}" in
     openbsd) ;; # TODO
     # clang-format 3.4.2 exit with 1 on --version flag
-    *) clang-format --version || type -P clang-format &>/dev/null ;;
+    *) clang-format --version || type -P clang-format >/dev/null ;;
 esac

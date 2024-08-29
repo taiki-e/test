@@ -3,8 +3,8 @@
 # shellcheck disable=SC2046
 set -CeEuo pipefail
 IFS=$'\n\t'
-trap -- 's=$?; printf >&2 "%s\n" "${0#./}:${LINENO}: \`${BASH_COMMAND}\` exit with ${s}"; exit ${s}' ERR
-trap -- 'printf >&2 "%s\n" "${0#./}: trapped SIGINT"; exit 1' SIGINT
+trap -- 's=$?; printf >&2 "%s\n" "${0##*/}:${LINENO}: \`${BASH_COMMAND}\` exit with ${s}"; exit ${s}' ERR
+trap -- 'printf >&2 "%s\n" "${0##*/}: trapped SIGINT"; exit 1' SIGINT
 cd -- "$(dirname -- "$0")"/..
 
 # USAGE:
@@ -42,15 +42,9 @@ check_config() {
 }
 check_install() {
     for tool in "$@"; do
-        if ! type -P "${tool}" &>/dev/null; then
+        if ! type -P "${tool}" >/dev/null; then
             if [[ "${tool}" == "python3" ]]; then
-                for p in '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' ''; do
-                    if type -P "python${p}" &>/dev/null; then
-                        tool=''
-                        break
-                    fi
-                done
-                if [[ -z "${tool}" ]]; then
+                if type -P python >/dev/null; then
                     continue
                 fi
             fi
@@ -81,18 +75,11 @@ sed_rhs_escape() {
     sed 's/\\/\\\\/g; s/\&/\\\&/g; s/\//\\\//g' <<<"$1"
 }
 venv_install_yq() {
-    py_suffix=''
-    for p in '3' '3.12' '3.11' '3.10' '3.9' '3.8' '3.7' '3.6' ''; do
-        if type -P "python${p}" &>/dev/null; then
-            py_suffix=${p}
-            break
-        fi
-    done
     if [[ ! -e "${venv_bin}/yq${exe}" ]]; then
         if [[ ! -d .venv ]]; then
             "python${py_suffix}" -m venv .venv
         fi
-        info "installing yq to ./.venv using pip${py_suffix}"
+        info "installing yq to .venv using pip${py_suffix}"
         "${venv_bin}/pip${py_suffix}${exe}" install yq
     fi
 }
@@ -106,9 +93,19 @@ EOF
 fi
 
 exe=''
+py_suffix=''
+if type -P python3 >/dev/null; then
+    py_suffix='3'
+fi
 venv_bin=.venv/bin
-yq() { "${venv_bin}/yq${exe}" "$@"; }
-tomlq() { "${venv_bin}/tomlq${exe}" "$@"; }
+yq() {
+    venv_install_yq
+    "${venv_bin}/yq${exe}" "$@"
+}
+tomlq() {
+    venv_install_yq
+    "${venv_bin}/tomlq${exe}" "$@"
+}
 case "$(uname -s)" in
     Linux)
         if [[ "$(uname -o)" == "Android" ]]; then
@@ -136,10 +133,10 @@ case "$(uname -s)" in
             # GNU/BSD grep/sed is required to run some checks, but most checks are okay with other POSIX grep/sed.
             # Solaris /usr/xpg4/bin/grep has -q, -E, -F, but no -o (non-POSIX).
             # Solaris /usr/xpg4/bin/sed has no -E (POSIX.1-2024) yet.
-            if type -P ggrep &>/dev/null; then
+            if type -P ggrep >/dev/null; then
                 grep() { ggrep "$@"; }
             fi
-            if type -P gsed &>/dev/null; then
+            if type -P gsed >/dev/null; then
                 sed() { gsed "$@"; }
             fi
         fi
@@ -148,7 +145,7 @@ case "$(uname -s)" in
         ostype=windows
         exe=.exe
         venv_bin=.venv/Scripts
-        if type -P jq &>/dev/null; then
+        if type -P jq >/dev/null; then
             # https://github.com/jqlang/jq/issues/1854
             _tmp=$(jq -r .a <<<'{}')
             if [[ "${_tmp}" != "null" ]]; then
@@ -158,8 +155,14 @@ case "$(uname -s)" in
                 else
                     jq() { command jq "$@" | tr -d '\r'; }
                 fi
-                yq() { "${venv_bin}/yq${exe}" "$@" | tr -d '\r'; }
-                tomlq() { "${venv_bin}/tomlq${exe}" "$@" | tr -d '\r'; }
+                yq() {
+                    venv_install_yq
+                    "${venv_bin}/yq${exe}" "$@" | tr -d '\r'
+                }
+                tomlq() {
+                    venv_install_yq
+                    "${venv_bin}/tomlq${exe}" "$@" | tr -d '\r'
+                }
             fi
         fi
         ;;
@@ -181,15 +184,15 @@ ls_files() {
 if [[ -n "$(ls_files '*.rs')" ]]; then
     info "checking Rust code style"
     check_config .rustfmt.toml
-    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P cargo &>/dev/null; then
+    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P cargo >/dev/null; then
         warn "this check is skipped on Solaris due to installing cargo from upstream package manager is broken"
     elif check_install cargo jq python3; then
         # `cargo fmt` cannot recognize files not included in the current workspace and modules
         # defined inside macros, so run rustfmt directly.
         # We need to use nightly rustfmt because we use the unstable formatting options of rustfmt.
         rustc_version=$(rustc -vV | grep -E '^release:' | cut -d' ' -f2)
-        if [[ "${rustc_version}" =~ nightly|dev ]] || ! type -P rustup &>/dev/null; then
-            if type -P rustup &>/dev/null; then
+        if [[ "${rustc_version}" =~ nightly|dev ]] || ! type -P rustup >/dev/null; then
+            if type -P rustup >/dev/null; then
                 rustup component add rustfmt &>/dev/null
             fi
             info "running \`rustfmt \$(git ls-files '*.rs')\`"
@@ -235,7 +238,6 @@ if [[ -n "$(ls_files '*.rs')" ]]; then
         binaries=''
         metadata=$(cargo metadata --format-version=1 --no-deps)
         has_public_crate=''
-        venv_install_yq
         for id in $(jq -r '.workspace_members[]' <<<"${metadata}"); do
             pkg=$(jq ".packages[] | select(.id == \"${id//\\/\\\\}\")" <<<"${metadata}")
             publish=$(jq -r '.publish' <<<"${pkg}")
@@ -344,7 +346,7 @@ prettier_ext=('*.yml' '*.yaml' '*.js' '*.json')
 if [[ -n "$(ls_files "${prettier_ext[@]}")" ]]; then
     info "checking YAML/JavaScript/JSON code style"
     check_config .editorconfig
-    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm &>/dev/null; then
+    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
         warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
     elif check_install npm; then
         IFS=' '
@@ -357,7 +359,6 @@ if [[ -n "$(ls_files "${prettier_ext[@]}")" ]]; then
     if [[ -d .github/workflows ]]; then
         info "checking GitHub workflows"
         if check_install jq python3; then
-            venv_install_yq
             for workflow in .github/workflows/*.yml; do
                 # The top-level permissions must be weak as they are referenced by all jobs.
                 permissions=$(yq -c '.permissions' "${workflow}")
@@ -381,7 +382,7 @@ fi
 if [[ -n "$(ls_files '*.toml' | { grep -Fv '.taplo.toml' || true; })" ]]; then
     info "checking TOML style"
     check_config .taplo.toml
-    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm &>/dev/null; then
+    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
         warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
     elif check_install npm; then
         info "running \`npx -y @taplo/cli fmt \$(git ls-files '*.toml')\`"
@@ -396,7 +397,7 @@ fi
 if [[ -n "$(ls_files '*.md')" ]]; then
     info "checking Markdown style"
     check_config .markdownlint-cli2.yaml
-    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm &>/dev/null; then
+    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
         warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
     elif check_install npm; then
         info "running \`npx -y markdownlint-cli2 \$(git ls-files '*.md')\`"
@@ -432,10 +433,10 @@ for p in $(ls_files '*.sh' '*Dockerfile*'); do
             bash_files+=("${p}") # TODO
             ;;
     esac
-    if grep -Eq '(^|[^0-9A-Za-z\.-])(grep) -[A-Za-z]*E[^\)]' "${p}"; then
+    if grep -Eq '(^|[^0-9A-Za-z\."'\''-])(grep) -[A-Za-z]*E[^\)]' "${p}"; then
         grep_ere_files+=("${p}")
     fi
-    if grep -Eq '(^|[^0-9A-Za-z\.-])(sed) -[A-Za-z]*E[^\)]' "${p}"; then
+    if grep -Eq '(^|[^0-9A-Za-z\."'\''-])(sed) -[A-Za-z]*E[^\)]' "${p}"; then
         sed_ere_files+=("${p}")
     fi
 done
@@ -467,14 +468,14 @@ if [[ -n "${res}" ]]; then
     printf '=======================================\n'
 fi
 # TODO: chmod|chown
-res=$({ grep -En '(^|[^0-9A-Za-z\.-])(basename|cat|cd|cp|dirname|ln|ls|mkdir|mv|pushd|rm|rmdir|tee|touch)( -[0-9A-Za-z]+)* [^<>\|-]' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+res=$({ grep -En '(^|[^0-9A-Za-z\."'\''-])(basename|cat|cd|cp|dirname|ln|ls|mkdir|mv|pushd|rm|rmdir|tee|touch)( +-[0-9A-Za-z]+)* +[^<>\|-]' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
 if [[ -n "${res}" ]]; then
-    error "use -- before path(s): see https://github.com/koalaman/shellcheck/issues/2707 / https://github.com/koalaman/shellcheck/issues/2612 / https://github.com/koalaman/shellcheck/issues/2305 / https://github.com/koalaman/shellcheck/issues/2157 / https://github.com/koalaman/shellcheck/issues/2121 / https://github.com/koalaman/shellcheck/issues/314 for more"
+    error "use \`--\` before path(s): see https://github.com/koalaman/shellcheck/issues/2707 / https://github.com/koalaman/shellcheck/issues/2612 / https://github.com/koalaman/shellcheck/issues/2305 / https://github.com/koalaman/shellcheck/issues/2157 / https://github.com/koalaman/shellcheck/issues/2121 / https://github.com/koalaman/shellcheck/issues/314 for more"
     printf '=======================================\n'
     printf '%s\n' "${res}"
     printf '=======================================\n'
 fi
-res=$({ grep -En '(^|[^0-9A-Za-z\.-])(LINES|RANDOM|PWD)=' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+res=$({ grep -En '(^|[^0-9A-Za-z\."'\''-])(LINES|RANDOM|PWD)=' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
 if [[ -n "${res}" ]]; then
     error "do not modify these built-in bash variables: see https://github.com/koalaman/shellcheck/issues/2160 / https://github.com/koalaman/shellcheck/issues/2559 for more"
     printf '=======================================\n'
@@ -489,16 +490,24 @@ if [[ -n "${res}" ]]; then
     printf '%s\n' "${res}"
     printf '=======================================\n'
 fi
-res=$({ grep -En '(^|[^0-9A-Za-z\.-])(which|command -[vV]) ' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+res=$({ grep -En '(^|[^0-9A-Za-z\."'\''-])(command +-[vV]) ' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
 if [[ -n "${res}" ]]; then
-    error "use faster \`type -P\` instead of \`which\`/\`command -v\`: see https://github.com/koalaman/shellcheck/issues/1162 for more"
+    error "use faster \`type -P\` instead of \`command -v\`: see https://github.com/koalaman/shellcheck/issues/1162 for more"
     printf '=======================================\n'
     printf '%s\n' "${res}"
     printf '=======================================\n'
 fi
-res=$({ grep -En '(^|[^0-9A-Za-z\.-])(echo|printf )[^;)]* \|[^\|]' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+res=$({ grep -En '(^|[^0-9A-Za-z\."'\''-])(type) +-P +[^ ]+ +&>' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
 if [[ -n "${res}" ]]; then
-    error "use faster \`<<<...\` instead of \`echo ...\`: see https://github.com/koalaman/shellcheck/issues/2593 for more"
+    error "\`type -P\` doesn't output to stderr; use \`>\` instead of \`&>\`"
+    printf '=======================================\n'
+    printf '%s\n' "${res}"
+    printf '=======================================\n'
+fi
+# TODO: multi-line case
+res=$({ grep -En '(^|[^0-9A-Za-z\."'\''-])(echo|printf )[^;)]* \|[^\|]' "${bash_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+if [[ -n "${res}" ]]; then
+    error "use faster \`<<<...\` instead of \`echo ... |\`/\`printf ... |\`: see https://github.com/koalaman/shellcheck/issues/2593 for more"
     printf '=======================================\n'
     printf '%s\n' "${res}"
     printf '=======================================\n'
@@ -507,7 +516,7 @@ fi
 if [[ ${#grep_ere_files[@]} -gt 0 ]]; then
     # We intentionally do not check for occurrences in any other order (e.g., -iE, -i -E) here.
     # This enforces the style and makes it easier to search.
-    res=$({ grep -En '(^|[^0-9A-Za-z\.-])(grep) ([^-]|-[^EFP-]|--[^hv])' "${grep_ere_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+    res=$({ grep -En '(^|[^0-9A-Za-z\."'\''-])(grep) +([^-]|-[^EFP-]|--[^hv])' "${grep_ere_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
     if [[ -n "${res}" ]]; then
         error "please always use ERE (grep -E) instead of BRE for code consistency within a file"
         printf '=======================================\n'
@@ -516,7 +525,7 @@ if [[ ${#grep_ere_files[@]} -gt 0 ]]; then
     fi
 fi
 if [[ ${#sed_ere_files[@]} -gt 0 ]]; then
-    res=$({ grep -En '(^|[^0-9A-Za-z\.-])(sed) ([^-]|-[^E-]|--[^hv])' "${sed_ere_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
+    res=$({ grep -En '(^|[^0-9A-Za-z\."'\''-])(sed) +([^-]|-[^E-]|--[^hv])' "${sed_ere_files[@]}" || true; } | { grep -Ev '^[^ ]+: *(#|//)' || true; } | LC_ALL=C sort)
     if [[ -n "${res}" ]]; then
         error "please always use ERE (sed -E) instead of BRE for code consistency within a file"
         printf '=======================================\n'
@@ -527,10 +536,12 @@ fi
 if check_install shfmt; then
     check_config .editorconfig
     info "running \`shfmt -l -w \$(git ls-files '*.sh')\`"
-    shfmt -l -w "${shell_files[@]}"
+    if ! shfmt -l -w "${shell_files[@]}"; then
+        should_fail=1
+    fi
     check_diff "${shell_files[@]}"
 fi
-if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P shellcheck &>/dev/null; then
+if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P shellcheck >/dev/null; then
     warn "this check is skipped on Solaris due to no haskell/shellcheck in upstream package manager"
 elif check_install shellcheck; then
     check_config .shellcheckrc
@@ -555,7 +566,6 @@ elif check_install shellcheck; then
         elif [[ "${ostype}" == "dragonfly" ]]; then
             warn "this check is skipped on DragonFly BSD due to upstream bug (hang)"
         elif check_install jq python3; then
-            venv_install_yq
             shellcheck_for_gha() {
                 local text=$1
                 local shell=$2
@@ -581,7 +591,7 @@ EOF
                 case "${ostype}" in
                     windows) text=${text//\r/} ;;
                 esac
-                color=auto
+                local color=auto
                 if [[ -t 1 ]] || [[ -n "${GITHUB_ACTIONS:-}" ]]; then
                     color=always
                 fi
@@ -718,14 +728,13 @@ fi
 if [[ -f .cspell.json ]]; then
     info "spell checking"
     project_dictionary=.github/.cspell/project-dictionary.txt
-    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm &>/dev/null; then
+    if [[ "${ostype}" == "solaris" ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
         warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
     elif [[ "${ostype}" == "illumos" ]]; then
         warn "this check is skipped on illumos due to upstream bug (dictionaries are not loaded correctly)"
     elif check_install npm jq python3; then
         has_rust=''
         if [[ -n "$(ls_files '*Cargo.toml')" ]]; then
-            venv_install_yq
             has_rust=1
             dependencies=''
             for manifest_path in $(ls_files '*Cargo.toml'); do
@@ -741,7 +750,7 @@ if [[ -f .cspell.json ]]; then
         fi
         config_old=$(<.cspell.json)
         config_new=$(grep -Ev '^ *//' <<<"${config_old}" | jq 'del(.dictionaries[] | select(index("organization-dictionary") | not))' | jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))')
-        trap -- 'printf "%s\n" "${config_old}" >|.cspell.json; printf >&2 "%s\n" "${0#./}: trapped SIGINT"; exit 1' SIGINT
+        trap -- 'printf "%s\n" "${config_old}" >|.cspell.json; printf >&2 "%s\n" "${0##*/}: trapped SIGINT"; exit 1' SIGINT
         printf '%s\n' "${config_new}" >|.cspell.json
         dependencies_words=''
         if [[ -n "${has_rust}" ]]; then
@@ -749,9 +758,9 @@ if [[ -f .cspell.json ]]; then
         fi
         all_words=$(npx -y cspell --no-progress --no-summary --words-only --unique $(ls_files | { grep -Fv "${project_dictionary}" || true; }) || true)
         printf '%s\n' "${config_old}" >|.cspell.json
-        trap -- 'printf >&2 "%s\n" "${0#./}: trapped SIGINT"; exit 1' SIGINT
+        trap -- 'printf >&2 "%s\n" "${0##*/}: trapped SIGINT"; exit 1' SIGINT
         cat >|.github/.cspell/rust-dependencies.txt <<EOF
-// This file is @generated by ${0#./}.
+// This file is @generated by ${0##*/}.
 // It is not intended for manual editing.
 EOF
         if [[ -n "${dependencies_words}" ]]; then
@@ -764,7 +773,10 @@ EOF
 
         info "running \`npx -y cspell --no-progress --no-summary \$(git ls-files)\`"
         if ! npx -y cspell --no-progress --no-summary $(ls_files); then
-            error "spellcheck failed: please fix uses of above words or add to ${project_dictionary} if correct"
+            error "spellcheck failed: please fix uses of below words or add to ${project_dictionary} if correct"
+            printf '=======================================\n'
+            { npx -y cspell --no-progress --no-summary --words-only $(git ls-files) || true; } | LC_ALL=C sort -f -u
+            printf '=======================================\n\n'
         fi
 
         # Make sure the project-specific dictionary does not contain duplicated words.
@@ -781,22 +793,36 @@ EOF
                 error "duplicated words in dictionaries; please remove the following words from ${project_dictionary}"
                 printf '=======================================\n'
                 printf '%s\n' "${dup}"
-                printf '=======================================\n'
+                printf '=======================================\n\n'
             fi
         done
 
         # Make sure the project-specific dictionary does not contain unused words.
-        unused=''
-        for word in $(grep -Ev '^//.*' "${project_dictionary}" || true); do
-            if ! grep -Eqi "^${word}$" <<<"${all_words}"; then
-                unused+="${word}"$'\n'
+        if [[ -n "${REMOVE_UNUSED_WORDS:-}" ]]; then
+            grep_args=()
+            for word in $(grep -Ev '^//.*' "${project_dictionary}" || true); do
+                if ! grep -Eqi "^${word}$" <<<"${all_words}"; then
+                    grep_args+=(-e "^${word}$")
+                fi
+            done
+            if [[ ${#grep_args[@]} -gt 0 ]]; then
+                info "removing unused words from ${project_dictionary}"
+                res=$(grep -Ev "${grep_args[@]}" "${project_dictionary}")
+                printf '%s\n' "${res}" >|"${project_dictionary}"
             fi
-        done
-        if [[ -n "${unused}" ]]; then
-            error "unused words in dictionaries; please remove the following words from ${project_dictionary}"
-            printf '=======================================\n'
-            printf '%s' "${unused}"
-            printf '=======================================\n'
+        else
+            unused=''
+            for word in $(grep -Ev '^//.*' "${project_dictionary}" || true); do
+                if ! grep -Eqi "^${word}$" <<<"${all_words}"; then
+                    unused+="${word}"$'\n'
+                fi
+            done
+            if [[ -n "${unused}" ]]; then
+                error "unused words in dictionaries; please remove the following words from ${project_dictionary} or run ${0##*/} with REMOVE_UNUSED_WORDS=1"
+                printf '=======================================\n'
+                printf '%s' "${unused}"
+                printf '=======================================\n'
+            fi
         fi
     fi
 fi

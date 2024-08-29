@@ -44,8 +44,8 @@ jobs:
           ref: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
-          echo "${{ steps.create-gh-release.outputs.computed-prefix }}"
-          echo "${{ steps.create-gh-release.outputs.version }}"
+          printf '%s\n' "${{ steps.create-gh-release.outputs.computed-prefix }}"
+          printf '%s\n' "${{ steps.create-gh-release.outputs.version }}"
 
   upload-assets:
     name: ${{ matrix.target }}

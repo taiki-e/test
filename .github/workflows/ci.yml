@@ -139,6 +139,7 @@ jobs:
           # - opensuse/tumbleweed:latest # glibc 2.39 (as of 2024-07-19)
           # - archlinux:latest # glibc 2.39 (as of 2024-07-19)
           - alpine:latest # musl 1.2.5 (as of alpine 3.20)
+          # - openwrt/rootfs:x86-64-openwrt-23.05 # musl 1.2.4
     runs-on: ubuntu-latest
     timeout-minutes: 60
     container: ${{ matrix.container }}
@@ -167,9 +168,9 @@ jobs:
         if: startsWith(matrix.container, 'ubuntu') || startsWith(matrix.container, 'debian')
       - name: Install requirements (fedora/almalinux/centos)
         run: |
-          if type -P dnf &>/dev/null; then
+          if type -P dnf >/dev/null; then
             dnf install -y clang-tools-extra python3
-          elif type -P microdnf &>/dev/null; then
+          elif type -P microdnf >/dev/null; then
             microdnf install -y tar xz clang-tools-extra python3
           else
             # In CentOS, the old repositories is removed from the main mirrors just after EoL.
@@ -197,12 +198,12 @@ jobs:
       - name: Install Rust
         run: |
           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
-          echo "${HOME}/.cargo/bin" >>"${GITHUB_PATH}"
+          printf '%s\n' "${HOME}/.cargo/bin" >>"${GITHUB_PATH}"
       - name: Install node 18
         run: |
           mkdir -p -- /node18
           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://unofficial-builds.nodejs.org/download/release/v18.20.3/node-v18.20.3-linux-x64-glibc-217.tar.xz | tar xJf - --strip-components 1 -C /node18
-          echo "/node18/bin" >>"${GITHUB_PATH}"
+          printf '/node18/bin\n' >>"${GITHUB_PATH}"
         if: (!startsWith(matrix.container, 'alpine'))
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
@@ -238,7 +239,10 @@ jobs:
             set -CeEuxo pipefail
             case "$(uname -s)" in
               FreeBSD) sudo pkg install -y git jq npm python3 shfmt hs-ShellCheck llvm ;;
-              NetBSD) sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs shfmt shellcheck clang ;;
+              NetBSD)
+                sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs shfmt shellcheck clang
+                sudo ln -s -- /usr/pkg/bin/python3.11 /usr/pkg/bin/python3
+                ;;
               # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
               OpenBSD) sudo pkg_add git jq node python3 shfmt shellcheck rust rust-rustfmt clang-tools-extra ;;
             esac
@@ -320,7 +324,7 @@ jobs:
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go_bootstrap}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go_bootstrap}"
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go}"
             (cd -- "${HOME}/go/${go_bootstrap}"/src && PATH="/usr/gnu/bin:${PATH}" ./make.bash --no-banner)
-            "${HOME}/go/${go_bootstrap}/bin/go" version
+            "${HOME}/go/${go_bootstrap}"/bin/go version
             (cd -- "${HOME}/go/${go}"/src && PATH="/usr/gnu/bin:${PATH}" GOROOT_BOOTSTRAP="${HOME}/go/${go_bootstrap}" ./make.bash --no-banner)
             rm -rf -- "${HOME}/go/${go_bootstrap}"
             export PATH="${HOME}/go/${go}/bin:${PATH}"
@@ -331,10 +335,12 @@ jobs:
             go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
             # TODO: CA issue probably due to https://github.com/vmactions/solaris-vm/issues/38.
             #       Workaround from https://stackoverflow.com/questions/25981703/pip-install-fails-with-connection-error-ssl-certificate-verify-failed-certi.
-            echo '[global]' >>/etc/pip.conf
-            echo 'trusted-host = pypi.python.org' >>/etc/pip.conf
-            echo '               pypi.org' >>/etc/pip.conf
-            echo '               files.pythonhosted.org' >>/etc/pip.conf
+            cat >>/etc/pip.conf <<EOF
+            [global]
+            trusted-host = pypi.python.org
+                           pypi.org
+                           files.pythonhosted.org
+            EOF
             pkg uninstall gnu-make
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
@@ -343,8 +349,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      pull-requests: write # for gh pr edit --add-assignee
+      repository-projects: read # for gh pr edit --add-assignee
     steps:
       - uses: taiki-e/checkout-action@v1
       - name: Install Rust
@@ -353,12 +360,19 @@ jobs:
       - id: diff
         run: tools/ci/gen.sh
         if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main')
-      - uses: peter-evans/create-pull-request@v6
+      - id: create-pull-request
+        uses: peter-evans/create-pull-request@v6
         with:
           title: Update generated code
           body: |
-            Auto-generated by [create-pull-request](https://github.com/peter-evans/create-pull-request).
+            Auto-generated by CI using [create-pull-request](https://github.com/peter-evans/create-pull-request).
           branch: update-generated-code
           token: ${{ secrets.CREATE_PR_TOKEN }}
+        if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main') && steps.diff.outputs.success == 'false'
+      - name: Notify PR author by assigning PR
+        run: gh pr edit --add-assignee taiki-e "${PR_NUMBER:?}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.create-pull-request.outputs.pull-request-number }}
         if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main') && steps.diff.outputs.success == 'false'
       - run: git add -N . && git diff --exit-code
