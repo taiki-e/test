@@ -237,42 +237,37 @@ if [[ -n "$(ls_files '*.rs')" ]]; then
         executables=''
         binaries=''
         metadata=$(cargo metadata --format-version=1 --no-deps)
+        root_manifest=''
+        if [[ -f Cargo.toml ]]; then
+            root_manifest=$(cargo locate-project --message-format=plain --manifest-path Cargo.toml)
+        fi
+        exclude=''
         has_public_crate=''
-        for id in $(jq -r '.workspace_members[]' <<<"${metadata}"); do
-            pkg=$(jq ".packages[] | select(.id == \"${id//\\/\\\\}\")" <<<"${metadata}")
-            publish=$(jq -r '.publish' <<<"${pkg}")
-            manifest_path=$(jq -r '.manifest_path' <<<"${pkg}")
+        for pkg in $(jq -c '. as $metadata | .workspace_members[] as $id | $metadata.packages[] | select(.id == $id)' <<<"${metadata}"); do
+            eval "$(jq -r '@sh "publish=\(.publish) manifest_path=\(.manifest_path)"' <<<"${pkg}")"
             if [[ "$(tomlq -c '.lints' "${manifest_path}")" == "null" ]]; then
                 error "no [lints] table in ${manifest_path} please add '[lints]' with 'workspace = true'"
             fi
             # Publishing is unrestricted if null, and forbidden if an empty array.
-            if [[ "${publish}" == "[]" ]]; then
+            if [[ -z "${publish}" ]]; then
                 continue
             fi
             has_public_crate=1
+            if [[ "${manifest_path}" == "${root_manifest}" ]]; then
+                exclude=$(tomlq -r '.package.exclude[]' "${manifest_path}")
+                if ! grep -Eq '^/\.\*$' <<<"${exclude}"; then
+                    error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/.*\""
+                fi
+                if [[ -e tools ]] && ! grep -Eq '^/tools$' <<<"${exclude}"; then
+                    error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/tools\" if it exists"
+                fi
+                if [[ -e target-specs ]] && ! grep -Eq '^/target-specs$' <<<"${exclude}"; then
+                    error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/target-specs\" if it exists"
+                fi
+            fi
         done
         if [[ -n "${has_public_crate}" ]]; then
             info "checking public crates don't contain executables and binaries"
-            if [[ -f Cargo.toml ]]; then
-                root_manifest=$(cargo locate-project --message-format=plain --manifest-path Cargo.toml)
-                root_pkg=$(jq ".packages[] | select(.manifest_path == \"${root_manifest//\\/\\\\}\")" <<<"${metadata}")
-                if [[ -n "${root_pkg}" ]]; then
-                    publish=$(jq -r '.publish' <<<"${root_pkg}")
-                    # Publishing is unrestricted if null, and forbidden if an empty array.
-                    if [[ "${publish}" != "[]" ]]; then
-                        exclude=$(tomlq -r '.package.exclude[]' Cargo.toml)
-                        if ! grep -Eq '^/\.\*$' <<<"${exclude}"; then
-                            error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/.*\""
-                        fi
-                        if [[ -e tools ]] && ! grep -Eq '^/tools$' <<<"${exclude}"; then
-                            error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/tools\" if it exists"
-                        fi
-                        if [[ -e target-specs ]] && ! grep -Eq '^/target-specs$' <<<"${exclude}"; then
-                            error "top-level Cargo.toml of non-virtual workspace should have 'exclude' field with \"/target-specs\" if it exists"
-                        fi
-                    fi
-                fi
-            fi
             for p in $(ls_files); do
                 # Skip directories.
                 if [[ -d "${p}" ]]; then
@@ -354,21 +349,6 @@ if [[ -n "$(ls_files "${prettier_ext[@]}")" ]]; then
         IFS=$'\n\t'
         npx -y prettier -l -w $(ls_files "${prettier_ext[@]}")
         check_diff $(ls_files "${prettier_ext[@]}")
-    fi
-    # Check GitHub workflows.
-    if [[ -d .github/workflows ]]; then
-        info "checking GitHub workflows"
-        if check_install jq python3; then
-            for workflow in .github/workflows/*.yml; do
-                # The top-level permissions must be weak as they are referenced by all jobs.
-                permissions=$(yq -c '.permissions' "${workflow}")
-                case "${permissions}" in
-                    '{"contents":"read"}' | '{"contents":"none"}') ;;
-                    null) error "${workflow}: top level permissions not found; it must be 'contents: read' or weaker permissions" ;;
-                    *) error "${workflow}: only 'contents: read' and weaker permissions are allowed at top level; if you want to use stronger permissions, please set job-level permissions" ;;
-                esac
-            done
-        fi
     fi
 fi
 if [[ -n "$(ls_files '*.yaml' | { grep -Fv '.markdownlint-cli2.yaml' || true; })" ]]; then
@@ -599,82 +579,77 @@ EOF
                     should_fail=1
                 fi
             }
-            for workflow in ${workflows[@]+"${workflows[@]}"}; do
-                default_shell=$(yq -r -c '.defaults.run.shell' "${workflow}")
+            for workflow_path in ${workflows[@]+"${workflows[@]}"}; do
+                workflow=$(yq -c '.' "${workflow_path}")
+                # The top-level permissions must be weak as they are referenced by all jobs.
+                permissions=$(jq -c '.permissions' <<<"${workflow}")
+                case "${permissions}" in
+                    '{"contents":"read"}' | '{"contents":"none"}') ;;
+                    null) error "${workflow_path}: top level permissions not found; it must be 'contents: read' or weaker permissions" ;;
+                    *) error "${workflow_path}: only 'contents: read' and weaker permissions are allowed at top level; if you want to use stronger permissions, please set job-level permissions" ;;
+                esac
+                default_shell=$(jq -r -c '.defaults.run.shell' <<<"${workflow}")
                 # github's default is https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#defaultsrunshell
-                if [[ "${default_shell}" =~ ^bash\ --noprofile\ --norc\ -CeEux?o\ pipefail\ {0}$ ]]; then
-                    error "${workflow}: defaults.run.shell should be 'bash --noprofile --norc -CeEuxo pipefail {0}' or 'bash --noprofile --norc -CeEuo pipefail {0}'"
+                if [[ ! "${default_shell}" =~ ^bash\ --noprofile\ --norc\ -CeEux?o\ pipefail\ \{0}$ ]]; then
+                    error "${workflow_path}: defaults.run.shell should be 'bash --noprofile --norc -CeEuxo pipefail {0}' or 'bash --noprofile --norc -CeEuo pipefail {0}'"
                     continue
                 fi
-                for job in $(yq -c '.jobs | to_entries | .[]' "${workflow}"); do
+                # .steps == null means the job is the caller of reusable workflow
+                for job in $(jq -c '.jobs | to_entries[] | select(.value.steps)' <<<"${workflow}"); do
                     name=$(jq -r '.key' <<<"${job}")
                     job=$(jq -r '.value' <<<"${job}")
-                    if [[ "$(jq -r '.steps' <<<"${job}")" == "null" ]]; then
-                        continue # caller of reusable workflow
-                    fi
                     n=0
-                    job_default_shell=$(yq -r -c '.defaults.run.shell' <<<"${job}")
+                    job_default_shell=$(jq -r '.defaults.run.shell' <<<"${job}")
                     if [[ "${job_default_shell}" == "null" ]]; then
                         job_default_shell="${default_shell}"
                     fi
                     for step in $(jq -c '.steps[]' <<<"${job}"); do
-                        run=$(jq -r '.run' <<<"${step}")
-                        prepare=null
-                        if [[ "${run}" != "null" ]]; then
-                            shell=$(jq -r '.shell' <<<"${step}")
-                            if [[ "${shell}" == "null" ]]; then
-                                shell="${job_default_shell}"
-                            fi
-                        else
-                            run=$(jq -r '.with.run' <<<"${step}")
-                            if [[ "${run}" == "null" ]]; then
-                                _=$((n++))
-                                continue
-                            fi
-                            prepare=$(jq -r '.with.prepare' <<<"${step}")
-                            shell=$(jq -r '.with.shell' <<<"${step}")
-                            if [[ "${shell}" == "null" ]]; then
-                                if grep -Eq '^ *chsh -s [0-9a-z/]+/bash' <<<"${prepare}"; then
-                                    shell='bash'
-                                else
-                                    shell='sh'
-                                fi
-                            fi
-                        fi
-                        shellcheck_for_gha "${run}" "${shell}" "${workflow} ${name}.steps[${n}].run"
-                        shellcheck_for_gha "${prepare}" 'sh' "${workflow} ${name}.steps[${n}].run"
-                        _=$((n++))
-                    done
-                done
-            done
-            for action in ${actions[@]+"${actions[@]}"}; do
-                if [[ "$(yq -r '.runs.using' "${action}")" != "composite" ]]; then
-                    continue
-                fi
-                n=0
-                for step in $(yq -c '.runs.steps[]' "${action}"); do
-                    run=$(jq -r '.run' <<<"${step}")
-                    prepare=null
-                    if [[ "${run}" != "null" ]]; then
-                        shell=$(jq -r '.shell' <<<"${step}")
-                    else
-                        run=$(jq -r '.with.run' <<<"${step}")
-                        if [[ "${run}" == "null" ]]; then
+                        prepare=''
+                        eval "$(jq -r 'if .run then @sh "RUN=\(.run) shell=\(.shell)" else @sh "RUN=\(.with.run) prepare=\(.with.prepare) shell=\(.with.shell)" end' <<<"${step}")"
+                        if [[ "${RUN}" == "null" ]]; then
                             _=$((n++))
                             continue
                         fi
-                        prepare=$(jq -r '.with.prepare' <<<"${step}")
-                        shell=$(jq -r '.with.shell' <<<"${step}")
                         if [[ "${shell}" == "null" ]]; then
-                            if grep -Eq '^ *chsh -s [0-9a-z/]+/bash' <<<"${prepare}"; then
+                            if [[ -z "${prepare}" ]]; then
+                                shell="${job_default_shell}"
+                            elif grep -Eq '^ *chsh +-s +[^ ]+/bash' <<<"${prepare}"; then
                                 shell='bash'
                             else
                                 shell='sh'
                             fi
                         fi
+                        shellcheck_for_gha "${RUN}" "${shell}" "${workflow_path} ${name}.steps[${n}].run"
+                        shellcheck_for_gha "${prepare:-null}" 'sh' "${workflow_path} ${name}.steps[${n}].run"
+                        _=$((n++))
+                    done
+                done
+            done
+            for action_path in ${actions[@]+"${actions[@]}"}; do
+                runs=$(yq -c '.runs' "${action_path}")
+                if [[ "$(jq -r '.using' <<<"${runs}")" != "composite" ]]; then
+                    continue
+                fi
+                n=0
+                for step in $(jq -c '.steps[]' <<<"${runs}"); do
+                    prepare=''
+                    eval "$(jq -r 'if .run then @sh "RUN=\(.run) shell=\(.shell)" else @sh "RUN=\(.with.run) prepare=\(.with.prepare) shell=\(.with.shell)" end' <<<"${step}")"
+                    if [[ "${RUN}" == "null" ]]; then
+                        _=$((n++))
+                        continue
                     fi
-                    shellcheck_for_gha "${run}" "${shell}" "${action} steps[${n}].run"
-                    shellcheck_for_gha "${prepare}" 'sh' "${action} steps[${n}].run"
+                    if [[ "${shell}" == "null" ]]; then
+                        if [[ -z "${prepare}" ]]; then
+                            error "\`shell: ..\` is required"
+                            continue
+                        elif grep -Eq '^ *chsh +-s +[^ ]+/bash' <<<"${prepare}"; then
+                            shell='bash'
+                        else
+                            shell='sh'
+                        fi
+                    fi
+                    shellcheck_for_gha "${RUN}" "${shell}" "${action_path} steps[${n}].run"
+                    shellcheck_for_gha "${prepare:-null}" 'sh' "${action_path} steps[${n}].run"
                     _=$((n++))
                 done
             done
@@ -741,15 +716,12 @@ if [[ -f .cspell.json ]]; then
                 if [[ "${manifest_path}" != "Cargo.toml" ]] && [[ "$(tomlq -c '.workspace' "${manifest_path}")" == "null" ]]; then
                     continue
                 fi
-                metadata=$(cargo metadata --format-version=1 --no-deps --manifest-path "${manifest_path}")
-                for id in $(jq -r '.workspace_members[]' <<<"${metadata}"); do
-                    dependencies+="$(jq ".packages[] | select(.id == \"${id}\")" <<<"${metadata}" | jq -r '.dependencies[].name')"$'\n'
-                done
+                dependencies+="$(cargo metadata --format-version=1 --no-deps --manifest-path "${manifest_path}" | jq -r '. as $metadata | .workspace_members[] as $id | $metadata.packages[] | select(.id == $id) | .dependencies[].name')"$'\n'
             done
             dependencies=$(LC_ALL=C sort -f -u <<<"${dependencies//[0-9_-]/$'\n'}")
         fi
         config_old=$(<.cspell.json)
-        config_new=$(grep -Ev '^ *//' <<<"${config_old}" | jq 'del(.dictionaries[] | select(index("organization-dictionary") | not))' | jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))')
+        config_new=$(grep -Ev '^ *//' <<<"${config_old}" | jq 'del(.dictionaries[] | select(index("organization-dictionary") | not)) | del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))')
         trap -- 'printf "%s\n" "${config_old}" >|.cspell.json; printf >&2 "%s\n" "${0##*/}: trapped SIGINT"; exit 1' SIGINT
         printf '%s\n' "${config_new}" >|.cspell.json
         dependencies_words=''
