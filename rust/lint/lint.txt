@@ -182,7 +182,6 @@ Lint checks provided by rustc:
                                            unused-variables  warn     detect variables which are not used in any way
                                     useless-ptr-null-checks  warn     useless checking of non-null-typed pointer
                                                    warnings  warn     mass-change the level for lints which produce warnings
-                                                 wasm-c-abi  warn     detects dependencies that are incompatible with the Wasm C ABI
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
                                         arithmetic-overflow  deny     arithmetic operation overflows
@@ -222,6 +221,7 @@ Lint checks provided by rustc:
                                    undropped-manually-drops  deny     calls to `std::mem::drop` with `std::mem::ManuallyDrop` instead of it's inner value
                                         unknown-crate-types  deny     unknown crate type found in `#[crate_type]` directive
                                          useless-deprecated  deny     detects deprecation attributes with no effect
+                                                 wasm-c-abi  deny     detects dependencies that are incompatible with the Wasm C ABI
 
 
 Lint groups provided by rustc:
