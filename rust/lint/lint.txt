@@ -92,6 +92,7 @@ Lint checks provided by rustc:
                                                 drop-bounds  warn     bounds of the form `T: Drop` are most likely incorrect
                                  duplicate-macro-attributes  warn     duplicated attribute
                                                    dyn-drop  warn     trait objects of the form `dyn Drop` are useless
+                                     elided-named-lifetimes  warn     detects when an elided lifetime gets resolved to be `'static` or some named parameter
                           ellipsis-inclusive-range-patterns  warn     `...` range patterns are deprecated
                               exported-private-dependencies  warn     public interface leaks type from a private dependency
                                       forbidden-lint-groups  warn     applying forbid to lint-groups
