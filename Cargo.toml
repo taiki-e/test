@@ -59,6 +59,6 @@ unreadable_literal = { level = "allow", priority = 1 }
 # [profile.release]
 # strip = true
 
-[profile.dist]
-inherits = "release"
-strip = true
+# [profile.dist]
+# inherits = "release"
+# strip = true

@@ -12,8 +12,6 @@ microdnf
 mirrorlist
 mvdan
 pluginconf
-pypi
-pythonhosted
 rootcerts
 rootfs
 usesh

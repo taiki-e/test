@@ -79,18 +79,13 @@ case "${ostype}" in
         ;;
 esac
 python3 --version
+rustc -vV
+cargo -vV
 case "${ostype}" in
-    solaris) ;; # TODO
-    *)
-        rustc -vV
-        cargo -vV
-        case "${ostype}" in
-            # OpenBSD/DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-            # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-            openbsd | dragonfly | solaris) ;;
-            *) rustup --version ;;
-        esac
-        ;;
+    # OpenBSD/DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+    # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
+    openbsd | dragonfly | solaris) ;;
+    *) rustup --version ;;
 esac
 case "${ostype}" in
     openbsd) ;; # TODO

@@ -311,10 +311,9 @@ jobs:
           run: |
             # Solaris sh has no -C/-E/-o pipefail
             set -eux
-            pkg install git jq pkg://solaris/runtime/python-35 clang gnu-make
-            # TODO: nodejs shellcheck rustc cargo
             # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-            # developer/rust/cargo from pkg install fails to install due to dependency resolution error.
+            pkg install git jq pkg://solaris/runtime/python-37 clang gnu-make developer/rust/cargo developer/rust/rustc
+            # TODO: nodejs shellcheck
             # runtime/nodejs from pkg install is node 16.
             # developer/golang from pkg install is too old (1.7) to build shfmt.
             go_bootstrap=go1.4.3
@@ -333,14 +332,6 @@ jobs:
             export PATH="${GOPATH}/bin:${PATH}"
             # Use 3.7 because 3.8 dropped support for Go 1.19 and 1.20.
             go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
-            # TODO: CA issue probably due to https://github.com/vmactions/solaris-vm/issues/38.
-            #       Workaround from https://stackoverflow.com/questions/25981703/pip-install-fails-with-connection-error-ssl-certificate-verify-failed-certi.
-            cat >>/etc/pip.conf <<EOF
-            [global]
-            trusted-host = pypi.python.org
-                           pypi.org
-                           files.pythonhosted.org
-            EOF
             pkg uninstall gnu-make
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
