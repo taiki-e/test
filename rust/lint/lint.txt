@@ -20,6 +20,7 @@ Lint checks provided by rustc:
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
                                            ffi-unwind-calls  allow    call to foreign functions or function pointers with FFI-unwind ABI
                                      fuzzy-provenance-casts  allow    a fuzzy integer to pointer cast is used
+                                             if-let-rescope  allow    `if let` assigns a shorter lifetime to temporary values being pattern-matched against in Edition 2024 and rewriting in `match` is an option to preserve the semantics up to Edition 2021
                                     impl-trait-overcaptures  allow    `impl Trait` will capture more lifetimes than possibly intended in edition 2024
                                         keyword-idents-2018  allow    detects edition keywords being used as an identifier
                                         keyword-idents-2024  allow    detects edition keywords being used as an identifier
@@ -239,7 +240,7 @@ Lint groups provided by rustc:
     rust-2018-compatibility  keyword-idents-2018, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
            rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
     rust-2021-compatibility  ellipsis-inclusive-range-patterns, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions, array-into-iter, non-fmt-panics
-    rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, deprecated-safe-2024, missing-unsafe-on-extern, rust-2024-prelude-collisions, static-mut-refs, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn, boxed-slice-into-iter, impl-trait-overcaptures, tail-expr-drop-order
+    rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, deprecated-safe-2024, missing-unsafe-on-extern, rust-2024-prelude-collisions, static-mut-refs, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn, boxed-slice-into-iter, impl-trait-overcaptures, tail-expr-drop-order, if-let-rescope
                      unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
