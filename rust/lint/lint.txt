@@ -52,6 +52,7 @@ Lint checks provided by rustc:
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
                                               unit-bindings  allow    binding is useless because it has the unit `()` type
                                            unnameable-types  allow    effective visibility of a type is larger than the area in which it can be named
+                                  unqualified-local-imports  allow    `use` of a local item without leading `self::`, `super::`, or `crate::`
                                             unreachable-pub  allow    `pub` items not reachable from crate root
                                  unsafe-attr-outside-unsafe  allow    detects unsafe attributes outside of unsafe
                                                 unsafe-code  allow    usage of `unsafe` code and other potentially unsound constructs
