@@ -54,8 +54,9 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
-      - name: Install Rust
-        run: rustup toolchain add "${{ matrix.rust || 'nightly' }}" --no-self-update && rustup default "${{ matrix.rust || 'nightly' }}"
+      - uses: taiki-e/github-actions/install-rust@main
+        with:
+          toolchain: ${{ matrix.rust || 'nightly' }}
       - run: make test
 
   test-tidy:
@@ -95,8 +96,7 @@ jobs:
       - uses: taiki-e/checkout-action@v1
       - run: brew install clang-format
         if: startsWith(matrix.os, 'macos')
-      - name: Install Rust
-        run: rustup toolchain add nightly --no-self-update && rustup default nightly
+      - uses: taiki-e/github-actions/install-rust@nightly
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
       - run: tools/ci/tidy-show-deps.sh
@@ -345,8 +345,7 @@ jobs:
       repository-projects: read # for gh pr edit --add-assignee
     steps:
       - uses: taiki-e/checkout-action@v1
-      - name: Install Rust
-        run: rustup toolchain add nightly --no-self-update && rustup default nightly
+      - uses: taiki-e/github-actions/install-rust@nightly
       - run: make gen
       - id: diff
         run: tools/ci/gen.sh
