@@ -70,6 +70,7 @@ jobs:
           - os: ubuntu-24.04
           - os: macos-13
           - os: macos-14
+          - os: macos-15
           # Error: [WinError 2] The system cannot find the file specified
           # tools/tidy.sh: error on line 89: "python${py_suffix}" -m venv .venv
           # - os: windows-2019
