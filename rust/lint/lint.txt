@@ -24,7 +24,7 @@ Lint checks provided by rustc:
                                     impl-trait-overcaptures  allow    `impl Trait` will capture more lifetimes than possibly intended in edition 2024
                                         keyword-idents-2018  allow    detects edition keywords being used as an identifier
                                         keyword-idents-2024  allow    detects edition keywords being used as an identifier
-                                        let-underscore-drop  allow    non-binding let on a type that implements `Drop`
+                                        let-underscore-drop  allow    non-binding let on a type that has a destructor
                                      lossy-provenance-casts  allow    a lossy pointer to integer cast is used
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
