@@ -33,7 +33,7 @@ Lint checks provided by rustc:
                               missing-debug-implementations  allow    detects missing implementations of Debug
                                                missing-docs  allow    detects missing documentation for public members
                                    missing-unsafe-on-extern  allow    detects missing unsafe keyword on extern declarations
-                             multiple-supertrait-upcastable  allow    detect when an object-safe trait has multiple supertraits
+                             multiple-supertrait-upcastable  allow    detect when a dyn-compatible trait has multiple supertraits
                                            must-not-suspend  allow    use of a `#[must_not_suspend]` value across a yield point
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
