@@ -86,13 +86,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - run: |
-          printf 'C:\msys64\mingw32\bin\n' >>"${GITHUB_PATH}"
-          printf 'C:\msys64\usr\bin\n' >>"${GITHUB_PATH}"
+          printf '%s\n' 'C:\msys64\mingw32\bin' >>"${GITHUB_PATH}"
+          printf '%s\n' 'C:\msys64\usr\bin' >>"${GITHUB_PATH}"
         if: matrix.bash == 'msys64'
       - run: |
           choco install --no-progress --requirechecksums cygwin
-          printf 'C:\tools\cygwin\bin\n' >>"${GITHUB_PATH}"
-          printf 'C:\tools\cygwin\usr\bin\n' >>"${GITHUB_PATH}"
+          printf '%s\n' 'C:\tools\cygwin\bin' >>"${GITHUB_PATH}"
+          printf '%s\n' 'C:\tools\cygwin\usr\bin' >>"${GITHUB_PATH}"
         if: matrix.bash == 'cygwin'
       - uses: taiki-e/checkout-action@v1
       - run: brew install clang-format
@@ -192,7 +192,7 @@ jobs:
         if: startsWith(matrix.container, 'fedora') || startsWith(matrix.container, 'almalinux') || startsWith(matrix.container, 'centos')
       - name: Install requirements (alpine)
         run: apk --no-cache add ca-certificates curl clang-extra-tools npm python3
-        shell: sh --noprofile --norc -CeEuxo pipefail {0}
+        shell: sh
         if: startsWith(matrix.container, 'alpine')
       - uses: taiki-e/checkout-action@v1
       - name: Install Rust
