@@ -312,14 +312,25 @@ jobs:
           run: |
             # Solaris sh has no -C/-E/-o pipefail
             set -eux
+            g() {
+              ifs="${IFS}"
+              IFS=' '
+              cmd="$*"
+              IFS="${ifs}"
+              printf '::group::%s\n' "${cmd#retry }"
+              "$@"
+              printf '::endgroup::\n'
+            }
+            g egrep 'AV_|AV2_' /usr/include/sys/auxv_SPARC.h
             # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-            pkg install git jq pkg://solaris/runtime/python-37 clang gnu-make developer/rust/cargo developer/rust/rustc
+            g pkg install git jq pkg://solaris/runtime/python-37 clang gnu-make developer/rust/cargo developer/rust/rustc
             # TODO: nodejs shellcheck
             # runtime/nodejs from pkg install is node 16.
             # developer/golang from pkg install is too old (1.7) to build shfmt.
             go_bootstrap=go1.4.3
             # last version that can be built with one bootstrap: https://go.dev/doc/install/source
             go=go1.19.13
+            printf '::group::install %s\n' "${go}"
             mkdir -p -- "${HOME}/go/${go_bootstrap}" "${HOME}/go/${go}"
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go_bootstrap}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go_bootstrap}"
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go}"
@@ -331,8 +342,9 @@ jobs:
             go version
             export GOPATH="${HOME}/go"
             export PATH="${GOPATH}/bin:${PATH}"
+            printf '::endgroup::\n'
             # Use 3.7 because 3.8 dropped support for Go 1.19 and 1.20.
-            go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
+            g go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
             pkg uninstall gnu-make
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
