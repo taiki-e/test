@@ -215,7 +215,7 @@ jobs:
       matrix:
         include:
           - os: freebsd
-            version: '13.3'
+            version: '13.4'
           - os: freebsd
             version: '14.1'
           - os: netbsd
@@ -224,7 +224,7 @@ jobs:
           # - os: netbsd
           #   version: '10.0'
           - os: openbsd
-            version: '7.5'
+            version: '7.6'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
