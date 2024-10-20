@@ -12,7 +12,6 @@ microdnf
 mirrorlist
 mvdan
 pluginconf
-aavsrgeg
 rootcerts
 rootfs
 usesh
