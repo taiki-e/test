@@ -164,6 +164,7 @@ Lint checks provided by rustc:
                                               unknown-lints  warn     unrecognized lint attribute
                  unknown-or-malformed-diagnostic-attributes  warn     unrecognized or malformed diagnostic attribute
                                       unnameable-test-items  warn     detects an item that cannot be named being marked as `#[test_case]`
+                 unpredictable-function-pointer-comparisons  warn     detects unpredictable function pointer comparisons
                                            unreachable-code  warn     detects unreachable code paths
                                        unreachable-patterns  warn     detects unreachable patterns
                                    unstable-name-collisions  warn     detects name collision with an existing but unstable method
