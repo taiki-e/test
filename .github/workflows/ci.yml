@@ -222,7 +222,7 @@ jobs:
           - os: freebsd
             version: '13.4'
           - os: freebsd
-            version: '14.1'
+            version: '14.2'
           - os: netbsd
             version: '9.4'
           - os: netbsd
