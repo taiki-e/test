@@ -57,7 +57,7 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu.2.17
             os: ubuntu-latest
-            build_tool: cargo-zigbuild
+            build-tool: cargo-zigbuild
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-latest
           - target: x86_64-apple-darwin
@@ -81,15 +81,15 @@ jobs:
         with:
           bin: rust-test-bin,a
           target: ${{ matrix.target }}
+          build-tool: ${{ matrix.build-tool }}
           archive: test-$target
           checksum: sha256,sha512,sha1,md5
           tar: all
           zip: all
           include: rust
-          # leading_dir: true
+          # leading-dir: true
           ref: ${{ github.ref }}
-          build_tool: ${{ matrix.build_tool }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          # pgp_public_key: .github/public-key.asc
-          # pgp_private_key: ${{ secrets.PGP_PRIVATE_KEY }}
-          # pgp_passphrase: ${{ secrets.PGP_PASSPHRASE }}
+          # pgp-public-key: .github/public-key.asc
+          # pgp-private-key: ${{ secrets.PGP_PRIVATE_KEY }}
+          # pgp-passphrase: ${{ secrets.PGP_PASSPHRASE }}
