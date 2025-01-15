@@ -62,7 +62,7 @@ jobs:
       - uses: taiki-e/github-actions/install-rust@main
         with:
           toolchain: ${{ matrix.rust || 'nightly' }}
-      - run: make test
+      - run: cargo test --all
 
   test-tidy:
     strategy:
@@ -367,7 +367,7 @@ jobs:
     steps:
       - uses: taiki-e/checkout-action@v1
       - uses: taiki-e/github-actions/install-rust@nightly
-      - run: make gen
+      - run: tools/gen.sh
       - id: diff
         run: tools/ci/gen.sh
         if: github.repository_owner == 'taiki-e' && (github.event_name == 'schedule' || github.event_name == 'push' && github.ref == 'refs/heads/main')
