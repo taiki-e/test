@@ -22,6 +22,7 @@ Lint checks provided by rustc:
                                      fuzzy-provenance-casts  allow    a fuzzy integer to pointer cast is used
                                              if-let-rescope  allow    `if let` assigns a shorter lifetime to temporary values being pattern-matched against in Edition 2024 and rewriting in `match` is an option to preserve the semantics up to Edition 2021
                                     impl-trait-overcaptures  allow    `impl Trait` will capture more lifetimes than possibly intended in edition 2024
+                              impl-trait-redundant-captures  allow    redundant precise-capturing `use<...>` syntax on an `impl Trait`
                                         keyword-idents-2018  allow    detects edition keywords being used as an identifier
                                         keyword-idents-2024  allow    detects edition keywords being used as an identifier
                                         let-underscore-drop  allow    non-binding let on a type that has a destructor
@@ -104,7 +105,6 @@ Lint checks provided by rustc:
                                    for-loops-over-fallibles  warn     for-looping over an `Option` or a `Result`, which is more clearly expressed as an `if let`
                                    function-item-references  warn     suggest casting to a function pointer when attempting to take references to function items
                                       hidden-glob-reexports  warn     name introduced by a private item shadows a name introduced by a public glob re-export
-                              impl-trait-redundant-captures  warn     redundant precise-capturing `use<...>` syntax on an `impl Trait`
                                             improper-ctypes  warn     proper use of libc types in foreign modules
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
