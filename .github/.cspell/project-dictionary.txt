@@ -16,4 +16,3 @@ rootcerts
 rootfs
 usesh
 xzpf
-zigbuild
