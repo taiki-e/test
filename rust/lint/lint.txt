@@ -29,7 +29,6 @@ Lint checks provided by rustc:
                                      lossy-provenance-casts  allow    a lossy pointer to integer cast is used
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
-                                                missing-abi  allow    No declared ABI for extern declaration
                                missing-copy-implementations  allow    detects potentially-forgotten implementations of `Copy`
                               missing-debug-implementations  allow    detects missing implementations of Debug
                                                missing-docs  allow    detects missing documentation for public members
@@ -119,6 +118,7 @@ Lint checks provided by rustc:
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
+                                                missing-abi  warn     No declared ABI for extern declaration
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                           named-arguments-used-positionally  warn     named arguments in format used positionally
                     never-type-fallback-flowing-into-unsafe  warn     never type fallback affecting unsafe function calls
