@@ -187,6 +187,7 @@ Lint checks provided by rustc:
                                               unused-unsafe  warn     unnecessary use of an `unsafe` block
                                            unused-variables  warn     detect variables which are not used in any way
                                     useless-ptr-null-checks  warn     useless checking of non-null-typed pointer
+                                       uses-power-alignment  warn     Structs do not follow the power alignment rule under repr(C)
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
