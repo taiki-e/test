@@ -117,6 +117,7 @@ Lint checks provided by rustc:
                                           large-assignments  warn     detects large moves or copies
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
+                                            linker-messages  warn     warnings emitted at runtime by the target-specific linker program
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
                                                 missing-abi  warn     No declared ABI for extern declaration
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
