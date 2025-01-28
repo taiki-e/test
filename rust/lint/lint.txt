@@ -26,6 +26,7 @@ Lint checks provided by rustc:
                                         keyword-idents-2018  allow    detects edition keywords being used as an identifier
                                         keyword-idents-2024  allow    detects edition keywords being used as an identifier
                                         let-underscore-drop  allow    non-binding let on a type that has a destructor
+                                            linker-messages  allow    warnings emitted at runtime by the target-specific linker program
                                      lossy-provenance-casts  allow    a lossy pointer to integer cast is used
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
@@ -90,6 +91,7 @@ Lint checks provided by rustc:
                            deprecated-where-clause-location  warn     deprecated where clause location
                                   deref-into-dyn-supertrait  warn     `Deref` implementation usage with a supertrait trait object for output might be shadowed in the future
                                               deref-nullptr  warn     detects when an null pointer is dereferenced
+                                           double-negations  warn     detects expressions of the form `--x`
                                         dropping-copy-types  warn     calls to `std::mem::drop` with a value that implements Copy
                                         dropping-references  warn     calls to `std::mem::drop` with a reference instead of an owned value
                                                 drop-bounds  warn     bounds of the form `T: Drop` are most likely incorrect
@@ -117,7 +119,6 @@ Lint checks provided by rustc:
                                           large-assignments  warn     detects large moves or copies
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
-                                            linker-messages  warn     warnings emitted at runtime by the target-specific linker program
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
                                                 missing-abi  warn     No declared ABI for extern declaration
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
