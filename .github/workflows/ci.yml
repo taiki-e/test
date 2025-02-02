@@ -111,6 +111,7 @@ jobs:
       - uses: taiki-e/github-actions/install-rust@nightly
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
+      - uses: taiki-e/install-action@parse-dockerfile
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
       - run: brew install bash
@@ -215,6 +216,7 @@ jobs:
         if: (!startsWith(matrix.container, 'alpine'))
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
+      - uses: taiki-e/install-action@parse-dockerfile
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
   test-tidy-bsd:
@@ -251,15 +253,22 @@ jobs:
                 # Pin toolchain due to https://github.com/rust-lang/cargo/issues/15092.
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly-2025-01-22 --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
+                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" \
+                  | tar xzf - -C "$HOME/.cargo/bin"
                 ;;
               NetBSD)
                 sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs shfmt shellcheck clang
                 sudo ln -s -- /usr/pkg/bin/python3.12 /usr/pkg/bin/python3
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
+                cargo install parse-dockerfile --debug
                 ;;
-              # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-              OpenBSD) sudo pkg_add git jq node python3 shfmt shellcheck rust rust-rustfmt clang-tools-extra ;;
+              OpenBSD)
+                # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+                sudo pkg_add git jq node python3 shfmt shellcheck rust rust-rustfmt clang-tools-extra
+                export PATH="${HOME}/.cargo/bin:${PATH}"
+                cargo install parse-dockerfile --debug
+                ;;
             esac
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
@@ -281,6 +290,8 @@ jobs:
             # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
             pkg install -y bash git jq npm python3 shfmt hs-ShellCheck rust llvm
             git config --global --add safe.directory "$(pwd)"
+            # rustc installed from package manager is 1.74, parse-dockerfile needs 1.80.
+            cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
   test-tidy-omnios:
@@ -305,6 +316,10 @@ jobs:
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
             export PATH="${HOME}/.cargo/bin:${PATH}"
             git config --global --add safe.directory "$(pwd)"
+            # TODO: tar: directory checksum error
+            # curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" \
+            #   | tar xzf - -C "$HOME/.cargo/bin"
+            cargo install parse-dockerfile --debug
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
   test-tidy-solaris:
@@ -354,5 +369,9 @@ jobs:
             # Use 3.7 because 3.8 dropped support for Go 1.19 and 1.20.
             g go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
             pkg uninstall gnu-make
+            # rustc installed from package manager is 1.53, parse-dockerfile needs 1.80.
+            # cargo install parse-dockerfile --debug
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" \
+              | tar xzf - -C "$HOME/.cargo/bin"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh

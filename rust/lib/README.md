@@ -1,9 +1,10 @@
 # test-lib
 
-<!-- tidy:crate-doc:start -->
+<!-- tidy:sync-markdown-to-rustdoc:start:src/lib.rs -->
+
 a&/bc
 \[a]
 /.*|[]
 \a\t\n
 
-<!-- tidy:crate-doc:end -->
+<!-- tidy:sync-markdown-to-rustdoc:end -->
