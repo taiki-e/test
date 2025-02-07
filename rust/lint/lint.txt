@@ -196,7 +196,6 @@ Lint checks provided by rustc:
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                           binary-asm-labels  deny     labels in inline assembly containing only 0 or 1 digits
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
-                                       cenum-impl-drop-cast  deny     a C-like enum implementing Drop is cast
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                            default-overrides-default-fields  deny     detect `Default` impl that should use the type's default field values
                     elided-lifetimes-in-associated-constant  deny     elided lifetimes cannot be used in associated constants in impls
@@ -238,7 +237,7 @@ Lint groups provided by rustc:
                        ----  ---------
                    warnings  all lints that are set to issue warnings
             deprecated-safe  deprecated-safe-2024
-        future-incompatible  deref-into-dyn-supertrait, abi-unsupported-vector-types, ambiguous-associated-items, ambiguous-glob-imports, cenum-impl-drop-cast, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, ptr-cast-add-auto-to-object, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions
+        future-incompatible  deref-into-dyn-supertrait, abi-unsupported-vector-types, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, ptr-cast-add-auto-to-object, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
