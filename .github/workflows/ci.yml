@@ -33,6 +33,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  test:
+    uses: taiki-e/github-actions/.github/workflows/test.yml@main
+    with:
+      target: x86_64-unknown-linux-gnu,aarch64-apple-darwin,x86_64-pc-windows-msvc,aarch64-unknown-linux-gnu,x86_64-apple-darwin,x86_64-pc-windows-gnu
   tidy:
     uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
     permissions:
@@ -40,29 +44,6 @@ jobs:
       pull-requests: write # for gh pr edit --add-assignee
       repository-projects: read # for gh pr edit --add-assignee
     secrets: inherit
-
-  test:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - target: x86_64-unknown-linux-gnu
-          - target: x86_64-apple-darwin
-            os: macos-latest
-          - target: x86_64-pc-windows-msvc
-            os: windows-latest
-          # - target: x86_64-pc-windows-gnu
-          #   rust: nightly-x86_64-gnu
-          #   os: windows-latest
-          # - target: x86_64-unknown-linux-musl
-    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
-    timeout-minutes: 60
-    steps:
-      - uses: taiki-e/checkout-action@v1
-      - uses: taiki-e/github-actions/install-rust@main
-        with:
-          toolchain: ${{ matrix.rust || 'nightly' }}
-      - run: cargo test --all
 
   test-tidy:
     strategy:
