@@ -968,8 +968,6 @@ if [[ -f .cspell.json ]]; then
   project_dictionary=.github/.cspell/project-dictionary.txt
   if [[ "${ostype}" == 'solaris' ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
     warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
-  elif [[ "${ostype}" == 'illumos' ]]; then
-    warn "this check is skipped on illumos due to upstream bug (dictionaries are not loaded correctly)"
   elif check_install npm jq python3; then
     has_rust=''
     if [[ -n "$(ls_files '*Cargo.toml')" ]]; then
