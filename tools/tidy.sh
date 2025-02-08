@@ -11,7 +11,7 @@ cd -- "$(dirname -- "$0")"/..
 #    ./tools/tidy.sh
 #
 # Note: This script requires the following tools:
-# - git
+# - git 1.8+
 # - jq 1.6+
 # - npm (node 18+)
 # - python 3.6+
