@@ -15,6 +15,7 @@ Lint checks provided by rustc:
                               closure-returning-async-block  allow    closure that returns `async {}` could be rewritten as an async closure
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
                                        deprecated-safe-2024  allow    detects unsafe functions being used as safe functions
+                                  deref-into-dyn-supertrait  allow    `Deref` implementation with a supertrait trait object for output is shadowed by trait upcasting
                        edition-2024-expr-fragment-specifier  allow    The `expr` fragment specifier will accept more expressions in the 2024 edition. To keep the existing behavior, use the `expr_2021` fragment specifier.
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
@@ -89,7 +90,6 @@ Lint checks provided by rustc:
                      dependency-on-unit-never-type-fallback  warn     never type fallback affecting unsafe function calls
                                                  deprecated  warn     detects use of deprecated items
                            deprecated-where-clause-location  warn     deprecated where clause location
-                                  deref-into-dyn-supertrait  warn     `Deref` implementation usage with a supertrait trait object for output might be shadowed in the future
                                               deref-nullptr  warn     detects when an null pointer is dereferenced
                                            double-negations  warn     detects expressions of the form `--x`
                                         dropping-copy-types  warn     calls to `std::mem::drop` with a value that implements Copy
@@ -237,7 +237,7 @@ Lint groups provided by rustc:
                        ----  ---------
                    warnings  all lints that are set to issue warnings
             deprecated-safe  deprecated-safe-2024
-        future-incompatible  deref-into-dyn-supertrait, abi-unsupported-vector-types, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, ptr-cast-add-auto-to-object, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions
+        future-incompatible  abi-unsupported-vector-types, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, ptr-cast-add-auto-to-object, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
