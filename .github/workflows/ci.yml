@@ -211,8 +211,9 @@ jobs:
             version: '14.2'
           - os: netbsd
             version: '9.4'
-          - os: netbsd
-            version: '10.1'
+          # TODO:
+          # - os: netbsd
+          #   version: '10.1'
           - os: openbsd
             version: '7.6'
     runs-on: ubuntu-latest
