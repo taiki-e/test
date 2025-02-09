@@ -289,7 +289,7 @@ jobs:
             # shellcheck disable=SC3040
             set -Ceuxo pipefail
             pkg install git gnu-tar jq node-20 python-312 clang-18
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2023Q4-x86_64.tar.gz
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
             tar xzpf bootstrap.tar.gz -C /
             export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
             pkgin -y install shfmt shellcheck
