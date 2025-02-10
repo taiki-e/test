@@ -319,8 +319,69 @@ jobs:
             g egrep 'AV_|AV2_' /usr/include/sys/auxv_SPARC.h
             g ld -z help
             # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-            g pkg install git jq pkg://solaris/runtime/python-37 clang gnu-make developer/rust/cargo developer/rust/rustc
-            # TODO: shellcheck
+            # library/gmp and library/libffi are for haskell.
+            g pkg install git jq pkg://solaris/runtime/python-37 clang gnu-make developer/rust/cargo developer/rust/rustc library/gmp library/libffi
+            # haskell and shellcheck are not available via pkg install.
+            # Refs: https://shakemid.hatenablog.com/entry/20161220/1482248944
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://downloads.haskell.org/ghc/7.10.2/ghc-7.10.2-x86_64-unknown-solaris2.11.tar.bz2 | gtar xjf -
+            # curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://downloads.haskell.org/ghc/8.0.1/ghc-8.0.1-x86_64-unknown-solaris2.11.tar.xz | gtar xJf -
+            (cd -- ghc-* && PATH="/usr/gnu/bin:${PATH}" ./configure --prefix=/opt/ghc && PATH="/usr/gnu/bin:${PATH}" gmake install)
+            rm -rf -- ghc-*
+            /opt/ghc/bin/ghc -V
+            export PATH="/opt/ghc/bin:${PATH}"
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://downloads.haskell.org/cabal/cabal-install-1.22.9.0/cabal-install-1.22.9.0.tar.gz | gtar xzf -
+            # curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://downloads.haskell.org/cabal/cabal-install-1.24.0.2/cabal-install-1.24.0.2.tar.gz | gtar xzf -
+            # Workaround for "ld: fatal: unrecognized option --build-id=none" error.
+            cat >/tmp/ld <<'EOF'
+            #!/usr/bin/env bash
+            args=()
+            # z=''
+            for arg in "$@"; do
+              case "${arg}" in
+                --build-id=none) ;;
+                # -z) z='1' ;;
+                # ignore)
+                #   if [[ -n "${z}" ]]; then
+                #     args+=(--as-needed)
+                #     z=''
+                #   else
+                #     args+=("${arg}")
+                #   fi
+                #   ;;
+                # record)
+                #   if [[ -n "${z}" ]]; then
+                #     args+=(--no-as-needed)
+                #     z=''
+                #   else
+                #     args+=("${arg}")
+                #   fi
+                #   ;;
+                *)
+                  # if [[ -n "${z}" ]]; then
+                  #   args+=(-z "${arg}")
+                  #   z=''
+                  # else
+                  args+=("${arg}")
+                  # fi
+                  ;;
+              esac
+            done
+            # if ! /usr/gnu/bin/ld "${args[@]}"; then
+            #   echo "/usr/gnu/bin/ld $*"
+            #   exit 1
+            # fi
+            if ! ld "${args[@]}"; then
+              echo "ld $*"
+              exit 1
+            fi
+            EOF
+            chmod +x /tmp/ld
+            (cd -- cabal-install* && gsed -Ei 's/\.\/Setup build /LD_ALTEXEC=\/tmp\/ld .\/Setup build /' ./bootstrap.sh && bash -o posix -c 'LD_ALTEXEC=/usr/gnu/bin/ld ./bootstrap.sh')
+            # (cd -- cabal-install* && bash -o posix -c 'LD_ALTEXEC=/usr/gnu/bin/ld CC=gcc ./bootstrap.sh')
+            rm -rf -- cabal-install*
+            export PATH="${HOME}/.cabal/bin:${PATH}"
+            cabal update
+            cabal install shellcheck
             # developer/golang from pkg install is too old (1.7) to build shfmt.
             go_bootstrap=go1.4.3
             # last version that can be built with one bootstrap: https://go.dev/doc/install/source

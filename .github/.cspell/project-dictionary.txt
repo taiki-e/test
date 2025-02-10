@@ -1,4 +1,5 @@
 almalinux
+ALTEXEC
 archlinux
 Aschedule
 auxv
@@ -8,6 +9,7 @@ devcontainers
 fastestmirror
 GOPATH
 GOROOT
+gsed
 microdnf
 mirrorlist
 mvdan

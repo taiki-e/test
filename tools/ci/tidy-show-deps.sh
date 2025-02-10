@@ -62,10 +62,7 @@ awk --help 2>&1 || true
 git --version
 jq --version
 shfmt --version
-case "${ostype}" in
-  solaris) shellcheck --version || true ;; # TODO
-  *) shellcheck --version ;;
-esac
+shellcheck --version
 npm --version
 node --version
 python3 --version

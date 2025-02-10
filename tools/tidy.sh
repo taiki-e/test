@@ -650,9 +650,7 @@ if check_install shfmt; then
   fi
   check_diff "${shell_files[@]}"
 fi
-if [[ "${ostype}" == 'solaris' ]] && [[ -n "${CI:-}" ]] && ! type -P shellcheck >/dev/null; then
-  warn "this check is skipped on Solaris due to no haskell/shellcheck in upstream package manager"
-elif check_install shellcheck; then
+if check_install shellcheck; then
   check_config .shellcheckrc
   info "running \`shellcheck \$(git ls-files '*.sh')\`"
   if ! shellcheck "${shell_files[@]}"; then
