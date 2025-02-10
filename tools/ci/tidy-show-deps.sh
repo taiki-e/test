@@ -18,7 +18,7 @@ bail() {
 # https://github.com/rust-lang/rustup/blob/HEAD/rustup-init.sh
 case "$(uname -s)" in
   Linux)
-    if [[ "$(uname -o)" == "Android" ]]; then
+    if [[ "$(uname -o)" == 'Android' ]]; then
       ostype=android
     else
       ostype=linux
@@ -30,7 +30,7 @@ case "$(uname -s)" in
   OpenBSD) ostype=openbsd ;;
   DragonFly) ostype=dragonfly ;;
   SunOS)
-    if [[ "$(/usr/bin/uname -o)" == "illumos" ]]; then
+    if [[ "$(/usr/bin/uname -o)" == 'illumos' ]]; then
       ostype=illumos
     else
       ostype=solaris
@@ -50,13 +50,8 @@ type -P bash
 type -P sed
 type -P grep
 type -P awk
-case "${ostype}" in
-  solaris) ;; # TODO
-  *)
-    type -P npm
-    type -P node
-    ;;
-esac
+type -P npm
+type -P node
 printf '\n'
 printf >&2 '\n'
 
@@ -68,27 +63,22 @@ git --version
 jq --version
 shfmt --version
 case "${ostype}" in
-  solaris) ;; # TODO
+  solaris) shellcheck --version || true ;; # TODO
   *) shellcheck --version ;;
 esac
-case "${ostype}" in
-  solaris) ;; # TODO
-  *)
-    npm --version
-    node --version
-    ;;
-esac
+npm --version
+node --version
 python3 --version
 rustc -vV
 cargo -vV
 case "${ostype}" in
   # OpenBSD/DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
   # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-  openbsd | dragonfly | solaris) ;;
+  openbsd | dragonfly | solaris) rustup --version || true ;;
   *) rustup --version ;;
 esac
 case "${ostype}" in
-  openbsd) ;; # TODO
+  openbsd) clang-format --version || type -P clang-format >/dev/null || true ;; # TODO
   # clang-format 3.4.2 exit with 1 on --version flag
   *) clang-format --version || type -P clang-format >/dev/null ;;
 esac

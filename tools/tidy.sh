@@ -489,9 +489,7 @@ prettier_ext=('*.css' '*.html' '*.js' '*.json' '*.yml' '*.yaml')
 if [[ -n "$(ls_files "${prettier_ext[@]}")" ]]; then
   info "checking YAML/HTML/CSS/JavaScript/JSON code style"
   check_config .editorconfig
-  if [[ "${ostype}" == 'solaris' ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
-    warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
-  elif check_install npm; then
+  if check_install npm; then
     IFS=' '
     info "running \`npx -y prettier -l -w \$(git ls-files ${prettier_ext[*]})\`"
     IFS=$'\n\t'
@@ -510,9 +508,7 @@ check_alt '.yml extension' '.yaml extension' "$(ls_files '*.yaml' | { grep -Fv '
 if [[ -n "$(ls_files '*.toml' | { grep -Fv '.taplo.toml' || true; })" ]]; then
   info "checking TOML style"
   check_config .taplo.toml
-  if [[ "${ostype}" == 'solaris' ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
-    warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
-  elif check_install npm; then
+  if check_install npm; then
     info "running \`npx -y @taplo/cli fmt \$(git ls-files '*.toml')\`"
     RUST_LOG=warn npx -y @taplo/cli fmt $(ls_files '*.toml')
     check_diff $(ls_files '*.toml')
@@ -527,9 +523,7 @@ check_hidden taplo.toml
 if [[ -n "$(ls_files '*.md')" ]]; then
   info "checking markdown style"
   check_config .markdownlint-cli2.yaml
-  if [[ "${ostype}" == 'solaris' ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
-    warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
-  elif check_install npm; then
+  if check_install npm; then
     info "running \`npx -y markdownlint-cli2 \$(git ls-files '*.md')\`"
     if ! npx -y markdownlint-cli2 $(ls_files '*.md'); then
       error "check failed; please resolve the above markdownlint error(s)"
@@ -966,9 +960,7 @@ fi
 if [[ -f .cspell.json ]]; then
   info "spell checking"
   project_dictionary=.github/.cspell/project-dictionary.txt
-  if [[ "${ostype}" == 'solaris' ]] && [[ -n "${CI:-}" ]] && ! type -P npm >/dev/null; then
-    warn "this check is skipped on Solaris due to no node 18+ in upstream package manager"
-  elif check_install npm jq python3; then
+  if check_install npm jq python3; then
     has_rust=''
     if [[ -n "$(ls_files '*Cargo.toml')" ]]; then
       has_rust=1
