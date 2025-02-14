@@ -49,6 +49,8 @@ Lint checks provided by rustc:
                                  rust-2024-incompatible-pat  allow    detects patterns whose meaning will change in Rust 2024
                                rust-2024-prelude-collisions  allow    detects the usage of trait methods which are ambiguous with traits added to the prelude in future editions
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
+                       supertrait-item-shadowing-definition  allow    detects when a supertrait item is shadowed by a subtrait item
+                            supertrait-item-shadowing-usage  allow    detects when a supertrait item is shadowed by a subtrait item
                                        tail-expr-drop-order  allow    Detect and warn on significant change in drop order in tail expression location
                                               trivial-casts  allow    detects trivial casts which could be removed
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
