@@ -60,7 +60,11 @@ print_fenced() {
   printf '=======================================\n\n'
 }
 check_diff() {
-  if [[ -n "${CI:-}" ]]; then
+  if [[ -n "${GITHUB_ACTIONS:-}" ]]; then
+    if ! git -c color.ui=always --no-pager diff --exit-code "$@"; then
+      should_fail=1
+    fi
+  elif [[ -n "${CI:-}" ]]; then
     if ! git --no-pager diff --exit-code "$@"; then
       should_fail=1
     fi

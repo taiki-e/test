@@ -21,7 +21,7 @@ git config user.email 'te316e89@gmail.com'
 has_update=''
 cargo run --manifest-path rust/lint/Cargo.toml
 git add -N rust/lint
-if ! git diff --exit-code -- rust/lint; then
+if ! git diff --exit-code -- rust/lint &>/dev/null; then
   git add rust/lint
   git commit -m "Update lint list"
   has_update=1
