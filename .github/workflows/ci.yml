@@ -107,10 +107,8 @@ jobs:
       matrix:
         container:
           # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
-          # ubuntu 16.04's python3 is 3.5, ubuntu 14.04's python3 is 3.4
-          # SyntaxError: invalid syntax
-          # Traceback (most recent call last):
-          #   File ".venv/bin/tomlq", line 7, in <module>
+          # debian 9's python3 is 3.5.3, ubuntu 16.04's python3 is 3.5.2, ubuntu 14.04's python3 is 3.4,
+          # we got "SyntaxError: invalid syntax" when using yq with python 3.5.2 and older.
           # - ubuntu:14.04 # glibc 2.19
           # - ubuntu:16.04 # glibc 2.23
           - ubuntu:18.04 # glibc 2.27
@@ -153,7 +151,7 @@ jobs:
             # ubuntu 18.04/16.04 and debian 10/9's jq is 1.5, ubuntu 14.04's jq is 1.3
             # jq: error (at <stdin>:44): Invalid path expression near attempt to access element 0 of [0]
             # tools/tidy.sh: error on line 408: jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))'
-            ubuntu:18.04* | ubuntu:16.04* | ubuntu:14.04* | debian:10* | debian:9*)
+            ubuntu:1?.04 | debian:10* | debian:9*)
               curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o /usr/local/bin/jq https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64
               chmod +x /usr/local/bin/jq
               ;;
@@ -180,12 +178,16 @@ jobs:
         if: startsWith(matrix.container, 'alpine')
       - uses: taiki-e/checkout-action@v1
       - uses: taiki-e/github-actions/install-rust@nightly
-      - name: Install node 18
+      - name: Install Node.js
         run: |
-          mkdir -p -- /node18
-          node_version=18.20.6
-          curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://unofficial-builds.nodejs.org/download/release/v${node_version}/node-v${node_version}-linux-x64-glibc-217.tar.xz" | tar xJf - --strip-components 1 -C /node18
-          printf '/node18/bin\n' >>"${GITHUB_PATH}"
+          mkdir -p -- /node
+          node_version=18.20.7
+          case "${{ matrix.container }}" in
+            ubuntu:1?.04 | debian:9* | centos:7) url="https://unofficial-builds.nodejs.org/download/release/v${node_version}/node-v${node_version}-linux-x64-glibc-217.tar.xz" ;;
+            *) url="https://nodejs.org/dist/v${node_version}/node-v${node_version}-linux-x64.tar.xz" ;;
+          esac
+          curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "${url}" | tar xJf - --strip-components 1 -C /node
+          printf '/node/bin\n' >>"${GITHUB_PATH}"
         if: (!startsWith(matrix.container, 'alpine'))
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
@@ -203,9 +205,8 @@ jobs:
             version: '14.2'
           - os: netbsd
             version: '9.4'
-          # TODO:
-          # - os: netbsd
-          #   version: '10.1'
+          - os: netbsd
+            version: '10.1'
           - os: openbsd
             version: '7.6'
     runs-on: ubuntu-latest
@@ -281,7 +282,7 @@ jobs:
             # illumos sh has no -E
             # shellcheck disable=SC3040
             set -Ceuxo pipefail
-            pkg install git gnu-tar jq node-20 python-312 clang-18
+            pkg install git gnu-tar jq node-22 python-312 clang-19
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
             tar xzpf bootstrap.tar.gz -C /
             export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
@@ -317,10 +318,10 @@ jobs:
               printf '::endgroup::\n'
               set -x
             }
-            g egrep 'AV_|AV2_' /usr/include/sys/auxv_SPARC.h
+            (PATH="/usr/gnu/bin:${PATH}" g tail -n +1 /usr/include/sys/auxv*.h)
             g ld -z help
             # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-            g pkg install git jq pkg://solaris/runtime/python-37 clang gnu-make developer/rust/cargo developer/rust/rustc
+            g pkg install git jq pkg://solaris/runtime/python-39 clang gnu-make developer/rust/cargo developer/rust/rustc
             # TODO: shellcheck
             # developer/golang from pkg install is too old (1.7) to build shfmt.
             go_bootstrap=go1.4.3
@@ -343,10 +344,10 @@ jobs:
             g go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
             g pkg uninstall gnu-make
             # runtime/nodejs from pkg install is node 16.
-            mkdir -p -- /node18
-            node_version=18.20.6
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/node/releases/download/v${node_version}%2Bsolaris/node-solaris-x64.tar.gz" | gtar xzf - --strip-components 1 -C /node18
-            export PATH="/node18/bin:${PATH}"
+            mkdir -p -- /node
+            node_version=18.20.7
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/node/releases/download/v${node_version}%2Bsolaris/node-solaris-x64.tar.gz" | gtar xzf - --strip-components 1 -C /node
+            export PATH="/node/bin:${PATH}"
             # rustc installed from package manager is 1.53, parse-dockerfile needs 1.80.
             # cargo install parse-dockerfile --debug
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
