@@ -141,7 +141,6 @@ Lint checks provided by rustc:
                                             path-statements  warn     path statements with no effect
                                              private-bounds  warn     private type in secondary interface of an item
                                          private-interfaces  warn     private type in primary interface of an item
-                                ptr-cast-add-auto-to-object  warn     detects `as` casts from pointers to `dyn Trait` to pointers to `dyn Trait + Auto`
                          ptr-to-integer-transmute-in-consts  warn     detects pointer to integer transmutes in const functions and associated constants
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
                                refining-impl-trait-internal  warn     impl trait in impl method signature does not match trait method signature
@@ -239,7 +238,7 @@ Lint groups provided by rustc:
                        ----  ---------
                    warnings  all lints that are set to issue warnings
             deprecated-safe  deprecated-safe-2024
-        future-incompatible  abi-unsupported-vector-types, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, ptr-cast-add-auto-to-object, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions
+        future-incompatible  abi-unsupported-vector-types, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, order-dependent-trait-objects, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
