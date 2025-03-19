@@ -200,7 +200,7 @@ jobs:
       matrix:
         include:
           - os: freebsd
-            version: '13.4'
+            version: '13.5'
           - os: freebsd
             version: '14.2'
           - os: netbsd
