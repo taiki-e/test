@@ -318,9 +318,9 @@ jobs:
               printf '::endgroup::\n'
               set -x
             }
-            (PATH="/usr/gnu/bin:${PATH}" g tail -n +1 /usr/include/sys/auxv*.h)
             g ld -z help
             # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
+            # TODO: install rust from https://github.com/psumbera/solaris-rust?
             g pkg install git jq pkg://solaris/runtime/python-39 clang gnu-make developer/rust/cargo developer/rust/rustc
             # TODO: shellcheck
             # developer/golang from pkg install is too old (1.7) to build shfmt.
