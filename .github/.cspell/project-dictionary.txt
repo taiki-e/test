@@ -10,6 +10,7 @@ GOROOT
 microdnf
 mirrorlist
 mvdan
+pipx
 pluginconf
 rootcerts
 rootfs
