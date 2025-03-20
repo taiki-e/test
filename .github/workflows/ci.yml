@@ -261,10 +261,13 @@ jobs:
             set -Ceuxo pipefail
             pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
             # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-            pkg install -y bash git jq npm python3 shfmt hs-ShellCheck rust llvm
+            pkg install -y bash git jq npm python3 hs-ShellCheck rust llvm
+            # shfmt not in 6.4 packages since 2025-03-17.
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
+            pkg install -y shfmt-3.8.0_5.pkg
             export PATH="${HOME}/.cargo/bin:${PATH}"
             git config --global --add safe.directory "$(pwd)"
-            # rustc installed from package manager is 1.74, parse-dockerfile needs 1.80.
+            # rustc installed from package manager is 1.79, parse-dockerfile needs 1.80.
             cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
