@@ -1,7 +1,6 @@
 almalinux
 archlinux
 Aschedule
-auxv
 Ceuxo
 copyback
 devcontainers
