@@ -69,6 +69,7 @@ esac
 npm --version
 node --version
 python3 --version
+pipx --version
 rustc -vV
 cargo -vV
 case "${ostype}" in
