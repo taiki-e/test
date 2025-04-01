@@ -209,6 +209,7 @@ Lint checks provided by rustc:
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
                                      invalid-doc-attributes  deny     detects invalid `#[doc(...)]` attributes
                                 invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
+                                     invalid-null-arguments  deny     invalid null pointer in arguments
                                   invalid-reference-casting  deny     casts of `&T` to `&mut T` without interior mutability
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
