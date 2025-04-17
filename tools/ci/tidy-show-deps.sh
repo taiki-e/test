@@ -49,7 +49,7 @@ ls -- /usr/xpg7/bin || true
 type -P bash
 type -P sed
 type -P grep
-type -P awk
+type -P awk || true
 type -P npm
 type -P node
 printf '\n'
