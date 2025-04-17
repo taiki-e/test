@@ -159,7 +159,6 @@ Lint checks provided by rustc:
                                         uncommon-codepoints  warn     detects uncommon Unicode codepoints in identifiers
                                     unconditional-recursion  warn     functions that cannot return without calling themselves
                               uncovered-param-in-projection  warn     impl contains type parameters that are not covered
-                               undefined-naked-function-abi  warn     undefined naked function ABI
                                             unexpected-cfgs  warn     detects unexpected names and values in `#[cfg]` conditions
                               unfulfilled-lint-expectations  warn     unfulfilled lint expectation
                               ungated-async-fn-track-caller  warn     enabling track_caller on an async fn is a no-op unless the async_fn_track_caller feature is enabled
