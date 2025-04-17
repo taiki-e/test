@@ -255,7 +255,9 @@ jobs:
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
                 ;;
               NetBSD)
+                sudo pkgin update
                 sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs py312-pip shfmt shellcheck clang
+                sudo pkgin clean
                 sudo ln -s -- /usr/pkg/bin/python3.12 /usr/pkg/bin/python3
                 export PATH="${HOME}/.local/bin:${PATH}"
                 python3 -m pip install pipx
