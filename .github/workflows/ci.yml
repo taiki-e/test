@@ -240,7 +240,15 @@ jobs:
             set -CeEuxo pipefail
             case "$(uname -s)" in
               FreeBSD)
-                sudo pkg install -y git jq npm python3 devel/py-pipx shfmt hs-ShellCheck llvm
+                sudo pkg install -y git jq npm python3 devel/py-pipx hs-ShellCheck llvm
+                # go and shfmt not available in FreeBSD 14 packages since 2025-04-07.
+                go_version=1.24.2 # https://go.dev/dl
+                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.freebsd-amd64.tar.gz" | tar xzf - -C /usr/local
+                export PATH="/usr/local/go/bin:${PATH}"
+                go version
+                export GOPATH="${HOME}/go"
+                export PATH="${GOPATH}/bin:${PATH}"
+                go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
@@ -344,29 +352,17 @@ jobs:
             g ld -z help
             # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
             # TODO: install rust from https://github.com/psumbera/solaris-rust?
-            g pkg install git jq pkg://solaris/runtime/python-39 pip-39 clang gnu-make developer/rust/cargo developer/rust/rustc
+            g pkg install git jq pkg://solaris/runtime/python-39 pip-39 clang developer/rust/cargo developer/rust/rustc
             g python3 -m pip install pipx
             # TODO: shellcheck
             # developer/golang from pkg install is too old (1.7) to build shfmt.
-            go_bootstrap=go1.4.3
-            # last version that can be built with one bootstrap: https://go.dev/doc/install/source
-            go=go1.19.13
-            printf '::group::install %s\n' "${go}"
-            mkdir -p -- "${HOME}/go/${go_bootstrap}" "${HOME}/go/${go}"
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go_bootstrap}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go_bootstrap}"
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/${go}.src.tar.gz" | gtar xzf - --strip-components 1 -C "${HOME}/go/${go}"
-            (cd -- "${HOME}/go/${go_bootstrap}"/src && PATH="/usr/gnu/bin:${PATH}" ./make.bash --no-banner)
-            "${HOME}/go/${go_bootstrap}"/bin/go version
-            (cd -- "${HOME}/go/${go}"/src && PATH="/usr/gnu/bin:${PATH}" GOROOT_BOOTSTRAP="${HOME}/go/${go_bootstrap}" ./make.bash --no-banner)
-            rm -rf -- "${HOME}/go/${go_bootstrap}"
-            export PATH="${HOME}/go/${go}/bin:${PATH}"
+            go_version=1.24.2 # https://go.dev/dl
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.solaris-amd64.tar.gz" | gtar xzf - -C /usr/local
+            export PATH="/usr/local/go/bin:${PATH}"
             go version
             export GOPATH="${HOME}/go"
             export PATH="${GOPATH}/bin:${PATH}"
-            printf '::endgroup::\n'
-            # Use 3.7 because 3.8 dropped support for Go 1.19 and 1.20.
-            g go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0
-            g pkg uninstall gnu-make
+            g go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
             # runtime/nodejs from pkg install is node 16.
             mkdir -p -- /node
             node_version=18.20.7

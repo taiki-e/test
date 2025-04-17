@@ -6,7 +6,6 @@ copyback
 devcontainers
 fastestmirror
 GOPATH
-GOROOT
 microdnf
 mirrorlist
 mvdan
