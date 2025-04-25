@@ -70,7 +70,6 @@ Lint checks provided by rustc:
                                       unused-qualifications  allow    detects unnecessarily qualified names
                                              unused-results  allow    unused result of an expression in a statement
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
-                               abi-unsupported-vector-types  warn     this function call or definition uses a vector type which is not enabled
                                      ambiguous-glob-imports  warn     detects certain glob imports that require reporting an ambiguity error
                                    ambiguous-glob-reexports  warn     ambiguous glob re-exports
                          ambiguous-wide-pointer-comparisons  warn     detects ambiguous wide pointer comparisons
@@ -166,6 +165,7 @@ Lint checks provided by rustc:
                                               unknown-lints  warn     unrecognized lint attribute
                  unknown-or-malformed-diagnostic-attributes  warn     unrecognized or malformed diagnostic attribute
                                       unnameable-test-items  warn     detects an item that cannot be named being marked as `#[test_case]`
+                                     unnecessary-transmutes  warn     detects transmutes that are shadowed by std methods
                  unpredictable-function-pointer-comparisons  warn     detects unpredictable function pointer comparisons
                                            unreachable-code  warn     detects unreachable code paths
                                        unreachable-patterns  warn     detects unreachable patterns
@@ -238,7 +238,7 @@ Lint groups provided by rustc:
                        ----  ---------
                    warnings  all lints that are set to issue warnings
             deprecated-safe  deprecated-safe-2024
-        future-incompatible  abi-unsupported-vector-types, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions, wasm-c-abi
+        future-incompatible  ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions, wasm-c-abi
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
