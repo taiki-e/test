@@ -86,6 +86,7 @@ Lint checks provided by rustc:
                                           confusable-idents  warn     detects visually confusable pairs between identifiers
                                 const-evaluatable-unchecked  warn     detects a generic constant is used in a type without a emitting a warning
                                         const-item-mutation  warn     detects attempts to mutate a `const` item
+                                dangerous-implicit-autorefs  warn     implicit reference to a dereference of a raw pointer
                          dangling-pointers-from-temporaries  warn     detects getting a pointer from a temporary
                                                   dead-code  warn     detect unused, unexported items
                      dependency-on-unit-never-type-fallback  warn     never type fallback affecting unsafe function calls
@@ -150,7 +151,7 @@ Lint checks provided by rustc:
                        semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
                                         special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
-                                            static-mut-refs  warn     shared references or mutable references of mutable static is discouraged
+                                            static-mut-refs  warn     creating a shared reference to mutable static
                                    suspicious-double-ref-op  warn     suspicious call of trait method on `&&T`
                                              trivial-bounds  warn     these bounds don't depend on an type parameters
                                           type-alias-bounds  warn     bounds in type aliases are not enforced
