@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-use std::{env, fs, path::Path, process::Command, str};
+use std::{env, fs, path::Path, process::Command};
 
 fn main() {
     let output = Command::new("rustc").args(["-W", "help"]).output().unwrap();
