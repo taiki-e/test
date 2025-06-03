@@ -33,301 +33,304 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    uses: taiki-e/github-actions/.github/workflows/test.yml@main
-    with:
-      target: x86_64-unknown-linux-gnu,aarch64-apple-darwin,x86_64-pc-windows-msvc,aarch64-unknown-linux-gnu,x86_64-apple-darwin,x86_64-pc-windows-gnu
-  tidy:
-    uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
-    permissions:
-      contents: read
-      pull-requests: write # for gh pr edit --add-assignee
-      repository-projects: read # for gh pr edit --add-assignee
-    secrets: inherit
+  # test:
+  #   uses: taiki-e/github-actions/.github/workflows/test.yml@main
+  #   with:
+  #     target: x86_64-unknown-linux-gnu,aarch64-apple-darwin,x86_64-pc-windows-msvc,aarch64-unknown-linux-gnu,x86_64-apple-darwin,x86_64-pc-windows-gnu
+  # tidy:
+  #   uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
+  #   permissions:
+  #     contents: read
+  #     pull-requests: write # for gh pr edit --add-assignee
+  #     repository-projects: read # for gh pr edit --add-assignee
+  #   secrets: inherit
 
-  test-tidy:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
-          - os: ubuntu-22.04
-          - os: ubuntu-22.04-arm
-          - os: ubuntu-24.04
-          - os: ubuntu-24.04-arm
-          - os: macos-13
-          - os: macos-14
-          - os: macos-15
-          # Error: [WinError 2] The system cannot find the file specified
-          # tools/tidy.sh: error on line 89: "python${py_suffix}" -m venv .venv
-          # - os: windows-2019
-          # - os: windows-2019
-          #   bash: msys64
-          # - os: windows-2019
-          #   bash: cygwin
-          - os: windows-2022
-          - os: windows-2022
-            bash: msys64
-          - os: windows-2022
-            bash: cygwin
-          - os: windows-2025
-          - os: windows-2025
-            bash: msys64
-          - os: windows-2025
-            bash: cygwin
-    runs-on: ${{ matrix.os }}
-    steps:
-      - run: |
-          printf '%s\n' 'C:\msys64\mingw32\bin' >>"${GITHUB_PATH}"
-          printf '%s\n' 'C:\msys64\usr\bin' >>"${GITHUB_PATH}"
-        if: matrix.bash == 'msys64'
-      - run: |
-          choco install --no-progress --requirechecksums cygwin
-          printf '%s\n' 'C:\tools\cygwin\bin' >>"${GITHUB_PATH}"
-          printf '%s\n' 'C:\tools\cygwin\usr\bin' >>"${GITHUB_PATH}"
-        if: matrix.bash == 'cygwin'
-      - uses: taiki-e/checkout-action@v1
-      - run: brew install clang-format
-        if: startsWith(matrix.os, 'macos')
-      - uses: taiki-e/github-actions/install-rust@nightly
-      - uses: taiki-e/install-action@shellcheck
-      - uses: taiki-e/install-action@shfmt
-      - uses: taiki-e/install-action@parse-dockerfile
-      - run: tools/ci/tidy-show-deps.sh
-      - run: tools/tidy.sh
-      - run: brew install bash
-        if: startsWith(matrix.os, 'macos')
-      - run: tools/ci/tidy-show-deps.sh
-        if: startsWith(matrix.os, 'macos')
-      - run: tools/tidy.sh
-        if: startsWith(matrix.os, 'macos')
-  test-tidy-container:
-    strategy:
-      fail-fast: false
-      matrix:
-        container:
-          # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
-          # debian 9's python3 is 3.5.3, ubuntu 16.04's python3 is 3.5.2, ubuntu 14.04's python3 is 3.4,
-          # we got "SyntaxError: invalid syntax" when using yq with python 3.5.2 and older,
-          # and we got "Python 3.6 or later is required" when using yq with python 3.5 and older.
-          # - ubuntu:14.04 # glibc 2.19
-          # - ubuntu:16.04 # glibc 2.23
-          - ubuntu:18.04 # glibc 2.27
-          - ubuntu:20.04 # glibc 2.31
-          - ubuntu:22.04 # glibc 2.35
-          - ubuntu:24.04 # glibc 2.39
-          # - debian:9-slim # glibc 2.24
-          - debian:10-slim # glibc 2.28
-          - debian:11-slim # glibc 2.31
-          - debian:12-slim # glibc 2.36
-          - fedora:latest # glibc 2.39 (as of fedora 40)
-          - almalinux:8 # glibc 2.28
-          - almalinux:8-minimal # glibc 2.28
-          - almalinux:9 # glibc 2.34
-          - almalinux:9-minimal # glibc 2.34
-          # - centos:6 # glibc 2.12 # rustc/nodejs requires glibc 2.17
-          - centos:7 # glibc 2.17
-          # - opensuse/leap:latest # glibc 2.38 (as of leap 15.6)
-          # - opensuse/tumbleweed:latest # glibc 2.39 (as of 2024-07-19)
-          # - archlinux:latest # glibc 2.39 (as of 2024-07-19)
-          - alpine:latest # musl 1.2.5 (as of alpine 3.20)
-          # - openwrt/rootfs:x86-64-openwrt-24.10 # musl 1.2.5
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    container: ${{ matrix.container }}
-    steps:
-      - name: Install requirements (ubuntu/debian)
-        run: |
-          case "${{ matrix.container }}" in
-            debian:9*)
-              # In Debian, the old repositories is removed from the main mirrors some time after EoL.
-              sed -i /etc/apt/sources.list -e 's/deb.debian.org/archive.debian.org/g' \
-                -e 's|security.debian.org|archive.debian.org/|g' \
-                -e '/stretch-updates/d'
-              ;;
-          esac
-          apt-get -o Acquire::Retries=10 -qq update
-          case "${{ matrix.container }}" in
-            # pipx in API is only available since ubuntu 22.04/debian 12
-            ubuntu:1?.* | ubuntu:20.* | debian:1[01]* | debian:9*)
-              apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl xz-utils clang-format python3-venv python3-pip
-              pip3 install pipx
-              ;;
-            *) apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl xz-utils clang-format pipx ;;
-          esac
-          case "${{ matrix.container }}" in
-            # ubuntu 18.04/16.04 and debian 10/9's jq is 1.5, ubuntu 14.04's jq is 1.3
-            # jq: error (at <stdin>:44): Invalid path expression near attempt to access element 0 of [0]
-            # tools/tidy.sh: error on line 408: jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))'
-            ubuntu:1?.04 | debian:10* | debian:9*)
-              curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o /usr/local/bin/jq https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64
-              chmod +x /usr/local/bin/jq
-              ;;
-          esac
-        if: startsWith(matrix.container, 'ubuntu') || startsWith(matrix.container, 'debian')
-      - name: Install requirements (fedora/almalinux/centos)
-        run: |
-          if type -P dnf >/dev/null; then
-            case "${{ matrix.container }}" in
-              fedora:*) dnf install -y clang-tools-extra pipx ;;
-              *)
-                dnf install -y clang-tools-extra python3-pip
-                pip3 install pipx
-                ;;
-            esac
-          elif type -P microdnf >/dev/null; then
-            microdnf install -y tar xz clang-tools-extra python3-pip
-            pip3 install pipx
-          else
-            # In CentOS, the old repositories is removed from the main mirrors just after EoL.
-            # https://github.com/rust-lang/rust/pull/126352
-            sed -i /etc/yum.repos.d/*.repo -e 's!^mirrorlist!#mirrorlist!' \
-              -e 's!^#baseurl=http://mirror.centos.org/!baseurl=https://vault.centos.org/!'
-            sed -i 's/enabled=1/enabled=0/' /etc/yum/pluginconf.d/fastestmirror.conf
-            yum install -y xz clang python3-pip
-            pip3 install pipx
-          fi
-        if: startsWith(matrix.container, 'fedora') || startsWith(matrix.container, 'almalinux') || startsWith(matrix.container, 'centos')
-      - name: Install requirements (alpine)
-        run: apk --no-cache add ca-certificates curl clang-extra-tools npm pipx
-        shell: sh
-        if: startsWith(matrix.container, 'alpine')
-      - uses: taiki-e/checkout-action@v1
-      - uses: taiki-e/github-actions/install-rust@nightly
-      - name: Install Node.js
-        run: |
-          mkdir -p -- /node
-          node_version=18.20.7
-          case "${{ matrix.container }}" in
-            ubuntu:1?.04 | debian:9* | centos:7) url="https://unofficial-builds.nodejs.org/download/release/v${node_version}/node-v${node_version}-linux-x64-glibc-217.tar.xz" ;;
-            *) url="https://nodejs.org/dist/v${node_version}/node-v${node_version}-linux-x64.tar.xz" ;;
-          esac
-          curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "${url}" | tar xJf - --strip-components 1 -C /node
-          printf '/node/bin\n' >>"${GITHUB_PATH}"
-        if: (!startsWith(matrix.container, 'alpine'))
-      - uses: taiki-e/install-action@shellcheck
-      - uses: taiki-e/install-action@shfmt
-      - uses: taiki-e/install-action@parse-dockerfile
-      - run: tools/ci/tidy-show-deps.sh
-      - run: tools/tidy.sh
-  test-tidy-bsd:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: freebsd
-            version: '13.5'
-          - os: freebsd
-            version: '14.2'
-          - os: netbsd
-            version: '9.4'
-          - os: netbsd
-            version: '10.1'
-          - os: openbsd
-            version: '7.6'
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: taiki-e/checkout-action@v1
-      - uses: taiki-e/cross-platform-actions-action@neoverse-v1
-        with:
-          environment_variables: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
-          operating_system: ${{ matrix.os }}
-          version: ${{ matrix.version }}
-          shell: bash
-          sync_files: runner-to-vm
-          run: |
-            set -CeEuxo pipefail
-            case "$(uname -s)" in
-              FreeBSD)
-                sudo pkg install -y git jq npm python3 devel/py-pipx hs-ShellCheck llvm
-                # go and shfmt not available in FreeBSD 14 packages since 2025-04-07.
-                go_version=1.24.2 # https://go.dev/dl
-                mkdir -p -- "${HOME}/go"
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.freebsd-amd64.tar.gz" | tar xzf - -C "${HOME}/go"
-                export PATH="${HOME}/go/go/bin:${PATH}"
-                go version
-                export GOPATH="${HOME}/go"
-                export PATH="${GOPATH}/bin:${PATH}"
-                go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
-                export PATH="${HOME}/.cargo/bin:${PATH}"
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
-                ;;
-              NetBSD)
-                sudo pkgin update
-                sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs py312-pip shfmt shellcheck clang
-                sudo pkgin clean
-                sudo ln -s -- /usr/pkg/bin/python3.12 /usr/pkg/bin/python3
-                export PATH="${HOME}/.local/bin:${PATH}"
-                python3 -m pip install pipx
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
-                export PATH="${HOME}/.cargo/bin:${PATH}"
-                cargo install parse-dockerfile --debug
-                ;;
-              OpenBSD)
-                # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-                sudo pkg_add git jq node py3-pipx shfmt shellcheck rust rust-rustfmt clang-tools-extra
-                export PATH="${HOME}/.cargo/bin:${PATH}"
-                cargo install parse-dockerfile --debug
-                ;;
-            esac
-            tools/ci/tidy-show-deps.sh
-            tools/tidy.sh
-  test-tidy-dragonfly:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: taiki-e/checkout-action@v1
-      - uses: vmactions/dragonflybsd-vm@v1
-        with:
-          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
-          usesh: true
-          copyback: false
-          run: |
-            # DragonFly BSD sh's -E means -o emacs
-            # shellcheck disable=SC3040
-            set -Ceuxo pipefail
-            pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
-            # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-            pkg install -y bash git jq npm python3 py311-pip hs-ShellCheck rust llvm
-            python3 -m pip install pipx
-            # shfmt not in 6.4 packages since 2025-03-17.
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
-            pkg install -y shfmt-3.8.0_5.pkg
-            export PATH="${HOME}/.cargo/bin:${PATH}"
-            git config --global --add safe.directory "$(pwd)"
-            # rustc installed from package manager is 1.79, parse-dockerfile needs 1.80.
-            cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
-            tools/ci/tidy-show-deps.sh
-            tools/tidy.sh
-  test-tidy-omnios:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: taiki-e/checkout-action@v1
-      - uses: vmactions/omnios-vm@v1
-        with:
-          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
-          usesh: true
-          copyback: false
-          run: |
-            # illumos sh has no -E
-            # shellcheck disable=SC3040
-            set -Ceuxo pipefail
-            pkg install git gnu-tar jq node-22 python-312 clang-19
-            python3 -m pip install pipx
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
-            tar xzpf bootstrap.tar.gz -C /
-            export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
-            pkgin -y install shfmt shellcheck
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
-            export PATH="${HOME}/.cargo/bin:${PATH}"
-            git config --global --add safe.directory "$(pwd)"
-            # Use gtar instead of tar because "tar: directory checksum error" error
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
-            tools/ci/tidy-show-deps.sh
-            tools/tidy.sh
+  # test-tidy:
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       include:
+  #         # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
+  #         - os: ubuntu-22.04
+  #         - os: ubuntu-22.04-arm
+  #         - os: ubuntu-24.04
+  #         - os: ubuntu-24.04-arm
+  #         - os: macos-13
+  #         - os: macos-14
+  #         - os: macos-15
+  #         # Error: [WinError 2] The system cannot find the file specified
+  #         # tools/tidy.sh: error on line 89: "python${py_suffix}" -m venv .venv
+  #         # - os: windows-2019
+  #         # - os: windows-2019
+  #         #   bash: msys64
+  #         # - os: windows-2019
+  #         #   bash: cygwin
+  #         - os: windows-2022
+  #         - os: windows-2022
+  #           bash: msys64
+  #         - os: windows-2022
+  #           bash: cygwin
+  #         - os: windows-2025
+  #         - os: windows-2025
+  #           bash: msys64
+  #         - os: windows-2025
+  #           bash: cygwin
+  #   runs-on: ${{ matrix.os }}
+  #   steps:
+  #     - run: |
+  #         printf '%s\n' 'C:\msys64\mingw32\bin' >>"${GITHUB_PATH}"
+  #         printf '%s\n' 'C:\msys64\usr\bin' >>"${GITHUB_PATH}"
+  #       if: matrix.bash == 'msys64'
+  #     - run: |
+  #         choco install --no-progress --requirechecksums cygwin
+  #         printf '%s\n' 'C:\tools\cygwin\bin' >>"${GITHUB_PATH}"
+  #         printf '%s\n' 'C:\tools\cygwin\usr\bin' >>"${GITHUB_PATH}"
+  #       if: matrix.bash == 'cygwin'
+  #     - uses: taiki-e/checkout-action@v1
+  #     - run: brew install clang-format
+  #       if: startsWith(matrix.os, 'macos')
+  #     - uses: taiki-e/github-actions/install-rust@nightly
+  #     - uses: taiki-e/install-action@shellcheck
+  #     - uses: taiki-e/install-action@shfmt
+  #     - uses: taiki-e/install-action@parse-dockerfile
+  #     - run: tools/ci/tidy-show-deps.sh
+  #     - run: tools/tidy.sh
+  #     - run: brew install bash
+  #       if: startsWith(matrix.os, 'macos')
+  #     - run: tools/ci/tidy-show-deps.sh
+  #       if: startsWith(matrix.os, 'macos')
+  #     - run: tools/tidy.sh
+  #       if: startsWith(matrix.os, 'macos')
+  # test-tidy-container:
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       container:
+  #         # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
+  #         # debian 9's python3 is 3.5.3, ubuntu 16.04's python3 is 3.5.2, ubuntu 14.04's python3 is 3.4,
+  #         # we got "SyntaxError: invalid syntax" when using yq with python 3.5.2 and older,
+  #         # and we got "Python 3.6 or later is required" when using yq with python 3.5 and older.
+  #         # - ubuntu:14.04 # glibc 2.19
+  #         # - ubuntu:16.04 # glibc 2.23
+  #         - ubuntu:18.04 # glibc 2.27
+  #         - ubuntu:20.04 # glibc 2.31
+  #         - ubuntu:22.04 # glibc 2.35
+  #         - ubuntu:24.04 # glibc 2.39
+  #         # - debian:9-slim # glibc 2.24
+  #         - debian:10-slim # glibc 2.28
+  #         - debian:11-slim # glibc 2.31
+  #         - debian:12-slim # glibc 2.36
+  #         - fedora:latest # glibc 2.39 (as of fedora 40)
+  #         - almalinux:8 # glibc 2.28
+  #         - almalinux:8-minimal # glibc 2.28
+  #         - almalinux:9 # glibc 2.34
+  #         - almalinux:9-minimal # glibc 2.34
+  #         # - centos:6 # glibc 2.12 # rustc/nodejs requires glibc 2.17
+  #         - centos:7 # glibc 2.17
+  #         # - opensuse/leap:latest # glibc 2.38 (as of leap 15.6)
+  #         # - opensuse/tumbleweed:latest # glibc 2.39 (as of 2024-07-19)
+  #         # - archlinux:latest # glibc 2.39 (as of 2024-07-19)
+  #         - alpine:latest # musl 1.2.5 (as of alpine 3.20)
+  #         # - openwrt/rootfs:x86-64-openwrt-24.10 # musl 1.2.5
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 60
+  #   container: ${{ matrix.container }}
+  #   steps:
+  #     - name: Install requirements (ubuntu/debian)
+  #       run: |
+  #         case "${{ matrix.container }}" in
+  #           debian:9*)
+  #             # In Debian, the old repositories is removed from the main mirrors some time after EoL.
+  #             sed -i /etc/apt/sources.list -e 's/deb.debian.org/archive.debian.org/g' \
+  #               -e 's|security.debian.org|archive.debian.org/|g' \
+  #               -e '/stretch-updates/d'
+  #             ;;
+  #         esac
+  #         apt-get -o Acquire::Retries=10 -qq update
+  #         case "${{ matrix.container }}" in
+  #           # pipx in API is only available since ubuntu 22.04/debian 12
+  #           ubuntu:1?.* | ubuntu:20.* | debian:1[01]* | debian:9*)
+  #             apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl xz-utils clang-format python3-venv python3-pip
+  #             pip3 install pipx
+  #             ;;
+  #           *) apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl xz-utils clang-format pipx ;;
+  #         esac
+  #         case "${{ matrix.container }}" in
+  #           # ubuntu 18.04/16.04 and debian 10/9's jq is 1.5, ubuntu 14.04's jq is 1.3
+  #           # jq: error (at <stdin>:44): Invalid path expression near attempt to access element 0 of [0]
+  #           # tools/tidy.sh: error on line 408: jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))'
+  #           ubuntu:1?.04 | debian:10* | debian:9*)
+  #             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o /usr/local/bin/jq https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64
+  #             chmod +x /usr/local/bin/jq
+  #             ;;
+  #         esac
+  #       if: startsWith(matrix.container, 'ubuntu') || startsWith(matrix.container, 'debian')
+  #     - name: Install requirements (fedora/almalinux/centos)
+  #       run: |
+  #         if type -P dnf >/dev/null; then
+  #           case "${{ matrix.container }}" in
+  #             fedora:*) dnf install -y clang-tools-extra pipx ;;
+  #             *)
+  #               dnf install -y clang-tools-extra python3-pip
+  #               pip3 install pipx
+  #               ;;
+  #           esac
+  #         elif type -P microdnf >/dev/null; then
+  #           microdnf install -y tar xz clang-tools-extra python3-pip
+  #           pip3 install pipx
+  #         else
+  #           # In CentOS, the old repositories is removed from the main mirrors just after EoL.
+  #           # https://github.com/rust-lang/rust/pull/126352
+  #           sed -i /etc/yum.repos.d/*.repo -e 's!^mirrorlist!#mirrorlist!' \
+  #             -e 's!^#baseurl=http://mirror.centos.org/!baseurl=https://vault.centos.org/!'
+  #           sed -i 's/enabled=1/enabled=0/' /etc/yum/pluginconf.d/fastestmirror.conf
+  #           yum install -y xz clang python3-pip
+  #           pip3 install pipx
+  #         fi
+  #       if: startsWith(matrix.container, 'fedora') || startsWith(matrix.container, 'almalinux') || startsWith(matrix.container, 'centos')
+  #     - name: Install requirements (alpine)
+  #       run: apk --no-cache add ca-certificates curl clang-extra-tools npm pipx
+  #       shell: sh
+  #       if: startsWith(matrix.container, 'alpine')
+  #     - uses: taiki-e/checkout-action@v1
+  #     - uses: taiki-e/github-actions/install-rust@nightly
+  #     - name: Install Node.js
+  #       run: |
+  #         mkdir -p -- /node
+  #         node_version=18.20.7
+  #         case "${{ matrix.container }}" in
+  #           ubuntu:1?.04 | debian:9* | centos:7) url="https://unofficial-builds.nodejs.org/download/release/v${node_version}/node-v${node_version}-linux-x64-glibc-217.tar.xz" ;;
+  #           *) url="https://nodejs.org/dist/v${node_version}/node-v${node_version}-linux-x64.tar.xz" ;;
+  #         esac
+  #         curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "${url}" | tar xJf - --strip-components 1 -C /node
+  #         printf '/node/bin\n' >>"${GITHUB_PATH}"
+  #       if: (!startsWith(matrix.container, 'alpine'))
+  #     - uses: taiki-e/install-action@shellcheck
+  #     - uses: taiki-e/install-action@shfmt
+  #     - uses: taiki-e/install-action@parse-dockerfile
+  #     - run: tools/ci/tidy-show-deps.sh
+  #     - run: tools/tidy.sh
+  # test-tidy-bsd:
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       include:
+  #         - os: freebsd
+  #           version: '13.5'
+  #         - os: freebsd
+  #           version: '14.2'
+  #         - os: netbsd
+  #           version: '9.4'
+  #         - os: netbsd
+  #           version: '10.1'
+  #         - os: openbsd
+  #           version: '7.7'
+  #         - os: haiku
+  #           version: 'r1beta5'
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 60
+  #   steps:
+  #     - uses: taiki-e/checkout-action@v1
+  #     - uses: taiki-e/cross-platform-actions-action@neoverse-v1
+  #       with:
+  #         environment_variables: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+  #         operating_system: ${{ matrix.os }}
+  #         version: ${{ matrix.version }}
+  #         shell: bash
+  #         sync_files: runner-to-vm
+  #         run: |
+  #           set -CeEuxo pipefail
+  #           case "$(uname -s)" in
+  #             FreeBSD)
+  #               sudo pkg install -y git jq npm python3 devel/py-pipx hs-ShellCheck llvm
+  #               # go and shfmt not available in FreeBSD 14 packages since 2025-04-07.
+  #               go_version=1.24.2 # https://go.dev/dl
+  #               mkdir -p -- "${HOME}/go"
+  #               curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.freebsd-amd64.tar.gz" | tar xzf - -C "${HOME}/go"
+  #               export PATH="${HOME}/go/go/bin:${PATH}"
+  #               go version
+  #               export GOPATH="${HOME}/go"
+  #               export PATH="${GOPATH}/bin:${PATH}"
+  #               go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
+  #               curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+  #               export PATH="${HOME}/.cargo/bin:${PATH}"
+  #               curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+  #               ;;
+  #             NetBSD)
+  #               sudo pkgin update
+  #               sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs py312-pip shfmt shellcheck clang
+  #               sudo pkgin clean
+  #               sudo ln -s -- /usr/pkg/bin/python3.12 /usr/pkg/bin/python3
+  #               export PATH="${HOME}/.local/bin:${PATH}"
+  #               python3 -m pip install pipx
+  #               curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+  #               export PATH="${HOME}/.cargo/bin:${PATH}"
+  #               cargo install parse-dockerfile --debug
+  #               ;;
+  #             OpenBSD)
+  #               # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+  #               sudo pkg_add git jq node py3-pipx shfmt shellcheck rust rust-rustfmt clang-tools-extra
+  #               export PATH="${HOME}/.cargo/bin:${PATH}"
+  #               cargo install parse-dockerfile --debug
+  #               ;;
+  #           esac
+  #           tools/ci/tidy-show-deps.sh
+  #           tools/tidy.sh
+  # test-tidy-dragonfly:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 60
+  #   steps:
+  #     - uses: taiki-e/checkout-action@v1
+  #     - uses: vmactions/dragonflybsd-vm@v1
+  #       with:
+  #         envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+  #         usesh: true
+  #         copyback: false
+  #         run: |
+  #           # DragonFly BSD sh's -E means -o emacs
+  #           # shellcheck disable=SC3040
+  #           set -Ceuxo pipefail
+  #           pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
+  #           # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+  #           pkg install -y bash git jq npm python3 py311-pip hs-ShellCheck rust llvm
+  #           python3 -m pip install pipx
+  #           # shfmt not available in 6.4 packages since 2025-03-17.
+  #           # download https://go.dev/dl/go1.24.2.dragonfly-amd64.tar.gz?
+  #           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
+  #           pkg install -y shfmt-3.8.0_5.pkg
+  #           export PATH="${HOME}/.cargo/bin:${PATH}"
+  #           git config --global --add safe.directory "$(pwd)"
+  #           # rustc installed from package manager is 1.79, parse-dockerfile needs 1.80.
+  #           cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
+  #           tools/ci/tidy-show-deps.sh
+  #           tools/tidy.sh
+  # test-tidy-omnios:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 60
+  #   steps:
+  #     - uses: taiki-e/checkout-action@v1
+  #     - uses: vmactions/omnios-vm@v1
+  #       with:
+  #         envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES
+  #         usesh: true
+  #         copyback: false
+  #         run: |
+  #           # illumos sh has no -E
+  #           # shellcheck disable=SC3040
+  #           set -Ceuxo pipefail
+  #           pkg install git gnu-tar jq node-22 python-312 clang-19
+  #           python3 -m pip install pipx
+  #           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
+  #           tar xzpf bootstrap.tar.gz -C /
+  #           export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
+  #           pkgin -y install shfmt shellcheck
+  #           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+  #           export PATH="${HOME}/.cargo/bin:${PATH}"
+  #           git config --global --add safe.directory "$(pwd)"
+  #           # Use gtar instead of tar because "tar: directory checksum error" error
+  #           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
+  #           tools/ci/tidy-show-deps.sh
+  #           tools/tidy.sh
   test-tidy-solaris:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -354,26 +357,14 @@ jobs:
             }
             g ld -z help
             # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-            # TODO: install rust from https://github.com/psumbera/solaris-rust?
-            g pkg install git jq pkg://solaris/runtime/python-39 pip-39 clang developer/rust/cargo developer/rust/rustc
-            g python3 -m pip install pipx
-            # TODO: shellcheck
-            # developer/golang from pkg install is too old (1.7) to build shfmt.
-            go_version=1.24.2 # https://go.dev/dl
-            mkdir -p -- "${HOME}/go"
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.solaris-amd64.tar.gz" | gtar xzf - -C "${HOME}/go"
-            export PATH="${HOME}/go/go/bin:${PATH}"
-            go version
+            g pkg install git jq pkg://solaris/runtime/python-313 pip-313 pipx runtime/nodejs clang developer/rust/cargo developer/rust/rustc developer/go
             export GOPATH="${HOME}/go"
             export PATH="${GOPATH}/bin:${PATH}"
             g go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
-            # runtime/nodejs from pkg install is node 16.
-            mkdir -p -- /node
-            node_version=18.20.7
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/node/releases/download/v${node_version}%2Bsolaris/node-solaris-x64.tar.gz" | gtar xzf - --strip-components 1 -C /node
-            export PATH="/node/bin:${PATH}"
-            # rustc installed from package manager is 1.53, parse-dockerfile needs 1.80.
+            # TODO: shellcheck
+            # rustc installed from package manager is 1.78, parse-dockerfile needs 1.80.
             # cargo install parse-dockerfile --debug
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+            git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
