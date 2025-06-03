@@ -225,6 +225,9 @@ jobs:
             version: '10.1'
           - os: openbsd
             version: '7.7'
+          # TODO: https://github.com/cross-platform-actions/action/issues/103
+          # - os: haiku
+          #   version: 'r1beta5'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -292,7 +295,8 @@ jobs:
             # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
             pkg install -y bash git jq npm python3 py311-pip hs-ShellCheck rust llvm
             python3 -m pip install pipx
-            # shfmt not in 6.4 packages since 2025-03-17.
+            # shfmt not available in 6.4 packages since 2025-03-17.
+            # download https://go.dev/dl/go1.24.2.dragonfly-amd64.tar.gz?
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
             pkg install -y shfmt-3.8.0_5.pkg
             export PATH="${HOME}/.cargo/bin:${PATH}"
@@ -354,26 +358,15 @@ jobs:
             }
             g ld -z help
             # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-            # TODO: install rust from https://github.com/psumbera/solaris-rust?
-            g pkg install git jq pkg://solaris/runtime/python-39 pip-39 clang developer/rust/cargo developer/rust/rustc
-            g python3 -m pip install pipx
-            # TODO: shellcheck
-            # developer/golang from pkg install is too old (1.7) to build shfmt.
-            go_version=1.24.2 # https://go.dev/dl
-            mkdir -p -- "${HOME}/go"
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.solaris-amd64.tar.gz" | gtar xzf - -C "${HOME}/go"
-            export PATH="${HOME}/go/go/bin:${PATH}"
-            go version
+            g pkg install git jq pkg://solaris/runtime/python-313 pip-313 pipx runtime/nodejs clang developer/rust/cargo developer/rust/rustc developer/go
             export GOPATH="${HOME}/go"
             export PATH="${GOPATH}/bin:${PATH}"
             g go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
-            # runtime/nodejs from pkg install is node 16.
-            mkdir -p -- /node
-            node_version=18.20.7
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/node/releases/download/v${node_version}%2Bsolaris/node-solaris-x64.tar.gz" | gtar xzf - --strip-components 1 -C /node
-            export PATH="/node/bin:${PATH}"
-            # rustc installed from package manager is 1.53, parse-dockerfile needs 1.80.
+            # TODO: shellcheck
+            # rustc installed from package manager is 1.78, parse-dockerfile needs 1.80.
+            # TODO: install rust from https://github.com/psumbera/solaris-rust?
             # cargo install parse-dockerfile --debug
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+            git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
