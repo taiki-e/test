@@ -100,7 +100,6 @@ Lint checks provided by rustc:
                                                 drop-bounds  warn     bounds of the form `T: Drop` are most likely incorrect
                                  duplicate-macro-attributes  warn     duplicated attribute
                                                    dyn-drop  warn     trait objects of the form `dyn Drop` are useless
-                                     elided-named-lifetimes  warn     detects when an elided lifetime gets resolved to be `'static` or some named parameter
                           ellipsis-inclusive-range-patterns  warn     `...` range patterns are deprecated
                               exported-private-dependencies  warn     public interface leaks type from a private dependency
                                       forbidden-lint-groups  warn     applying forbid to lint-groups
@@ -123,6 +122,7 @@ Lint checks provided by rustc:
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
+                               mismatched-lifetime-syntaxes  warn     detects when a lifetime uses different syntax between arguments and return values
                                                 missing-abi  warn     No declared ABI for extern declaration
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                           named-arguments-used-positionally  warn     named arguments in format used positionally
