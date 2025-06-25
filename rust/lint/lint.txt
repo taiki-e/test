@@ -87,7 +87,6 @@ Lint checks provided by rustc:
                                           confusable-idents  warn     detects visually confusable pairs between identifiers
                                 const-evaluatable-unchecked  warn     detects a generic constant is used in a type without a emitting a warning
                                         const-item-mutation  warn     detects attempts to mutate a `const` item
-                                dangerous-implicit-autorefs  warn     implicit reference to a dereference of a raw pointer
                          dangling-pointers-from-temporaries  warn     detects getting a pointer from a temporary
                                                   dead-code  warn     detect unused, unexported items
                      dependency-on-unit-never-type-fallback  warn     never type fallback affecting unsafe function calls
@@ -100,7 +99,6 @@ Lint checks provided by rustc:
                                                 drop-bounds  warn     bounds of the form `T: Drop` are most likely incorrect
                                  duplicate-macro-attributes  warn     duplicated attribute
                                                    dyn-drop  warn     trait objects of the form `dyn Drop` are useless
-                                     elided-named-lifetimes  warn     detects when an elided lifetime gets resolved to be `'static` or some named parameter
                           ellipsis-inclusive-range-patterns  warn     `...` range patterns are deprecated
                               exported-private-dependencies  warn     public interface leaks type from a private dependency
                                       forbidden-lint-groups  warn     applying forbid to lint-groups
@@ -123,6 +121,7 @@ Lint checks provided by rustc:
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
+                               mismatched-lifetime-syntaxes  warn     detects when a lifetime uses different syntax between arguments and return values
                                                 missing-abi  warn     No declared ABI for extern declaration
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                           named-arguments-used-positionally  warn     named arguments in format used positionally
@@ -173,7 +172,6 @@ Lint checks provided by rustc:
                                        unreachable-patterns  warn     detects unreachable patterns
                                    unstable-name-collisions  warn     detects name collision with an existing but unstable method
                               unstable-syntax-pre-expansion  warn     unstable syntax can change at any point in the future, causing a hard error!
-                     unsupported-fn-ptr-calling-conventions  warn     use of unsupported calling convention for function pointer
                                           unused-allocation  warn     detects unnecessary allocations that can be eliminated
                                          unused-assignments  warn     detect assignments that will never be read
                               unused-associated-type-bounds  warn     detects unused `Foo = Bar` bounds in `dyn Trait<Foo = Bar>`
@@ -193,13 +191,13 @@ Lint checks provided by rustc:
                                     useless-ptr-null-checks  warn     useless checking of non-null-typed pointer
                                        uses-power-alignment  warn     Structs do not follow the power alignment rule under repr(C)
                                                    warnings  warn     mass-change the level for lints which produce warnings
-                                                 wasm-c-abi  warn     detects code relying on rustc's non-spec-compliant wasm C ABI
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                           binary-asm-labels  deny     labels in inline assembly containing only 0 or 1 digits
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
+                                dangerous-implicit-autorefs  deny     implicit reference to a dereference of a raw pointer
                            default-overrides-default-fields  deny     detect `Default` impl that should use the type's default field values
                     elided-lifetimes-in-associated-constant  deny     elided lifetimes cannot be used in associated constants in impls
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
@@ -216,7 +214,6 @@ Lint checks provided by rustc:
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
                                     long-running-const-eval  deny     detects long const eval operations
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
-                                 missing-fragment-specifier  deny     detects missing fragment specifiers in unused `macro_rules!` patterns
                                          mutable-transmutes  deny     transmuting &T to &mut T is undefined behavior, even if the reference is unused
                                            named-asm-labels  deny     named labels in inline assembly
                                       no-mangle-const-items  deny     const items will not have their symbols exported
@@ -240,7 +237,7 @@ Lint groups provided by rustc:
                        ----  ---------
                    warnings  all lints that are set to issue warnings
             deprecated-safe  deprecated-safe-2024
-        future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, missing-fragment-specifier, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-fn-ptr-calling-conventions, wasm-c-abi
+        future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion
              keyword-idents  keyword-idents-2018, keyword-idents-2024
              let-underscore  let-underscore-drop, let-underscore-lock
           nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
