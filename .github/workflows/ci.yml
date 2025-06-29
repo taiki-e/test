@@ -68,6 +68,7 @@ jobs:
             bash: msys64
           - os: windows-2025
             bash: cygwin
+          - os: windows-11-arm
     runs-on: ${{ matrix.os }}
     steps:
       - run: |
@@ -88,6 +89,8 @@ jobs:
       - uses: taiki-e/install-action@parse-dockerfile
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
+        # Unsupported NodeJS version (19.9.0); >=20 is required
+        if: matrix.os != 'windows-11-arm'
       - run: brew install bash
         if: startsWith(matrix.os, 'macos')
       - run: tools/ci/tidy-show-deps.sh
