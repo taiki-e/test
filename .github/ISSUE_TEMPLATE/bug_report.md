@@ -51,5 +51,5 @@ https://crates.io/crates/cargo-tree.
 Platform:
 
 <!--
-The output of `uname -a` (UNIX), or version and 32 or 64-bit (Windows)
+The output of `uname -a` (Unix), or version and 32 or 64-bit (Windows)
 -->
