@@ -211,7 +211,7 @@ jobs:
           - os: freebsd
             version: '13.5'
           - os: freebsd
-            version: '14.2'
+            version: '14.3'
           - os: netbsd
             version: '9.4'
           - os: netbsd
