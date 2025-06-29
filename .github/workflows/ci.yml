@@ -296,9 +296,9 @@ jobs:
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
             pkg install -y shfmt-3.8.0_5.pkg
             export PATH="${HOME}/.cargo/bin:${PATH}"
-            git config --global --add safe.directory "$(pwd)"
             # rustc installed from package manager is 1.79, parse-dockerfile needs 1.80.
             cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
+            git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
   test-tidy-omnios:
@@ -323,9 +323,9 @@ jobs:
             pkgin -y install shfmt shellcheck
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
             export PATH="${HOME}/.cargo/bin:${PATH}"
-            git config --global --add safe.directory "$(pwd)"
             # Use gtar instead of tar because "tar: directory checksum error" error
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
+            git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
   test-tidy-solaris:
