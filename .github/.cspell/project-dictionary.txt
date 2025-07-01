@@ -13,4 +13,5 @@ pluginconf
 rootcerts
 rootfs
 usesh
+venv
 xzpf
