@@ -71,7 +71,6 @@ Lint checks provided by rustc:
                                              unused-results  allow    unused result of an expression in a statement
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
                                      aarch64-softfloat-neon  warn     detects code that could be affected by ABI issues on aarch64 softfloat targets
-                                     ambiguous-glob-imports  warn     detects certain glob imports that require reporting an ambiguity error
                                    ambiguous-glob-reexports  warn     ambiguous glob re-exports
                          ambiguous-wide-pointer-comparisons  warn     detects ambiguous wide pointer comparisons
                                        anonymous-parameters  warn     detects anonymous parameters
@@ -193,6 +192,7 @@ Lint checks provided by rustc:
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
+                                     ambiguous-glob-imports  deny     detects certain glob imports that require reporting an ambiguity error
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                           binary-asm-labels  deny     labels in inline assembly containing only 0 or 1 digits
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
