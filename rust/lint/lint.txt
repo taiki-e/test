@@ -119,8 +119,11 @@ Lint checks provided by rustc:
                                           large-assignments  warn     detects large moves or copies
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                       legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
+                            malformed-diagnostic-attributes  warn     detects malformed diagnostic attributes
+                       malformed-diagnostic-format-literals  warn     detects diagnostic attribute with malformed diagnostic format literals
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
                                mismatched-lifetime-syntaxes  warn     detects when a lifetime uses different syntax between arguments and return values
+                            misplaced-diagnostic-attributes  warn     detects diagnostic attributes that are placed on the wrong item
                                                 missing-abi  warn     No declared ABI for extern declaration
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                           named-arguments-used-positionally  warn     named arguments in format used positionally
@@ -162,8 +165,8 @@ Lint checks provided by rustc:
                               unfulfilled-lint-expectations  warn     unfulfilled lint expectation
                               ungated-async-fn-track-caller  warn     enabling track_caller on an async fn is a no-op unless the async_fn_track_caller feature is enabled
                                          uninhabited-static  warn     uninhabited static
+                              unknown-diagnostic-attributes  warn     detects unknown diagnostic attributes
                                               unknown-lints  warn     unrecognized lint attribute
-                 unknown-or-malformed-diagnostic-attributes  warn     unrecognized or malformed diagnostic attribute
                                       unnameable-test-items  warn     detects an item that cannot be named being marked as `#[test_case]`
                                      unnecessary-transmutes  warn     detects transmutes that can also be achieved by other operations
                  unpredictable-function-pointer-comparisons  warn     detects unpredictable function pointer comparisons
@@ -233,20 +236,21 @@ Lint checks provided by rustc:
 
 Lint groups provided by rustc:
 
-                       name  sub-lints
-                       ----  ---------
-                   warnings  all lints that are set to issue warnings
-            deprecated-safe  deprecated-safe-2024
-        future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion
-             keyword-idents  keyword-idents-2018, keyword-idents-2024
-             let-underscore  let-underscore-drop, let-underscore-lock
-          nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
-        refining-impl-trait  refining-impl-trait-reachable, refining-impl-trait-internal
-    rust-2018-compatibility  keyword-idents-2018, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
-           rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
-    rust-2021-compatibility  ellipsis-inclusive-range-patterns, array-into-iter, non-fmt-panics, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions
-    rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, boxed-slice-into-iter, impl-trait-overcaptures, if-let-rescope, static-mut-refs, dependency-on-unit-never-type-fallback, deprecated-safe-2024, missing-unsafe-on-extern, never-type-fallback-flowing-into-unsafe, rust-2024-guarded-string-incompatible-syntax, rust-2024-incompatible-pat, rust-2024-prelude-collisions, tail-expr-drop-order, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn
-                     unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
+                                          name  sub-lints
+                                          ----  ---------
+                                      warnings  all lints that are set to issue warnings
+                               deprecated-safe  deprecated-safe-2024
+                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion
+                                keyword-idents  keyword-idents-2018, keyword-idents-2024
+                                let-underscore  let-underscore-drop, let-underscore-lock
+                             nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
+                           refining-impl-trait  refining-impl-trait-reachable, refining-impl-trait-internal
+                       rust-2018-compatibility  keyword-idents-2018, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
+                              rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
+                       rust-2021-compatibility  ellipsis-inclusive-range-patterns, array-into-iter, non-fmt-panics, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions
+                       rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, boxed-slice-into-iter, impl-trait-overcaptures, if-let-rescope, static-mut-refs, dependency-on-unit-never-type-fallback, deprecated-safe-2024, missing-unsafe-on-extern, never-type-fallback-flowing-into-unsafe, rust-2024-guarded-string-incompatible-syntax, rust-2024-incompatible-pat, rust-2024-prelude-collisions, tail-expr-drop-order, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn
+    unknown-or-malformed-diagnostic-attributes  malformed-diagnostic-attributes, malformed-diagnostic-format-literals, misplaced-diagnostic-attributes, unknown-diagnostic-attributes
+                                        unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
 Lint tools like Clippy can load additional lints and lint groups.
