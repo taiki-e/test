@@ -174,6 +174,7 @@ Lint checks provided by rustc:
                                        unreachable-patterns  warn     detects unreachable patterns
                                    unstable-name-collisions  warn     detects name collision with an existing but unstable method
                               unstable-syntax-pre-expansion  warn     unstable syntax can change at any point in the future, causing a hard error!
+                            unsupported-calling-conventions  warn     use of unsupported calling convention
                                           unused-allocation  warn     detects unnecessary allocations that can be eliminated
                                          unused-assignments  warn     detect assignments that will never be read
                               unused-associated-type-bounds  warn     detects unused `Foo = Bar` bounds in `dyn Trait<Foo = Bar>`
@@ -240,7 +241,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion
+                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
