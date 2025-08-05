@@ -86,6 +86,7 @@ Lint checks provided by rustc:
                                           confusable-idents  warn     detects visually confusable pairs between identifiers
                                 const-evaluatable-unchecked  warn     detects a generic constant is used in a type without a emitting a warning
                                         const-item-mutation  warn     detects attempts to mutate a `const` item
+                              dangling-pointers-from-locals  warn     detects returning a pointer from a local variable
                          dangling-pointers-from-temporaries  warn     detects getting a pointer from a temporary
                                                   dead-code  warn     detect unused, unexported items
                      dependency-on-unit-never-type-fallback  warn     never type fallback affecting unsafe function calls
