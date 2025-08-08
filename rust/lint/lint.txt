@@ -119,7 +119,6 @@ Lint checks provided by rustc:
                                    irrefutable-let-patterns  warn     detects irrefutable patterns in `if let` and `while let` statements
                                           large-assignments  warn     detects large moves or copies
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
-                                      legacy-derive-helpers  warn     detects derive helper attributes that are used before they are introduced
                             malformed-diagnostic-attributes  warn     detects malformed diagnostic attributes
                        malformed-diagnostic-format-literals  warn     detects diagnostic attribute with malformed diagnostic format literals
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
@@ -139,7 +138,6 @@ Lint checks provided by rustc:
                                            noop-method-call  warn     detects the use of well-known noop methods
                                     no-mangle-generic-items  warn     generic items must be mangled
                                opaque-hidden-inferred-bound  warn     detects the use of nested `impl Trait` types in associated type bounds that are not general enough
-                                   out-of-scope-macro-calls  warn     detects out of scope calls to `macro_rules` in key-value attributes
                                 overlapping-range-endpoints  warn     detects range patterns with overlapping endpoints
                                             path-statements  warn     path statements with no effect
                                              private-bounds  warn     private type in secondary interface of an item
@@ -151,7 +149,6 @@ Lint checks provided by rustc:
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
                    repr-transparent-external-private-fields  warn     transparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
                            self-constructor-from-outer-item  warn     detect unsupported use of `Self` from outer item
-                       semicolon-in-expressions-from-macros  warn     trailing semicolon in macro body used as expression
                                         special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
                                             static-mut-refs  warn     creating a shared reference to mutable static
@@ -216,16 +213,19 @@ Lint checks provided by rustc:
                                      invalid-null-arguments  deny     invalid null pointer in arguments
                                   invalid-reference-casting  deny     casts of `&T` to `&mut T` without interior mutability
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
+                                      legacy-derive-helpers  deny     detects derive helper attributes that are used before they are introduced
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
                                     long-running-const-eval  deny     detects long const eval operations
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
                                          mutable-transmutes  deny     transmuting &T to &mut T is undefined behavior, even if the reference is unused
                                            named-asm-labels  deny     named labels in inline assembly
                                       no-mangle-const-items  deny     const items will not have their symbols exported
+                                   out-of-scope-macro-calls  deny     detects out of scope calls to `macro_rules` in key-value attributes
                                        overflowing-literals  deny     literal out of range for its type
                                patterns-in-fns-without-body  deny     patterns in functions without body were erroneously allowed
                       proc-macro-derive-resolution-fallback  deny     detects proc macro derives using inaccessible names from parent modules
                             pub-use-of-private-extern-crate  deny     detect public re-exports of private extern crates
+                       semicolon-in-expressions-from-macros  deny     trailing semicolon in macro body used as expression
                                               soft-unstable  deny     a feature gate that doesn't break dependent crates
                                          test-unstable-lint  deny     this unstable lint is only for testing
                         text-direction-codepoint-in-comment  deny     invisible directionality-changing codepoints in comment
