@@ -110,7 +110,7 @@ Lint checks provided by rustc:
                                             improper-ctypes  warn     proper use of libc types in foreign modules
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
-                                         inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[no_sanitize(...)]`
+                                         inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[sanitize(... = "off")]`
                                           internal-features  warn     internal features are not supposed to be used
                                           invalid-from-utf8  warn     using a non UTF-8 literal in `std::str::from_utf8`
                              invalid-macro-export-arguments  warn     "invalid_parameter" isn't a valid argument for `#[macro_export]`
