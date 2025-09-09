@@ -3,7 +3,6 @@ archlinux
 Aschedule
 Ceuxo
 copyback
-devcontainers
 fastestmirror
 GOPATH
 microdnf
