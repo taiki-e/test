@@ -114,7 +114,6 @@ Lint checks provided by rustc:
                                   integer-to-ptr-transmutes  warn     detects integer to pointer transmutes
                                           internal-features  warn     internal features are not supposed to be used
                                           invalid-from-utf8  warn     using a non UTF-8 literal in `std::str::from_utf8`
-                             invalid-macro-export-arguments  warn     "invalid_parameter" isn't a valid argument for `#[macro_export]`
                                     invalid-nan-comparisons  warn     detects invalid floating point NaN comparisons
                                               invalid-value  warn     an invalid value is being created (such as a null reference)
                                    irrefutable-let-patterns  warn     detects irrefutable patterns in `if let` and `while let` statements
@@ -211,6 +210,7 @@ Lint checks provided by rustc:
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
                                      invalid-doc-attributes  deny     detects invalid `#[doc(...)]` attributes
                                 invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
+                             invalid-macro-export-arguments  deny     "invalid_parameter" isn't a valid argument for `#[macro_export]`
                                      invalid-null-arguments  deny     invalid null pointer in arguments
                                   invalid-reference-casting  deny     casts of `&T` to `&mut T` without interior mutability
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
@@ -243,7 +243,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions
+                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
