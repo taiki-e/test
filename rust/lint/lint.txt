@@ -89,7 +89,6 @@ Lint checks provided by rustc:
                               dangling-pointers-from-locals  warn     detects returning a pointer from a local variable
                          dangling-pointers-from-temporaries  warn     detects getting a pointer from a temporary
                                                   dead-code  warn     detect unused, unexported items
-                     dependency-on-unit-never-type-fallback  warn     never type fallback affecting unsafe function calls
                                                  deprecated  warn     detects use of deprecated items
                            deprecated-where-clause-location  warn     deprecated where clause location
                                               deref-nullptr  warn     detects when an null pointer is dereferenced
@@ -127,7 +126,6 @@ Lint checks provided by rustc:
                                                 missing-abi  warn     No declared ABI for extern declaration
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                           named-arguments-used-positionally  warn     named arguments in format used positionally
-                    never-type-fallback-flowing-into-unsafe  warn     never type fallback affecting unsafe function calls
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
                              non-contiguous-range-endpoints  warn     detects off-by-one errors with exclusive range patterns
                                              non-fmt-panics  warn     detect single-argument panic!() invocations in which the argument is not a format string
@@ -201,6 +199,7 @@ Lint checks provided by rustc:
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                                 dangerous-implicit-autorefs  deny     implicit reference to a dereference of a raw pointer
                            default-overrides-default-fields  deny     detect `Default` impl that should use the type's default field values
+                     dependency-on-unit-never-type-fallback  deny     never type fallback affecting unsafe function calls
                     elided-lifetimes-in-associated-constant  deny     elided lifetimes cannot be used in associated constants in impls
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
                              explicit-builtin-cfgs-in-flags  deny     detects builtin cfgs set via the `--cfg`
@@ -220,6 +219,7 @@ Lint checks provided by rustc:
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
                                          mutable-transmutes  deny     transmuting &T to &mut T is undefined behavior, even if the reference is unused
                                            named-asm-labels  deny     named labels in inline assembly
+                    never-type-fallback-flowing-into-unsafe  deny     never type fallback affecting unsafe function calls
                                       no-mangle-const-items  deny     const items will not have their symbols exported
                                    out-of-scope-macro-calls  deny     detects out of scope calls to `macro_rules` in key-value attributes
                                        overflowing-literals  deny     literal out of range for its type
