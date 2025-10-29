@@ -145,7 +145,6 @@ Lint checks provided by rustc:
                                refining-impl-trait-internal  warn     impl trait in impl method signature does not match trait method signature
                               refining-impl-trait-reachable  warn     impl trait in impl method signature does not match trait method signature
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
-                   repr-transparent-external-private-fields  warn     transparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
                            self-constructor-from-outer-item  warn     detect unsupported use of `Self` from outer item
                                         special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
@@ -226,6 +225,7 @@ Lint checks provided by rustc:
                                patterns-in-fns-without-body  deny     patterns in functions without body were erroneously allowed
                       proc-macro-derive-resolution-fallback  deny     detects proc macro derives using inaccessible names from parent modules
                             pub-use-of-private-extern-crate  deny     detect public re-exports of private extern crates
+                            repr-transparent-non-zst-fields  deny     transparent type contains an external ZST that is marked #[non_exhaustive] or contains private fields
                        semicolon-in-expressions-from-macros  deny     trailing semicolon in macro body used as expression
                                               soft-unstable  deny     a feature gate that doesn't break dependent crates
                                          test-unstable-lint  deny     this unstable lint is only for testing
@@ -243,7 +243,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-external-private-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions
+                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
