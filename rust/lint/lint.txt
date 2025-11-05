@@ -145,6 +145,7 @@ Lint checks provided by rustc:
                                refining-impl-trait-internal  warn     impl trait in impl method signature does not match trait method signature
                               refining-impl-trait-reachable  warn     impl trait in impl method signature does not match trait method signature
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
+                               repr-c-enums-larger-than-int  warn     repr(C) enums with discriminant values that do not fit into a C int
                            self-constructor-from-outer-item  warn     detect unsupported use of `Self` from outer item
                                         special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
@@ -243,7 +244,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions
+                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
