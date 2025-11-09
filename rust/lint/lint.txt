@@ -146,6 +146,7 @@ Lint checks provided by rustc:
                               refining-impl-trait-reachable  warn     impl trait in impl method signature does not match trait method signature
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
                                repr-c-enums-larger-than-int  warn     repr(C) enums with discriminant values that do not fit into a C int
+                                    rtsan-nonblocking-async  warn     detects incompatible uses of `#[sanitize(realtime = "nonblocking")]` on async functions
                            self-constructor-from-outer-item  warn     detect unsupported use of `Self` from outer item
                                         special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
