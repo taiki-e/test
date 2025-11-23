@@ -85,6 +85,7 @@ Lint checks provided by rustc:
                                        coherence-leak-check  warn     distinct impls distinguished only by the leak-check code
                                           confusable-idents  warn     detects visually confusable pairs between identifiers
                                 const-evaluatable-unchecked  warn     detects a generic constant is used in a type without a emitting a warning
+                              const-item-interior-mutations  warn     checks for calls which mutates a interior mutable const-item
                                         const-item-mutation  warn     detects attempts to mutate a `const` item
                               dangling-pointers-from-locals  warn     detects returning a pointer from a local variable
                          dangling-pointers-from-temporaries  warn     detects getting a pointer from a temporary
@@ -104,6 +105,7 @@ Lint checks provided by rustc:
                                       forgetting-copy-types  warn     calls to `std::mem::forget` with a value that implements Copy
                                       forgetting-references  warn     calls to `std::mem::forget` with a reference instead of an owned value
                                    for-loops-over-fallibles  warn     for-looping over an `Option` or a `Result`, which is more clearly expressed as an `if let`
+                                  function-casts-as-integer  warn     casting a function into an integer
                                    function-item-references  warn     suggest casting to a function pointer when attempting to take references to function items
                                       hidden-glob-reexports  warn     name introduced by a private item shadows a name introduced by a public glob re-export
                                             improper-ctypes  warn     proper use of libc types in foreign modules
@@ -190,6 +192,7 @@ Lint checks provided by rustc:
                                            unused-variables  warn     detect variables which are not used in any way
                                     useless-ptr-null-checks  warn     useless checking of non-null-typed pointer
                                        uses-power-alignment  warn     Structs do not follow the power alignment rule under repr(C)
+                                    varargs-without-pattern  warn     detects usage of `...` arguments without a pattern in non-foreign items
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
@@ -245,7 +248,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions
+                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
