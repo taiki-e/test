@@ -92,7 +92,6 @@ Lint checks provided by rustc:
                                                   dead-code  warn     detect unused, unexported items
                                                  deprecated  warn     detects use of deprecated items
                            deprecated-where-clause-location  warn     deprecated where clause location
-                                              deref-nullptr  warn     detects when an null pointer is dereferenced
                                            double-negations  warn     detects expressions of the form `--x`
                                         dropping-copy-types  warn     calls to `std::mem::drop` with a value that implements Copy
                                         dropping-references  warn     calls to `std::mem::drop` with a reference instead of an owned value
@@ -204,6 +203,7 @@ Lint checks provided by rustc:
                                 dangerous-implicit-autorefs  deny     implicit reference to a dereference of a raw pointer
                            default-overrides-default-fields  deny     detect `Default` impl that should use the type's default field values
                      dependency-on-unit-never-type-fallback  deny     never type fallback affecting unsafe function calls
+                                              deref-nullptr  deny     detects when an null pointer is dereferenced
                     elided-lifetimes-in-associated-constant  deny     elided lifetimes cannot be used in associated constants in impls
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
                              explicit-builtin-cfgs-in-flags  deny     detects builtin cfgs set via the `--cfg`
