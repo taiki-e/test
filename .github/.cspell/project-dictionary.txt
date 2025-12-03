@@ -5,6 +5,7 @@ Ceuxo
 copyback
 fastestmirror
 GOPATH
+jemalloc
 microdnf
 mirrorlist
 mvdan

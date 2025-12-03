@@ -90,9 +90,9 @@ jobs:
           sudo apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends clang-format
         if: matrix.os == 'ubuntu-slim'
       - uses: taiki-e/github-actions/install-rust@nightly
-      - uses: taiki-e/install-action@shellcheck
-      - uses: taiki-e/install-action@shfmt
-      - uses: taiki-e/install-action@parse-dockerfile
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: shellcheck,shfmt,parse-dockerfile,zizmor
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
         # Unsupported NodeJS version (19.9.0); >=20 is required
@@ -211,9 +211,16 @@ jobs:
           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "${url}" | tar xJf - --strip-components 1 -C /node
           printf '/node/bin\n' >>"${GITHUB_PATH}"
         if: (!startsWith(matrix.container, 'alpine'))
-      - uses: taiki-e/install-action@shellcheck
-      - uses: taiki-e/install-action@shfmt
-      - uses: taiki-e/install-action@parse-dockerfile
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: shellcheck,shfmt,parse-dockerfile
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: zizmor
+        if: (!(startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')))
+      - run: |
+          curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/cargo-bins/cargo-quickinstall/releases/download/zizmor-1.18.0/zizmor-1.18.0-x86_64-unknown-linux-musl.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+        if: startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
   test-tidy-bsd:
@@ -230,7 +237,7 @@ jobs:
           - os: netbsd
             version: '10.1'
           - os: openbsd
-            version: '7.7'
+            version: '7.8'
           # TODO: https://github.com/cross-platform-actions/action/issues/103
           # - os: haiku
           #   version: 'r1beta5'
@@ -262,6 +269,7 @@ jobs:
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+                cargo install zizmor --debug
                 ;;
               NetBSD)
                 sudo pkgin update
@@ -273,12 +281,16 @@ jobs:
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 cargo install parse-dockerfile --debug
+                # Failed to install due to jemalloc build error.
+                # cargo install zizmor --debug
                 ;;
               OpenBSD)
                 # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
                 sudo pkg_add git jq node py3-pipx shfmt shellcheck rust rust-rustfmt clang-tools-extra
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 cargo install parse-dockerfile --debug
+                # Failed to install due to jemalloc build error.
+                # cargo install zizmor --debug
                 ;;
             esac
             tools/ci/tidy-show-deps.sh
@@ -306,8 +318,10 @@ jobs:
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
             pkg install -y shfmt-3.8.0_5.pkg
             export PATH="${HOME}/.cargo/bin:${PATH}"
-            # rustc installed from package manager is 1.79, parse-dockerfile needs 1.80.
+            # rustc installed from package manager is 1.79, parse-dockerfile requires 1.80.
             cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
+            # rustc installed from package manager is 1.79, zizmor requires 1.85.
+            # cargo install zizmor --debug
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
@@ -335,6 +349,8 @@ jobs:
             export PATH="${HOME}/.cargo/bin:${PATH}"
             # Use gtar instead of tar because "tar: directory checksum error" error
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
+            # Failed to install due to jemalloc build error.
+            # cargo install zizmor --debug
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
@@ -369,10 +385,12 @@ jobs:
             export PATH="${GOPATH}/bin:${PATH}"
             g go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
             # TODO: shellcheck
-            # rustc installed from package manager is 1.78, parse-dockerfile needs 1.80.
+            # rustc installed from package manager is 1.78, parse-dockerfile requires 1.80.
             # TODO: install rust from https://github.com/psumbera/solaris-rust?
             # cargo install parse-dockerfile --debug
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+            # rustc installed from package manager is 1.79, zizmor requires 1.85.
+            # cargo install zizmor --debug
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
