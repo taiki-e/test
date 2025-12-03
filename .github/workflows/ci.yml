@@ -55,6 +55,7 @@ jobs:
           - os: ubuntu-22.04-arm
           - os: ubuntu-24.04
           - os: ubuntu-24.04-arm
+          - os: ubuntu-slim
           - os: macos-14
           - os: macos-15
           - os: macos-15-intel
@@ -84,6 +85,10 @@ jobs:
       - uses: taiki-e/checkout-action@v1
       - run: brew install clang-format
         if: startsWith(matrix.os, 'macos')
+      - run: |
+          sudo apt-get -o Acquire::Retries=10 -qq update
+          sudo apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends clang-format
+        if: matrix.os == 'ubuntu-slim'
       - uses: taiki-e/github-actions/install-rust@nightly
       - uses: taiki-e/install-action@shellcheck
       - uses: taiki-e/install-action@shfmt
