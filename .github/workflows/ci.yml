@@ -320,7 +320,7 @@ jobs:
             # illumos sh has no -E
             # shellcheck disable=SC3040
             set -Ceuxo pipefail
-            pkg install git gnu-tar jq node-22 python-312 clang-19
+            pkg install git gnu-tar jq node-22 python-313 clang-19
             python3 -m pip install pipx
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
             tar xzpf bootstrap.tar.gz -C /
