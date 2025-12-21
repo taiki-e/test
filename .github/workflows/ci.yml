@@ -72,6 +72,7 @@ jobs:
             bash: cygwin
           - os: windows-11-arm
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
     steps:
       - run: |
           printf '%s\n' 'C:\msys64\mingw32\bin' >>"${GITHUB_PATH}"
