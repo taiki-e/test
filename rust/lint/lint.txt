@@ -41,6 +41,7 @@ Lint checks provided by rustc:
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
                                           redundant-imports  allow    imports that are redundant due to being imported already
                                         redundant-lifetimes  allow    detects lifetime parameters that are redundant because they are equal to some other named lifetime
+              resolving-to-items-shadowing-supertrait-items  allow    detects when a supertrait item is shadowed by a subtrait item
                     rust-2021-incompatible-closure-captures  allow    detects closures affected by Rust 2021 changes
                          rust-2021-incompatible-or-patterns  allow    detects usage of old versions of or-patterns
                      rust-2021-prefixes-incompatible-syntax  allow    identifiers that will be parsed as a prefix in Rust 2021
@@ -48,9 +49,8 @@ Lint checks provided by rustc:
                rust-2024-guarded-string-incompatible-syntax  allow    will be parsed as a guarded string in Rust 2024
                                  rust-2024-incompatible-pat  allow    detects patterns whose meaning will change in Rust 2024
                                rust-2024-prelude-collisions  allow    detects the usage of trait methods which are ambiguous with traits added to the prelude in future editions
+                                 shadowing-supertrait-items  allow    detects when a supertrait item is shadowed by a subtrait item
                                        single-use-lifetimes  allow    detects lifetime parameters that are only used once
-                       supertrait-item-shadowing-definition  allow    detects when a supertrait item is shadowed by a subtrait item
-                            supertrait-item-shadowing-usage  allow    detects when a supertrait item is shadowed by a subtrait item
                                        tail-expr-drop-order  allow    Detect and warn on significant change in drop order in tail expression location
                                               trivial-casts  allow    detects trivial casts which could be removed
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
@@ -110,6 +110,7 @@ Lint checks provided by rustc:
                                             improper-ctypes  warn     proper use of libc types in foreign modules
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
+                  inline-always-mismatching-target-features  warn     detects when a function annotated with `#[inline(always)]` and `#[target_feature(enable = "..")]` is inlined into a caller without the required target feature
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[sanitize(... = "off")]`
                                   integer-to-ptr-transmutes  warn     detects integer to pointer transmutes
                                           internal-features  warn     internal features are not supposed to be used
@@ -189,6 +190,7 @@ Lint checks provided by rustc:
                                               unused-parens  warn     `if`, `match`, `while` and `return` do not need parentheses
                                               unused-unsafe  warn     unnecessary use of an `unsafe` block
                                            unused-variables  warn     detect variables which are not used in any way
+                                        unused-visibilities  warn     detect visibility qualifiers on `const _` items
                                     useless-ptr-null-checks  warn     useless checking of non-null-typed pointer
                                        uses-power-alignment  warn     Structs do not follow the power alignment rule under repr(C)
                                     varargs-without-pattern  warn     detects usage of `...` arguments without a pattern in non-foreign items
@@ -258,7 +260,7 @@ Lint groups provided by rustc:
                        rust-2021-compatibility  ellipsis-inclusive-range-patterns, array-into-iter, non-fmt-panics, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions
                        rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, boxed-slice-into-iter, impl-trait-overcaptures, if-let-rescope, static-mut-refs, dependency-on-unit-never-type-fallback, deprecated-safe-2024, missing-unsafe-on-extern, never-type-fallback-flowing-into-unsafe, rust-2024-guarded-string-incompatible-syntax, rust-2024-incompatible-pat, rust-2024-prelude-collisions, tail-expr-drop-order, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn
     unknown-or-malformed-diagnostic-attributes  malformed-diagnostic-attributes, malformed-diagnostic-format-literals, misplaced-diagnostic-attributes, unknown-diagnostic-attributes
-                                        unused  unused-imports, unused-variables, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
+                                        unused  unused-imports, unused-variables, unused-visibilities, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
 Lint tools like Clippy can load additional lints and lint groups.
