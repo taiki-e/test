@@ -248,11 +248,11 @@ jobs:
             version: '10.1'
           - os: openbsd
             version: '7.8'
-          # TODO: https://github.com/cross-platform-actions/action/issues/103
-          # - os: haiku
-          #   version: 'r1beta5'
           - os: omnios
             version: 'r151056'
+          # TODO: hang on "syncing markdown to rustdoc"
+          # - os: haiku
+          #   version: 'r1beta5'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -306,7 +306,7 @@ jobs:
                 ;;
               SunOS)
                 if [[ "$(/usr/bin/uname -o)" == 'illumos' ]]; then
-                  sudo pkg install git gnu-tar jq node-22 python-313 clang-19
+                  sudo pkg install developer/versioning/git gnu-tar jq runtime/node-24 runtime/python-313 developer/clang-21
                   export PATH="${HOME}/.local/bin:${PATH}"
                   python3 -m pip install pipx
                   curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
@@ -340,10 +340,8 @@ jobs:
             set -Ceuxo pipefail
             pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
             # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-            pkg install -y bash git jq npm python3 py311-pip hs-ShellCheck rust llvm
-            python3 -m pip install pipx
+            pkg install -y bash git jq npm python3 py311-pip py311-pipx hs-ShellCheck rust llvm
             # shfmt not available in 6.4 packages since 2025-03-17.
-            # download https://go.dev/dl/go1.24.2.dragonfly-amd64.tar.gz?
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
             pkg install -y shfmt-3.8.0_5.pkg
             export PATH="${HOME}/.cargo/bin:${PATH}"
@@ -359,7 +357,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
-      - uses: vmactions/solaris-vm@v1.1.4
+      - uses: vmactions/solaris-vm@v1
         with:
           envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
           usesh: true
@@ -379,17 +377,16 @@ jobs:
               set -x
             }
             g ld -z help
-            # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-            g pkg install git jq pkg://solaris/runtime/python-313 pip-313 pipx runtime/nodejs clang developer/rust/cargo developer/rust/rustc developer/go
+            g pkg install developer/versioning/git jq pkg://solaris/runtime/python-313 library/python/pip-313 library/python/pipx runtime/nodejs developer/llvm/clang developer/rust/cargo developer/go
             export GOPATH="${HOME}/go"
             export PATH="${GOPATH}/bin:${PATH}"
             g go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
             # TODO: shellcheck
-            # rustc installed from package manager is 1.78, parse-dockerfile requires 1.80.
-            # TODO: install rust from https://github.com/psumbera/solaris-rust?
-            # cargo install parse-dockerfile --debug
+            # TODO: Download rustup from https://sh.rustup.rs once https://github.com/rust-lang/rustup/issues/2987 released: https://github.com/rust-lang/rustup/issues/4423
+            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://raw.githubusercontent.com/psumbera/rustup/refs/heads/solaris-rustup/rustup-init.sh | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+            export PATH="${HOME}/.cargo/bin:${PATH}"
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
-            # rustc installed from package manager is 1.79, zizmor requires 1.85.
+            # Failed to install due to tree-sitter build error.
             # cargo install zizmor --debug
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
