@@ -36,6 +36,11 @@ case "$(uname -s)" in
       ostype=solaris
     fi
     ;;
+  Haiku) ostype=haiku ;;
+  Minix) ostype=minix ;;
+  GNU) ostype=hurd ;;
+  AIX) ostype=aix ;;
+  HP-UX) ostype=hpux ;;
   MINGW* | MSYS* | CYGWIN* | Windows_NT) ostype=windows ;;
   *) bail "unrecognized os type '$(uname -s)' for \`\$(uname -s)\`" ;;
 esac

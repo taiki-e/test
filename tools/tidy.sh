@@ -173,6 +173,11 @@ case "$(uname -s)" in
       done
     fi
     ;;
+  Haiku) ostype=haiku ;;
+  Minix) ostype=minix ;;
+  GNU) ostype=hurd ;;
+  AIX) ostype=aix ;;
+  HP-UX) ostype=hpux ;;
   MINGW* | MSYS* | CYGWIN* | Windows_NT)
     ostype=windows
     if type -P jq >/dev/null; then
