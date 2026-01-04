@@ -109,6 +109,7 @@ Lint checks provided by rustc:
                                       hidden-glob-reexports  warn     name introduced by a private item shadows a name introduced by a public glob re-export
                                             improper-ctypes  warn     proper use of libc types in foreign modules
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
+                                    improper-gpu-kernel-arg  warn     GPU kernel entry points have a limited ABI
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
                   inline-always-mismatching-target-features  warn     detects when a function annotated with `#[inline(always)]` and `#[target_feature(enable = "..")]` is inlined into a caller without the required target feature
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[sanitize(... = "off")]`
@@ -126,6 +127,7 @@ Lint checks provided by rustc:
                                mismatched-lifetime-syntaxes  warn     detects when a lifetime uses different syntax between arguments and return values
                             misplaced-diagnostic-attributes  warn     detects diagnostic attributes that are placed on the wrong item
                                                 missing-abi  warn     No declared ABI for extern declaration
+                             missing-gpu-kernel-export-name  warn     mangled gpu-kernel function
                                    mixed-script-confusables  warn     detects Unicode scripts whose mixed script confusables codepoints are solely used
                           named-arguments-used-positionally  warn     named arguments in format used positionally
                                        non-camel-case-types  warn     types, variants, traits and type parameters should have camel case names
