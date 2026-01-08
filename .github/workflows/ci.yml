@@ -257,7 +257,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
-      - uses: taiki-e/cross-platform-actions-action@neoverse-v1
+      - uses: taiki-e/cross-platform-actions-action@dev
         with:
           environment_variables: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
           operating_system: ${{ matrix.os }}
