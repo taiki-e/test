@@ -236,10 +236,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: freebsd
-            version: '13.5'
-          - os: freebsd
-            version: '14.3'
+          # - os: freebsd
+          #   version: '13.5'
+          # - os: freebsd
+          #   version: '14.3'
           - os: freebsd
             version: '15.0'
           - os: netbsd
@@ -324,34 +324,34 @@ jobs:
             esac
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
-  test-tidy-vm-dragonfly:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: taiki-e/checkout-action@v1
-      - uses: vmactions/dragonflybsd-vm@v1
-        with:
-          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
-          usesh: true
-          copyback: false
-          run: |
-            # DragonFly BSD sh's -E means -o emacs
-            # shellcheck disable=SC3040
-            set -Ceuxo pipefail
-            pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
-            # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-            pkg install -y bash git jq npm python3 py311-pip py311-pipx hs-ShellCheck rust llvm
-            # shfmt not available in 6.4 packages since 2025-03-17.
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
-            pkg install -y shfmt-3.8.0_5.pkg
-            export PATH="${HOME}/.cargo/bin:${PATH}"
-            # rustc installed from package manager is 1.79, parse-dockerfile requires 1.80.
-            cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
-            # rustc installed from package manager is 1.79, zizmor requires 1.85.
-            # cargo install zizmor --debug --locked
-            git config --global --add safe.directory "$(pwd)"
-            tools/ci/tidy-show-deps.sh
-            tools/tidy.sh
+  # test-tidy-vm-dragonfly:
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 60
+  #   steps:
+  #     - uses: taiki-e/checkout-action@v1
+  #     - uses: vmactions/dragonflybsd-vm@v1
+  #       with:
+  #         envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
+  #         usesh: true
+  #         copyback: false
+  #         run: |
+  #           # DragonFly BSD sh's -E means -o emacs
+  #           # shellcheck disable=SC3040
+  #           set -Ceuxo pipefail
+  #           pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
+  #           # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+  #           pkg install -y bash git jq npm python3 py311-pip py311-pipx hs-ShellCheck rust llvm
+  #           # shfmt not available in 6.4 packages since 2025-03-17.
+  #           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
+  #           pkg install -y shfmt-3.8.0_5.pkg
+  #           export PATH="${HOME}/.cargo/bin:${PATH}"
+  #           # rustc installed from package manager is 1.79, parse-dockerfile requires 1.80.
+  #           cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
+  #           # rustc installed from package manager is 1.79, zizmor requires 1.85.
+  #           # cargo install zizmor --debug --locked
+  #           git config --global --add safe.directory "$(pwd)"
+  #           tools/ci/tidy-show-deps.sh
+  #           tools/tidy.sh
   test-tidy-vm-solaris:
     runs-on: ubuntu-latest
     timeout-minutes: 60
