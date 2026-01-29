@@ -281,7 +281,7 @@ jobs:
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
-                cargo install zizmor --debug
+                cargo install zizmor --debug --locked
                 ;;
               NetBSD)
                 sudo pkgin update
@@ -294,7 +294,7 @@ jobs:
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 cargo install parse-dockerfile --debug
                 # Failed to install due to jemalloc build error.
-                # cargo install zizmor --debug
+                # cargo install zizmor --debug --locked
                 ;;
               OpenBSD)
                 # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
@@ -302,7 +302,7 @@ jobs:
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 cargo install parse-dockerfile --debug
                 # Failed to install due to jemalloc build error.
-                # cargo install zizmor --debug
+                # cargo install zizmor --debug --locked
                 ;;
               SunOS)
                 if [[ "$(/usr/bin/uname -o)" == 'illumos' ]]; then
@@ -318,7 +318,7 @@ jobs:
                   # Use gtar instead of tar because "tar: directory checksum error" error
                   curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
                   # Failed to install due to jemalloc build error.
-                  # cargo install zizmor --debug
+                  # cargo install zizmor --debug --locked
                 fi
                 ;;
             esac
@@ -348,7 +348,7 @@ jobs:
             # rustc installed from package manager is 1.79, parse-dockerfile requires 1.80.
             cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
             # rustc installed from package manager is 1.79, zizmor requires 1.85.
-            # cargo install zizmor --debug
+            # cargo install zizmor --debug --locked
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
@@ -387,7 +387,7 @@ jobs:
             export PATH="${HOME}/.cargo/bin:${PATH}"
             curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
             # Failed to install due to tree-sitter build error.
-            # cargo install zizmor --debug
+            # cargo install zizmor --debug --locked
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
