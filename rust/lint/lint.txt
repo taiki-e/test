@@ -74,6 +74,7 @@ Lint checks provided by rustc:
                              ambiguous-glob-imported-traits  warn     detects uses of ambiguously glob imported traits
                                      ambiguous-glob-imports  warn     detects certain glob imports that require reporting an ambiguity error
                                    ambiguous-glob-reexports  warn     ambiguous glob re-exports
+                              ambiguous-import-visibilities  warn     detects certain glob imports that require reporting an ambiguity error
                                     ambiguous-panic-imports  warn     detects ambiguous core and std panic imports
                          ambiguous-wide-pointer-comparisons  warn     detects ambiguous wide pointer comparisons
                                        anonymous-parameters  warn     detects anonymous parameters
@@ -254,7 +255,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
+                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
