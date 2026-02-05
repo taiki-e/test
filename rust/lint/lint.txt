@@ -119,6 +119,7 @@ Lint checks provided by rustc:
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[sanitize(... = "off")]`
                                   integer-to-ptr-transmutes  warn     detects integer to pointer transmutes
                                           internal-features  warn     internal features are not supposed to be used
+                                     invalid-doc-attributes  warn     detects invalid `#[doc(...)]` attributes
                                           invalid-from-utf8  warn     using a non UTF-8 literal in `std::str::from_utf8`
                                     invalid-nan-comparisons  warn     detects invalid floating point NaN comparisons
                                               invalid-value  warn     an invalid value is being created (such as a null reference)
@@ -218,7 +219,6 @@ Lint checks provided by rustc:
                                          incomplete-include  deny     trailing content in included file
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
-                                     invalid-doc-attributes  deny     detects invalid `#[doc(...)]` attributes
                                 invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
                              invalid-macro-export-arguments  deny     "invalid_parameter" isn't a valid argument for `#[macro_export]`
                                      invalid-null-arguments  deny     invalid null pointer in arguments
