@@ -176,6 +176,7 @@ Lint checks provided by rustc:
                                       unnameable-test-items  warn     detects an item that cannot be named being marked as `#[test_case]`
                                      unnecessary-transmutes  warn     detects transmutes that can also be achieved by other operations
                  unpredictable-function-pointer-comparisons  warn     detects unpredictable function pointer comparisons
+                          unreachable-cfg-select-predicates  warn     detects unreachable configuration predicates in the cfg_select macro
                                            unreachable-code  warn     detects unreachable code paths
                                        unreachable-patterns  warn     detects unreachable patterns
                                    unstable-name-collisions  warn     detects name collision with an existing but unstable method
