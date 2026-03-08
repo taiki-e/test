@@ -102,6 +102,7 @@ jobs:
       - uses: taiki-e/install-action@v2
         with:
           tool: shellcheck,shfmt,parse-dockerfile,zizmor
+          fallback: none
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
         # Unsupported NodeJS version (19.9.0); >=20 is required
@@ -223,9 +224,11 @@ jobs:
       - uses: taiki-e/install-action@v2
         with:
           tool: shellcheck,shfmt,parse-dockerfile
+          fallback: none
       - uses: taiki-e/install-action@v2
         with:
           tool: zizmor
+          fallback: none
         if: (!(startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')))
       - run: |
           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/cargo-bins/cargo-quickinstall/releases/download/zizmor-1.18.0/zizmor-1.18.0-x86_64-unknown-linux-musl.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
