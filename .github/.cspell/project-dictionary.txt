@@ -3,7 +3,6 @@ archlinux
 Aschedule
 Ceuxo
 copyback
-ensurepip
 fastestmirror
 GOPATH
 jemalloc
