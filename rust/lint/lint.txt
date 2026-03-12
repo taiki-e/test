@@ -27,6 +27,7 @@ Lint checks provided by rustc:
                                         keyword-idents-2018  allow    detects edition keywords being used as an identifier
                                         keyword-idents-2024  allow    detects edition keywords being used as an identifier
                                         let-underscore-drop  allow    non-binding let on a type that has a destructor
+                                                linker-info  allow    linker warnings known to be informational-only and not indicative of a problem
                                             linker-messages  allow    warnings emitted at runtime by the target-specific linker program
                                      lossy-provenance-casts  allow    a lossy pointer to integer cast is used
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
@@ -71,8 +72,8 @@ Lint checks provided by rustc:
                                              unused-results  allow    unused result of an expression in a statement
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
                                      aarch64-softfloat-neon  warn     detects code that could be affected by ABI issues on aarch64 softfloat targets
+                                   ambiguous-derive-helpers  warn     detects derive helper attributes that are ambiguous with built-in attributes
                              ambiguous-glob-imported-traits  warn     detects uses of ambiguously glob imported traits
-                                     ambiguous-glob-imports  warn     detects certain glob imports that require reporting an ambiguity error
                                    ambiguous-glob-reexports  warn     ambiguous glob re-exports
                               ambiguous-import-visibilities  warn     detects certain glob imports that require reporting an ambiguity error
                                     ambiguous-panic-imports  warn     detects ambiguous core and std panic imports
@@ -118,6 +119,7 @@ Lint checks provided by rustc:
                   inline-always-mismatching-target-features  warn     detects when a function annotated with `#[inline(always)]` and `#[target_feature(enable = "..")]` is inlined into a caller without the required target feature
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[sanitize(... = "off")]`
                                   integer-to-ptr-transmutes  warn     detects integer to pointer transmutes
+                             internal-eq-trait-method-impls  warn     manual implementation of the internal `Eq::assert_receiver_is_total_eq` method
                                           internal-features  warn     internal features are not supposed to be used
                                      invalid-doc-attributes  warn     detects invalid `#[doc(...)]` attributes
                                           invalid-from-utf8  warn     using a non UTF-8 literal in `std::str::from_utf8`
@@ -205,6 +207,7 @@ Lint checks provided by rustc:
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
+                                     ambiguous-glob-imports  deny     detects certain glob imports that require reporting an ambiguity error
                                         arithmetic-overflow  deny     arithmetic operation overflows
                                           binary-asm-labels  deny     labels in inline assembly containing only 0 or 1 digits
                                  bindings-with-variant-name  deny     detects pattern bindings with the same name as one of the matched variants
@@ -213,6 +216,7 @@ Lint checks provided by rustc:
                            default-overrides-default-fields  deny     detect `Default` impl that should use the type's default field values
                      dependency-on-unit-never-type-fallback  deny     never type fallback affecting unsafe function calls
                                               deref-nullptr  deny     detects when an null pointer is dereferenced
+                                         duplicate-features  deny     duplicate features found in crate-level `#[feature]` directives
                     elided-lifetimes-in-associated-constant  deny     elided lifetimes cannot be used in associated constants in impls
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
                              explicit-builtin-cfgs-in-flags  deny     detects builtin cfgs set via the `--cfg`
@@ -256,7 +260,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
+                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, soft-unstable, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
