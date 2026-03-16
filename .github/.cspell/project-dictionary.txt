@@ -7,7 +7,6 @@ fastestmirror
 GOPATH
 jemalloc
 microdnf
-wfweef
 mirrorlist
 mvdan
 pluginconf
