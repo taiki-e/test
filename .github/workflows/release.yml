@@ -75,6 +75,8 @@ jobs:
     timeout-minutes: 60
     permissions:
       contents: write # for taiki-e/upload-rust-binary-action
+      id-token: write # for actions/attest
+      attestations: write # for actions/attest
     steps:
       - uses: taiki-e/checkout-action@v1
       - uses: taiki-e/github-actions/install-rust@stable
@@ -83,7 +85,8 @@ jobs:
           tool: cross
           fallback: none
         if: matrix.target == 'aarch64-unknown-linux-gnu'
-      - uses: taiki-e/upload-rust-binary-action@main
+      - id: build
+        uses: taiki-e/upload-rust-binary-action@main
         with:
           bin: rust-test-bin,a
           target: ${{ matrix.target }}
@@ -99,3 +102,6 @@ jobs:
           # pgp-public-key: .github/public-key.asc
           # pgp-private-key: ${{ secrets.PGP_PRIVATE_KEY }}
           # pgp-passphrase: ${{ secrets.PGP_PASSPHRASE }}
+      - uses: actions/attest@v4
+        with:
+          subject-path: ${{ github.workspace }}/${{ steps.build.outputs.archive }}.*
