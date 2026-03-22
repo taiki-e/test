@@ -85,7 +85,7 @@ jobs:
           tool: cross
           fallback: none
         if: matrix.target == 'aarch64-unknown-linux-gnu'
-      - id: build
+      - id: upload
         uses: taiki-e/upload-rust-binary-action@main
         with:
           bin: rust-test-bin,a
@@ -104,4 +104,4 @@ jobs:
           # pgp-passphrase: ${{ secrets.PGP_PASSPHRASE }}
       - uses: actions/attest@v4
         with:
-          subject-path: ${{ github.workspace }}/${{ steps.build.outputs.archive }}.*
+          subject-path: ${{ steps.upload.outputs.archive }}.*
