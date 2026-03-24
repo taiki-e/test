@@ -52,7 +52,7 @@ jobs:
       security-events: write # for github/codeql-action/*
     secrets: inherit
     with:
-      all-immutable-release: false
+      immutable-release: false
 
   test-tidy:
     strategy:
