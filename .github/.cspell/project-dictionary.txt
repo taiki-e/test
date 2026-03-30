@@ -1,4 +1,5 @@
 almalinux
+archiver
 archlinux
 Aschedule
 Ceuxo
@@ -6,6 +7,7 @@ copyback
 fastestmirror
 GOPATH
 jemalloc
+libgcc
 microdnf
 mirrorlist
 mvdan

@@ -23,6 +23,10 @@ defaults:
   run:
     shell: bash --noprofile --norc -CeEuxo pipefail {0}
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   create-release:
     if: github.repository_owner == 'taiki-e'
@@ -102,6 +106,6 @@ jobs:
           # pgp-public-key: .github/public-key.asc
           # pgp-private-key: ${{ secrets.PGP_PRIVATE_KEY }}
           # pgp-passphrase: ${{ secrets.PGP_PASSPHRASE }}
-      - uses: actions/attest@v4
+      - uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         with:
           subject-path: ${{ steps.upload.outputs.archive }}.*

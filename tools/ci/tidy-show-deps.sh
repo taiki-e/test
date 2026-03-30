@@ -68,23 +68,27 @@ git --version
 jq --version
 shfmt --version
 case "${ostype}" in
-  solaris) shellcheck --version || true ;; # TODO
+  solaris) ! shellcheck --version ;; # TODO
   *) shellcheck --version ;;
 esac
 npm --version
 node --version
 python3 --version
-pipx --version
+case "${ostype}" in
+  dragonfly | illumos | solaris) ! uv --version ;; # TODO
+  *) uv --version ;;
+esac
 rustc -vV
 cargo -vV
 case "${ostype}" in
   # OpenBSD/DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-  # rustup doesn't support host tools on Solaris. https://github.com/rust-lang/rustup/issues/2987
-  openbsd | dragonfly | solaris) rustup --version || true ;;
+  openbsd | dragonfly) ! rustup --version ;;
+  illumos) rustup --version || true ;; # TODO
   *) rustup --version ;;
 esac
+# clang-format 3.4.2 exit with 1 on --version flag
+clang-format --version || type -P clang-format >/dev/null
 case "${ostype}" in
-  openbsd) clang-format --version || type -P clang-format >/dev/null || true ;; # TODO
-  # clang-format 3.4.2 exit with 1 on --version flag
-  *) clang-format --version || type -P clang-format >/dev/null ;;
+  netbsd | dragonfly | illumos | solaris) ! zizmor --version ;; # TODO
+  *) zizmor --version ;;
 esac

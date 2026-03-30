@@ -50,7 +50,8 @@ jobs:
       contents: write # for creating branch for pr
       pull-requests: write # unused (used in `codegen-automerge: true` case)
       security-events: write # for github/codeql-action/*
-    secrets: inherit
+    secrets:
+      PR_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PR_TOKEN_APP_PRIVATE_KEY }}
     with:
       immutable-release: false
 
@@ -102,8 +103,18 @@ jobs:
       - uses: taiki-e/github-actions/install-rust@nightly
       - uses: taiki-e/install-action@v2
         with:
-          tool: shellcheck,shfmt,parse-dockerfile,zizmor
+          tool: shellcheck,shfmt,parse-dockerfile,uv,zizmor
           fallback: none
+      - run: mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
+      # min-release-age requires npm 11.10+
+      - run: sudo npm install --location=global npm@11.11.0
+        if: startsWith(matrix.os, 'ubuntu')
+      - run: sudo npm config set min-release-age=14 --location=global
+        if: startsWith(matrix.os, 'ubuntu')
+      - run: npm install --location=global npm@11.11.0
+        if: (!startsWith(matrix.os, 'ubuntu'))
+      - run: npm config set min-release-age=14 --location=global
+        if: (!startsWith(matrix.os, 'ubuntu'))
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
         # Unsupported NodeJS version (19.9.0); >=20 is required
@@ -129,6 +140,7 @@ jobs:
           - ubuntu:20.04 # glibc 2.31
           - ubuntu:22.04 # glibc 2.35
           - ubuntu:24.04 # glibc 2.39
+          - ubuntu:26.04 # glibc 2.42
           # - debian:9-slim # glibc 2.24
           - debian:10-slim # glibc 2.28
           - debian:11-slim # glibc 2.31
@@ -154,7 +166,17 @@ jobs:
     steps:
       - name: Install requirements (ubuntu/debian)
         run: |
-          case "${{ matrix.container }}" in
+          retry() {
+            for i in {1..10}; do
+              if "$@"; then
+                return 0
+              else
+                sleep "${i}"
+              fi
+            done
+            "$@"
+          }
+          case "${CONTAINER}" in
             debian:9* | debian:10*)
               # In Debian, the old repositories is removed from the main mirrors some time after EoL.
               codename=$(grep -E '^VERSION_CODENAME=' /etc/os-release | cut -d= -f2)
@@ -163,76 +185,99 @@ jobs:
                 -e "/${codename}-updates/d"
               ;;
           esac
-          apt-get -o Acquire::Retries=10 -qq update
-          case "${{ matrix.container }}" in
-            # pipx in API is only available since ubuntu 22.04/debian 12
-            ubuntu:1?.* | ubuntu:20.* | debian:1[01]* | debian:9*)
-              apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl xz-utils clang-format python3-venv python3-pip
-              pip3 install pipx
-              ;;
-            *) apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl xz-utils clang-format pipx ;;
-          esac
-          case "${{ matrix.container }}" in
+          retry apt-get -o Acquire::Retries=10 -qq update
+          retry apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends ca-certificates curl xz-utils clang-format python3-venv
+          case "${CONTAINER}" in
             # ubuntu 18.04/16.04 and debian 10/9's jq is 1.5, ubuntu 14.04's jq is 1.3
             # jq: error (at <stdin>:44): Invalid path expression near attempt to access element 0 of [0]
             # tools/tidy.sh: error on line 408: jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))'
             ubuntu:1?.04 | debian:10* | debian:9*)
-              curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o /usr/local/bin/jq https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64
+              retry curl --proto '=https' --tlsv1.2 -fsSL -o /usr/local/bin/jq https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64
               chmod +x /usr/local/bin/jq
               ;;
           esac
+        env:
+          CONTAINER: ${{ matrix.container }}
         if: startsWith(matrix.container, 'ubuntu') || startsWith(matrix.container, 'debian')
       - name: Install requirements (fedora/almalinux/centos)
         run: |
+          retry() {
+            for i in {1..10}; do
+              if "$@"; then
+                return 0
+              else
+                sleep "${i}"
+              fi
+            done
+            "$@"
+          }
           if type -P dnf >/dev/null; then
-            case "${{ matrix.container }}" in
-              fedora:*) dnf install -y clang-tools-extra pipx ;;
-              *)
-                dnf install -y clang-tools-extra python3-pip
-                pip3 install pipx
-                ;;
-            esac
+            retry dnf install -y clang-tools-extra python3
           elif type -P microdnf >/dev/null; then
-            microdnf install -y tar xz clang-tools-extra python3-pip
-            pip3 install pipx
+            retry microdnf install -y tar xz clang-tools-extra python3
           else
             # In CentOS, the old repositories is removed from the main mirrors just after EoL.
             # https://github.com/rust-lang/rust/pull/126352
             sed -i /etc/yum.repos.d/*.repo -e 's!^mirrorlist!#mirrorlist!' \
               -e 's!^#baseurl=http://mirror.centos.org/!baseurl=https://vault.centos.org/!'
             sed -i 's/enabled=1/enabled=0/' /etc/yum/pluginconf.d/fastestmirror.conf
-            yum install -y xz clang python3-pip
-            pip3 install pipx
+            retry yum install -y xz clang python3
           fi
         if: startsWith(matrix.container, 'fedora') || startsWith(matrix.container, 'almalinux') || startsWith(matrix.container, 'centos')
       - name: Install requirements (alpine)
-        run: apk --no-cache add ca-certificates curl clang-extra-tools npm pipx
+        run: apk --no-cache add ca-certificates curl clang-extra-tools npm python3
         shell: sh
         if: startsWith(matrix.container, 'alpine')
       - uses: taiki-e/checkout-action@v1
       - uses: taiki-e/github-actions/install-rust@nightly
       - name: Install Node.js
         run: |
+          retry() {
+            for i in {1..10}; do
+              if "$@"; then
+                return 0
+              else
+                sleep "${i}"
+              fi
+            done
+            "$@"
+          }
           mkdir -p -- /node
-          node_version=18.20.7
-          case "${{ matrix.container }}" in
+          node_version=20.20.2
+          case "${CONTAINER}" in
             ubuntu:1?.04 | debian:9* | centos:7) url="https://unofficial-builds.nodejs.org/download/release/v${node_version}/node-v${node_version}-linux-x64-glibc-217.tar.xz" ;;
             *) url="https://nodejs.org/dist/v${node_version}/node-v${node_version}-linux-x64.tar.xz" ;;
           esac
-          curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "${url}" | tar xJf - --strip-components 1 -C /node
+          retry curl --proto '=https' --tlsv1.2 -fsSL "${url}" | tar xJf - --strip-components 1 -C /node
           printf '/node/bin\n' >>"${GITHUB_PATH}"
+        env:
+          CONTAINER: ${{ matrix.container }}
         if: (!startsWith(matrix.container, 'alpine'))
       - uses: taiki-e/install-action@v2
         with:
-          tool: shellcheck,shfmt,parse-dockerfile
+          tool: shellcheck,shfmt,uv,parse-dockerfile
           fallback: none
+      - run: mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
+      # min-release-age requires npm 11.10+
+      - run: npm install --location=global npm@11.11.0
+      - run: npm config set min-release-age=14 --location=global
       - uses: taiki-e/install-action@v2
         with:
           tool: zizmor
           fallback: none
         if: (!(startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')))
       - run: |
-          curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/cargo-bins/cargo-quickinstall/releases/download/zizmor-1.18.0/zizmor-1.18.0-x86_64-unknown-linux-musl.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+          retry() {
+            for i in {1..10}; do
+              if "$@"; then
+                return 0
+              else
+                sleep "${i}"
+              fi
+            done
+            "$@"
+          }
+          retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/cargo-bins/cargo-quickinstall/releases/download/zizmor-1.18.0/zizmor-1.18.0-x86_64-unknown-linux-musl.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
         if: startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
@@ -241,14 +286,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - os: freebsd
-          #   version: '13.5'
-          # - os: freebsd
-          #   version: '14.3'
+          - os: freebsd
+            version: '14.3'
           - os: freebsd
             version: '15.0'
-          - os: netbsd
-            version: '9.4'
+          # realpath (called in `uvx yq`) requires NetBSD 10: https://man.netbsd.org/realpath.1
+          # - os: netbsd
+          #   version: '9.4'
           - os: netbsd
             version: '10.1'
           - os: openbsd
@@ -262,6 +306,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
+      - uses: taiki-e/github-actions/free-device-space@main
+        if: matrix.os == 'netbsd' || matrix.os == 'omnios'
       - uses: taiki-e/cross-platform-actions-action@dev
         with:
           environment_variables: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
@@ -271,98 +317,158 @@ jobs:
           sync_files: runner-to-vm
           run: |
             set -CeEuxo pipefail
+            retry() {
+              for i in {1..10}; do
+                if "$@"; then
+                  return 0
+                else
+                  sleep "${i}"
+                fi
+              done
+              "$@"
+            }
             case "$(uname -s)" in
               FreeBSD)
-                sudo pkg install -y git jq npm python3 devel/py-pipx hs-ShellCheck llvm
-                # go and shfmt not available in FreeBSD 14 packages since 2025-04-07.
-                go_version=1.24.2 # https://go.dev/dl
-                mkdir -p -- "${HOME}/go"
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.freebsd-amd64.tar.gz" | tar xzf - -C "${HOME}/go"
-                export PATH="${HOME}/go/go/bin:${PATH}"
-                go version
-                export GOPATH="${HOME}/go"
-                export PATH="${GOPATH}/bin:${PATH}"
-                go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+                # Refs: https://www.freshports.org/
+                retry sudo pkg install -y git jq npm python3 devel/uv shfmt hs-ShellCheck llvm
+                retry curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+                retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
                 cargo install zizmor --debug --locked
+                rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                sudo npm install --location=global npm@11.11.0
+                sudo npm config set min-release-age=14 --location=global
+                mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
                 ;;
               NetBSD)
-                sudo pkgin update
-                sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs py312-pip shfmt shellcheck clang
+                retry sudo pkgin update
+                # Refs: https://ftp.netbsd.org/pub/pkgsrc/packages/NetBSD/x86_64/
+                retry sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs py313-uv shfmt shellcheck clang
                 sudo pkgin clean
-                sudo ln -s -- /usr/pkg/bin/python3.12 /usr/pkg/bin/python3
+                sudo ln -s -- /usr/pkg/bin/python3.13 /usr/pkg/bin/python3
+                sudo ln -s -- /usr/pkg/bin/uv-3.13 /usr/pkg/bin/uv
+                sudo ln -s -- /usr/pkg/bin/uvx-3.13 /usr/pkg/bin/uvx
                 export PATH="${HOME}/.local/bin:${PATH}"
-                python3 -m pip install pipx
-                curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+                retry curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 cargo install parse-dockerfile --debug
-                # Failed to install due to jemalloc build error.
-                # cargo install zizmor --debug --locked
+                rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                # Failed to install due to jemalloc build error,
+                # and "No space left on device" error: https://github.com/cross-platform-actions/action/issues/111
+                # cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
+                # rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                sudo npm install --location=global npm@11.11.0
+                sudo npm config set min-release-age=14 --location=global
+                # uv from package manager is old
+                # mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
                 ;;
               OpenBSD)
+                # Refs: https://openbsd.app/?search=
                 # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-                sudo pkg_add git jq node py3-pipx shfmt shellcheck rust rust-rustfmt clang-tools-extra
+                retry sudo pkg_add git jq node uv shfmt shellcheck rust rust-rustfmt clang-tools-extra
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 cargo install parse-dockerfile --debug
-                # Failed to install due to jemalloc build error.
-                # cargo install zizmor --debug --locked
+                rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                # Failed to install due to jemalloc build error,
+                # fixed in https://github.com/zizmorcore/zizmor/pull/1812
+                cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
+                rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                # Failed due to "npm error Cannot find module 'promise-retry'"
+                # sudo npm install --location=global npm@11.11.0
+                # sudo npm config set min-release-age=14 --location=global
+                # uv from package manager is old
+                # mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
                 ;;
               SunOS)
                 if [[ "$(/usr/bin/uname -o)" == 'illumos' ]]; then
-                  sudo pkg install developer/versioning/git gnu-tar jq runtime/node-24 runtime/python-313 developer/clang-21
+                  # Refs: https://omnios.org/info/ipsrepos
+                  retry sudo pkg install developer/versioning/git gnu-tar jq runtime/node-24 runtime/python-313 developer/clang-21
                   export PATH="${HOME}/.local/bin:${PATH}"
-                  python3 -m pip install pipx
-                  curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
+                  retry curl --proto '=https' --tlsv1.2 -fsSL -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
                   sudo tar xzpf bootstrap.tar.gz -C /
                   export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
-                  sudo pkgin -y install shfmt shellcheck
-                  curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+                  # Refs: https://pkgsrc.smartos.org/packages/SmartOS/2024Q4/x86_64/All/
+                  retry sudo pkgin -y install shfmt shellcheck
+                  retry curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                   export PATH="${HOME}/.cargo/bin:${PATH}"
                   # Use gtar instead of tar because "tar: directory checksum error" error
-                  curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
-                  # Failed to install due to jemalloc build error.
-                  # cargo install zizmor --debug --locked
+                  retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
+                  # Failed to install due to jemalloc build error,
+                  # and "No space left on device" error: https://github.com/cross-platform-actions/action/issues/111
+                  # unset RUSTFLAGS
+                  # cargo install uv --debug --locked --git https://github.com/taiki-e/uv.git --branch dev
+                  # rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                  # Failed to install due to jemalloc build error,
+                  # and "No space left on device" error: https://github.com/cross-platform-actions/action/issues/111
+                  # cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
+                  rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                  sudo npm install --location=global npm@11.11.0
+                  sudo npm config set min-release-age=14 --location=global
+                  mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
                 fi
                 ;;
             esac
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
-  # test-tidy-vm-dragonfly:
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 60
-  #   steps:
-  #     - uses: taiki-e/checkout-action@v1
-  #     - uses: vmactions/dragonflybsd-vm@v1
-  #       with:
-  #         envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
-  #         usesh: true
-  #         copyback: false
-  #         run: |
-  #           # DragonFly BSD sh's -E means -o emacs
-  #           # shellcheck disable=SC3040
-  #           set -Ceuxo pipefail
-  #           pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
-  #           # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-  #           pkg install -y bash git jq npm python3 py311-pip py311-pipx hs-ShellCheck rust llvm
-  #           # shfmt not available in 6.4 packages since 2025-03-17.
-  #           curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -O https://avalon.dragonflybsd.org/dports/dragonfly:6.6:x86:64/LATEST/All/shfmt-3.8.0_5.pkg
-  #           pkg install -y shfmt-3.8.0_5.pkg
-  #           export PATH="${HOME}/.cargo/bin:${PATH}"
-  #           # rustc installed from package manager is 1.79, parse-dockerfile requires 1.80.
-  #           cargo install parse-dockerfile --debug --git https://github.com/taiki-e/parse-dockerfile.git --branch msrv-1.65
-  #           # rustc installed from package manager is 1.79, zizmor requires 1.85.
-  #           # cargo install zizmor --debug --locked
-  #           git config --global --add safe.directory "$(pwd)"
-  #           tools/ci/tidy-show-deps.sh
-  #           tools/tidy.sh
+  test-tidy-vm-dragonfly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: vmactions/dragonflybsd-vm@323497fa680c1856dd1ba5c4fd89182a9194f649 # v1.2.7
+        with:
+          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
+          usesh: true
+          copyback: false
+          run: |
+            # DragonFly BSD sh's -E means -o emacs
+            # shellcheck disable=SC3040
+            set -Ceuxo pipefail
+            # shellcheck disable=SC3009
+            retry() {
+              for i in {1..10}; do
+                if "$@"; then
+                  return 0
+                else
+                  sleep "${i}"
+                fi
+              done
+              "$@"
+            }
+            retry pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
+            # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+            # Refs: https://avalon.dragonflybsd.org/dports/dragonfly:6.4:x86:64/LATEST/All/
+            retry pkg install -y bash git jq npm-node20 python3 hs-ShellCheck rust llvm
+            # go and shfmt not available in 6.4 packages since 2025-03-17.
+            go_version=1.24.13 # https://go.dev/dl
+            mkdir -p -- "${HOME}/go"
+            retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.dragonfly-amd64.tar.gz" | tar xzf - -C "${HOME}/go"
+            export PATH="${HOME}/go/go/bin:${PATH}"
+            go version
+            export GOPATH="${HOME}/go"
+            export PATH="${GOPATH}/bin:${PATH}"
+            go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
+            export PATH="${HOME}/.cargo/bin:${PATH}"
+            cargo install parse-dockerfile --debug
+            rm -rf -- /tmp/cargo-install* # cargo install artifacts
+            # rustc installed from package manager is 1.85, latest uv requires 1.92.
+            # Failed to install due to sys-info build error,
+            # cargo install uv --debug --locked --git https://github.com/astral-sh/uv.git --rev 4ed9c5791ba9d5c304aae14b920d612af26dc2d3 # 0.7.15
+            # rustc installed from package manager is 1.85, latest zizmor requires 1.88 and 1.85 compatible version (1.11.0) doesn't support config that we use.
+            # cargo install zizmor --debug --locked
+            rm -rf -- /tmp/cargo-install* # cargo install artifacts
+            mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
+            npm install --location=global npm@11.11.0
+            npm config set min-release-age=14 --location=global
+            git config --global --add safe.directory "$(pwd)"
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
   test-tidy-vm-solaris:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
-      - uses: vmactions/solaris-vm@v1
+      - uses: vmactions/solaris-vm@0a231b94365d1911cf62097ef342f6b30d95598f # v1.3.2
         with:
           envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
           usesh: true
@@ -370,6 +476,17 @@ jobs:
           run: |
             # Solaris sh has no -C/-E/-o pipefail
             set -eux
+            # shellcheck disable=SC3009
+            retry() {
+              for i in {1..10}; do
+                if "$@"; then
+                  return 0
+                else
+                  sleep "${i}"
+                fi
+              done
+              "$@"
+            }
             g() {
               set +x
               ifs="${IFS}"
@@ -382,17 +499,78 @@ jobs:
               set -x
             }
             g ld -z help
-            g pkg install developer/versioning/git jq pkg://solaris/runtime/python-313 library/python/pip-313 library/python/pipx runtime/nodejs developer/llvm/clang developer/rust/cargo developer/go
+            # Refs: http://pkg.oracle.com/solaris/release/en/index.shtml
+            g retry pkg install developer/versioning/git jq pkg://solaris/runtime/python-313 runtime/nodejs developer/llvm/clang developer/go
             export GOPATH="${HOME}/go"
             export PATH="${GOPATH}/bin:${PATH}"
             g go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
             # TODO: shellcheck
-            # TODO: Download rustup from https://sh.rustup.rs once https://github.com/rust-lang/rustup/issues/2987 released: https://github.com/rust-lang/rustup/issues/4423
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://raw.githubusercontent.com/psumbera/rustup/refs/heads/solaris-rustup/rustup-init.sh | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+            retry curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
             export PATH="${HOME}/.cargo/bin:${PATH}"
-            curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
-            # Failed to install due to tree-sitter build error.
-            # cargo install zizmor --debug --locked
+            retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+            # Failed to install due to jemalloc build error,
+            # and uv-unix build error.
+            # unset RUSTFLAGS
+            # cargo install uv --debug --locked --git https://github.com/taiki-e/uv.git --branch dev
+            # rm -rf -- /tmp/cargo-install* # cargo install artifacts
+            # Failed to install due to jemalloc build error,
+            # and tree-sitter build error.
+            # cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
+            # rm -rf -- /tmp/cargo-install* # cargo install artifacts
+            mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
+            npm install --location=global npm@11.11.0
+            npm config set min-release-age=14 --location=global
             git config --global --add safe.directory "$(pwd)"
+            tools/ci/tidy-show-deps.sh
+            tools/tidy.sh
+  test-tidy-vm-openindiana:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: vmactions/openindiana-vm@0544593284f5c837f637097e278df86bf5bbab1e # v1.0.7
+        with:
+          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
+          usesh: true
+          copyback: false
+          run: |
+            # illumos sh has no -E
+            # shellcheck disable=SC3040
+            set -Ceuxo pipefail
+            # shellcheck disable=SC3009
+            retry() {
+              for i in {1..10}; do
+                if "$@"; then
+                  return 0
+                else
+                  sleep "${i}"
+                fi
+              done
+              "$@"
+            }
+            # Install Rust from package manager due to "ld.so.1: rustup-init: fatal: libgcc_s.so.1: open failed: No such file or directory" error.
+            # Refs: https://pkg.openindiana.org/hipster/en/index.shtml
+            retry pkg install developer/versioning/git archiver/gnu-tar test/jq runtime/nodejs runtime/python developer/clang-21 developer/gcc-14 developer/lang/rustc
+            retry curl --proto '=https' --tlsv1.2 -fsSL -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
+            tar xzpf bootstrap.tar.gz -C /
+            export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
+            # Refs: https://pkgsrc.smartos.org/packages/SmartOS/2024Q4/x86_64/All/
+            retry pkgin -y install shfmt shellcheck
+            export PATH="${HOME}/.cargo/bin:${PATH}"
+            # Install from source due to "libgcc_s.so.1: open failed: No such file or directory" error.
+            cargo install parse-dockerfile --debug
+            rm -rf -- /tmp/cargo-install* # cargo install artifacts
+            # Failed to install due to jemalloc build error.
+            # Install uv from source is very slow.
+            # cargo install uv --debug --locked --git https://github.com/taiki-e/uv.git --branch dev
+            # rm -rf -- /tmp/cargo-install* # cargo install artifacts
+            # Failed to install due to jemalloc build error.
+            # Install zizmor from source is very slow.
+            # cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
+            # rm -rf -- /tmp/cargo-install* # cargo install artifacts
+            git config --global --add safe.directory "$(pwd)"
+            mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
+            npm install --location=global npm@11.11.0
+            npm config set min-release-age=14 --location=global
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
