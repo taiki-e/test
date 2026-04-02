@@ -8,6 +8,7 @@ fastestmirror
 GOPATH
 jemalloc
 libgcc
+afehwgaojrwo
 microdnf
 mirrorlist
 mvdan
