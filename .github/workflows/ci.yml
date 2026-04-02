@@ -105,15 +105,11 @@ jobs:
         with:
           tool: shellcheck,shfmt,parse-dockerfile,uv,zizmor
           fallback: none
-      - run: mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
-      # min-release-age requires npm 11.10+
+      # min-release-age and allow-git requires npm 11.10+
+      - run: npm --version
       - run: sudo npm install --location=global npm@11.11.0
         if: startsWith(matrix.os, 'ubuntu')
-      - run: sudo npm config set min-release-age=14 --location=global
-        if: startsWith(matrix.os, 'ubuntu')
       - run: npm install --location=global npm@11.11.0
-        if: (!startsWith(matrix.os, 'ubuntu'))
-      - run: npm config set min-release-age=14 --location=global
         if: (!startsWith(matrix.os, 'ubuntu'))
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/tidy.sh
@@ -257,10 +253,9 @@ jobs:
         with:
           tool: shellcheck,shfmt,uv,parse-dockerfile
           fallback: none
-      - run: mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
-      # min-release-age requires npm 11.10+
+      # min-release-age and allow-git requires npm 11.10+
+      - run: npm --version
       - run: npm install --location=global npm@11.11.0
-      - run: npm config set min-release-age=14 --location=global
       - uses: taiki-e/install-action@v2
         with:
           tool: zizmor
@@ -336,14 +331,15 @@ jobs:
                 retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
                 cargo install zizmor --debug --locked
                 rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                # min-release-age and allow-git requires npm 11.10+
+                npm --version
                 sudo npm install --location=global npm@11.11.0
-                sudo npm config set min-release-age=14 --location=global
-                mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
                 ;;
               NetBSD)
                 retry sudo pkgin update
                 # Refs: https://ftp.netbsd.org/pub/pkgsrc/packages/NetBSD/x86_64/
-                retry sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs py313-uv shfmt shellcheck clang
+                # uv from package manager is old
+                retry sudo pkgin -y install mozilla-rootcerts-openssl git jq nodejs shfmt shellcheck clang
                 sudo pkgin clean
                 sudo ln -s -- /usr/pkg/bin/python3.13 /usr/pkg/bin/python3
                 sudo ln -s -- /usr/pkg/bin/uv-3.13 /usr/pkg/bin/uv
@@ -357,15 +353,15 @@ jobs:
                 # and "No space left on device" error: https://github.com/cross-platform-actions/action/issues/111
                 # cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
                 # rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                # min-release-age and allow-git requires npm 11.10+
+                npm --version
                 sudo npm install --location=global npm@11.11.0
-                sudo npm config set min-release-age=14 --location=global
-                # uv from package manager is old
-                # mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
                 ;;
               OpenBSD)
                 # Refs: https://openbsd.app/?search=
                 # OpenBSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-                retry sudo pkg_add git jq node uv shfmt shellcheck rust rust-rustfmt clang-tools-extra
+                # uv from package manager is old
+                retry sudo pkg_add git jq node shfmt shellcheck rust rust-rustfmt clang-tools-extra
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 cargo install parse-dockerfile --debug
                 rm -rf -- /tmp/cargo-install* # cargo install artifacts
@@ -373,11 +369,10 @@ jobs:
                 # fixed in https://github.com/zizmorcore/zizmor/pull/1812
                 cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
                 rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                # min-release-age and allow-git requires npm 11.10+
+                npm --version
                 # Failed due to "npm error Cannot find module 'promise-retry'"
                 # sudo npm install --location=global npm@11.11.0
-                # sudo npm config set min-release-age=14 --location=global
-                # uv from package manager is old
-                # mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
                 ;;
               SunOS)
                 if [[ "$(/usr/bin/uname -o)" == 'illumos' ]]; then
@@ -402,9 +397,9 @@ jobs:
                   # and "No space left on device" error: https://github.com/cross-platform-actions/action/issues/111
                   # cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
                   rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                  # min-release-age and allow-git requires npm 11.10+
+                  npm --version
                   sudo npm install --location=global npm@11.11.0
-                  sudo npm config set min-release-age=14 --location=global
-                  mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
                 fi
                 ;;
             esac
@@ -457,9 +452,9 @@ jobs:
             # rustc installed from package manager is 1.85, latest zizmor requires 1.88 and 1.85 compatible version (1.11.0) doesn't support config that we use.
             # cargo install zizmor --debug --locked
             rm -rf -- /tmp/cargo-install* # cargo install artifacts
-            mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
+            # min-release-age and allow-git requires npm 11.10+
+            npm --version
             npm install --location=global npm@11.11.0
-            npm config set min-release-age=14 --location=global
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
@@ -517,9 +512,9 @@ jobs:
             # and tree-sitter build error.
             # cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
             # rm -rf -- /tmp/cargo-install* # cargo install artifacts
-            mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
+            # min-release-age and allow-git requires npm 11.10+
+            npm --version
             npm install --location=global npm@11.11.0
-            npm config set min-release-age=14 --location=global
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh
@@ -569,8 +564,8 @@ jobs:
             # cargo install zizmor --debug --locked --git https://github.com/taiki-e/zizmor.git --branch dev
             # rm -rf -- /tmp/cargo-install* # cargo install artifacts
             git config --global --add safe.directory "$(pwd)"
-            mkdir -p -- ~/.config/uv && printf 'exclude-newer = "14 days"\n' >>~/.config/uv/uv.toml
+            # min-release-age and allow-git requires npm 11.10+
+            npm --version
             npm install --location=global npm@11.11.0
-            npm config set min-release-age=14 --location=global
             tools/ci/tidy-show-deps.sh
             tools/tidy.sh

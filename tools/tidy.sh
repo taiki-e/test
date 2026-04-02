@@ -127,6 +127,8 @@ EOF
   exit 1
 fi
 
+npx() { command npx --min-release-age=14 --ignore-scripts=true --allow-git=none "$@"; }
+uvx() { command uvx --exclude-newer="14 days" "$@"; }
 yq() { uvx yq "$@"; }
 case "$(uname -s)" in
   Linux)
@@ -826,7 +828,7 @@ elif check_install shellcheck; then
     # Exclude SC2096 due to the way the temporary script is created.
     shellcheck_exclude=SC2086,SC2096,SC2129
     info "running \`shellcheck --exclude ${shellcheck_exclude}\` for scripts in .github/workflows/*.yml and **/action.yml"
-    if [[ "${ostype}" =~ ^(dragonfly|illumos|solaris)$ ]] && [[ -n "${CI:-}" ]] && ! type -P uv >/dev/null; then
+    if [[ "${ostype}" =~ ^(netbsd|openbsd|dragonfly|illumos|solaris)$ ]] && [[ -n "${CI:-}" ]] && ! type -P uv >/dev/null; then
       warn "this check is skipped on Dragonfly/illumos/Solaris due to installing uv is hard on these platform"
     elif check_install jq uv; then
       shellcheck_for_gha() {

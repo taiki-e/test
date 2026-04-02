@@ -75,7 +75,7 @@ npm --version
 node --version
 python3 --version
 case "${ostype}" in
-  dragonfly | illumos | solaris) ! uv --version ;; # TODO
+  netbsd | openbsd | dragonfly | illumos | solaris) ! uv --version ;; # TODO
   *) uv --version ;;
 esac
 rustc -vV
