@@ -28,7 +28,7 @@ env:
   TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT: 0
   TIDY_EXPECTED_PRETTIER_FILE_COUNT: 8
   TIDY_EXPECTED_TOML_FILE_COUNT: 9
-  TIDY_EXPECTED_SHELL_FILE_COUNT: 5
+  TIDY_EXPECTED_SHELL_FILE_COUNT: 6
   TIDY_EXPECTED_DOCKER_FILE_COUNT: 1
 
 defaults:
@@ -112,14 +112,14 @@ jobs:
       - run: npm install --location=global npm@11.11.0
         if: (!startsWith(matrix.os, 'ubuntu'))
       - run: tools/ci/tidy-show-deps.sh
-      - run: tools/tidy.sh
+      - run: tools/ci/tidy.sh
         # Unsupported NodeJS version (19.9.0); >=20 is required
         if: matrix.os != 'windows-11-arm'
       - run: brew install bash
         if: startsWith(matrix.os, 'macos')
       - run: tools/ci/tidy-show-deps.sh
         if: startsWith(matrix.os, 'macos')
-      - run: tools/tidy.sh
+      - run: tools/ci/tidy.sh
         if: startsWith(matrix.os, 'macos')
   test-tidy-container:
     strategy:
@@ -277,7 +277,7 @@ jobs:
           retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/cargo-bins/cargo-quickinstall/releases/download/zizmor-1.18.0/zizmor-1.18.0-x86_64-unknown-linux-musl.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
         if: startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')
       - run: tools/ci/tidy-show-deps.sh
-      - run: tools/tidy.sh
+      - run: tools/ci/tidy.sh
   test-tidy-vm:
     strategy:
       fail-fast: false
@@ -406,7 +406,7 @@ jobs:
                 ;;
             esac
             tools/ci/tidy-show-deps.sh
-            tools/tidy.sh
+            tools/ci/tidy.sh
   test-tidy-vm-dragonfly:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -459,7 +459,7 @@ jobs:
             npm install --location=global npm@11.11.0
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
-            tools/tidy.sh
+            tools/ci/tidy.sh
   test-tidy-vm-solaris:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -519,7 +519,7 @@ jobs:
             npm install --location=global npm@11.11.0
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
-            tools/tidy.sh
+            tools/ci/tidy.sh
   test-tidy-vm-openindiana:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -570,4 +570,4 @@ jobs:
             npm --version
             npm install --location=global npm@11.11.0
             tools/ci/tidy-show-deps.sh
-            tools/tidy.sh
+            tools/ci/tidy.sh
