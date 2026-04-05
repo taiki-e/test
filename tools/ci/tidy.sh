@@ -130,7 +130,7 @@ EOF
   exit 1
 fi
 
-npx() { command npx --min-release-age=14 --ignore-scripts=true --allow-git=none "$@"; }
+npx() { command npx --min-release-age=14 --ignore-scripts=true --allow-git=none --engine-strict=true --strict-peer-deps=true "$@"; }
 uvx() { command uvx --exclude-newer="14 days" "$@"; }
 yq() { uvx yq "$@"; }
 case "$(uname -s)" in

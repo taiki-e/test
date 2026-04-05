@@ -23,7 +23,7 @@ env:
   RUSTDOCFLAGS: -D warnings
   RUSTFLAGS: -D warnings
   RUSTUP_MAX_RETRIES: 10
-  TIDY_EXPECTED_MARKDOWN_FILE_COUNT: 5
+  TIDY_EXPECTED_MARKDOWN_FILE_COUNT: 4
   TIDY_EXPECTED_RUST_FILE_COUNT: 5
   TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT: 0
   TIDY_EXPECTED_PRETTIER_FILE_COUNT: 8
@@ -190,7 +190,7 @@ jobs:
             # jq: error (at <stdin>:44): Invalid path expression near attempt to access element 0 of [0]
             # tools/tidy.sh: error on line 408: jq 'del(.dictionaryDefinitions[] | select(.name == "organization-dictionary" | not))'
             ubuntu:1?.04 | debian:10* | debian:9*)
-              retry curl --proto '=https' --tlsv1.2 -fsSL -o /usr/local/bin/jq https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64
+              retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o /usr/local/bin/jq https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64
               chmod +x /usr/local/bin/jq
               ;;
           esac
@@ -246,7 +246,7 @@ jobs:
             ubuntu:1?.04 | debian:9* | centos:7) url="https://unofficial-builds.nodejs.org/download/release/v${node_version}/node-v${node_version}-linux-x64-glibc-217.tar.xz" ;;
             *) url="https://nodejs.org/dist/v${node_version}/node-v${node_version}-linux-x64.tar.xz" ;;
           esac
-          retry curl --proto '=https' --tlsv1.2 -fsSL "${url}" | tar xJf - --strip-components 1 -C /node
+          retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "${url}" | tar xJf - --strip-components 1 -C /node
           printf '/node/bin\n' >>"${GITHUB_PATH}"
         env:
           CONTAINER: ${{ matrix.container }}
@@ -274,7 +274,7 @@ jobs:
             done
             "$@"
           }
-          retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/cargo-bins/cargo-quickinstall/releases/download/zizmor-1.18.0/zizmor-1.18.0-x86_64-unknown-linux-musl.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+          retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/cargo-bins/cargo-quickinstall/releases/download/zizmor-1.18.0/zizmor-1.18.0-x86_64-unknown-linux-musl.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
         if: startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/ci/tidy.sh
@@ -328,9 +328,9 @@ jobs:
               FreeBSD)
                 # Refs: https://www.freshports.org/
                 retry sudo pkg install -y git jq npm python3 devel/uv shfmt hs-ShellCheck llvm
-                retry curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+                retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
-                retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+                retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-freebsd.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
                 cargo install zizmor --debug --locked
                 rm -rf -- /tmp/cargo-install* # cargo install artifacts
                 # min-release-age and allow-git requires npm 11.10+
@@ -347,7 +347,7 @@ jobs:
                 sudo ln -s -- /usr/pkg/bin/uv-3.13 /usr/pkg/bin/uv
                 sudo ln -s -- /usr/pkg/bin/uvx-3.13 /usr/pkg/bin/uvx
                 export PATH="${HOME}/.local/bin:${PATH}"
-                retry curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+                retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                 export PATH="${HOME}/.cargo/bin:${PATH}"
                 cargo install parse-dockerfile --debug
                 rm -rf -- /tmp/cargo-install* # cargo install artifacts
@@ -381,15 +381,15 @@ jobs:
                   # Refs: https://omnios.org/info/ipsrepos
                   retry sudo pkg install developer/versioning/git gnu-tar jq runtime/node-24 runtime/python-313 developer/clang-21
                   export PATH="${HOME}/.local/bin:${PATH}"
-                  retry curl --proto '=https' --tlsv1.2 -fsSL -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
+                  retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
                   sudo tar xzpf bootstrap.tar.gz -C /
                   export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
                   # Refs: https://pkgsrc.smartos.org/packages/SmartOS/2024Q4/x86_64/All/
                   retry sudo pkgin -y install shfmt shellcheck
-                  retry curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+                  retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
                   export PATH="${HOME}/.cargo/bin:${PATH}"
                   # Use gtar instead of tar because "tar: directory checksum error" error
-                  retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
+                  retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | gtar xzf - -C "${HOME}/.cargo/bin"
                   # Failed to install due to jemalloc build error,
                   # and "No space left on device" error: https://github.com/cross-platform-actions/action/issues/111
                   # unset RUSTFLAGS
@@ -502,9 +502,9 @@ jobs:
             export PATH="${GOPATH}/bin:${PATH}"
             g go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
             # TODO: shellcheck
-            retry curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
+            retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain nightly --no-modify-path
             export PATH="${HOME}/.cargo/bin:${PATH}"
-            retry curl --proto '=https' --tlsv1.2 -fsSL "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
+            retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/taiki-e/parse-dockerfile/releases/latest/download/parse-dockerfile-x86_64-unknown-illumos.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
             # Failed to install due to jemalloc build error,
             # and uv-unix build error.
             # unset RUSTFLAGS
@@ -548,7 +548,7 @@ jobs:
             # Install Rust from package manager due to "ld.so.1: rustup-init: fatal: libgcc_s.so.1: open failed: No such file or directory" error.
             # Refs: https://pkg.openindiana.org/hipster/en/index.shtml
             retry pkg install developer/versioning/git archiver/gnu-tar test/jq runtime/nodejs runtime/python developer/clang-21 developer/gcc-14 developer/lang/rustc
-            retry curl --proto '=https' --tlsv1.2 -fsSL -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
+            retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 -o bootstrap.tar.gz https://pkgsrc.SmartOS.org/packages/SmartOS/bootstrap/bootstrap-2024Q4-x86_64.tar.gz
             tar xzpf bootstrap.tar.gz -C /
             export PATH="/opt/local/sbin:/opt/local/bin:${PATH}"
             # Refs: https://pkgsrc.smartos.org/packages/SmartOS/2024Q4/x86_64/All/
