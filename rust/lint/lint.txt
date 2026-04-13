@@ -172,7 +172,6 @@ Lint checks provided by rustc:
                                             unexpected-cfgs  warn     detects unexpected names and values in `#[cfg]` conditions
                               unfulfilled-lint-expectations  warn     unfulfilled lint expectation
                               ungated-async-fn-track-caller  warn     enabling track_caller on an async fn is a no-op unless the async_fn_track_caller feature is enabled
-                                         uninhabited-static  warn     uninhabited static
                               unknown-diagnostic-attributes  warn     detects unknown diagnostic attributes
                                               unknown-lints  warn     unrecognized lint attribute
                                       unnameable-test-items  warn     detects an item that cannot be named being marked as `#[test_case]`
@@ -249,6 +248,7 @@ Lint checks provided by rustc:
                         text-direction-codepoint-in-literal  deny     detect special Unicode codepoints that affect the visual representation of text on screen, changing the direction in which text flows
                                         unconditional-panic  deny     operation will cause a panic at runtime
                                    undropped-manually-drops  deny     calls to `std::mem::drop` with `std::mem::ManuallyDrop` instead of it's inner value
+                                         uninhabited-static  deny     uninhabited static
                                         unknown-crate-types  deny     unknown crate type found in `#[crate_type]` directive
                                          useless-deprecated  deny     detects deprecation attributes with no effect
 
