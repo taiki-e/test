@@ -294,6 +294,8 @@ jobs:
             version: '10.1'
           - os: openbsd
             version: '7.8'
+          - os: dragonflybsd
+            version: '6.4.2'
           - os: omnios
             version: 'r151056'
           # TODO: hang on "syncing markdown to rustdoc"
@@ -305,7 +307,7 @@ jobs:
       - uses: taiki-e/checkout-action@v1
       - uses: taiki-e/github-actions/free-device-space@main
         if: matrix.os == 'netbsd' || matrix.os == 'omnios'
-      - uses: taiki-e/cross-platform-actions-action@dev
+      - uses: cross-platform-actions/action@4b0aa6f8b8759e70526533b308a861e5e3184f89 # master # zizmor: ignore[stale-action-refs]
         with:
           environment_variables: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
           operating_system: ${{ matrix.os }}
@@ -376,6 +378,34 @@ jobs:
                 # Failed due to "npm error Cannot find module 'promise-retry'"
                 # sudo npm install --location=global npm@11.11.0
                 ;;
+              DragonFly)
+                retry pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
+                # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
+                # Refs: https://avalon.dragonflybsd.org/dports/dragonfly:6.4:x86:64/LATEST/All/
+                retry pkg install -y bash git jq npm-node20 python3 hs-ShellCheck rust llvm
+                # go and shfmt not available in 6.4 packages since 2025-03-17.
+                go_version=1.24.13 # https://go.dev/dl
+                mkdir -p -- "${HOME}/go"
+                retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.dragonfly-amd64.tar.gz" | tar xzf - -C "${HOME}/go"
+                export PATH="${HOME}/go/go/bin:${PATH}"
+                go version
+                export GOPATH="${HOME}/go"
+                export PATH="${GOPATH}/bin:${PATH}"
+                go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
+                export PATH="${HOME}/.cargo/bin:${PATH}"
+                cargo install parse-dockerfile --debug
+                rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                # rustc installed from package manager is 1.85, latest uv requires 1.92.
+                # Failed to install due to sys-info build error,
+                # cargo install uv --debug --locked --git https://github.com/astral-sh/uv.git --rev 4ed9c5791ba9d5c304aae14b920d612af26dc2d3 # 0.7.15
+                # rustc installed from package manager is 1.85, latest zizmor requires 1.88 and 1.85 compatible version (1.11.0) doesn't support config that we use.
+                # cargo install zizmor --debug --locked
+                rm -rf -- /tmp/cargo-install* # cargo install artifacts
+                # min-release-age and allow-git requires npm 11.10+
+                npm --version
+                npm install --location=global npm@11.11.0
+                git config --global --add safe.directory "$(pwd)"
+                ;;
               SunOS)
                 if [[ "$(/usr/bin/uname -o)" == 'illumos' ]]; then
                   # Refs: https://omnios.org/info/ipsrepos
@@ -405,59 +435,6 @@ jobs:
                 fi
                 ;;
             esac
-            tools/ci/tidy-show-deps.sh
-            tools/ci/tidy.sh
-  test-tidy-vm-dragonfly:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: taiki-e/checkout-action@v1
-      - uses: vmactions/dragonflybsd-vm@323497fa680c1856dd1ba5c4fd89182a9194f649 # v1.2.7
-        with:
-          envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
-          usesh: true
-          copyback: false
-          run: |
-            # DragonFly BSD sh's -E means -o emacs
-            # shellcheck disable=SC3040
-            set -Ceuxo pipefail
-            # shellcheck disable=SC3009
-            retry() {
-              for i in {1..10}; do
-                if "$@"; then
-                  return 0
-                else
-                  sleep "${i}"
-                fi
-              done
-              "$@"
-            }
-            retry pkg upgrade -y # needed to avoid Undefined symbol "uv_library_shutdown" error
-            # DragonFly BSD targets are tier 3 targets, so install Rust from package manager instead of rustup.
-            # Refs: https://avalon.dragonflybsd.org/dports/dragonfly:6.4:x86:64/LATEST/All/
-            retry pkg install -y bash git jq npm-node20 python3 hs-ShellCheck rust llvm
-            # go and shfmt not available in 6.4 packages since 2025-03-17.
-            go_version=1.24.13 # https://go.dev/dl
-            mkdir -p -- "${HOME}/go"
-            retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://go.dev/dl/go${go_version}.dragonfly-amd64.tar.gz" | tar xzf - -C "${HOME}/go"
-            export PATH="${HOME}/go/go/bin:${PATH}"
-            go version
-            export GOPATH="${HOME}/go"
-            export PATH="${GOPATH}/bin:${PATH}"
-            go install mvdan.cc/sh/v3/cmd/shfmt@v3.11.0
-            export PATH="${HOME}/.cargo/bin:${PATH}"
-            cargo install parse-dockerfile --debug
-            rm -rf -- /tmp/cargo-install* # cargo install artifacts
-            # rustc installed from package manager is 1.85, latest uv requires 1.92.
-            # Failed to install due to sys-info build error,
-            # cargo install uv --debug --locked --git https://github.com/astral-sh/uv.git --rev 4ed9c5791ba9d5c304aae14b920d612af26dc2d3 # 0.7.15
-            # rustc installed from package manager is 1.85, latest zizmor requires 1.88 and 1.85 compatible version (1.11.0) doesn't support config that we use.
-            # cargo install zizmor --debug --locked
-            rm -rf -- /tmp/cargo-install* # cargo install artifacts
-            # min-release-age and allow-git requires npm 11.10+
-            npm --version
-            npm install --location=global npm@11.11.0
-            git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
   test-tidy-vm-solaris:
