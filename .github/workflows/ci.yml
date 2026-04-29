@@ -101,7 +101,7 @@ jobs:
           sudo apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends clang-format
         if: matrix.os == 'ubuntu-slim'
       - uses: taiki-e/github-actions/install-rust@nightly
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@v2.75.14
         with:
           tool: shellcheck,shfmt,parse-dockerfile,uv,zizmor
           fallback: none
@@ -251,14 +251,14 @@ jobs:
         env:
           CONTAINER: ${{ matrix.container }}
         if: (!startsWith(matrix.container, 'alpine'))
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@v2.75.14
         with:
           tool: shellcheck,shfmt,uv,parse-dockerfile
           fallback: none
       # min-release-age and allow-git requires npm 11.10+
       - run: npm --version
       - run: npm install --location=global npm@11.11.0
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@v2.75.14
         with:
           tool: zizmor
           fallback: none

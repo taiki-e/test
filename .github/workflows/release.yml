@@ -83,7 +83,7 @@ jobs:
     steps:
       - uses: taiki-e/checkout-action@v1
       - uses: taiki-e/github-actions/install-rust@stable
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@v2.75.14
         with:
           tool: cross
           fallback: none
