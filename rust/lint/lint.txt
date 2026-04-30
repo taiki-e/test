@@ -14,6 +14,7 @@ Lint checks provided by rustc:
                                 ambiguous-negative-literals  allow    ambiguous negative literals operations
                               closure-returning-async-block  allow    closure that returns `async {}` could be rewritten as an async closure
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
+                                  deprecated-llvm-intrinsic  allow    detects uses of deprecated LLVM intrinsics
                                        deprecated-safe-2024  allow    detects unsafe functions being used as safe functions
                                   deref-into-dyn-supertrait  allow    `Deref` implementation with a supertrait trait object for output is shadowed by trait upcasting
                        edition-2024-expr-fragment-specifier  allow    The `expr` fragment specifier will accept more expressions in the 2024 edition. To keep the existing behavior, use the `expr_2021` fragment specifier.
@@ -105,6 +106,7 @@ Lint checks provided by rustc:
                                                    dyn-drop  warn     trait objects of the form `dyn Drop` are useless
                           ellipsis-inclusive-range-patterns  warn     `...` range patterns are deprecated
                               exported-private-dependencies  warn     public interface leaks type from a private dependency
+                                 float-literal-f32-fallback  warn     detects unsuffixed floating point literals whose type fallback to `f32`
                                       forbidden-lint-groups  warn     applying forbid to lint-groups
                                       forgetting-copy-types  warn     calls to `std::mem::forget` with a value that implements Copy
                                       forgetting-references  warn     calls to `std::mem::forget` with a reference instead of an owned value
@@ -163,6 +165,7 @@ Lint checks provided by rustc:
                                             stable-features  warn     stable features found in `#[feature]` directive
                                             static-mut-refs  warn     creating a shared reference to mutable static
                                    suspicious-double-ref-op  warn     suspicious call of trait method on `&&T`
+                                     tail-call-track-caller  warn     detects tail calls of functions marked with `#[track_caller]`
                                              trivial-bounds  warn     these bounds don't depend on an type parameters
                                           type-alias-bounds  warn     bounds in type aliases are not enforced
                                    tyvar-behind-raw-pointer  warn     raw pointer to an inference variable
@@ -202,7 +205,6 @@ Lint checks provided by rustc:
                                         unused-visibilities  warn     detect visibility qualifiers on `const _` items
                                     useless-ptr-null-checks  warn     useless checking of non-null-typed pointer
                                        uses-power-alignment  warn     Structs do not follow the power alignment rule under repr(C)
-                                    varargs-without-pattern  warn     detects usage of `...` arguments without a pattern in non-foreign items
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                  ambiguous-associated-items  deny     ambiguous associated items
@@ -251,6 +253,7 @@ Lint checks provided by rustc:
                                          uninhabited-static  deny     uninhabited static
                                         unknown-crate-types  deny     unknown crate type found in `#[crate_type]` directive
                                          useless-deprecated  deny     detects deprecation attributes with no effect
+                                    varargs-without-pattern  deny     detects usage of `...` arguments without a pattern in non-foreign items
 
 
 Lint groups provided by rustc:
@@ -259,7 +262,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
+                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, elided-lifetimes-in-associated-constant, float-literal-f32-fallback, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, repr-transparent-non-zst-fields, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
