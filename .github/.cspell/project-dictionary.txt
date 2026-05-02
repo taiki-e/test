@@ -13,6 +13,7 @@ mirrorlist
 mvdan
 pluginconf
 rootcerts
+foobarbaz
 rootfs
 usesh
 venv
