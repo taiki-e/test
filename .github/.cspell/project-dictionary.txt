@@ -6,6 +6,7 @@ Ceuxo
 copyback
 fastestmirror
 GOPATH
+foobarbaz
 jemalloc
 libgcc
 microdnf
