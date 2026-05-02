@@ -1,7 +1,6 @@
 name: Release
 
-permissions:
-  contents: read
+permissions: {}
 
 on:
   push:
@@ -30,7 +29,7 @@ concurrency:
 jobs:
   create-release:
     if: github.repository_owner == 'taiki-e'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
       contents: write # for taiki-e/create-gh-release-action
@@ -62,10 +61,10 @@ jobs:
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu.2.17
-            os: ubuntu-latest
+            os: ubuntu-24.04
             build-tool: cargo-zigbuild
           - target: aarch64-unknown-linux-gnu
-            os: ubuntu-latest
+            os: ubuntu-24.04
           - target: x86_64-apple-darwin
             os: macos-latest
           - target: aarch64-apple-darwin

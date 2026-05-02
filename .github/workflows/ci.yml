@@ -1,7 +1,6 @@
 name: CI
 
-permissions:
-  contents: read
+permissions: {}
 
 on:
   pull_request:
@@ -54,6 +53,7 @@ jobs:
       PR_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PR_TOKEN_APP_PRIVATE_KEY }}
     with:
       immutable-release: false
+      pr-token-app-client-id: ${{ vars.PR_TOKEN_APP_CLIENT_ID }}
 
   test-tidy:
     strategy:
@@ -158,7 +158,7 @@ jobs:
           # - archlinux:latest # glibc 2.39 (as of 2024-07-19)
           - alpine:latest # musl 1.2.5 (as of alpine 3.20)
           # - openwrt/rootfs:x86-64-openwrt-24.10 # musl 1.2.5
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     container: ${{ matrix.container }}
     steps:
@@ -299,7 +299,7 @@ jobs:
           # TODO: hang on "syncing markdown to rustdoc"
           # - os: haiku
           #   version: 'r1beta5'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
@@ -408,7 +408,7 @@ jobs:
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
   test-tidy-vm-dragonfly:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
@@ -461,7 +461,7 @@ jobs:
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
   test-tidy-vm-solaris:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
@@ -521,7 +521,7 @@ jobs:
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
   test-tidy-vm-openindiana:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
