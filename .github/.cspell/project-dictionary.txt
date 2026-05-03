@@ -2,6 +2,7 @@ almalinux
 archiver
 archlinux
 Aschedule
+buildah
 Ceuxo
 copyback
 fastestmirror
@@ -11,9 +12,11 @@ libgcc
 microdnf
 mirrorlist
 mvdan
+nerdctl
 pluginconf
 rootcerts
 rootfs
+skopeo
 usesh
 venv
 xzpf

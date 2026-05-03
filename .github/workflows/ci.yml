@@ -65,6 +65,66 @@ jobs:
           - os: ubuntu-22.04-arm
           - os: ubuntu-24.04
           - os: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      # docker
+      - run: tools/tidy.sh
+      # https://github.com/ScribeMD/rootless-docker/pull/402
+      - uses: AJGranowski/rootless-docker-action@23266b5b1fa508009c9ac4be4f8bde450fc3e269 # zizmor: ignore[stale-action-refs]
+      - run: docker info -f '{{println .SecurityOptions}}' | grep -F rootless
+      - run: tools/tidy.sh
+      - run: |
+          sudo systemctl stop docker.service || true
+          sudo systemctl stop docker.socket || true
+          sudo systemctl stop containerd.service || true
+          sudo apt-get -qq -o Dpkg::Use-Pty=0 purge -y 'docker*'
+          sudo rm -rf -- /etc/systemd/system/containerd.service
+      # podman
+      - run: |
+          podman info | grep -F 'rootless: true'
+      - run: TIDY_DOCKER_PATH=podman ./tools/tidy.sh
+      # https://github.com/actions/runner-images/blob/HEAD/images/ubuntu/scripts/build/install-container-tools.sh
+      - run: sudo apt-get -qq -o Dpkg::Use-Pty=0 purge -y podman buildah skopeo
+      # nerdctl
+      - name: Install nerdctl
+        run: |
+          retry() {
+            for i in {1..10}; do
+              if "$@"; then
+                return 0
+              else
+                sleep "${i}"
+              fi
+            done
+            "$@"
+          }
+          # https://github.com/containerd/nerdctl/releases
+          nerdctl_version=2.2.2
+          case "$(uname -m)" in
+            aarch64 | arm64) nerdctl_arch=arm64 ;;
+            *) nerdctl_arch=amd64 ;;
+          esac
+          retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-full-${nerdctl_version}-linux-${nerdctl_arch}.tar.gz" | sudo tar xzf - -C /usr/local
+          containerd-rootless-setuptool.sh install
+        # TODO: https://github.com/containerd/nerdctl/blob/main/docs/rootless.md#apparmor-profile-for-ubuntu-2404
+        if: startsWith(matrix.os, 'ubuntu-22.04')
+      - run: nerdctl info -f '{{println .SecurityOptions}}' | grep -F rootless
+        if: startsWith(matrix.os, 'ubuntu-22.04')
+      - run: TIDY_DOCKER_PATH=nerdctl ./tools/tidy.sh
+        if: startsWith(matrix.os, 'ubuntu-22.04')
+
+  test-old-tidy:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
+          - os: ubuntu-22.04
+          - os: ubuntu-22.04-arm
+          - os: ubuntu-24.04
+          - os: ubuntu-24.04-arm
           - os: ubuntu-slim
           - os: macos-14
           - os: macos-15
@@ -111,17 +171,20 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
       - run: npm install --location=global npm@11.11.0
         if: (!startsWith(matrix.os, 'ubuntu'))
+      - run: type -P bash
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/ci/tidy.sh
         # Unsupported NodeJS version (19.9.0); >=20 is required
         if: matrix.os != 'windows-11-arm'
       - run: brew install bash
         if: startsWith(matrix.os, 'macos')
+      - run: type -P bash | grep -E '^(/usr/local/|/opt/homebrew/)'
+        if: startsWith(matrix.os, 'macos')
       - run: tools/ci/tidy-show-deps.sh
         if: startsWith(matrix.os, 'macos')
       - run: tools/ci/tidy.sh
         if: startsWith(matrix.os, 'macos')
-  test-tidy-container:
+  test-old-tidy-container:
     strategy:
       fail-fast: false
       matrix:
@@ -278,7 +341,7 @@ jobs:
         if: startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/ci/tidy.sh
-  test-tidy-vm:
+  test-old-tidy-vm:
     strategy:
       fail-fast: false
       matrix:
@@ -407,7 +470,7 @@ jobs:
             esac
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
-  test-tidy-vm-dragonfly:
+  test-old-tidy-vm-dragonfly:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -460,7 +523,7 @@ jobs:
             git config --global --add safe.directory "$(pwd)"
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
-  test-tidy-vm-solaris:
+  test-old-tidy-vm-solaris:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -521,7 +584,7 @@ jobs:
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
   # TODO: error on pkg install
-  # test-tidy-vm-openindiana:
+  # test-old-tidy-vm-openindiana:
   #   runs-on: ubuntu-24.04
   #   timeout-minutes: 60
   #   steps:
