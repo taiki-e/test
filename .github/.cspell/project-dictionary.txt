@@ -16,7 +16,10 @@ nerdctl
 pluginconf
 rootcerts
 rootfs
+rootlesskit
 skopeo
+tunables
+userns
 usesh
 venv
 xzpf

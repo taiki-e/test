@@ -52,10 +52,13 @@ jobs:
     secrets:
       PR_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PR_TOKEN_APP_PRIVATE_KEY }}
     with:
+      ruleset: false
       immutable-release: false
       pr-token-app-client-id: ${{ vars.PR_TOKEN_APP_CLIENT_ID }}
 
   test-tidy:
+    env:
+      TIDY_DEV: 1
     strategy:
       fail-fast: false
       matrix:
@@ -107,13 +110,26 @@ jobs:
             *) nerdctl_arch=amd64 ;;
           esac
           retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/nerdctl-full-${nerdctl_version}-linux-${nerdctl_arch}.tar.gz" | sudo tar xzf - -C /usr/local
+          if [[ "${OS}" != 'ubuntu-22.04'* ]]; then
+            # https://rootlesscontaine.rs/getting-started/common/apparmor/
+            sudo tee -- /etc/apparmor.d/usr.local.bin.rootlesskit >/dev/null <<EOF
+          abi <abi/4.0>,
+          include <tunables/global>
+
+          /usr/local/bin/rootlesskit flags=(unconfined) {
+            userns,
+
+            # Site-specific additions and overrides. See local/README for details.
+            include if exists <local/usr.local.bin.rootlesskit>
+          }
+          EOF
+            sudo systemctl restart apparmor.service
+          fi
           containerd-rootless-setuptool.sh install
-        # TODO: https://github.com/containerd/nerdctl/blob/main/docs/rootless.md#apparmor-profile-for-ubuntu-2404
-        if: startsWith(matrix.os, 'ubuntu-22.04')
+        env:
+          OS: ${{ matrix.os }}
       - run: nerdctl info -f '{{println .SecurityOptions}}' | grep -F rootless
-        if: startsWith(matrix.os, 'ubuntu-22.04')
       - run: TIDY_DOCKER_PATH=nerdctl ./tools/tidy.sh
-        if: startsWith(matrix.os, 'ubuntu-22.04')
 
   test-old-tidy:
     strategy:
@@ -345,7 +361,7 @@ jobs:
       matrix:
         include:
           - os: freebsd
-            version: '14.3'
+            version: '14.4'
           - os: freebsd
             version: '15.0'
           # realpath (called in `uvx yq`) requires NetBSD 10: https://man.netbsd.org/realpath.1
@@ -356,7 +372,7 @@ jobs:
           - os: openbsd
             version: '7.8'
           - os: omnios
-            version: 'r151056'
+            version: 'r151058'
           # TODO: hang on "syncing markdown to rustdoc"
           # - os: haiku
           #   version: 'r1beta5'

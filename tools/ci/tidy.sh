@@ -1118,33 +1118,36 @@ EOF
     done
 
     # Make sure the project-specific dictionary does not contain unused words.
-    if [[ -n "${REMOVE_UNUSED_WORDS:-}" ]]; then
-      grep_args=()
-      while IFS= read -r word; do
-        if ! grep -Eqi "^${word}$" <<<"${all_words}"; then
-          grep_args+=(-e "^[ \t]*${word}[ \t]*(#.*|$)")
+    # Buggy on macOS/NetBSD/OpenBSD.
+    if [[ ! "${ostype}" =~ ^(macos|netbsd|openbsd)$ ]]; then
+      if [[ -n "${REMOVE_UNUSED_WORDS:-}" ]]; then
+        grep_args=()
+        while IFS= read -r word; do
+          if ! grep -Eqi "^${word}$" <<<"${all_words}"; then
+            grep_args+=(-e "^[ \t]*${word}[ \t]*(#.*|$)")
+          fi
+        done < <(sed -E 's/#.*//g; s/^[ \t]+//g; s/\/[ \t]+$//g; /^$/d' "${project_dictionary}")
+        if [[ ${#grep_args[@]} -gt 0 ]]; then
+          info "removing unused words from ${project_dictionary}"
+          info "please commit changes made by the removal above"
+          res=$(grep -Ev "${grep_args[@]}" "${project_dictionary}" || true)
+          if [[ -n "${res}" ]]; then
+            printf '%s\n' "${res}" >|"${project_dictionary}"
+          else
+            printf '' >|"${project_dictionary}"
+          fi
         fi
-      done < <(sed -E 's/#.*//g; s/^[ \t]+//g; s/\/[ \t]+$//g; /^$/d' "${project_dictionary}")
-      if [[ ${#grep_args[@]} -gt 0 ]]; then
-        info "removing unused words from ${project_dictionary}"
-        info "please commit changes made by the removal above"
-        res=$(grep -Ev "${grep_args[@]}" "${project_dictionary}" || true)
-        if [[ -n "${res}" ]]; then
-          printf '%s\n' "${res}" >|"${project_dictionary}"
-        else
-          printf '' >|"${project_dictionary}"
+      else
+        unused=''
+        while IFS= read -r word; do
+          if ! grep -Eqi "^${word}$" <<<"${all_words}"; then
+            unused+="${word}"$'\n'
+          fi
+        done < <(sed -E 's/#.*//g; s/^[ \t]+//g; s/\/[ \t]+$//g; /^$/d' "${project_dictionary}")
+        if [[ -n "${unused}" ]]; then
+          error "unused words in dictionaries; please remove the following words from ${project_dictionary} or run ${0##*/} locally"
+          print_fenced "${unused}"
         fi
-      fi
-    else
-      unused=''
-      while IFS= read -r word; do
-        if ! grep -Eqi "^${word}$" <<<"${all_words}"; then
-          unused+="${word}"$'\n'
-        fi
-      done < <(sed -E 's/#.*//g; s/^[ \t]+//g; s/\/[ \t]+$//g; /^$/d' "${project_dictionary}")
-      if [[ -n "${unused}" ]]; then
-        error "unused words in dictionaries; please remove the following words from ${project_dictionary} or run ${0##*/} locally"
-        print_fenced "${unused}"
       fi
     fi
   fi
