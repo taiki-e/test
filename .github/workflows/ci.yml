@@ -160,10 +160,9 @@ jobs:
           sudo apt-get -o Acquire::Retries=10 -qq update
           sudo apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends clang-format
         if: matrix.os == 'ubuntu-slim'
-      - uses: taiki-e/github-actions/install-rust@nightly
       - uses: taiki-e/install-action@v2
         with:
-          tool: shellcheck,shfmt,parse-dockerfile,uv,zizmor
+          tool: rust@nightly,shellcheck,shfmt,parse-dockerfile,uv,zizmor
           fallback: none
       # min-release-age and allow-git requires npm 11.10+
       - run: npm --version
@@ -290,7 +289,6 @@ jobs:
         shell: sh
         if: startsWith(matrix.container, 'alpine')
       - uses: taiki-e/checkout-action@v1
-      - uses: taiki-e/github-actions/install-rust@nightly
       - name: Install Node.js
         run: |
           retry() {
@@ -316,7 +314,7 @@ jobs:
         if: (!startsWith(matrix.container, 'alpine'))
       - uses: taiki-e/install-action@v2
         with:
-          tool: shellcheck,shfmt,uv,parse-dockerfile
+          tool: rust@nightly,shellcheck,shfmt,uv,parse-dockerfile
           fallback: none
       # min-release-age and allow-git requires npm 11.10+
       - run: npm --version
