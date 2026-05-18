@@ -8,7 +8,6 @@ on:
     branches:
       - main
       - dev*
-      - v[0-9]+.[0-9]+
   schedule:
     - cron: '0 2 * * *'
   workflow_dispatch:
@@ -39,24 +38,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  codegen:
+    needs: tidy
+    uses: taiki-e/github-actions/.github/workflows/gen.yml@main
+    permissions:
+      contents: write # for creating branch for pr
+      pull-requests: write # unused (used in `codegen-automerge: true` case)
+    secrets:
+      PR_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PR_TOKEN_APP_PRIVATE_KEY }}
+    with:
+      pr-token-app-client-id: ${{ vars.PR_TOKEN_APP_CLIENT_ID }}
   test:
+    needs: tidy
     uses: taiki-e/github-actions/.github/workflows/test.yml@main
     with:
       target: x86_64-unknown-linux-gnu,aarch64-apple-darwin,x86_64-pc-windows-msvc,aarch64-unknown-linux-gnu,x86_64-apple-darwin,x86_64-pc-windows-gnu
   tidy:
     uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
     permissions:
-      contents: write # for creating branch for pr
-      pull-requests: write # unused (used in `codegen-automerge: true` case)
       security-events: write # for github/codeql-action/*
-    secrets:
-      PR_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PR_TOKEN_APP_PRIVATE_KEY }}
     with:
       ruleset: false
       immutable-release: false
-      pr-token-app-client-id: ${{ vars.PR_TOKEN_APP_CLIENT_ID }}
 
   test-tidy:
+    needs: tidy
     env:
       TIDY_DEV: 1
     strategy:
@@ -64,10 +70,10 @@ jobs:
       matrix:
         include:
           # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
-          - os: ubuntu-22.04
-          - os: ubuntu-22.04-arm
           - os: ubuntu-24.04
           - os: ubuntu-24.04-arm
+          - os: ubuntu-22.04
+          - os: ubuntu-22.04-arm
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
     steps:
@@ -132,115 +138,93 @@ jobs:
       - run: TIDY_DOCKER_PATH=nerdctl ./tools/tidy.sh
 
   test-old-tidy:
+    needs: tidy
     strategy:
       fail-fast: false
       matrix:
         include:
           # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
-          - os: ubuntu-22.04
-          - os: ubuntu-22.04-arm
+          # --------------------------------------------------------------------
+          # GitHub-hosted runners
           - os: ubuntu-24.04
           - os: ubuntu-24.04-arm
+          - os: ubuntu-22.04
+          - os: ubuntu-22.04-arm
           - os: ubuntu-slim
-          - os: macos-14
+          - os: macos-26
           - os: macos-15
           - os: macos-15-intel
-          - os: macos-26
-          - os: windows-2022
-          - os: windows-2022
-            bash: msys64
-          - os: windows-2022
+          - os: windows-2025
+          - os: windows-2025
+            bash: msys2
+          - os: windows-2025
             bash: cygwin
-          - os: windows-2025
-          - os: windows-2025
-            bash: msys64
-          - os: windows-2025
+          - os: windows-2022
+          - os: windows-2022
+            bash: msys2
+          - os: windows-2022
             bash: cygwin
           - os: windows-11-arm
-    runs-on: ${{ matrix.os }}
+          # --------------------------------------------------------------------
+          # Containers
+          # debian 9's python3 is 3.5.3, ubuntu 16.04's python3 is 3.5.2, ubuntu 14.04's python3 is 3.4,
+          # we got "SyntaxError: invalid syntax" when using yq with python 3.5.2 and older,
+          # and we got "Python 3.6 or later is required" when using yq with python 3.5 and older.
+          # --------------------------------------------------------------------
+          # Debian-based
+          - container: debian:sid # glibc
+          - container: debian:testing # glibc
+          - container: debian:13-slim # glibc 2.41
+          - container: debian:12-slim # glibc 2.36
+          - container: debian:11-slim # glibc 2.31, EoL
+          - container: debian:10-slim # glibc 2.28, EoL, end of LTS
+          # - container: debian:9-slim # glibc 2.24, EoL, end of LTS
+          # - container: debian/eol:jessie-slim # 8, glibc 2.19, EoL, end of LTS
+          - container: ubuntu:devel # glibc
+          - container: ubuntu:rolling # glibc
+          - container: ubuntu:26.04 # glibc 2.43
+          - container: ubuntu:24.04 # glibc 2.39
+          - container: ubuntu:22.04 # glibc 2.35
+          - container: ubuntu:20.04 # glibc 2.31, EoL
+          - container: ubuntu:18.04 # glibc 2.27, EoL
+          # - container: ubuntu:16.04 # glibc 2.23, EoL, end of ESM
+          # - container: ubuntu:14.04 # glibc 2.19, EoL, end of ESM
+          # --------------------------------------------------------------------
+          # Fedora/RHEL-based
+          - container: fedora:latest # glibc
+          - container: centos:7 # glibc 2.17, EoL
+          # - container: centos:6 # glibc 2.12, EoL, rustc/nodejs requires glibc 2.17
+          - container: almalinux:10 # glibc 2.39
+          - container: almalinux:10-minimal # glibc 2.39
+          - container: almalinux:9 # glibc 2.34
+          - container: almalinux:9-minimal # glibc 2.34
+          - container: almalinux:8 # glibc 2.28
+          - container: almalinux:8-minimal # glibc 2.28
+          # --------------------------------------------------------------------
+          # apk
+          - container: alpine:latest # musl
+    runs-on: ${{ matrix.os || 'ubuntu-24.04' }}
+    container: ${{ matrix.container }}
     timeout-minutes: 60
     steps:
       - run: |
           printf '%s\n' 'C:\msys64\mingw32\bin' >>"${GITHUB_PATH}"
           printf '%s\n' 'C:\msys64\usr\bin' >>"${GITHUB_PATH}"
-        if: matrix.bash == 'msys64'
+        if: matrix.bash == 'msys2'
       - run: |
           choco install --no-progress --requirechecksums cygwin
           printf '%s\n' 'C:\tools\cygwin\bin' >>"${GITHUB_PATH}"
           printf '%s\n' 'C:\tools\cygwin\usr\bin' >>"${GITHUB_PATH}"
         if: matrix.bash == 'cygwin'
-      - uses: taiki-e/checkout-action@v1
-      - run: brew install clang-format
+      - name: Install requirements (macOS)
+        run: brew install clang-format
         if: startsWith(matrix.os, 'macos')
-      - run: |
+      - name: Install requirements (ubuntu-slim)
+        run: |
           sudo apt-get -o Acquire::Retries=10 -qq update
           sudo apt-get -o Acquire::Retries=10 -o Dpkg::Use-Pty=0 install -y --no-install-recommends clang-format
         if: matrix.os == 'ubuntu-slim'
-      - uses: taiki-e/install-action@v2
-        with:
-          tool: rust@nightly,shellcheck,shfmt,parse-dockerfile,uv,zizmor
-          fallback: none
-      # min-release-age and allow-git requires npm 11.10+
-      - run: npm --version
-      - run: sudo npm install --location=global npm@11.11.0
-        if: startsWith(matrix.os, 'ubuntu')
-      - run: npm install --location=global npm@11.11.0
-        if: (!startsWith(matrix.os, 'ubuntu'))
-      - run: type -P bash
-      - run: tools/ci/tidy-show-deps.sh
-      - run: tools/ci/tidy.sh
-        # Unsupported NodeJS version (19.9.0); >=20 is required
-        if: matrix.os != 'windows-11-arm'
-      - run: brew install bash
-        if: startsWith(matrix.os, 'macos')
-      - run: type -P bash | grep -E '^(/usr/local/|/opt/homebrew/)'
-        if: startsWith(matrix.os, 'macos')
-      - run: tools/ci/tidy-show-deps.sh
-        if: startsWith(matrix.os, 'macos')
-      - run: tools/ci/tidy.sh
-        if: startsWith(matrix.os, 'macos')
-  test-old-tidy-container:
-    strategy:
-      fail-fast: false
-      matrix:
-        container:
-          # NB: Sync list with https://github.com/taiki-e/checkout-action/blob/HEAD/.github/workflows/ci.yml
-          # debian 9's python3 is 3.5.3, ubuntu 16.04's python3 is 3.5.2, ubuntu 14.04's python3 is 3.4,
-          # we got "SyntaxError: invalid syntax" when using yq with python 3.5.2 and older,
-          # and we got "Python 3.6 or later is required" when using yq with python 3.5 and older.
-          # - ubuntu:14.04 # glibc 2.19
-          # - ubuntu:16.04 # glibc 2.23
-          - ubuntu:18.04 # glibc 2.27
-          - ubuntu:20.04 # glibc 2.31
-          - ubuntu:22.04 # glibc 2.35
-          - ubuntu:24.04 # glibc 2.39
-          - ubuntu:26.04 # glibc 2.42
-          - ubuntu:rolling
-          # - debian:9-slim # glibc 2.24
-          - debian:10-slim # glibc 2.28
-          - debian:11-slim # glibc 2.31
-          - debian:12-slim # glibc 2.36
-          - debian:13-slim # glibc 2.41
-          - debian:testing
-          - fedora:latest # glibc 2.39 (as of fedora 40)
-          - almalinux:8 # glibc 2.28
-          - almalinux:8-minimal # glibc 2.28
-          - almalinux:9 # glibc 2.34
-          - almalinux:9-minimal # glibc 2.34
-          - almalinux:10 # glibc 2.39
-          - almalinux:10-minimal # glibc 2.39
-          # - centos:6 # glibc 2.12 # rustc/nodejs requires glibc 2.17
-          - centos:7 # glibc 2.17
-          # - opensuse/leap:latest # glibc 2.38 (as of leap 15.6)
-          # - opensuse/tumbleweed:latest # glibc 2.39 (as of 2024-07-19)
-          # - archlinux:latest # glibc 2.39 (as of 2024-07-19)
-          - alpine:latest # musl 1.2.5 (as of alpine 3.20)
-          # - openwrt/rootfs:x86-64-openwrt-24.10 # musl 1.2.5
-    runs-on: ubuntu-24.04
-    timeout-minutes: 60
-    container: ${{ matrix.container }}
-    steps:
-      - name: Install requirements (ubuntu/debian)
+      - name: Install requirements (Ubuntu/Debian container)
         run: |
           retry() {
             for i in {1..10}; do
@@ -275,7 +259,7 @@ jobs:
         env:
           CONTAINER: ${{ matrix.container }}
         if: startsWith(matrix.container, 'ubuntu') || startsWith(matrix.container, 'debian')
-      - name: Install requirements (fedora/almalinux/centos)
+      - name: Install requirements (Fedora/Alma/CentOS)
         run: |
           retry() {
             for i in {1..10}; do
@@ -300,7 +284,7 @@ jobs:
             retry yum install -y xz clang python3
           fi
         if: startsWith(matrix.container, 'fedora') || startsWith(matrix.container, 'almalinux') || startsWith(matrix.container, 'centos')
-      - name: Install requirements (alpine)
+      - name: Install requirements (Alpine)
         run: apk --no-cache add ca-certificates curl clang-extra-tools npm python3
         shell: sh
         if: startsWith(matrix.container, 'alpine')
@@ -327,19 +311,16 @@ jobs:
           printf '/node/bin\n' >>"${GITHUB_PATH}"
         env:
           CONTAINER: ${{ matrix.container }}
-        if: (!startsWith(matrix.container, 'alpine'))
+        if: matrix.container != '' && (!startsWith(matrix.container, 'alpine'))
       - uses: taiki-e/install-action@v2
         with:
-          tool: rust@nightly,shellcheck,shfmt,uv,parse-dockerfile
+          tool: rust@nightly,shellcheck,shfmt,parse-dockerfile,uv
           fallback: none
-      # min-release-age and allow-git requires npm 11.10+
-      - run: npm --version
-      - run: npm install --location=global npm@11.11.0
       - uses: taiki-e/install-action@v2
         with:
           tool: zizmor
           fallback: none
-        if: (!(startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')))
+        if: matrix.container == '' || !(startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine'))
       - run: |
           retry() {
             for i in {1..10}; do
@@ -353,9 +334,27 @@ jobs:
           }
           retry curl --proto '=https' --tlsv1.2 -fsSL --retry 10 "https://github.com/cargo-bins/cargo-quickinstall/releases/download/zizmor-1.18.0/zizmor-1.18.0-x86_64-unknown-linux-musl.tar.gz" | tar xzf - -C "${HOME}/.cargo/bin"
         if: startsWith(matrix.container, 'ubuntu:1') || startsWith(matrix.container, 'ubuntu:20') || startsWith(matrix.container, 'debian:10') || startsWith(matrix.container, 'debian:11') || startsWith(matrix.container, 'almalinux:8') || startsWith(matrix.container, 'centos') || startsWith(matrix.container, 'alpine')
+      # min-release-age and allow-git requires npm 11.10+
+      - run: npm --version
+      - run: sudo npm install --location=global npm@11.11.0
+        if: startsWith(matrix.os, 'ubuntu')
+      - run: npm install --location=global npm@11.11.0
+        if: (!startsWith(matrix.os, 'ubuntu'))
+      - run: type -P bash
       - run: tools/ci/tidy-show-deps.sh
       - run: tools/ci/tidy.sh
+        # Unsupported NodeJS version (19.9.0); >=20 is required
+        if: matrix.os != 'windows-11-arm'
+      - run: brew install bash
+        if: startsWith(matrix.os, 'macos')
+      - run: type -P bash | grep -E '^(/usr/local/|/opt/homebrew/)'
+        if: startsWith(matrix.os, 'macos')
+      - run: tools/ci/tidy-show-deps.sh
+        if: startsWith(matrix.os, 'macos')
+      - run: tools/ci/tidy.sh
+        if: startsWith(matrix.os, 'macos')
   test-old-tidy-vm:
+    needs: tidy
     strategy:
       fail-fast: false
       matrix:
@@ -485,6 +484,7 @@ jobs:
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
   test-old-tidy-vm-dragonfly:
+    needs: tidy
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -538,6 +538,7 @@ jobs:
             tools/ci/tidy-show-deps.sh
             tools/ci/tidy.sh
   test-old-tidy-vm-solaris:
+    needs: tidy
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -599,6 +600,7 @@ jobs:
             tools/ci/tidy.sh
   # TODO: error on pkg install
   # test-old-tidy-vm-openindiana:
+  #   needs: tidy
   #   runs-on: ubuntu-24.04
   #   timeout-minutes: 60
   #   steps:

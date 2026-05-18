@@ -1,6 +1,5 @@
 almalinux
 archiver
-archlinux
 Aschedule
 buildah
 Ceuxo
@@ -15,7 +14,6 @@ mvdan
 nerdctl
 pluginconf
 rootcerts
-rootfs
 rootlesskit
 skopeo
 tunables
