@@ -312,11 +312,11 @@ jobs:
         env:
           CONTAINER: ${{ matrix.container }}
         if: matrix.container != '' && (!startsWith(matrix.container, 'alpine'))
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@v2.76.0
         with:
           tool: rust@nightly,shellcheck,shfmt,parse-dockerfile,uv
           fallback: none
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@v2.76.0
         with:
           tool: zizmor
           fallback: none
@@ -489,7 +489,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
-      - uses: vmactions/dragonflybsd-vm@323497fa680c1856dd1ba5c4fd89182a9194f649 # v1.2.7
+      - uses: vmactions/dragonflybsd-vm@17fba5ae01ae16ac714dead56eed198c3b2e210e # v1.2.8
         with:
           envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
           usesh: true
@@ -543,7 +543,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
-      - uses: vmactions/solaris-vm@0a231b94365d1911cf62097ef342f6b30d95598f # v1.3.2
+      - uses: vmactions/solaris-vm@c20562b2c69737b06be9e828915761703e487373 # v1.3.3
         with:
           envs: CARGO_INCREMENTAL CARGO_NET_RETRY CARGO_TERM_COLOR RUST_BACKTRACE RUST_TEST_THREADS RUSTDOCFLAGS RUSTFLAGS RUSTUP_MAX_RETRIES TIDY_EXPECTED_MARKDOWN_FILE_COUNT TIDY_EXPECTED_RUST_FILE_COUNT TIDY_EXPECTED_CLANG_FORMAT_FILE_COUNT TIDY_EXPECTED_PRETTIER_FILE_COUNT TIDY_EXPECTED_TOML_FILE_COUNT TIDY_EXPECTED_SHELL_FILE_COUNT TIDY_EXPECTED_DOCKER_FILE_COUNT
           usesh: true

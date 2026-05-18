@@ -81,7 +81,7 @@ jobs:
       attestations: write # for actions/attest
     steps:
       - uses: taiki-e/checkout-action@v1
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@v2.76.0
         with:
           tool: rust@stable,cross
           fallback: none
