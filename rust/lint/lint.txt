@@ -13,6 +13,7 @@ Lint checks provided by rustc:
                      absolute-paths-not-starting-with-crate  allow    fully qualified paths that start with a module name instead of `crate`, `self`, or an extern crate name
                                 ambiguous-negative-literals  allow    ambiguous negative literals operations
                               closure-returning-async-block  allow    closure that returns `async {}` could be rewritten as an async closure
+                                    dead-code-pub-in-binary  allow    detect public items in executable crates that are never used
                                        deprecated-in-future  allow    detects use of items that will be deprecated in a future version
                                   deprecated-llvm-intrinsic  allow    detects uses of deprecated LLVM intrinsics
                                        deprecated-safe-2024  allow    detects unsafe functions being used as safe functions
@@ -117,7 +118,6 @@ Lint checks provided by rustc:
                                 improper-ctypes-definitions  warn     proper use of libc types in foreign item definitions
                                     improper-gpu-kernel-arg  warn     GPU kernel entry points have a limited ABI
                                         incomplete-features  warn     incomplete features that may function improperly in some or all cases
-                  inline-always-mismatching-target-features  warn     detects when a function annotated with `#[inline(always)]` and `#[target_feature(enable = "..")]` is inlined into a caller without the required target feature
                                          inline-no-sanitize  warn     detects incompatible use of `#[inline(always)]` and `#[sanitize(... = "off")]`
                                   integer-to-ptr-transmutes  warn     detects integer to pointer transmutes
                              internal-eq-trait-method-impls  warn     manual implementation of the internal `Eq::assert_receiver_is_total_eq` method
