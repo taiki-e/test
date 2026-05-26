@@ -38,21 +38,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  codegen:
-    needs: tidy
-    uses: taiki-e/github-actions/.github/workflows/gen.yml@main
-    permissions:
-      contents: write # for creating branch for pr
-      pull-requests: write # unused (used in `codegen-automerge: true` case)
-    secrets:
-      PR_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PR_TOKEN_APP_PRIVATE_KEY }}
-    with:
-      pr-token-app-client-id: ${{ vars.PR_TOKEN_APP_CLIENT_ID }}
-  test:
-    needs: tidy
-    uses: taiki-e/github-actions/.github/workflows/test.yml@main
-    with:
-      target: x86_64-unknown-linux-gnu,aarch64-apple-darwin,x86_64-pc-windows-msvc,aarch64-unknown-linux-gnu,x86_64-apple-darwin,x86_64-pc-windows-gnu
   tidy:
     uses: taiki-e/github-actions/.github/workflows/tidy.yml@main
     permissions:
@@ -60,6 +45,20 @@ jobs:
     with:
       ruleset: false
       immutable-release: false
+  codegen:
+    needs: tidy
+    uses: taiki-e/github-actions/.github/workflows/gen.yml@main
+    permissions:
+      contents: write # for creating branch for pr
+    secrets:
+      PR_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PR_TOKEN_APP_PRIVATE_KEY }}
+    with:
+      pr-token-app-client-id: ${{ vars.PR_TOKEN_APP_CLIENT_ID }}
+  test:
+    needs: tidy
+    uses: taiki-e/github-actions/.github/workflows/rust-test.yml@main
+    with:
+      target: x86_64-unknown-linux-gnu,aarch64-apple-darwin,x86_64-pc-windows-msvc,aarch64-unknown-linux-gnu,x86_64-apple-darwin,x86_64-pc-windows-gnu
 
   test-tidy:
     needs: tidy
