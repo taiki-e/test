@@ -60,6 +60,33 @@ jobs:
     with:
       target: x86_64-unknown-linux-gnu,aarch64-apple-darwin,x86_64-pc-windows-msvc,aarch64-unknown-linux-gnu,x86_64-apple-darwin,x86_64-pc-windows-gnu
 
+  test-riscv:
+    needs: tidy
+    if: github.event_name == 'schedule'
+    strategy:
+      fail-fast: false
+      matrix:
+        crate:
+          - atomic-maybe-uninit
+          - portable-atomic
+    runs-on: ubuntu-24.04-riscv
+    timeout-minutes: 60
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - run: uname -m
+      - run: git clone --depth 1 "https://github.com/taiki-e/${CRATE}.git"
+        env:
+          CRATE: ${{ matrix.crate }}
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-hack,cargo-minimal-versions
+          fallback: none
+      - uses: taiki-e/cache-cargo-install-action@v3
+        with:
+          tool: cargo-careful
+      - run: tools/test.sh -vv
+        working-directory: ${{ matrix.crate }}
+
   test-tidy:
     needs: tidy
     env:
