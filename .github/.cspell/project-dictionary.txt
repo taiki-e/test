@@ -3,12 +3,14 @@ archiver
 Aschedule
 buildah
 Ceuxo
+Ceuxo
 copyback
 fastestmirror
 GOPATH
 jemalloc
 libgcc
 microdnf
+midnightbsd
 mirrorlist
 mvdan
 nerdctl
