@@ -77,7 +77,7 @@ jobs:
       - run: git clone --depth 1 "https://github.com/taiki-e/${CRATE}.git"
         env:
           CRATE: ${{ matrix.crate }}
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@v2.79.1
         with:
           tool: cargo-hack,cargo-minimal-versions
           fallback: none
