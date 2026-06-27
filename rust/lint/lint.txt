@@ -165,6 +165,7 @@ Lint checks provided by rustc:
                                             stable-features  warn     stable features found in `#[feature]` directive
                                             static-mut-refs  warn     creating a shared reference to mutable static
                                    suspicious-double-ref-op  warn     suspicious call of trait method on `&&T`
+                      suspicious-runtime-symbol-definitions  warn     suspicious definition of a symbol used by the standard library
                                      tail-call-track-caller  warn     detects tail calls of functions marked with `#[track_caller]`
                                              trivial-bounds  warn     these bounds don't depend on an type parameters
                                           type-alias-bounds  warn     bounds in type aliases are not enforced
@@ -229,6 +230,7 @@ Lint checks provided by rustc:
                              invalid-macro-export-arguments  deny     "invalid_parameter" isn't a valid argument for `#[macro_export]`
                                      invalid-null-arguments  deny     invalid null pointer in arguments
                                   invalid-reference-casting  deny     casts of `&T` to `&mut T` without interior mutability
+                         invalid-runtime-symbol-definitions  deny     invalid definition of a symbol used by the standard library
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
                                       legacy-derive-helpers  deny     detects derive helper attributes that are used before they are introduced
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
