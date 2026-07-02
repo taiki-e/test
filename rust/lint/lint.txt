@@ -22,15 +22,14 @@ Lint checks provided by rustc:
                                   elided-lifetimes-in-paths  allow    hidden lifetime parameters in types are deprecated
                              explicit-outlives-requirements  allow    outlives requirements can be inferred
                                            ffi-unwind-calls  allow    call to foreign functions or function pointers with FFI-unwind ABI
-                                     fuzzy-provenance-casts  allow    a fuzzy integer to pointer cast is used
                                              if-let-rescope  allow    `if let` assigns a shorter lifetime to temporary values being pattern-matched against in Edition 2024 and rewriting in `match` is an option to preserve the semantics up to Edition 2021
+                                  implicit-provenance-casts  allow    an `as` cast relying on exposed provenance is used
                                     impl-trait-overcaptures  allow    `impl Trait` will capture more lifetimes than possibly intended in edition 2024
                               impl-trait-redundant-captures  allow    redundant precise-capturing `use<...>` syntax on an `impl Trait`
                                         keyword-idents-2018  allow    detects edition keywords being used as an identifier
                                         keyword-idents-2024  allow    detects edition keywords being used as an identifier
                                         let-underscore-drop  allow    non-binding let on a type that has a destructor
                                                 linker-info  allow    linker warnings known to be informational-only and not indicative of a problem
-                                     lossy-provenance-casts  allow    a lossy pointer to integer cast is used
                                      macro-use-extern-crate  allow    the `#[macro_use]` attribute is now deprecated in favor of using macros via the module system
                                        meta-variable-misuse  allow    possible meta-variable misuse at macro definition
                                missing-copy-implementations  allow    detects potentially-forgotten implementations of `Copy`
@@ -93,6 +92,7 @@ Lint checks provided by rustc:
                                 const-evaluatable-unchecked  warn     detects a generic constant is used in a type without a emitting a warning
                               const-item-interior-mutations  warn     checks for calls which mutates a interior mutable const-item
                                         const-item-mutation  warn     detects attempts to mutate a `const` item
+                                             c-void-returns  warn     detects use of `c_void` as a return type
                               dangling-pointers-from-locals  warn     detects returning a pointer from a local variable
                          dangling-pointers-from-temporaries  warn     detects getting a pointer from a temporary
                                                   dead-code  warn     detect unused, unexported items
