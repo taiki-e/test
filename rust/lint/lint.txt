@@ -155,6 +155,7 @@ Lint checks provided by rustc:
                                              private-bounds  warn     private type in secondary interface of an item
                                          private-interfaces  warn     private type in primary interface of an item
                          ptr-to-integer-transmute-in-consts  warn     detects pointer to integer transmutes in const functions and associated constants
+                            recursion-depth-exceeding-limit  warn     detects trait solving overflow that only happens with the next solver
                                        redundant-semicolons  warn     detects unnecessary trailing semicolons
                                refining-impl-trait-internal  warn     impl trait in impl method signature does not match trait method signature
                               refining-impl-trait-reachable  warn     impl trait in impl method signature does not match trait method signature
@@ -162,6 +163,7 @@ Lint checks provided by rustc:
                                repr-c-enums-larger-than-int  warn     repr(C) enums with discriminant values that do not fit into a C int
                                     rtsan-nonblocking-async  warn     detects incompatible uses of `#[sanitize(realtime = "nonblocking")]` on async functions
                            self-constructor-from-outer-item  warn     detect unsupported use of `Self` from outer item
+             semicolon-in-expressions-from-non-local-macros  warn     trailing semicolon in macro body used as expression
                                         special-module-name  warn     module declarations for files with a special meaning
                                             stable-features  warn     stable features found in `#[feature]` directive
                                             static-mut-refs  warn     creating a shared reference to mutable static
@@ -263,7 +265,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, float-literal-f32-fallback, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, method-call-on-diverging-infer-var, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, repr-c-enums-larger-than-int, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
+                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, float-literal-f32-fallback, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, method-call-on-diverging-infer-var, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, recursion-depth-exceeding-limit, repr-c-enums-larger-than-int, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, semicolon-in-expressions-from-non-local-macros, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
@@ -273,7 +275,7 @@ Lint groups provided by rustc:
                        rust-2021-compatibility  ellipsis-inclusive-range-patterns, array-into-iter, non-fmt-panics, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions
                        rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, boxed-slice-into-iter, impl-trait-overcaptures, if-let-rescope, static-mut-refs, dependency-on-unit-never-type-fallback, deprecated-safe-2024, missing-unsafe-on-extern, never-type-fallback-flowing-into-unsafe, rust-2024-guarded-string-incompatible-syntax, rust-2024-incompatible-pat, rust-2024-prelude-collisions, tail-expr-drop-order, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn
     unknown-or-malformed-diagnostic-attributes  malformed-diagnostic-attributes, malformed-diagnostic-format-literals, misplaced-diagnostic-attributes, unknown-diagnostic-attributes
-                                        unused  unused-imports, unused-variables, unused-visibilities, unused-assignments, dead-code, unused-mut, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
+                                        unused  unused-imports, unused-variables, unused-visibilities, unused-assignments, dead-code, unused-mut, unreachable-cfg-select-predicates, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
 
 Lint tools like Clippy can load additional lints and lint groups.
