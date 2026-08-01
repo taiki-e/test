@@ -40,6 +40,7 @@ Lint checks provided by rustc:
                                            must-not-suspend  allow    use of a `#[must_not_suspend]` value across a yield point
                                            non-ascii-idents  allow    detects non-ASCII identifiers
                             non-exhaustive-omitted-patterns  allow    detect when patterns of types marked `non_exhaustive` are missed
+                                 raw-borrows-via-references  allow    creating raw borrows via references is discouraged
                                           redundant-imports  allow    imports that are redundant due to being imported already
                                         redundant-lifetimes  allow    detects lifetime parameters that are redundant because they are equal to some other named lifetime
               resolving-to-items-shadowing-supertrait-items  allow    detects when a supertrait item is shadowed by a subtrait item
@@ -131,6 +132,7 @@ Lint checks provided by rustc:
                               late-bound-lifetime-arguments  warn     detects generic lifetime arguments in path segments with late bound lifetime parameters
                                             linker-messages  warn     warnings emitted at runtime by the target-specific linker program
                             malformed-diagnostic-attributes  warn     detects malformed diagnostic attributes
+                               malformed-diagnostic-filters  warn     detects malformed filters in diagnostic attributes
                        malformed-diagnostic-format-literals  warn     detects diagnostic attribute with malformed diagnostic format literals
                                                 map-unit-fn  warn     `Iterator::map` call that discard the iterator's values
                          method-call-on-diverging-infer-var  warn     detects method calls on a result of never-to-any coercion
