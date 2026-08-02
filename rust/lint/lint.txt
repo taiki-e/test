@@ -224,6 +224,7 @@ Lint checks provided by rustc:
                      dependency-on-unit-never-type-fallback  deny     never type fallback affecting unsafe function calls
                                               deref-nullptr  deny     detects when an null pointer is dereferenced
                                          duplicate-features  deny     duplicate features found in crate-level `#[feature]` directives
+                                            duplicate-tools  deny     duplicate tools found in crate-level `#[register_tools]` directives
                                   enum-intrinsics-non-enums  deny     detects calls to `core::mem::discriminant` and `core::mem::variant_count` with non-enum types
                              explicit-builtin-cfgs-in-flags  deny     detects builtin cfgs set via the `--cfg`
                                  ill-formed-attribute-input  deny     ill-formed attribute inputs that were previously accepted and used in practice
