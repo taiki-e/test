@@ -72,7 +72,6 @@ Lint checks provided by rustc:
                                       unused-qualifications  allow    detects unnecessarily qualified names
                                              unused-results  allow    unused result of an expression in a statement
                                    variant-size-differences  allow    detects enums with widely varying variant sizes
-                                     aarch64-softfloat-neon  warn     detects code that could be affected by ABI issues on aarch64 softfloat targets
                                    ambiguous-derive-helpers  warn     detects derive helper attributes that are ambiguous with built-in attributes
                              ambiguous-glob-imported-traits  warn     detects uses of ambiguously glob imported traits
                                    ambiguous-glob-reexports  warn     ambiguous glob re-exports
@@ -100,8 +99,8 @@ Lint checks provided by rustc:
                                                  deprecated  warn     detects use of deprecated items
                            deprecated-where-clause-location  warn     deprecated where clause location
                                            double-negations  warn     detects expressions of the form `--x`
-                                        dropping-copy-types  warn     calls to `std::mem::drop` with a value that implements Copy
-                                        dropping-references  warn     calls to `std::mem::drop` with a reference instead of an owned value
+                                        dropping-copy-types  warn     calls to `drop` and `drop_in_place` where the dropped value implements Copy
+                                        dropping-references  warn     calls to `drop` and `drop_in_place` where the dropped type is a reference instead of an owned value
                                                 drop-bounds  warn     bounds of the form `T: Drop` are most likely incorrect
                                  duplicate-macro-attributes  warn     duplicated attribute
                                                    dyn-drop  warn     trait objects of the form `dyn Drop` are useless
@@ -212,6 +211,7 @@ Lint checks provided by rustc:
                                        uses-power-alignment  warn     Structs do not follow the power alignment rule under repr(C)
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
+                                     aarch64-softfloat-neon  deny     detects code that could be affected by ABI issues on aarch64 softfloat targets
                                  ambiguous-associated-items  deny     ambiguous associated items
                                      ambiguous-glob-imports  deny     detects certain glob imports that require reporting an ambiguity error
                                         arithmetic-overflow  deny     arithmetic operation overflows
@@ -254,11 +254,12 @@ Lint checks provided by rustc:
                         text-direction-codepoint-in-comment  deny     invisible directionality-changing codepoints in comment
                         text-direction-codepoint-in-literal  deny     detect special Unicode codepoints that affect the visual representation of text on screen, changing the direction in which text flows
                                         unconditional-panic  deny     operation will cause a panic at runtime
-                                   undropped-manually-drops  deny     calls to `std::mem::drop` with `std::mem::ManuallyDrop` instead of it's inner value
+                                   undropped-manually-drops  deny     calls to `drop` and `drop_in_place` where the dropped value is `std::mem::ManuallyDrop`
                                          uninhabited-static  deny     uninhabited static
                                         unknown-crate-types  deny     unknown crate type found in `#[crate_type]` directive
                                          useless-deprecated  deny     detects deprecation attributes with no effect
                                     varargs-without-pattern  deny     detects usage of `...` arguments without a pattern in non-foreign items
+                                          x86-softfloat-sse  deny     detects code that could be affected by LLVM backend issues on x86 softfloat targets
 
 
 Lint groups provided by rustc:
@@ -267,7 +268,7 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, float-literal-f32-fallback, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, method-call-on-diverging-infer-var, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, recursion-depth-exceeding-limit, repr-c-enums-larger-than-int, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, semicolon-in-expressions-from-non-local-macros, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern
+                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, float-literal-f32-fallback, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, method-call-on-diverging-infer-var, out-of-scope-macro-calls, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, recursion-depth-exceeding-limit, repr-c-enums-larger-than-int, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, semicolon-in-expressions-from-non-local-macros, uncovered-param-in-projection, uninhabited-static, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern, x86-softfloat-sse
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
