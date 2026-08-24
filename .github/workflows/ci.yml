@@ -66,17 +66,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        crate:
-          - atomic-maybe-uninit
-          - portable-atomic
+        repo:
+          - taiki-e/atomic-maybe-uninit
+          - taiki-e/portable-atomic
+          - crossbeam-rs/crossbeam
     runs-on: ubuntu-24.04-riscv
     timeout-minutes: 60
     steps:
       - uses: taiki-e/checkout-action@v1
       - run: uname -m
-      - run: git clone --depth 1 "https://github.com/taiki-e/${CRATE}.git"
+      - run: git clone --depth 1 "https://github.com/${REPO}.git"
         env:
-          CRATE: ${{ matrix.crate }}
+          REPO: ${{ matrix.repo }}
       - uses: taiki-e/install-action@v2
         with:
           tool: cargo-hack,cargo-minimal-versions
@@ -84,8 +85,14 @@ jobs:
       - uses: taiki-e/cache-cargo-install-action@v3
         with:
           tool: cargo-careful
-      - run: tools/test.sh -vv
-        working-directory: ${{ matrix.crate }}
+      - run: cd -- "${REPO#*/}" && tools/test.sh -vv
+        env:
+          REPO: ${{ matrix.repo }}
+        if: matrix.repo == 'taiki-e/atomic-maybe-uninit' || matrix.repo == 'taiki-e/portable-atomic'
+      - run: cd -- "${REPO#*/}" && cargo test --workspace --exclude benchmarks --all-features -- --test-threads=1 && cargo test --workspace --exclude benchmarks --all-features -r -- --test-threads=1
+        env:
+          REPO: ${{ matrix.repo }}
+        if: matrix.repo == 'crossbeam-rs/crossbeam'
 
   test-tidy:
     needs: tidy
@@ -103,7 +110,7 @@ jobs:
           - os: ubuntu-22.04
           - os: ubuntu-22.04-arm
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
+    timeout-minutes: 30
     steps:
       - uses: taiki-e/checkout-action@v1
       # docker
