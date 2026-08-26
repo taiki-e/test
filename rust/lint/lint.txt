@@ -220,7 +220,6 @@ Lint checks provided by rustc:
                                      conflicting-repr-hints  deny     conflicts between `#[repr(..)]` hints that were previously accepted and used in practice
                                 dangerous-implicit-autorefs  deny     implicit reference to a dereference of a raw pointer
                            default-overrides-default-fields  deny     detect `Default` impl that should use the type's default field values
-                     dependency-on-unit-never-type-fallback  deny     never type fallback affecting unsafe function calls
                                               deref-nullptr  deny     detects when an null pointer is dereferenced
                                          duplicate-features  deny     duplicate features found in crate-level `#[feature]` directives
                                             duplicate-tools  deny     duplicate tools found in crate-level `#[register_tools]` directives
@@ -276,7 +275,7 @@ Lint groups provided by rustc:
                        rust-2018-compatibility  keyword-idents-2018, anonymous-parameters, absolute-paths-not-starting-with-crate, tyvar-behind-raw-pointer
                               rust-2018-idioms  bare-trait-objects, unused-extern-crates, ellipsis-inclusive-range-patterns, elided-lifetimes-in-paths, explicit-outlives-requirements
                        rust-2021-compatibility  ellipsis-inclusive-range-patterns, non-fmt-panics, array-into-iter, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions
-                       rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, if-let-rescope, impl-trait-overcaptures, boxed-slice-into-iter, static-mut-refs, dependency-on-unit-never-type-fallback, deprecated-safe-2024, missing-unsafe-on-extern, never-type-fallback-flowing-into-unsafe, rust-2024-guarded-string-incompatible-syntax, rust-2024-incompatible-pat, rust-2024-prelude-collisions, tail-expr-drop-order, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn
+                       rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, if-let-rescope, impl-trait-overcaptures, boxed-slice-into-iter, static-mut-refs, deprecated-safe-2024, missing-unsafe-on-extern, rust-2024-guarded-string-incompatible-syntax, rust-2024-incompatible-pat, rust-2024-prelude-collisions, tail-expr-drop-order, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn
     unknown-or-malformed-diagnostic-attributes  malformed-diagnostic-attributes, malformed-diagnostic-format-literals, misplaced-diagnostic-attributes, unknown-diagnostic-attributes
                                         unused  unused-imports, unused-variables, unused-visibilities, unused-assignments, dead-code, unused-mut, unreachable-cfg-select-predicates, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
 
