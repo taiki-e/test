@@ -160,6 +160,7 @@ Lint checks provided by rustc:
                                refining-impl-trait-internal  warn     impl trait in impl method signature does not match trait method signature
                               refining-impl-trait-reachable  warn     impl trait in impl method signature does not match trait method signature
                                   renamed-and-removed-lints  warn     lints that have been renamed or removed
+                                             repeated-reprs  warn     detects repeated representations in `#[repr(..)]` attributes
                                repr-c-enums-larger-than-int  warn     repr(C) enums with discriminant values that do not fit into a C int
                                     rtsan-nonblocking-async  warn     detects incompatible uses of `#[sanitize(realtime = "nonblocking")]` on async functions
                            self-constructor-from-outer-item  warn     detect unsupported use of `Self` from outer item
@@ -277,7 +278,7 @@ Lint groups provided by rustc:
                        rust-2021-compatibility  ellipsis-inclusive-range-patterns, non-fmt-panics, array-into-iter, bare-trait-objects, rust-2021-incompatible-closure-captures, rust-2021-incompatible-or-patterns, rust-2021-prefixes-incompatible-syntax, rust-2021-prelude-collisions
                        rust-2024-compatibility  keyword-idents-2024, edition-2024-expr-fragment-specifier, if-let-rescope, impl-trait-overcaptures, boxed-slice-into-iter, static-mut-refs, deprecated-safe-2024, missing-unsafe-on-extern, rust-2024-guarded-string-incompatible-syntax, rust-2024-incompatible-pat, rust-2024-prelude-collisions, tail-expr-drop-order, unsafe-attr-outside-unsafe, unsafe-op-in-unsafe-fn
     unknown-or-malformed-diagnostic-attributes  malformed-diagnostic-attributes, malformed-diagnostic-format-literals, misplaced-diagnostic-attributes, unknown-diagnostic-attributes
-                                        unused  unused-imports, unused-variables, unused-visibilities, unused-assignments, dead-code, unused-mut, unreachable-cfg-select-predicates, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn
+                                        unused  unused-imports, unused-variables, unused-visibilities, unused-assignments, dead-code, unused-mut, unreachable-cfg-select-predicates, unreachable-code, unreachable-patterns, unused-must-use, unused-unsafe, path-statements, unused-attributes, unused-macros, unused-macro-rules, unused-allocation, unused-doc-comments, unused-extern-crates, unused-features, unused-labels, unused-parens, unused-braces, redundant-semicolons, map-unit-fn, repeated-reprs
 
 
 Lint tools like Clippy can load additional lints and lint groups.
