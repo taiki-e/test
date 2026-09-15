@@ -213,6 +213,7 @@ Lint checks provided by rustc:
                                                    warnings  warn     mass-change the level for lints which produce warnings
                                                  while-true  warn     suggest using `loop { }` instead of `while true { }`
                                      aarch64-softfloat-neon  deny     detects code that could be affected by ABI issues on aarch64 softfloat targets
+                                   aligned-fields-in-packed  deny     `repr(C, align)` types nested inside `repr(C, packed)` types do not always have a C-compatible layout
                                  ambiguous-associated-items  deny     ambiguous associated items
                                      ambiguous-glob-imports  deny     detects certain glob imports that require reporting an ambiguity error
                                         arithmetic-overflow  deny     arithmetic operation overflows
@@ -228,6 +229,7 @@ Lint checks provided by rustc:
                              explicit-builtin-cfgs-in-flags  deny     detects builtin cfgs set via the `--cfg`
                                  ill-formed-attribute-input  deny     ill-formed attribute inputs that were previously accepted and used in practice
                                          incomplete-include  deny     trailing content in included file
+                             ineffective-unstable-reexports  deny     detects ineffective `#[unstable]` attributes on re-exports
                             ineffective-unstable-trait-impl  deny     detects `#[unstable]` on stable trait implementations for stable types
                                     invalid-atomic-ordering  deny     usage of invalid atomic ordering in atomic operations and memory fences
                                 invalid-from-utf8-unchecked  deny     using a non UTF-8 literal in `std::str::from_utf8_unchecked`
