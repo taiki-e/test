@@ -57,6 +57,7 @@ Lint checks provided by rustc:
                                               trivial-casts  allow    detects trivial casts which could be removed
                                       trivial-numeric-casts  allow    detects trivial casts of numeric types which could be removed
                                               unit-bindings  allow    binding is useless because it has the unit `()` type
+                            unmarked-unchecked-type-aliases  allow    suggest adding `#[rustc_unchecked_type_aliases]` to unchecked type aliases
                                            unnameable-types  allow    effective visibility of a type is larger than the area in which it can be named
                                   unqualified-local-imports  allow    `use` of a local item without leading `self::`, `super::`, or `crate::`
                                             unreachable-pub  allow    `pub` items not reachable from crate root
@@ -247,6 +248,7 @@ Lint checks provided by rustc:
                                          mutable-transmutes  deny     transmuting &T to &mut T is undefined behavior, even if the reference is unused
                                            named-asm-labels  deny     named labels in inline assembly
                     never-type-fallback-flowing-into-unsafe  deny     never type fallback affecting unsafe function calls
+                                         no-link-attributes  deny     detects usage of `#[no_link]` on `extern crate` items
                                       no-mangle-const-items  deny     const items will not have their symbols exported
                                    out-of-scope-macro-calls  deny     detects out of scope calls to `macro_rules` in key-value attributes
                                        overflowing-literals  deny     literal out of range for its type
@@ -273,7 +275,8 @@ Lint groups provided by rustc:
                                           ----  ---------
                                       warnings  all lints that are set to issue warnings
                                deprecated-safe  deprecated-safe-2024
-                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, float-literal-f32-fallback, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, method-call-on-diverging-infer-var, out-of-scope-macro-calls, partial-stack-protector, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, recursion-depth-exceeding-limit, repr-c-enums-larger-than-int, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, semicolon-in-expressions-from-non-local-macros, uncovered-param-in-projection, uninhabited-static, unstable-imports, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern, x86-softfloat-sse
+                  edition-future-compatibility  unmarked-unchecked-type-aliases
+                           future-incompatible  internal-eq-trait-method-impls, aarch64-softfloat-neon, ambiguous-associated-items, ambiguous-derive-helpers, ambiguous-glob-imported-traits, ambiguous-glob-imports, ambiguous-import-visibilities, ambiguous-panic-imports, coherence-leak-check, conflicting-repr-hints, const-evaluatable-unchecked, float-literal-f32-fallback, forbidden-lint-groups, ill-formed-attribute-input, invalid-macro-export-arguments, invalid-type-param-default, late-bound-lifetime-arguments, legacy-derive-helpers, macro-expanded-macro-exports-accessed-by-absolute-paths, method-call-on-diverging-infer-var, no-link-attributes, out-of-scope-macro-calls, partial-stack-protector, patterns-in-fns-without-body, proc-macro-derive-resolution-fallback, pub-use-of-private-extern-crate, recursion-depth-exceeding-limit, repr-c-enums-larger-than-int, self-constructor-from-outer-item, semicolon-in-expressions-from-macros, semicolon-in-expressions-from-non-local-macros, uncovered-param-in-projection, uninhabited-static, unstable-imports, unstable-name-collisions, unstable-syntax-pre-expansion, unsupported-calling-conventions, varargs-without-pattern, x86-softfloat-sse
                                 keyword-idents  keyword-idents-2018, keyword-idents-2024
                                 let-underscore  let-underscore-drop, let-underscore-lock
                              nonstandard-style  non-camel-case-types, non-snake-case, non-upper-case-globals
