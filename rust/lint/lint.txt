@@ -242,6 +242,7 @@ Lint checks provided by rustc:
                          invalid-runtime-symbol-definitions  deny     invalid definition of a symbol used by the standard library
                                  invalid-type-param-default  deny     type parameter default erroneously allowed in invalid location
                                       legacy-derive-helpers  deny     detects derive helper attributes that are used before they are introduced
+                                  let-underscore-drop-guard  deny     non-binding let on a `DropGuard`
                                         let-underscore-lock  deny     non-binding let on a synchronization lock
                                     long-running-const-eval  deny     detects long const eval operations
     macro-expanded-macro-exports-accessed-by-absolute-paths  deny     macro-expanded `macro_export` macros from the current crate cannot be referred to by absolute paths
